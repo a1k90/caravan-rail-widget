@@ -38,6 +38,8 @@ def get_db():
 
 # Pre-compiled canonical transit corridors (TR-4)
 CANONICAL_CORRIDORS = {
+    ("710007", "704101"): { "distance": 1850, "nodes": ["Семей", "Актогай", "Шу", "Тараз", "Шымкент", "Сарыагаш"] },
+    ("704101", "720000"): { "distance": 17, "nodes": ["Сарыагаш", "Келес", "Чукурсай"] },
     ("666501", "704101"): {
         "distance": 2080,
         "admin": "КТЖ",

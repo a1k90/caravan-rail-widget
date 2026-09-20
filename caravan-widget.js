@@ -8,8 +8,8 @@
   if (window.__CARAVAN_RAILROAD_LOADED__) return;
   window.__CARAVAN_RAILROAD_LOADED__ = true;
 
-  var WIDGET_HTML = "<!-- ====================================================================\n     CARAVAN RAILROAD — ИНТЕРАКТИВНЫЙ МОДУЛЬ ТРЕКИНГА, КАЛЬКУЛЯТОРА И B2B КАБИНЕТА\n     Версия с поддержкой Incoterms 2020 («Под ключ», DAP, DDP, CIP, FCA), \n     разграничением ролей отправитель/получатель и разделом коммерческих предложений (КП)\n     ==================================================================== -->\n\n<div id=\"caravan-tracking-root\" class=\"cr-widget\">\n  \n  <!-- ВЕРХНИЙ БЛОК: 3 ДИНАМИЧЕСКИХ ПОКАЗАТЕЛЯ КОМПАНИИ -->\n  <div class=\"cr-stats-bar\">\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\"></rect>\n          <path d=\"M2 10h20M7 15h2M15 15h2M7 19v2M17 19v2\"></path>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-wagons\" data-target=\"1480\">0</div>\n        <div class=\"cr-stat-label\">Вагонов в дислокации</div>\n      </div>\n    </div>\n\n    <div class=\"cr-stat-divider\"></div>\n\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path>\n          <polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline>\n          <line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-tonnage\" data-target=\"920000\">0</div>\n        <div class=\"cr-stat-label\">Тонн груза перевезено</div>\n      </div>\n    </div>\n\n    <div class=\"cr-stat-divider\"></div>\n\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n          <line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line>\n          <path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-routes\" data-target=\"48\">0</div>\n        <div class=\"cr-stat-label\">Регулярных ж/д маршрутов</div>\n      </div>\n    </div>\n\n    <div class=\"cr-live-pill\">\n      <span class=\"cr-pulse-dot\"></span>\n      <span id=\"cr-live-status-text\">Мониторинг 24/7</span>\n    </div>\n  </div>\n\n  <!-- ОСНОВНАЯ КАРТОЧКА С ТАБАМИ -->\n  <div class=\"cr-card\">\n    \n    <!-- НАВИГАЦИЯ ПО ТАБАМ -->\n    <div class=\"cr-tabs-header\">\n      <button type=\"button\" class=\"cr-tab-btn active\" data-tab=\"track\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"></line></svg>\n        <span>Быстрый трекинг</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"calc\" id=\"cr-calc-tab-btn\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect><line x1=\"8\" y1=\"6\" x2=\"16\" y2=\"6\"></line><line x1=\"16\" y1=\"14\" x2=\"16\" y2=\"18\"></line><path d=\"M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01\"></path></svg>\n        <span>Расчет тарифов и Incoterms</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"login\" id=\"cr-cabinet-tab-btn\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n        <span>Личный кабинет (КП и грузы)</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"register\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"8.5\" cy=\"7\" r=\"4\"></circle><line x1=\"20\" y1=\"8\" x2=\"20\" y2=\"14\"></line><line x1=\"23\" y1=\"11\" x2=\"17\" y2=\"11\"></line></svg>\n        <span>Регистрация</span>\n      </button>\n    </div>\n\n    <!-- ТАБ 1: БЫСТРЫЙ ПОИСК ДИСЛОКАЦИИ ПО НОМЕРУ (ДОСТУПЕН ПОСЛЕ АВТОРИЗАЦИИ) -->\n    <div class=\"cr-tab-content active\" id=\"cr-tab-track\">\n\n      <!-- ЭКРАН 1: ОГРАНИЧЕНИЕ ДОСТУПА ДЛЯ НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ -->\n      <div id=\"cr-track-auth-lock\" class=\"cr-auth-lock-card\">\n        <div class=\"cr-lock-icon-wrap\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect>\n            <path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path>\n          </svg>\n        </div>\n        <div class=\"cr-lock-badge\">Защищенный B2B контур</div>\n        <h3>Отслеживание дислокации доступно после входа в кабинет</h3>\n        <p>\n          В целях коммерческой безопасности и защиты конфиденциальности грузоперевозок, онлайн-мониторинг открыт только зарегистрированным клиентам Caravan Railroad. Каждый контрагент может отслеживать только прикрепленный подвижной состав и грузы по своему договору.\n        </p>\n        <div class=\"cr-lock-actions\">\n          <button type=\"button\" class=\"cr-btn-primary\" id=\"cr-lock-btn-login\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n            <span>Войти в личный кабинет</span>\n          </button>\n          <button type=\"button\" class=\"cr-btn-secondary\" id=\"cr-lock-btn-register\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"8.5\" cy=\"7\" r=\"4\"></circle><line x1=\"20\" y1=\"8\" x2=\"20\" y2=\"14\"></line><line x1=\"23\" y1=\"11\" x2=\"17\" y2=\"11\"></line></svg>\n            <span>Зарегистрировать компанию</span>\n          </button>\n        </div>\n        <div class=\"cr-lock-hint\">\n          Тестовый B2B доступ для проверки: логин <code>kaz_trans</code> / пароль <code>pass2026</code>\n        </div>\n      </div>\n\n      <!-- ЭКРАН 2: ПАНЕЛЬ ТРЕКИНГА ДЛЯ АВТОРИЗОВАННОГО КЛИЕНТА (ТОЛЬКО СВОЙ ТРАНСПОРТ) -->\n      <div id=\"cr-track-authed-panel\" >\n        <!-- Верхний статус авторизованного контрагента -->\n        <div class=\"cr-authed-user-bar\">\n          <div class=\"cr-aub-left\">\n            <span class=\"cr-aub-indicator\"></span>\n            <span>Контрагент: <strong id=\"cr-track-user-company\" style=\"color:#FFFFFF;\">ТОО \"КазТрансЛогистик\"</strong> • Договор: <code id=\"cr-track-user-b2b\" style=\"color:var(--cr-amber);\">B2B-CR-9021</code></span>\n          </div>\n          <div class=\"cr-aub-actions\">\n            <button type=\"button\" class=\"cr-aub-btn\" id=\"cr-track-go-cabinet\">Все грузы в кабинете</button>\n            <button type=\"button\" class=\"cr-aub-btn\" id=\"cr-track-logout-btn\" style=\"color:#F87171; border-color:rgba(239,68,68,0.3);\">Выйти</button>\n          </div>\n        </div>\n\n        <form id=\"cr-track-form\" class=\"cr-form\" onsubmit=\"return false;\">\n          <div class=\"cr-input-group\">\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"7\" width=\"20\" height=\"14\" rx=\"2\"></rect><path d=\"M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"></path></svg>\n              <input type=\"text\" id=\"cr-track-input\" class=\"cr-input\" placeholder=\"Введите номер вашего вагона, контейнера или накладной...\" autocomplete=\"off\" required />\n              <button type=\"button\" class=\"cr-clear-btn\" id=\"cr-track-clear\" style=\"display:none;\">×</button>\n            </div>\n            <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-track-submit\">\n              <span>Отследить дислокацию</span>\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>\n            </button>\n          </div>\n\n          <div class=\"cr-quick-chips\" id=\"cr-track-user-chips\">\n            <!-- Заполняется динамически вагонами и контейнерами только текущего пользователя -->\n          </div>\n        </form>\n\n        <!-- Индикатор загрузки -->\n        <div class=\"cr-loader\" id=\"cr-track-loader\" >\n          <div class=\"cr-spinner\"></div>\n          <span>Запрос дислокации в Ж/Д шлюзе Caravan Railroad...</span>\n        </div>\n\n        <!-- Контейнер вывода дислокации или отказа в доступе -->\n        <div id=\"cr-dislocation-result\" class=\"cr-result-box\" ></div>\n      </div>\n\n    </div>\n\n    <!-- ТАБ 2: КАЛЬКУЛЯТОР ТАРИФОВ, INCOTERMS 2020 И МАРШРУТОВ -->\n        <div class=\"cr-tab-content\" id=\"cr-tab-calc\">\n      <div class=\"cr-calc-header-box\">\n        <div class=\"cr-tab-intro\">\n          <h3>Интеллектуальный калькулятор железнодорожных тарифов 1520 мм</h3>\n          <p>Поучастковый расчет провозной платы по железным дорогам стран СНГ (КТЖ, УТИ, РЖД), подбор межгосударственных стыков, расчет аренды парка Caravan Railroad и условий Incoterms 2020.</p>\n        </div>\n\n        \n        <!-- МУЛЬТИМОДАЛЬНЫЙ СЕЛЕКТОР (6 НАПРАВЛЕНИЙ CARAVAN) -->\n        <div class=\"cr-modality-bar\" id=\"cr-modality-bar\">\n          <button type=\"button\" class=\"cr-modality-btn active\" data-modality=\"rail\">\n            <span class=\"cr-mod-icon\">🚆</span>\n            <span class=\"cr-mod-title\">Ж/Д 1520</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"fleet\">\n            <span class=\"cr-mod-icon\">🏢</span>\n            <span class=\"cr-mod-title\">Аренда ПС</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"road\">\n            <span class=\"cr-mod-icon\">🚛</span>\n            <span class=\"cr-mod-title\">Автоперевозки</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"air\">\n            <span class=\"cr-mod-icon\">✈️</span>\n            <span class=\"cr-mod-title\">Авиакарго</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"multimodal\">\n            <span class=\"cr-mod-icon\">🌐</span>\n            <span class=\"cr-mod-title\">Мультимодал</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"customs\">\n            <span class=\"cr-mod-icon\">📋</span>\n            <span class=\"cr-mod-title\">Таможня & ВЭД</span>\n          </button>\n        </div>\n\n        <div class=\"cr-submode-toggles\">\n          <button type=\"button\" class=\"cr-submode-btn\" id=\"cr-btn-mode-preset\">Регулярные направления</button>\n          <button type=\"button\" class=\"cr-submode-btn active\" id=\"cr-btn-mode-custom\">Индивидуальный расчет маршрута</button>\n        </div>\n      </div>\n\n      <!-- РЕЖИМ А: РЕГУЛЯРНЫЕ МАРШРУТЫ С ОБНОВЛЯЕМЫМИ ЦЕНАМИ -->\n      <div id=\"cr-calc-preset-view\" >\n        <div class=\"cr-preset-routes-grid\" id=\"cr-preset-routes-container\"></div>\n      </div>\n\n      <!-- РЕЖИМ Б: ИНДИВИДУАЛЬНЫЙ РАСЧЕТ ПО СЕТИ И ПРАВИЛАМ R-ТАРИФ -->\n      <div id=\"cr-calc-custom-view\" style=\"display: block;\">\n        <form id=\"cr-calc-form\" class=\"cr-calc-form\" onsubmit=\"return false;\">\n          \n          <!-- ВЫБОР СТОРОНЫ ДОГОВОРА (РОЛЬ КЛИЕНТА) -->\n          <div class=\"cr-role-selection-box\">\n            <label class=\"cr-field-caption\">Ваша сторона в перевозке (определение зоны ответственности):</label>\n            <div class=\"cr-role-pills\">\n              <label class=\"cr-role-pill active\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"shipper\" checked />\n                <span>Грузоотправитель (Shipper)</span>\n              </label>\n              <label class=\"cr-role-pill\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"consignee\" />\n                <span>Грузополучатель (Consignee)</span>\n              </label>\n              <label class=\"cr-role-pill\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"forwarder\" />\n                <span>Экспедитор / Агент (Forwarder)</span>\n              </label>\n            </div>\n          </div>\n\n          <!-- СЕТКА ПАРАМЕТРОВ РАСЧЕТА -->\n          <div class=\"cr-mod-panel active\" id=\"cr-mod-panel-rail\">\n          <div class=\"cr-calc-inputs-grid\">\n            \n            <!-- СТАНЦИЯ ОТПРАВЛЕНИЯ -->\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\">\n              <label>Станция отправления (название или 6-значный код)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 14 14\"></polyline></svg>\n                <input type=\"text\" id=\"cr-calc-from\" class=\"cr-input\" placeholder=\"Введите название или код (напр. Кокшетау, 687008)\" value=\"Кокшетау (687008, КТЖ)\" autocomplete=\"off\" />\n                <div id=\"cr-calc-from-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n\n            <!-- СТАНЦИЯ НАЗНАЧЕНИЯ -->\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\">\n              <label>Станция назначения (название или 6-значный код)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z\"></path><circle cx=\"12\" cy=\"10\" r=\"3\"></circle></svg>\n                <input type=\"text\" id=\"cr-calc-to\" class=\"cr-input\" placeholder=\"Введите станцию (напр. Ташкент-Товарный, 720000)\" value=\"Ташкент-Товарный (720000, УТИ)\" autocomplete=\"off\" />\n                <div id=\"cr-calc-to-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n\n            <!-- ПОГРАНПЕРЕХОДЫ / СТЫКИ -->\n            <div id=\"cr-border-selection-container\" style=\"grid-column: 1 / -1;\">\n              <!-- Одиночный стык (двустороннее сообщение) -->\n              <div id=\"cr-border-single-wrap\" class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                <label id=\"cr-border-single-label\">Межгосударственный стыковой пункт</label>\n                <div class=\"cr-input-wrapper\">\n                  <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                  <select id=\"cr-calc-border\" class=\"cr-select\">\n                    <option value=\"auto\" selected>Определять автоматически по плану формирования</option>\n                    <option value=\"704101\">Сарыагаш (эксп.) [КТЖ] / Келес [УТИ] (Казахстан — Узбекистан)</option>\n                    <option value=\"708507\">Достык (эксп.) [КТЖ] / Алашанькоу (Китай — Казахстан)</option>\n                    <option value=\"707701\">Алтынколь (эксп.) [КТЖ] / Хоргос (Китай — Казахстан)</option>\n                    <option value=\"666501\">Илецк I (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"664900\">Озинки (эксп.) [Прив / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"816909\">Карталы I (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"815502\">Орск (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"711105\">Локоть (эксп.) [З-Сиб / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"688708\">Петропавловск (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"843905\">Кулунда (эксп.) [З-Сиб / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"662905\">Бейнеу (эксп.) / Каракалпакстан (Мангышлак — Узбекистан)</option>\n                    <option value=\"734606\">Галаба (эксп.) [УТИ] / Хайратан (Узбекистан — Афганистан)</option>\n                    <option value=\"736501\">Ходжадавлет (эксп.) [УТИ] / Фарап (Узбекистан — Туркменистан)</option>\n                    <option value=\"736003\">Кудукли (эксп.) [УТИ] / Пахтаабад (Узбекистан — Таджикистан)</option>\n                  </select>\n                </div>\n              </div>\n\n              <!-- Двойной стык (транзитное сообщение: Россия -> Казахстан [Транзит] -> Узбекистан) -->\n              <div id=\"cr-border-dual-wrap\" class=\"cr-dual-borders-grid\" >\n                <div class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                  <label id=\"cr-border-1-label\">Стык 1: РЖД ⇄ КТЖ (Вход в транзит)</label>\n                  <div class=\"cr-input-wrapper\">\n                    <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                    <select id=\"cr-calc-border-1\" class=\"cr-select\">\n                      <option value=\"auto\">Определять автоматически (Оптимальный)</option>\n                      <option value=\"666501\">ст. Илецк I (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"664900\">ст. Озинки (эксп.) [Прив / КТЖ]</option>\n                      <option value=\"816909\">ст. Карталы I (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"815502\">ст. Орск (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"688708\">ст. Петропавловск (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"711105\">ст. Локоть (эксп.) [З-Сиб / КТЖ]</option>\n                      <option value=\"843905\">ст. Кулунда (эксп.) [З-Сиб / КТЖ]</option>\n                    </select>\n                  </div>\n                </div>\n                <div class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                  <label id=\"cr-border-2-label\">Стык 2: КТЖ ⇄ УТИ (Выход из транзита)</label>\n                  <div class=\"cr-input-wrapper\">\n                    <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                    <select id=\"cr-calc-border-2\" class=\"cr-select\">\n                      <option value=\"auto\">Определять автоматически (Оптимальный)</option>\n                      <option value=\"704101\">ст. Сарыагаш (эксп.) [КТЖ] / Келес [УТИ]</option>\n                      <option value=\"662905\">ст. Бейнеу (эксп.) [КТЖ] / Каракалпакстан [УТИ]</option>\n                    </select>\n                  </div>\n                </div>\n              </div>\n            </div>\n\n            <!-- РАССТОЯНИЕ -->\n            <div class=\"cr-form-field\">\n              <label>Расстояние маршрута (км)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polygon points=\"1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6\"></polygon><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"18\"></line><line x1=\"16\" y1=\"6\" x2=\"16\" y2=\"22\"></line></svg>\n                <input type=\"number\" id=\"cr-calc-km\" class=\"cr-input\" value=\"1805\" min=\"50\" max=\"15000\" />\n              </div>\n              <div class=\"cr-quick-km\">\n                <span class=\"cr-km-chip\" data-km=\"500\">500 км</span>\n                <span class=\"cr-km-chip\" data-km=\"1200\">1 200 км</span>\n                <span class=\"cr-km-chip\" data-km=\"1805\">1 805 км</span>\n                <span class=\"cr-km-chip\" data-km=\"2800\">2 800 км</span>\n                <span class=\"cr-km-chip\" data-km=\"4200\">4 200 км</span>\n              </div>\n            </div>\n\n            <!-- РОД ПОДВИЖНОГО СОСТАВА -->\n            <div class=\"cr-form-field\">\n              <label>Род подвижного состава</label>\n              <select id=\"cr-calc-transport\" class=\"cr-select\">\n                <option value=\"grain\" selected>Зерновоз / Хоппер (для зерна, 70 тн, 116 м³)</option>\n                <option value=\"boxcar\">Крытый вагон (грузовой, 68 тн, 138 м³)</option>\n                <option value=\"gondola\">Полувагон (универсальный 4-осный, 70 тн)</option>\n                <option value=\"tank\">Цистерна (наливные грузы / ГСМ, 66 тн)</option>\n                <option value=\"platform\">Фитинговая платформа (тяжеловесы/негабарит)</option>\n                <option value=\"cont40\">Контейнер 40ft High Cube (HQ, 28 тн, 76 м³)</option>\n                <option value=\"cont20\">Контейнер 20ft (универсальный, 24 тн, 33 м³)</option>\n              </select>\n            </div>\n\n            <!-- ПРИНАДЛЕЖНОСТЬ ПАРКА -->\n            <div class=\"cr-form-field\">\n              <label>Принадлежность подвижного состава</label>\n              <select id=\"cr-calc-park\" class=\"cr-select\">\n                <option value=\"caravan\" selected>Собственный парк Caravan Railroad (СПС) — фикс. ставка</option>\n                <option value=\"inventory\">Инвентарный парк ж/д администраций (КТЖ/УТИ/РЖД)</option>\n              </select>\n            </div>\n\n            <!-- НОМЕНКЛАТУРА ГРУЗА (ЕТСНГ / ГНГ) -->\n            <div class=\"cr-form-field cr-cargo-autocomplete-wrap\">\n              <label>Номенклатура груза (поиск по названию, коду ЕТСНГ или ГНГ)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                  <path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path>\n                  <polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline>\n                  <line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line>\n                </svg>\n                <input type=\"text\" id=\"cr-calc-cargo-search\" class=\"cr-input\" placeholder=\"Введите название (напр. пшеница, уголь, металл) или код\" value=\"Пшеница прочая (ЕТСНГ: 100199, ГНГ: 10019900)\" autocomplete=\"off\" />\n                <input type=\"hidden\" id=\"cr-calc-cargo\" value=\"grain\" />\n                <input type=\"hidden\" id=\"cr-calc-cargo-code\" value=\"100199\" />\n                <div id=\"cr-calc-cargo-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n\n            <!-- МАССА ГРУЗА -->\n            <div class=\"cr-form-field\">\n              <label>Масса груза нетто (тонн)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n                <input type=\"number\" id=\"cr-calc-weight\" class=\"cr-input\" value=\"68\" min=\"1\" max=\"75\" />\n              </div>\n            </div>\n\n            <!-- БАЗИС INCOTERMS 2020 -->\n            <div class=\"cr-form-field\">\n              <label>Базис поставки (Incoterms 2020)</label>\n              <select id=\"cr-calc-incoterms\" class=\"cr-select\">\n                <option value=\"DAP\" selected>DAP — Доставка «До двери» (склад получателя)</option>\n                <option value=\"CIP\">CIP — Перевозка + Страхование груза (110% стоимости)</option>\n                <option value=\"CPT\">CPT — Перевозка оплачена до станции назначения</option>\n                <option value=\"FCA\">FCA — Перевозчик в месте отправления (забор у поставщика)</option>\n                <option value=\"DDP\">DDP — «Под ключ» (полная таможенная очистка + пошлины + склад)</option>\n              </select>\n            </div>\n\n            <!-- ВИД СООБЩЕНИЯ -->\n            <div class=\"cr-form-field\">\n              <label>Вид перевозки</label>\n              <select id=\"cr-calc-freight-type\" class=\"cr-select\">\n                <option value=\"rail\" selected>Прямая Ж/Д перевозка (поезда / повагонно)</option>\n                <option value=\"multimodal\">Мультимодальная (Ж/Д + Авто до склада)</option>\n                <option value=\"intermodal\">Интермодальная (Ж/Д + Море / Паромный стык)</option>\n              </select>\n            </div>\n\n            <!-- ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ -->\n            <div class=\"cr-form-field cr-span-2\">\n              <label>Дополнительные опции безопасности и сопровождения</label>\n              <div class=\"cr-checkbox-group-inline\">\n                <label class=\"cr-checkbox-label\">\n                  <input type=\"checkbox\" id=\"cr-opt-security\" checked />\n                  <span>Военизированная охрана и сменное сопровождение (ВЖДО на всем пути)</span>\n                </label>\n                <label class=\"cr-checkbox-label\">\n                  <input type=\"checkbox\" id=\"cr-opt-customs\" />\n                  <span>Таможенно-брокерское декларирование и сертификация</span>\n                </label>\n              </div>\n            </div>\n\n          </div>\n\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 2: АРЕНДА ПОДВИЖНОГО СОСТАВА (ПС) -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-fleet\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Тип подвижного состава</label>\n              <select id=\"cr-fleet-type\" class=\"cr-select\">\n                <option value=\"grain\" selected>Хоппер-зерновоз (116–120 м³, 70 т)</option>\n                <option value=\"covered\">Крытый вагон (138–161 м³, 68 т)</option>\n                <option value=\"gondola\">Полувагон люковый (85 м³, 70 т)</option>\n                <option value=\"platform\">Фитинговая платформа (20'/40' HC)</option>\n                <option value=\"tank\">Ж/Д цистерна (нефть, ГСМ, масла)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Формат аренды</label>\n              <select id=\"cr-fleet-rent-type\" class=\"cr-select\">\n                <option value=\"daily\" selected>Посуточная аренда (Daily lease)</option>\n                <option value=\"roundtrip\">Аренда на кругорейс (Round-trip)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Количество вагонов (ед.)</label>\n              <input type=\"number\" id=\"cr-fleet-count\" class=\"cr-input\" value=\"10\" min=\"1\" max=\"500\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Срок аренды (суток)</label>\n              <input type=\"number\" id=\"cr-fleet-days\" class=\"cr-input\" value=\"30\" min=\"5\" max=\"365\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Регион курсирования / Станция погрузки</label>\n              <input type=\"text\" id=\"cr-fleet-route\" class=\"cr-input\" value=\"Акмола (Казахстан) ➔ Сарыагаш\" />\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 3: АВТОТРАНСПОРТ -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-road\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Город отправления</label>\n              <input type=\"text\" id=\"cr-road-from\" class=\"cr-input\" value=\"Москва\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Город назначения</label>\n              <input type=\"text\" id=\"cr-road-to\" class=\"cr-input\" value=\"Ташкент\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Тип автотранспорта</label>\n              <select id=\"cr-road-type\" class=\"cr-select\">\n                <option value=\"tent\" selected>Тент стандарт (86–92 м³, до 22 т)</option>\n                <option value=\"mega\">Сцепка Мега (110–120 м³, до 24 т)</option>\n                <option value=\"reefer\">Рефрижератор (-20°C / +20°C)</option>\n                <option value=\"lowbed\">Низкорамный трал (негабарит)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Масса груза (тонн)</label>\n              <input type=\"number\" id=\"cr-road-weight\" class=\"cr-input\" value=\"20\" min=\"1\" max=\"45\" />\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 4: АВИАКАРГО -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-air\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Аэропорт вылета (IATA)</label>\n              <select id=\"cr-air-from\" class=\"cr-select\">\n                <option value=\"CAN\" selected>Гуанчжоу (CAN) — Китай</option>\n                <option value=\"PVG\">Шанхай (PVG) — Китай</option>\n                <option value=\"SVO\">Москва (SVO) — Россия</option>\n                <option value=\"IST\">Стамбул (IST) — Турция</option>\n                <option value=\"DXB\">Дубай (DXB) — ОАЭ</option>\n                <option value=\"FRA\">Франкфурт (FRA) — Германия</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Аэропорт прилёта</label>\n              <input type=\"text\" id=\"cr-air-to\" class=\"cr-input\" value=\"Ташкент (TAS) — Узбекистан\" readonly />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Фактический вес брутто (кг)</label>\n              <input type=\"number\" id=\"cr-air-weight\" class=\"cr-input\" value=\"350\" min=\"10\" max=\"25000\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Общий объем груза (м³)</label>\n              <input type=\"number\" id=\"cr-air-volume\" class=\"cr-input\" value=\"2.5\" step=\"0.1\" min=\"0.1\" />\n            </div>\n            <div class=\"cr-form-field\" style=\"display: flex; align-items: center; gap: 8px; margin-top: 24px;\">\n              <input type=\"checkbox\" id=\"cr-air-danger\" style=\"width: 18px; height: 18px;\" />\n              <label for=\"cr-air-danger\" style=\"margin: 0; cursor: pointer;\">Опасный груз (IATA DGR / батареи / химия)</label>\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 5: МУЛЬТИМОДАЛ -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-multimodal\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Сквозной международный коридор</label>\n              <select id=\"cr-multi-corridor\" class=\"cr-select\">\n                <option value=\"china_uzb\" selected>Китай (Нинбо/Шанхай) ➔ Алтынколь ➔ Ташкент</option>\n                <option value=\"uae_uzb\">ОАЭ (Джебель-Али) ➔ Бендер-Аббас ➔ Серахс ➔ Ташкент</option>\n                <option value=\"turkey_uzb\">Турция (Мерсин) ➔ Баку ➔ Актау ➔ Ташкент</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Тип контейнера</label>\n              <select id=\"cr-multi-container\" class=\"cr-select\">\n                <option value=\"40hc\" selected>40' High Cube (76 м³, до 28 т)</option>\n                <option value=\"20dc\">20' Dry Container (33 м³, до 24 т)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Количество контейнеров</label>\n              <input type=\"number\" id=\"cr-multi-count\" class=\"cr-input\" value=\"1\" min=\"1\" max=\"100\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Город доставки «последней мили»</label>\n              <input type=\"text\" id=\"cr-multi-city\" class=\"cr-input\" value=\"Ташкент (склад получателя)\" />\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 6: ТАМОЖНЯ И ВЭД -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-customs\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\" style=\"grid-column: 1 / -1;\">\n              <label>Код ТН ВЭД (10 знаков) или наименование товара из базы АИС Таможня</label>\n              <div class=\"cr-input-wrapper\">\n                <input type=\"text\" id=\"cr-customs-tnved\" class=\"cr-input\" placeholder=\"Введите код или товар (напр. 1001 99 000 0 или Пшеница)\" value=\"1001 99 000 0 — Пшеница твердая\" autocomplete=\"off\" />\n                <div id=\"cr-customs-tnved-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Стоимость партии по инвойсу (USD)</label>\n              <input type=\"number\" id=\"cr-customs-value\" class=\"cr-input\" value=\"25000\" min=\"100\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Стоимость доставки до границы / фрахт (USD)</label>\n              <input type=\"number\" id=\"cr-customs-freight\" class=\"cr-input\" value=\"2500\" min=\"0\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Таможенный режим</label>\n              <select id=\"cr-customs-regime\" class=\"cr-select\">\n                <option value=\"import\" selected>Импорт 40 (Выпуск для свободного обращения)</option>\n                <option value=\"export\">Экспорт 10</option>\n                <option value=\"transit\">Транзит 80</option>\n              </select>\n            </div>\n          </div>\n        </div>\n\n\n          <div class=\"cr-calc-actions-bar\">\n            <button type=\"button\" class=\"cr-btn-primary cr-btn-calc-action\" id=\"cr-btn-execute-calc\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 14 14\"></polyline></svg>\n              <span>Рассчитать маршрут и тариф</span>\n            </button>\n          </div>\n\n          <!-- ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА -->\n          <div class=\"cr-route-scheme-card\" id=\"cr-route-scheme-box\">\n            <div class=\"cr-rs-header\">\n              <span class=\"cr-rs-badge\" id=\"cr-rs-badge\">Международное сообщение (Казахстан ➔ Узбекистан)</span>\n              <span class=\"cr-rs-distance\" id=\"cr-rs-distance\">Общий путь: 1 805 км</span>\n            </div>\n            <div class=\"cr-rs-flow\" id=\"cr-rs-flow\">\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot origin\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-from-name\">ст. Кокшетау (687008)</div>\n                  <div class=\"cr-rs-sub\" id=\"cr-rs-from-sub\">Казахстанские ж.д. (КТЖ)</div>\n                </div>\n              </div>\n              <div class=\"cr-rs-line\">\n                <span class=\"cr-rs-line-info\" id=\"cr-rs-line-1\">КТЖ: 1 770 км</span>\n              </div>\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot border\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-border-name\">ст. Сарыагаш (эксп.) / Келес</div>\n                  <div class=\"cr-rs-sub\">Межгосударственный стыковой пункт</div>\n                </div>\n              </div>\n              <div class=\"cr-rs-line\">\n                <span class=\"cr-rs-line-info\" id=\"cr-rs-line-2\">УТИ: 35 км</span>\n              </div>\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot dest\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-to-name\">ст. Ташкент-Товарный (720000)</div>\n                  <div class=\"cr-rs-sub\" id=\"cr-rs-to-sub\">Узбекские ж.д. (УТИ)</div>\n                </div>\n              </div>\n            </div>\n\n            <!-- МАРШРУТНЫЙ ЛИСТ СО ВСЕМИ СТАНЦИЯМИ (Р-ТАРИФ) -->\n            <div class=\"cr-intermediate-stations-wrap\" id=\"cr-intermediate-stations-wrap\" style=\"margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.15); display: none;\">\n              <div style=\"display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;\">\n                <span style=\"font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cr-gold, #c5a059);\">\n                  <i class=\"fas fa-route\" style=\"margin-right: 5px;\"></i> Маршрутный лист (станции следования по ТР-4)\n                </span>\n                <span style=\"font-size: 10px; color: #94a3b8;\" id=\"cr-intermediate-count\"></span>\n              </div>\n              <div class=\"cr-intermediate-badges\" id=\"cr-intermediate-badges\" style=\"display: flex; flex-wrap: wrap; gap: 6px; align-items: center;\"></div>\n            </div>\n          </div>\n\n          <!-- ДИНАМИЧЕСКИЙ БЛОК: ЗОНА ОТВЕТСТВЕННОСТИ CARAVAN RAILROAD -->\n          <div class=\"cr-incoterms-banner\" id=\"cr-incoterms-banner\">\n            <div class=\"cr-ib-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg></div>\n            <div>\n              <div class=\"cr-ib-title\" id=\"cr-ib-title\">Зона ответственности Caravan Railroad: DAP (Delivered at Place)</div>\n              <div class=\"cr-ib-desc\" id=\"cr-ib-desc\">\n                Компания берет на себя: подачу подвижного состава ➔ станционные сборы ➔ оплату Ж/Д тарифа всех администраций (КТЖ/УТИ) ➔ прохождение межгосударственного стыка ➔ автодоставку «последней мили» непосредственно на склад грузополучателя.\n              </div>\n            </div>\n          </div>\n\n        \n          <!-- УМНЫЙ ЧЕК-ЛИСТ ДОКУМЕНТОВ (MANAGER OFFLOADING SYSTEM) -->\n          <div class=\"cr-doc-checklist-card\" id=\"cr-doc-checklist-card\">\n            <div class=\"cr-doc-header\">\n              <div class=\"cr-doc-header-left\">\n                <span class=\"cr-doc-badge\">АВТОМАТИЧЕСКИЙ ПОДБОР ВЭД</span>\n                <h4 class=\"cr-doc-title\"><i class=\"fas fa-file-contract\" style=\"color: var(--cr-gold); margin-right: 8px;\"></i> Необходимый пакет документов для перевозки</h4>\n              </div>\n              <div class=\"cr-doc-actions\">\n                <button type=\"button\" class=\"cr-doc-btn\" id=\"cr-btn-copy-docs\">\n                  <i class=\"far fa-copy\"></i> Скопировать чек-лист\n                </button>\n                <button type=\"button\" class=\"cr-doc-btn whatsapp\" id=\"cr-btn-wa-docs\">\n                  <i class=\"fab fa-whatsapp\"></i> В WhatsApp\n                </button>\n              </div>\n            </div>\n            <p class=\"cr-doc-subtitle\">Список сопутствующих и разрешительных документов, необходимых для таможенного оформления и беспрепятственного прохождения границ.</p>\n            <div class=\"cr-doc-items-grid\" id=\"cr-doc-items-grid\"></div>\n          </div>\n\n        </form>\n      </div>\n\n      <!-- КАРТОЧКА РАСЧИТАННОГО ТАРИФА И МАРШРУТА -->\n      <div id=\"cr-calc-result-box\" class=\"cr-calc-result-box\">\n        <div class=\"cr-crb-top\">\n          <div>\n            <div class=\"cr-crb-title\" id=\"cr-quote-route-title\">ст. Кокшетау ➔ ст. Ташкент-Товарный</div>\n            <div class=\"cr-quote-badges\" id=\"cr-quote-badges\">\n              <span class=\"cr-qbadge\" id=\"cr-qb-transport\">Зерновоз / Хоппер (70 тн)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-park\">Собственный парк Caravan (СПС)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-cargo\">Зерновые (2 класс)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-incoterms\">DAP (До склада)</span>\n            </div>\n          </div>\n\n          <div class=\"cr-crb-total-box\">\n            <!-- ПЕРЕКЛЮЧАТЕЛЬ ВАЛЮТ РАСЧЕТА -->\n            <div class=\"cr-currency-pills\">\n              <button type=\"button\" class=\"cr-cur-pill active\" data-cur=\"USD\">USD ($)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"KZT\">KZT (₸)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"UZS\">UZS (сум)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"RUB\">RUB (₽)</button>\n            </div>\n            <div class=\"cr-crb-total-val\" id=\"cr-quote-total-price\">$2 680 USD</div>\n            <div class=\"cr-crb-transit\" id=\"cr-quote-transit-days\">Нормативный срок доставки: 5-7 суток</div>\n          </div>\n        </div>\n\n        <div class=\"cr-client-discount-badge\" id=\"cr-client-discount-pill\" >\n          Партнерская скидка контрагента: <strong id=\"cr-client-discount-val\">0%</strong>\n        </div>\n\n        <!-- ДЕТАЛИЗИРОВАННАЯ ИТОГОВАЯ ТАБЛИЦА ПО СТРАНАМ (ПО СТАНДАРТУ R-ТАРИФ) -->\n        <div class=\"cr-rtariff-table-wrap\">\n          <div class=\"cr-rtariff-table-title\">Поучастковая тарификация железных дорог:</div>\n          <table class=\"cr-rtariff-table\" id=\"cr-rtariff-table\">\n            <thead>\n              <tr>\n                <th>Страна / Администрация</th>\n                <th>Участок маршрута</th>\n                <th class=\"cr-text-right\">Расст., км</th>\n                <th class=\"cr-text-right\">Ж/Д тариф (Инфраструктура)</th>\n                <th class=\"cr-text-right\">Предоставление вагона (Caravan)</th>\n                <th class=\"cr-text-right\">Сборы и стык</th>\n                <th class=\"cr-text-right\">Охрана ВЖДО</th>\n                <th class=\"cr-text-right\">Итого по участку</th>\n              </tr>\n            </thead>\n            <tbody id=\"cr-rtariff-tbody\">\n              <!-- Заполняется динамически JS -->\n            </tbody>\n          </table>\n        </div>\n\n        <div class=\"cr-calc-actions\">\n          <button type=\"button\" class=\"cr-btn-primary cr-btn-book\" id=\"cr-btn-open-booking\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"></path><polyline points=\"22 4 12 14.01 9 11.01\"></polyline></svg>\n            <span>Забронировать ставку и запросить официальное КП</span>\n          </button>\n          <div class=\"cr-disclaimer-text\">\n            * Расчет выполнен цифровым тарифным ядром Caravan 1520 по правилам железных дорог пространства 1520 мм (ОСЖД / ТП КТЖ / ТП УТИ / Прейскурант 10-01). Для фиксации ставки нажмите «Забронировать», и заявка будет передана в B2B платформу Caravan Railroad.\n          </div>\n        </div>\n      </div>\n    </div>\n\n\n    <div class=\"cr-tab-content\" id=\"cr-tab-login\">\n      <div id=\"cr-login-section\">\n        <div class=\"cr-tab-intro\">\n          <h3>Вход в систему онлайн-дислокации и B2B кабинет</h3>\n          <p>Единый доступ (SSO) к дислокации всех ваших вагонов, подписанным коммерческим предложениям (КП), инвойсам и расчетам со скидкой контрагента.</p>\n        </div>\n\n        <form id=\"cr-login-form\" class=\"cr-auth-form\" onsubmit=\"return false;\">\n          <div class=\"cr-form-field\">\n            <label>Логин или код договора</label>\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n              <input type=\"text\" id=\"cr-login-input\" class=\"cr-input\" placeholder=\"например: kaz_trans\" required />\n            </div>\n          </div>\n\n          <div class=\"cr-form-field\">\n            <label>Пароль</label>\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path></svg>\n              <input type=\"password\" id=\"cr-password-input\" class=\"cr-input\" placeholder=\"Введите пароль\" required />\n            </div>\n          </div>\n\n          <button type=\"submit\" class=\"cr-btn-primary cr-btn-block\" id=\"cr-login-submit\">\n            <span>Войти в личный кабинет</span>\n          </button>\n\n          <div class=\"cr-auth-hint\">\n            Тестовый доступ: логин <code>kaz_trans</code>, пароль <code>pass2026</code>\n          </div>\n        </form>\n      </div>\n\n      <!-- КАБИНЕТ АВТОРИЗОВАННОГО КЛИЕНТА (появляется после входа) -->\n      <div id=\"cr-cabinet-section\" >\n        <div class=\"cr-cabinet-header\">\n          <div class=\"cr-client-profile\">\n            <div class=\"cr-client-avatar\" id=\"cr-client-avatar\">КЛ</div>\n            <div>\n              <h4 id=\"cr-client-company\">ТОО \"КазТрансЛогистик\"</h4>\n              <p id=\"cr-client-person\">Бахтияр Алиев • <span class=\"cr-badge-active\">Активен (Скидка 5%)</span> • ID: <code id=\"cr-client-b2b-id\">B2B-CR-9021</code></p>\n            </div>\n          </div>\n          \n          <div class=\"cr-cab-right-actions\">\n            <button type=\"button\" class=\"cr-btn-calc-jump\" id=\"cr-btn-cab-calc\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect><line x1=\"8\" y1=\"6\" x2=\"16\" y2=\"6\"></line></svg>\n              <span>Калькулятор со скидкой</span>\n            </button>\n            <button type=\"button\" class=\"cr-btn-logout\" id=\"cr-btn-logout\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"></path><polyline points=\"16 17 21 12 16 7\"></polyline><line x1=\"21\" y1=\"12\" x2=\"9\" y2=\"12\"></line></svg>\n              <span>Выйти</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- ПОДВКЛАДКИ ЛИЧНОГО КАБИНЕТА: ВАГОНЫ vs КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ -->\n        <div class=\"cr-cab-subtabs\">\n          <button type=\"button\" class=\"cr-cab-subtab-btn active\" id=\"cr-cab-tab-disloc-btn\">\n            Дислокация грузов (<span id=\"cr-client-wagons-count\">0</span>)\n          </button>\n          <button type=\"button\" class=\"cr-cab-subtab-btn\" id=\"cr-cab-tab-kp-btn\">\n            Коммерческие предложения и счета (<span id=\"cr-client-kp-count\">2</span>)\n          </button>\n        </div>\n\n        <!-- 1. ПОДВКЛАДКА: ДИСЛОКАЦИЯ ВАГОНОВ -->\n        <div id=\"cr-cab-view-dislocation\">\n          <div class=\"cr-cabinet-toolbar\">\n            <div class=\"cr-count-tag\">Активных единиц в пути: <strong id=\"cr-client-wagons-count-label\">0</strong></div>\n            <div class=\"cr-search-filter\">\n              <input type=\"text\" id=\"cr-cabinet-filter\" class=\"cr-input cr-input-sm\" placeholder=\"Фильтр по номеру вагона или станции...\" />\n            </div>\n          </div>\n          <div id=\"cr-client-shipments-list\" class=\"cr-shipments-container\"></div>\n        </div>\n\n        <!-- 2. ПОДВКЛАДКА: КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ (КП) И ИНВОЙСЫ ИЗ B2B ПЛАТФОРМЫ -->\n        <div id=\"cr-cab-view-proposals\" >\n          <div class=\"cr-proposals-intro\">\n            <p>Официальные коммерческие предложения, сформированные логистами Caravan Railroad и подписанные руководством. Вы можете скачать PDF или запросить счет на оплату.</p>\n          </div>\n          <div id=\"cr-client-proposals-list\" class=\"cr-proposals-container\"></div>\n        </div>\n\n      </div>\n    </div>\n\n    <!-- ТАБ 4: РЕГИСТРАЦИЯ НОВОГО КЛИЕНТА (СИНХРОНИЗАЦИЯ С B2B) -->\n    <div class=\"cr-tab-content\" id=\"cr-tab-register\">\n      <div class=\"cr-tab-intro\">\n        <h3>Подключение к системе слежения и B2B платформе Caravan Railroad</h3>\n        <p>Заполните форму для открытия персонального доступа. Данные мгновенно синхронизируются с нашей B2B платформой для оперативной выдачи подписанных КП и онлайн-дислокации.</p>\n      </div>\n\n      <form id=\"cr-register-form\" class=\"cr-reg-grid\" onsubmit=\"return false;\">\n        <div class=\"cr-form-field\">\n          <label>Название компании *</label>\n          <input type=\"text\" id=\"cr-reg-company\" class=\"cr-input\" placeholder=\"ТОО / ООО / ЗАО\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Контактное лицо *</label>\n          <input type=\"text\" id=\"cr-reg-name\" class=\"cr-input\" placeholder=\"ФИО ответственного\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Сторона в договоре</label>\n          <select id=\"cr-reg-role\" class=\"cr-select\">\n            <option value=\"Грузоотправитель\">Грузоотправитель (Shipper)</option>\n            <option value=\"Грузополучатель\">Грузополучатель (Consignee)</option>\n            <option value=\"Экспедитор\">Экспедитор / Брокер</option>\n          </select>\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Телефон диспетчера/логиста *</label>\n          <input type=\"tel\" id=\"cr-reg-phone\" class=\"cr-input\" placeholder=\"+7 (___) ___-__-__\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Электронная почта *</label>\n          <input type=\"email\" id=\"cr-reg-email\" class=\"cr-input\" placeholder=\"corp@company.com\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Желаемый логин (единый для сайта и B2B) *</label>\n          <input type=\"text\" id=\"cr-reg-login\" class=\"cr-input\" placeholder=\"company_login\" required />\n        </div>\n\n        <div class=\"cr-form-field cr-span-2\">\n          <label>Пароль *</label>\n          <input type=\"password\" id=\"cr-reg-pass\" class=\"cr-input\" placeholder=\"Придумайте пароль\" required />\n        </div>\n\n        <div class=\"cr-reg-footer\">\n          <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-reg-submit\">\n            <span>Отправить заявку на регистрацию в B2B</span>\n          </button>\n          <p class=\"cr-privacy-text\">Нажимая кнопку, вы подтверждаете согласие на обработку данных для доступа к дислокации и тарифам Caravan Railroad.</p>\n        </div>\n      </form>\n\n      <div id=\"cr-reg-success\" class=\"cr-alert-success\" >\n        <div class=\"cr-alert-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" style=\"width:20px;height:20px;\"><polyline points=\"20 6 9 17 4 12\"></polyline></svg></div>\n        <div>\n          <h4>Заявка успешно отправлена в B2B платформу!</h4>\n          <p id=\"cr-reg-success-msg\">Менеджер Caravan Railroad активирует ваш личный кабинет в течение 15 минут и отправит подтверждение по телефону/email.</p>\n        </div>\n      </div>\n    </div>\n\n  </div>\n\n  <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ПОДПИСАННОГО КП -->\n  \n  <!-- МОДАЛЬНОЕ ОКНО БРОНИРОВАНИЯ СТАВКИ (ДЛЯ B2B ПЛАТФОРМЫ) -->\n  <div id=\"cr-booking-modal\" class=\"cr-booking-modal\" >\n    <div class=\"cr-bm-card\">\n      <div class=\"cr-bm-header\">\n        <h4>Бронирование ставки и заказ официального КП</h4>\n        <button type=\"button\" class=\"cr-bm-close\" id=\"cr-bm-close\">&times;</button>\n      </div>\n      <div class=\"cr-bm-body\">\n        <div class=\"cr-bm-summary-text\" id=\"cr-bm-summary-text\">\n          <!-- Заполняется динамически -->\n        </div>\n        <form id=\"cr-booking-form\" class=\"cr-booking-form\" onsubmit=\"return false;\">\n          <div class=\"cr-form-field\">\n            <label>Контактное лицо (ФИО ответственного) *</label>\n            <input type=\"text\" id=\"cr-book-name\" class=\"cr-input\" placeholder=\"Иванов Алексей Петрович\" required />\n          </div>\n          <div class=\"cr-form-field\">\n            <label>Телефон для связи и подтверждения *</label>\n            <input type=\"tel\" id=\"cr-book-phone\" class=\"cr-input\" placeholder=\"+7 (___) ___-__-__\" required />\n          </div>\n          <div class=\"cr-form-field\">\n            <label>Наименование компании (грузоотправителя/получателя) *</label>\n            <input type=\"text\" id=\"cr-book-company\" class=\"cr-input\" placeholder=\"ТОО / ООО / ИП Название Компании\" required />\n          </div>\n          <div class=\"cr-bm-actions\">\n            <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-btn-submit-booking\">\n              Подтвердить бронирование ставки\n            </button>\n          </div>\n        </form>\n        <div id=\"cr-booking-success\" class=\"cr-alert-success\" >\n          <h4 id=\"cr-book-success-title\">Заявка на расчет и бронирование принята!</h4>\n          <p>Специалисты Caravan Railroad зафиксировали ставку и сформируют официальное коммерческое предложение с печатью в вашем личном кабинете B2B в течение 15 минут.</p>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"cr-kp-modal\" class=\"cr-booking-modal\" >\n    <div class=\"cr-bm-card cr-kp-card-view\">\n      <div class=\"cr-bm-header\">\n        <h4>Коммерческое предложение Caravan Railroad</h4>\n        <button type=\"button\" class=\"cr-bm-close\" id=\"cr-kp-close\">&times;</button>\n      </div>\n      <div class=\"cr-kp-sheet\" id=\"cr-kp-sheet-content\">\n        <!-- Генерируется динамически -->\n      </div>\n      <div class=\"cr-kp-actions\">\n        <button type=\"button\" class=\"cr-btn-primary\" onclick=\"window.print()\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polyline points=\"6 9 6 2 18 2 18 9\"></polyline><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"></path><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"></rect></svg>\n          <span>Распечатать / Сохранить в PDF</span>\n        </button>\n        <button type=\"button\" class=\"cr-btn-outline\" id=\"cr-kp-invoice-btn\">Запросить счет на оплату</button>\n      </div>\n    </div>\n  </div>\n\n</div>\n\n<!-- ====================================================================\n     СТИЛИ МОДУЛЯ\n     ==================================================================== -->";
-  var WIDGET_CSS = "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap');\n  /* СОВМЕСТИМОСТЬ С TILDA: отключаем белый/серый фон оберток Тильды */\n  .t123, \n  .t123 .t-container, \n  .t123 .t-col,\n  .t123 .t-col_12,\n  .t-records,\n  .t-records > div {\n    background-color: transparent !important;\n    background: transparent !important;\n  }\n\n  #caravan-tracking-root {\n    --cr-bg-main: transparent;\n    --cr-bg-card: rgba(15, 26, 48, 0.88);\n    --cr-bg-input: rgba(10, 17, 32, 0.85);\n    --cr-border: rgba(255, 255, 255, 0.12);\n    --cr-border-focus: #F59E0B;\n    --cr-amber: #F59E0B;\n    --cr-amber-hover: #D97706;\n    --cr-amber-light: rgba(245, 158, 11, 0.12);\n    --cr-blue: #2563EB;\n    --cr-emerald: #10B981;\n    --cr-text-main: #F8FAFC;\n    --cr-text-muted: #94A3B8;\n    --cr-radius: 16px;\n    --cr-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n    \n    font-family: var(--cr-font);\n    color: var(--cr-text-main);\n    background: transparent !important;\n    background-color: transparent !important;\n    box-shadow: none !important;\n    width: 100%;\n    max-width: 1160px;\n    margin: 0 auto;\n    padding: 0 !important;\n    box-sizing: border-box;\n  }\n\n  #caravan-tracking-root *, \n  #caravan-tracking-root *::before, \n  #caravan-tracking-root *::after {\n    box-sizing: border-box;\n  }\n\n  /* СТАТИСТИКА */\n  .cr-stats-bar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    background: rgba(20, 31, 54, 0.82);\n    border: 1px solid var(--cr-border);\n    border-radius: var(--cr-radius);\n    padding: 16px 28px;\n    margin-bottom: 20px;\n    backdrop-filter: blur(16px);\n    -webkit-backdrop-filter: blur(16px);\n    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);\n    flex-wrap: wrap;\n    gap: 16px;\n  }\n\n  .cr-stat-item {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n  }\n\n  .cr-stat-icon {\n    width: 44px;\n    height: 44px;\n    border-radius: 12px;\n    background: var(--cr-amber-light);\n    color: var(--cr-amber);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  .cr-stat-icon svg { width: 22px; height: 22px; }\n\n  .cr-stat-number {\n    font-size: 26px;\n    font-weight: 800;\n    color: #FFFFFF;\n    line-height: 1.1;\n    letter-spacing: -0.5px;\n  }\n\n  .cr-stat-label {\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    margin-top: 3px;\n  }\n\n  .cr-stat-divider {\n    width: 1px;\n    height: 36px;\n    background: var(--cr-border);\n  }\n\n  .cr-live-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    color: #34D399;\n    padding: 6px 14px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 600;\n  }\n\n  .cr-pulse-dot {\n    width: 8px;\n    height: 8px;\n    background: #10B981;\n    border-radius: 50%;\n    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);\n    animation: crPulse 2s infinite;\n  }\n\n  @keyframes crPulse {\n    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }\n    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }\n    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }\n  }\n\n  /* КАРТОЧКА И ТАБЫ */\n  .cr-card {\n    background: var(--cr-bg-card);\n    border: 1px solid var(--cr-border);\n    border-radius: 20px;\n    padding: 28px;\n    backdrop-filter: blur(20px);\n    -webkit-backdrop-filter: blur(20px);\n    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);\n  }\n\n  .cr-tabs-header {\n    display: flex;\n    gap: 8px;\n    background: var(--cr-bg-input);\n    padding: 6px;\n    border-radius: 12px;\n    border: 1px solid var(--cr-border);\n    margin-bottom: 24px;\n    overflow-x: auto;\n  }\n\n  .cr-tab-btn {\n    flex: 1;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 14px;\n    font-weight: 600;\n    padding: 12px 16px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    white-space: nowrap;\n  }\n  .cr-tab-btn svg { width: 18px; height: 18px; }\n\n  .cr-tab-btn:hover {\n    color: #FFFFFF;\n    background: rgba(255, 255, 255, 0.05);\n  }\n\n  .cr-tab-btn.active {\n    background: var(--cr-amber);\n    color: #0F172A;\n    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);\n  }\n\n  .cr-tab-content { display: none; }\n  .cr-tab-content.active {\n    display: block;\n    animation: crFadeIn 0.3s ease;\n  }\n\n  @keyframes crFadeIn {\n    from { opacity: 0; transform: translateY(6px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n\n  .cr-tab-intro { margin-bottom: 18px; }\n  .cr-tab-intro h3 {\n    margin: 0 0 6px 0;\n    font-size: 20px;\n    font-weight: 700;\n    color: #FFFFFF;\n  }\n  .cr-tab-intro p {\n    margin: 0;\n    font-size: 14px;\n    color: var(--cr-text-muted);\n  }\n\n  /* ФОРМЫ */\n  .cr-input-group {\n    display: flex;\n    gap: 12px;\n    align-items: stretch;\n    flex-wrap: wrap;\n  }\n\n  .cr-input-wrapper {\n    position: relative;\n    flex: 1;\n    min-width: 240px;\n    display: flex;\n    align-items: center;\n  }\n\n  .cr-input-icon {\n    position: absolute;\n    left: 16px;\n    width: 20px;\n    height: 20px;\n    color: var(--cr-text-muted);\n    pointer-events: none;\n  }\n\n  .cr-input, .cr-dual-borders-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 16px;\n    width: 100%;\n  }\n  @media (max-width: 768px) {\n    .cr-dual-borders-grid {\n      grid-template-columns: 1fr;\n      gap: 12px;\n    }\n  }\n\n  .cr-select {\n    width: 100%;\n    background: var(--cr-bg-input);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    color: #FFFFFF;\n    font-size: 15px;\n    padding: 14px 16px 14px 48px;\n    outline: none;\n    transition: all 0.2s ease;\n  }\n  .cr-select {\n    padding-left: 16px;\n    cursor: pointer;\n    appearance: none;\n    background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\");\n    background-repeat: no-repeat;\n    background-position: right 16px center;\n  }\n  .cr-select option { background: #0F172A; color: #FFFFFF; }\n  .cr-input:focus, .cr-select:focus {\n    border-color: var(--cr-border-focus);\n    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);\n  }\n  .cr-input::placeholder { color: #64748B; }\n  .cr-input-sm { padding: 10px 14px; font-size: 13px; }\n\n  .cr-clear-btn {\n    position: absolute;\n    right: 14px;\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 20px;\n    cursor: pointer;\n  }\n\n  .cr-btn-primary {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 10px;\n    background: var(--cr-amber);\n    color: #0F172A;\n    border: none;\n    font-size: 15px;\n    font-weight: 700;\n    padding: 14px 28px;\n    border-radius: 12px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);\n  }\n  .cr-btn-primary svg { width: 18px; height: 18px; }\n  .cr-btn-primary:hover {\n    background: var(--cr-amber-hover);\n    transform: translateY(-1px);\n    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);\n  }\n  .cr-btn-block { width: 100%; margin-top: 10px; }\n\n  .cr-btn-outline {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    background: transparent;\n    border: 1px solid var(--cr-amber);\n    color: var(--cr-amber);\n    font-size: 14px;\n    font-weight: 600;\n    padding: 12px 20px;\n    border-radius: 10px;\n    cursor: pointer;\n  }\n\n  .cr-quick-chips {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-top: 14px;\n    flex-wrap: wrap;\n  }\n  .cr-chips-title { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-chip {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #CBD5E1;\n    font-size: 12px;\n    padding: 4px 10px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n  }\n  .cr-chip:hover {\n    background: rgba(245, 158, 11, 0.15);\n    border-color: var(--cr-amber);\n    color: var(--cr-amber);\n  }\n\n  /* ЭКРАН ОГРАНИЧЕНИЯ ДОСТУПА К ТРЕКИНГУ (ДЛЯ ГОСТЕЙ) */\n  .cr-auth-lock-card {\n    text-align: center;\n    padding: 42px 24px;\n    background: rgba(10, 17, 32, 0.65);\n    border: 1px dashed rgba(245, 158, 11, 0.4);\n    border-radius: 16px;\n    margin: 8px 0;\n    backdrop-filter: blur(12px);\n    -webkit-backdrop-filter: blur(12px);\n  }\n  .cr-lock-icon-wrap {\n    width: 60px;\n    height: 60px;\n    border-radius: 18px;\n    background: rgba(245, 158, 11, 0.12);\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    color: var(--cr-amber);\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 16px;\n    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);\n  }\n  .cr-lock-icon-wrap svg { width: 30px; height: 30px; }\n  .cr-lock-badge {\n    display: inline-block;\n    padding: 4px 12px;\n    border-radius: 9999px;\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n    font-size: 11px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.8px;\n    margin-bottom: 12px;\n  }\n  .cr-auth-lock-card h3 {\n    font-size: 20px;\n    font-weight: 700;\n    color: #FFFFFF;\n    margin: 0 0 10px 0;\n    line-height: 1.3;\n  }\n  .cr-auth-lock-card p {\n    font-size: 14px;\n    color: var(--cr-text-muted);\n    max-width: 640px;\n    margin: 0 auto 24px auto;\n    line-height: 1.6;\n  }\n  .cr-lock-actions {\n    display: flex;\n    justify-content: center;\n    gap: 12px;\n    flex-wrap: wrap;\n    margin-bottom: 18px;\n  }\n  .cr-lock-hint {\n    font-size: 12px;\n    color: #64748B;\n  }\n  .cr-lock-hint code {\n    background: rgba(255, 255, 255, 0.08);\n    padding: 2px 6px;\n    border-radius: 4px;\n    color: var(--cr-amber);\n    font-family: monospace;\n  }\n\n  /* ПАНЕЛЬ АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ В ТРЕКИНГЕ */\n  .cr-authed-user-bar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    background: rgba(16, 185, 129, 0.08);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    padding: 10px 16px;\n    border-radius: 12px;\n    margin-bottom: 18px;\n    font-size: 13px;\n    flex-wrap: wrap;\n    gap: 10px;\n  }\n  .cr-aub-left {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    color: #F8FAFC;\n  }\n  .cr-aub-indicator {\n    width: 8px;\n    height: 8px;\n    border-radius: 50%;\n    background: #10B981;\n    box-shadow: 0 0 8px #10B981;\n  }\n  .cr-aub-actions {\n    display: flex;\n    gap: 8px;\n  }\n  .cr-aub-btn {\n    background: transparent;\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #CBD5E1;\n    padding: 4px 10px;\n    border-radius: 6px;\n    font-size: 12px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-aub-btn:hover {\n    background: rgba(255, 255, 255, 0.1);\n    color: #FFFFFF;\n  }\n\n  /* КАРТОЧКА ОГРАНИЧЕНИЯ ДОСТУПА К ЧУЖОМУ ТРАНСПОРТУ */\n  .cr-access-denied-box {\n    background: rgba(239, 68, 68, 0.08);\n    border: 1px solid rgba(239, 68, 68, 0.35);\n    border-radius: 16px;\n    padding: 26px;\n    margin-top: 20px;\n    text-align: center;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-ad-icon {\n    width: 52px;\n    height: 52px;\n    border-radius: 14px;\n    background: rgba(239, 68, 68, 0.15);\n    color: #F87171;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 12px;\n  }\n  .cr-ad-icon svg { width: 26px; height: 26px; }\n  .cr-access-denied-box h4 {\n    color: #FCA5A5;\n    font-size: 17px;\n    font-weight: 700;\n    margin: 0 0 8px 0;\n  }\n  .cr-access-denied-box p {\n    color: #E2E8F0;\n    font-size: 14px;\n    line-height: 1.6;\n    max-width: 600px;\n    margin: 0 auto 16px auto;\n  }\n  .cr-ad-footer {\n    font-size: 12px;\n    color: #94A3B8;\n    border-top: 1px solid rgba(255, 255, 255, 0.08);\n    padding-top: 12px;\n  }\n\n  /* РОЛИ В ДОГОВОРЕ */\n  .cr-role-selection-box {\n    margin-bottom: 18px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 14px 16px;\n  }\n  .cr-field-caption {\n    font-size: 13px;\n    font-weight: 600;\n    color: #CBD5E1;\n    display: block;\n    margin-bottom: 10px;\n  }\n  .cr-role-pills {\n    display: flex;\n    gap: 10px;\n    flex-wrap: wrap;\n  }\n  .cr-role-pill {\n    flex: 1;\n    min-width: 180px;\n    background: var(--cr-bg-input);\n    border: 1px solid var(--cr-border);\n    border-radius: 8px;\n    padding: 10px 14px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    font-size: 13px;\n    font-weight: 600;\n    transition: all 0.2s;\n  }\n  .cr-role-pill input { display: none; }\n  .cr-role-pill.active {\n    border-color: var(--cr-amber);\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n  }\n\n  /* БАННЕР ЗОНЫ ОТВЕТСТВЕННОСТИ */\n  .cr-incoterms-banner {\n    display: flex;\n    align-items: flex-start;\n    gap: 14px;\n    background: rgba(37, 99, 235, 0.12);\n    border: 1px solid rgba(37, 99, 235, 0.3);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 18px;\n  }\n  .cr-ib-icon {\n    font-size: 24px;\n    line-height: 1;\n  }\n  .cr-ib-title {\n    font-size: 14px;\n    font-weight: 700;\n    color: #93C5FD;\n    margin-bottom: 4px;\n  }\n  .cr-ib-desc {\n    font-size: 13px;\n    color: #E2E8F0;\n    line-height: 1.5;\n  }\n\n  /* СЕТКА КАЛЬКУЛЯТОРА */\n  .cr-calc-header-box {\n    display: flex;\n    align-items: flex-start;\n    justify-content: space-between;\n    gap: 16px;\n    margin-bottom: 20px;\n    flex-wrap: wrap;\n  }\n\n  .cr-submode-toggles {\n    display: flex;\n    background: var(--cr-bg-input);\n    padding: 4px;\n    border-radius: 10px;\n    border: 1px solid var(--cr-border);\n  }\n\n  .cr-submode-btn {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 13px;\n    font-weight: 600;\n    padding: 8px 14px;\n    border-radius: 7px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-submode-btn.active {\n    background: rgba(245, 158, 11, 0.2);\n    color: var(--cr-amber);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n  }\n\n  .cr-preset-routes-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n    gap: 14px;\n    margin-bottom: 24px;\n  }\n\n  .cr-preset-route-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px 18px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n  }\n  .cr-preset-route-card:hover, .cr-preset-route-card.selected {\n    border-color: var(--cr-amber);\n    background: rgba(15, 23, 42, 0.95);\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);\n  }\n  .cr-preset-route-card.selected { border-width: 2px; }\n\n  .cr-pr-top {\n    font-size: 14px;\n    font-weight: 700;\n    color: #FFFFFF;\n    margin-bottom: 8px;\n    display: flex;\n    align-items: center;\n    gap: 6px;\n  }\n  .cr-pr-arrow { color: var(--cr-amber); }\n  .cr-pr-info { font-size: 12px; color: var(--cr-text-muted); margin-bottom: 12px; }\n  .cr-pr-bottom {\n    display: flex;\n    align-items: flex-end;\n    justify-content: space-between;\n    border-top: 1px solid rgba(255, 255, 255, 0.06);\n    padding-top: 10px;\n  }\n  .cr-pr-price { font-size: 18px; font-weight: 800; color: var(--cr-amber); }\n  .cr-pr-days { font-size: 12px; color: #34D399; font-weight: 600; }\n\n  .cr-calc-inputs-grid {\n    display: grid;\n    grid-template-columns: repeat(2, 1fr);\n    gap: 16px;\n  }\n  .cr-span-2 { grid-column: span 2; }\n\n  .cr-quick-km { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }\n  .cr-km-chip {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #94A3B8;\n    font-size: 11px;\n    padding: 3px 8px;\n    border-radius: 4px;\n    cursor: pointer;\n  }\n  .cr-km-chip:hover { border-color: var(--cr-amber); color: var(--cr-amber); }\n\n  .cr-checkbox-group-inline {\n    display: flex;\n    gap: 20px;\n    flex-wrap: wrap;\n  }\n  .cr-checkbox-label {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    font-size: 13px;\n    color: #CBD5E1;\n    cursor: pointer;\n  }\n  .cr-checkbox-label input {\n    accent-color: var(--cr-amber);\n    width: 16px;\n    height: 16px;\n    cursor: pointer;\n  }\n\n  /* РЕЗУЛЬТАТ КАЛЬКУЛЯТОРА */\n  .cr-calc-result-box {\n    margin-top: 24px;\n    background: #0F172A;\n    border: 1px solid rgba(245, 158, 11, 0.4);\n    border-radius: 16px;\n    padding: 24px;\n    animation: crFadeIn 0.3s ease;\n  }\n\n  .cr-crb-top {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    flex-wrap: wrap;\n    gap: 16px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 18px;\n  }\n  .cr-crb-title { font-size: 20px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px; }\n  .cr-crb-sub { font-size: 13px; color: var(--cr-text-muted); }\n  .cr-crb-total-box { text-align: right; }\n  .cr-crb-total-label { font-size: 12px; color: var(--cr-text-muted); text-transform: uppercase; }\n  .cr-crb-total-val { font-size: 28px; font-weight: 800; color: var(--cr-amber); line-height: 1.1; }\n  .cr-crb-transit { font-size: 13px; color: #34D399; font-weight: 700; margin-top: 4px; }\n\n  .cr-client-discount-badge {\n    background: rgba(245, 158, 11, 0.15);\n    border: 1px solid var(--cr-amber);\n    color: var(--cr-amber);\n    padding: 6px 14px;\n    border-radius: 8px;\n    font-size: 13px;\n    margin-top: 14px;\n  }\n\n  .cr-quote-breakdown {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));\n    gap: 12px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 16px;\n  }\n  .cr-qb-item { display: flex; flex-direction: column; gap: 4px; }\n  .cr-qb-label { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-qb-val { font-size: 15px; font-weight: 700; color: #F1F5F9; }\n\n  .cr-calc-actions {\n    margin-top: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 16px;\n    flex-wrap: wrap;\n  }\n  .cr-btn-book { padding: 14px 32px; }\n  .cr-disclaimer-text { font-size: 12px; color: var(--cr-text-muted); max-width: 500px; }\n\n  /* ПОДВКЛАДКИ ЛИЧНОГО КАБИНЕТА */\n  .cr-cab-subtabs {\n    display: flex;\n    gap: 10px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 12px;\n    margin-bottom: 20px;\n  }\n  .cr-cab-subtab-btn {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 14px;\n    font-weight: 700;\n    padding: 8px 16px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-cab-subtab-btn.active {\n    background: rgba(245, 158, 11, 0.2);\n    color: var(--cr-amber);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n  }\n\n  /* СПИСОК КОММЕРЧЕСКИХ ПРЕДЛОЖЕНИЙ */\n  .cr-proposals-intro {\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    margin-bottom: 16px;\n  }\n\n  .cr-proposal-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 18px 22px;\n    margin-bottom: 14px;\n    transition: all 0.2s;\n  }\n  .cr-proposal-card:hover {\n    border-color: var(--cr-amber);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);\n  }\n\n  .cr-pc-header {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 10px;\n    margin-bottom: 10px;\n  }\n  .cr-pc-id { font-size: 16px; font-weight: 800; color: #FFFFFF; }\n  .cr-pc-badge-signed {\n    background: rgba(16, 185, 129, 0.15);\n    color: #34D399;\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    padding: 4px 10px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 700;\n  }\n  .cr-pc-route {\n    font-size: 14px;\n    color: #CBD5E1;\n    margin-bottom: 8px;\n  }\n  .cr-pc-route strong { color: var(--cr-amber); }\n  .cr-pc-details {\n    display: flex;\n    align-items: center;\n    gap: 16px;\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    flex-wrap: wrap;\n    margin-bottom: 14px;\n  }\n  .cr-pc-actions {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    flex-wrap: wrap;\n    border-top: 1px solid rgba(255, 255, 255, 0.06);\n    padding-top: 12px;\n  }\n  .cr-btn-pc {\n    background: rgba(255, 255, 255, 0.08);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #FFFFFF;\n    font-size: 12px;\n    font-weight: 600;\n    padding: 6px 14px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-btn-pc:hover { background: var(--cr-amber); color: #0F172A; border-color: var(--cr-amber); }\n\n  /* ПЕЧАТНЫЙ ЛИСТ КП В МОДАЛКЕ */\n  .cr-kp-card-view { max-width: 680px; }\n  .cr-kp-sheet {\n    background: #FFFFFF;\n    color: #0F172A;\n    border-radius: 10px;\n    padding: 24px;\n    margin: 16px 0;\n    max-height: 480px;\n    overflow-y: auto;\n    font-family: 'Inter', sans-serif;\n  }\n  .cr-kp-actions {\n    display: flex;\n    justify-content: space-between;\n    gap: 12px;\n    flex-wrap: wrap;\n  }\n\n  /* МОДАЛЬНЫЕ ОКНА */\n  .cr-booking-modal {\n    position: fixed;\n    top: 0; left: 0; right: 0; bottom: 0;\n    background: rgba(0, 0, 0, 0.8);\n    backdrop-filter: blur(8px);\n    z-index: 9999;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n  }\n  .cr-bm-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-amber);\n    border-radius: 18px;\n    width: 100%;\n    max-width: 480px;\n    padding: 28px;\n    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);\n    position: relative;\n    animation: crFadeIn 0.25s ease;\n  }\n  .cr-bm-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 16px;\n  }\n  .cr-bm-header h4 { margin: 0; font-size: 18px; color: #FFFFFF; }\n  .cr-bm-close {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 26px;\n    cursor: pointer;\n  }\n  .cr-bm-summary {\n    background: rgba(255, 255, 255, 0.05);\n    border-radius: 8px;\n    padding: 12px 14px;\n    font-size: 13px;\n    color: #CBD5E1;\n    margin-bottom: 16px;\n    line-height: 1.5;\n  }\n  .cr-bm-summary strong { color: var(--cr-amber); }\n\n  /* ЛОАДЕР */\n  .cr-loader {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 12px;\n    padding: 30px;\n    color: var(--cr-amber);\n    font-size: 14px;\n    font-weight: 600;\n  }\n  .cr-spinner {\n    width: 24px;\n    height: 24px;\n    border: 3px solid rgba(245, 158, 11, 0.2);\n    border-top-color: var(--cr-amber);\n    border-radius: 50%;\n    animation: crSpin 0.8s linear infinite;\n  }\n  @keyframes crSpin { to { transform: rotate(360deg); } }\n\n  /* РЕЗУЛЬТАТ ДИСЛОКАЦИИ */\n  .cr-result-box {\n    margin-top: 24px;\n    background: #0F172A;\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    border-radius: 16px;\n    padding: 24px;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-disloc-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    gap: 12px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 16px;\n    margin-bottom: 20px;\n  }\n  .cr-disloc-title { display: flex; align-items: center; gap: 12px; }\n  .cr-disloc-title h4 { margin: 0; font-size: 20px; font-weight: 800; color: #FFFFFF; }\n  .cr-type-badge {\n    background: rgba(255, 255, 255, 0.08);\n    color: #CBD5E1;\n    font-size: 12px;\n    font-weight: 600;\n    padding: 4px 10px;\n    border-radius: 6px;\n  }\n\n  .cr-status-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    padding: 6px 12px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 700;\n  }\n  .cr-status-in-transit {\n    background: rgba(16, 185, 129, 0.15);\n    color: #34D399;\n    border: 1px solid rgba(16, 185, 129, 0.3);\n  }\n\n  /* ВИЗУАЛЬНЫЙ ТРЕК */\n  .cr-route-timeline { position: relative; margin: 24px 0 20px 0; }\n  .cr-route-track {\n    position: absolute;\n    top: 18px; left: 40px; right: 40px;\n    height: 4px;\n    background: rgba(255, 255, 255, 0.1);\n    border-radius: 2px;\n    z-index: 1;\n  }\n  .cr-route-progress-fill {\n    height: 100%;\n    background: linear-gradient(90deg, #10B981, #F59E0B);\n    border-radius: 2px;\n    transition: width 0.8s ease-in-out;\n  }\n  .cr-route-nodes { display: flex; justify-content: space-between; position: relative; z-index: 2; }\n  .cr-route-node { text-align: center; flex: 1; max-width: 30%; }\n  .cr-node-point {\n    width: 36px; height: 36px; border-radius: 50%;\n    background: #0B1325;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    color: #94A3B8;\n    display: flex; align-items: center; justify-content: center;\n    margin: 0 auto 10px auto;\n  }\n  .cr-node-point svg { width: 16px; height: 16px; }\n  .cr-node-point.completed { background: #10B981; border-color: #10B981; color: #0F172A; }\n  .cr-node-point.current {\n    background: var(--cr-amber); border-color: #FFFFFF; color: #0F172A;\n    box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);\n  }\n  .cr-node-tag { font-size: 11px; text-transform: uppercase; color: var(--cr-amber); font-weight: 700; }\n  .cr-node-station { font-size: 14px; font-weight: 700; color: #FFFFFF; margin: 4px 0 2px 0; }\n  .cr-node-date { font-size: 12px; color: var(--cr-text-muted); }\n\n  .cr-operation-banner {\n    margin-top: 14px;\n    background: rgba(245, 158, 11, 0.08);\n    border-left: 3px solid var(--cr-amber);\n    padding: 12px 16px;\n    border-radius: 0 8px 8px 0;\n    font-size: 13px;\n  }\n  .cr-operation-banner strong { color: var(--cr-amber); }\n\n  .cr-details-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 12px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 20px;\n  }\n  .cr-detail-item { display: flex; flex-direction: column; gap: 4px; }\n  .cr-detail-k { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-detail-v { font-size: 14px; font-weight: 600; color: #F1F5F9; }\n\n  /* КАБИНЕТ КЛИЕНТА */\n  .cr-cabinet-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 16px;\n    margin-bottom: 18px;\n    flex-wrap: wrap;\n    gap: 12px;\n  }\n  .cr-client-profile { display: flex; align-items: center; gap: 12px; }\n  .cr-client-avatar {\n    width: 44px; height: 44px; border-radius: 50%;\n    background: var(--cr-amber); color: #0F172A;\n    display: flex; align-items: center; justify-content: center;\n    font-weight: 800; font-size: 16px;\n  }\n  .cr-client-profile h4 { margin: 0 0 4px 0; font-size: 18px; color: #FFFFFF; }\n  .cr-client-profile p { margin: 0; font-size: 13px; color: var(--cr-text-muted); }\n  .cr-badge-active { color: #34D399; font-weight: 600; }\n\n  .cr-cab-right-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }\n  .cr-btn-calc-jump {\n    display: inline-flex; align-items: center; gap: 6px;\n    background: rgba(245, 158, 11, 0.15);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n    color: var(--cr-amber);\n    padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;\n  }\n  .cr-btn-calc-jump svg { width: 16px; height: 16px; }\n  .cr-btn-logout {\n    display: inline-flex; align-items: center; gap: 6px;\n    background: rgba(239, 68, 68, 0.12);\n    border: 1px solid rgba(239, 68, 68, 0.25);\n    color: #F87171; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;\n  }\n  .cr-btn-logout svg { width: 16px; height: 16px; }\n\n  .cr-cabinet-toolbar {\n    display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;\n  }\n  .cr-count-tag { font-size: 14px; color: #CBD5E1; }\n  .cr-count-tag strong { color: var(--cr-amber); font-size: 16px; }\n\n  .cr-shipment-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px 20px;\n    margin-bottom: 12px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n  }\n  .cr-shipment-card:hover {\n    border-color: var(--cr-amber);\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);\n  }\n  .cr-sc-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }\n  .cr-sc-id { font-size: 16px; font-weight: 700; color: #FFFFFF; }\n  .cr-sc-route { font-size: 13px; color: #CBD5E1; display: flex; align-items: center; gap: 8px; }\n  .cr-sc-route span.arrow { color: var(--cr-amber); font-weight: bold; }\n\n  /* РЕГИСТРАЦИЯ */\n  .cr-reg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }\n  .cr-reg-footer { grid-column: span 2; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 8px; }\n  .cr-privacy-text { font-size: 12px; color: var(--cr-text-muted); text-align: center; margin: 0; }\n\n  .cr-alert-success {\n    display: flex; align-items: center; gap: 16px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    border-radius: 12px; padding: 20px; margin-top: 16px;\n  }\n  .cr-alert-icon {\n    width: 40px; height: 40px; border-radius: 50%;\n    background: #10B981; color: #0B1325;\n    display: flex; align-items: center; justify-content: center;\n    font-weight: 800; font-size: 20px; flex-shrink: 0;\n  }\n  .cr-alert-success h4 { margin: 0 0 4px 0; color: #34D399; font-size: 16px; }\n  .cr-alert-success p { margin: 0; font-size: 13px; color: #CBD5E1; }\n\n  @media (max-width: 768px) {\n    .cr-stats-bar { flex-direction: column; align-items: stretch; padding: 16px; }\n    .cr-stat-divider { display: none; }\n    .cr-card { padding: 18px; }\n    .cr-tab-btn { font-size: 12px; padding: 10px 8px; }\n    .cr-input-group { flex-direction: column; }\n    .cr-btn-primary { width: 100%; }\n    .cr-calc-inputs-grid, .cr-reg-grid { grid-template-columns: 1fr; }\n    .cr-span-2, .cr-reg-footer { grid-column: span 1; }\n    .cr-route-track { left: 20px; right: 20px; }\n  }\n\n  /* AUTOCOMPLETE DROPDOWN ДЛЯ СТАНЦИЙ */\n  .cr-station-autocomplete-wrap { position: relative; }\n  .cr-station-dropdown {\n    position: absolute;\n    top: calc(100% + 4px);\n    left: 0; right: 0;\n    background: #0B1325;\n    border: 1px solid var(--cr-amber);\n    border-radius: 12px;\n    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);\n    z-index: 1000;\n    max-height: 280px;\n    overflow-y: auto;\n    padding: 6px;\n    backdrop-filter: blur(16px);\n  }\n  .cr-station-item {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 10px 14px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.15s ease;\n    gap: 10px;\n  }\n  .cr-station-item:hover { background: rgba(245, 158, 11, 0.18); }\n  .cr-st-left { display: flex; align-items: center; gap: 10px; }\n  .cr-st-code {\n    font-family: monospace;\n    font-size: 11px;\n    font-weight: 700;\n    color: var(--cr-amber);\n    background: rgba(245, 158, 11, 0.15);\n    padding: 2px 6px;\n    border-radius: 4px;\n  }\n  .cr-st-name { font-size: 13px; font-weight: 600; color: #F8FAFC; }\n  .cr-st-badges { display: flex; align-items: center; gap: 6px; }\n  .cr-st-badge-road {\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(37, 99, 235, 0.2);\n    color: #60A5FA;\n    border: 1px solid rgba(37, 99, 235, 0.3);\n  }\n  .cr-st-badge-border {\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(239, 68, 68, 0.2);\n    color: #F87171;\n    border: 1px solid rgba(239, 68, 68, 0.3);\n  }\n\n  /* ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА */\n  .cr-route-scheme-card {\n    background: rgba(15, 23, 42, 0.88);\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    border-radius: 14px;\n    padding: 18px 24px;\n    margin: 20px 0;\n  }\n  .cr-rs-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 16px;\n    flex-wrap: wrap;\n    gap: 8px;\n  }\n  .cr-rs-badge {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n    font-size: 12px;\n    font-weight: 700;\n    padding: 4px 12px;\n    border-radius: 9999px;\n    border: 1px solid rgba(245, 158, 11, 0.3);\n  }\n  .cr-rs-distance { font-size: 13px; color: #94A3B8; font-weight: 600; }\n  .cr-rs-flow {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    flex-wrap: wrap;\n  }\n  .cr-rs-step { display: flex; align-items: center; gap: 10px; }\n  .cr-rs-dot {\n    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;\n  }\n  .cr-rs-dot.origin { background: #10B981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }\n  .cr-rs-dot.border { background: #F59E0B; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }\n  .cr-rs-dot.dest { background: #3B82F6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }\n  .cr-rs-name { font-size: 14px; font-weight: 700; color: #F8FAFC; }\n  .cr-rs-sub { font-size: 12px; color: #94A3B8; }\n  .cr-rs-line {\n    flex: 1; height: 2px;\n    background: rgba(255, 255, 255, 0.15);\n    position: relative;\n    min-width: 60px;\n    text-align: center;\n  }\n  .cr-rs-line-info {\n    position: absolute;\n    top: -18px; left: 50%;\n    transform: translateX(-50%);\n    font-size: 11px;\n    color: var(--cr-amber);\n    font-weight: 600;\n    white-space: nowrap;\n  }\n\n  /* ПЕРЕКЛЮЧАТЕЛЬ ВАЛЮТ */\n  .cr-currency-pills { display: flex; gap: 6px; margin-bottom: 8px; justify-content: flex-end; }\n  .cr-cur-pill {\n    background: rgba(255, 255, 255, 0.08);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #94A3B8;\n    font-size: 11px;\n    font-weight: 700;\n    padding: 4px 10px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-cur-pill.active {\n    background: var(--cr-amber);\n    color: #070B14;\n    border-color: var(--cr-amber);\n  }\n\n  /* R-ТАРИФ ТАБЛИЦА */\n  .cr-rtariff-table-wrap {\n    margin-top: 20px;\n    background: rgba(11, 19, 37, 0.85);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    overflow-x: auto;\n  }\n  .cr-rtariff-table-title {\n    font-size: 13px;\n    font-weight: 700;\n    color: var(--cr-amber);\n    text-transform: uppercase;\n    letter-spacing: 0.6px;\n    margin-bottom: 12px;\n  }\n  .cr-rtariff-table {\n    width: 100%;\n    border-collapse: collapse;\n    font-size: 13px;\n    color: #E2E8F0;\n  }\n  .cr-rtariff-table th {\n    text-align: left;\n    padding: 10px 12px;\n    background: rgba(255, 255, 255, 0.04);\n    color: #94A3B8;\n    font-size: 11px;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n  }\n  .cr-rtariff-table td {\n    padding: 12px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.05);\n  }\n  .cr-rtariff-table tr.total-row td {\n    font-weight: 800;\n    color: var(--cr-amber);\n    border-top: 2px solid rgba(245, 158, 11, 0.4);\n    background: rgba(245, 158, 11, 0.06);\n  }\n  .cr-text-right { text-align: right !important; }\n  .cr-quote-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }\n  .cr-qbadge {\n    background: rgba(255, 255, 255, 0.06);\n    border: 1px solid rgba(255, 255, 255, 0.12);\n    font-size: 12px;\n    padding: 3px 8px;\n    border-radius: 6px;\n    color: #CBD5E1;\n  }\n\n\n  /* Станции следования по ТР-4 (Маршрутный лист) */\n  .cr-inter-badge {\n    display: inline-flex;\n    align-items: center;\n    padding: 3px 8px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 215, 0, 0.18);\n    border-radius: 4px;\n    font-size: 11px;\n    color: #e2e8f0;\n  }\n  .cr-inter-badge.origin {\n    border-color: #10b981;\n    color: #34d399;\n    font-weight: 600;\n  }\n  .cr-inter-badge.border {\n    border-color: #f59e0b;\n    color: #fbbf24;\n    font-weight: 600;\n  }\n  .cr-inter-badge.dest {\n    border-color: #ef4444;\n    color: #f87171;\n    font-weight: 600;\n  }\n  .cr-inter-arrow {\n    color: rgba(255, 255, 255, 0.4);\n    font-size: 9px;\n    margin: 0 2px;\n  }\n\n\n  /* МУЛЬТИМОДАЛЬНЫЙ СУПЕР-КАЛЬКУЛЯТОР: СТИЛИ МОДАЛЬНОСТЕЙ И ЧЕК-ЛИСТА ДОКУМЕНТОВ */\n  .cr-modality-bar {\n    display: flex;\n    gap: 8px;\n    margin: 14px 0 18px;\n    overflow-x: auto;\n    padding-bottom: 6px;\n    scrollbar-width: thin;\n  }\n  .cr-modality-btn {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    padding: 10px 16px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 8px;\n    color: #94a3b8;\n    font-size: 13px;\n    font-weight: 500;\n    cursor: pointer;\n    white-space: nowrap;\n    transition: all 0.25s ease;\n  }\n  .cr-modality-btn:hover {\n    background: rgba(255, 255, 255, 0.08);\n    color: #f8fafc;\n    border-color: rgba(197, 160, 89, 0.4);\n  }\n  .cr-modality-btn.active {\n    background: linear-gradient(135deg, rgba(197, 160, 89, 0.25), rgba(197, 160, 89, 0.06));\n    border-color: #c5a059;\n    color: #f8fafc;\n    box-shadow: 0 4px 14px rgba(197, 160, 89, 0.18);\n  }\n  .cr-mod-icon {\n    font-size: 16px;\n  }\n\n  /* Панели модальностей */\n  .cr-mod-panel {\n    display: none;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-mod-panel.active {\n    display: block !important;\n  }\n\n  /* ЧЕК-ЛИСТ ДОКУМЕНТОВ */\n  .cr-doc-checklist-card {\n    background: linear-gradient(180deg, rgba(15, 23, 42, 0.8), rgba(7, 11, 20, 0.95));\n    border: 1px solid rgba(197, 160, 89, 0.25);\n    border-radius: 12px;\n    padding: 20px;\n    margin-top: 20px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);\n  }\n  .cr-doc-header {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    flex-wrap: wrap;\n    gap: 12px;\n    margin-bottom: 6px;\n  }\n  .cr-doc-badge {\n    display: inline-block;\n    font-size: 10px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.8px;\n    color: #c5a059;\n    background: rgba(197, 160, 89, 0.12);\n    padding: 2px 8px;\n    border-radius: 4px;\n    margin-bottom: 6px;\n  }\n  .cr-doc-title {\n    margin: 0;\n    font-size: 16px;\n    font-weight: 600;\n    color: #f8fafc;\n    display: flex;\n    align-items: center;\n  }\n  .cr-doc-subtitle {\n    margin: 0 0 16px;\n    font-size: 12px;\n    color: #94a3b8;\n    line-height: 1.5;\n  }\n  .cr-doc-actions {\n    display: flex;\n    gap: 8px;\n  }\n  .cr-doc-btn {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    padding: 6px 12px;\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    border-radius: 6px;\n    color: #e2e8f0;\n    font-size: 12px;\n    font-weight: 500;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-doc-btn:hover {\n    background: rgba(255, 255, 255, 0.1);\n    color: #fff;\n    border-color: #c5a059;\n  }\n  .cr-doc-btn.whatsapp {\n    background: rgba(37, 211, 102, 0.12);\n    border-color: rgba(37, 211, 102, 0.3);\n    color: #4ade80;\n  }\n  .cr-doc-btn.whatsapp:hover {\n    background: rgba(37, 211, 102, 0.2);\n    border-color: #25d366;\n    color: #fff;\n  }\n  .cr-doc-items-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));\n    gap: 10px;\n  }\n  .cr-doc-item {\n    display: flex;\n    gap: 12px;\n    padding: 12px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    align-items: flex-start;\n  }\n  .cr-doc-icon {\n    width: 28px;\n    height: 28px;\n    border-radius: 6px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 13px;\n    flex-shrink: 0;\n    background: rgba(197, 160, 89, 0.15);\n    color: #c5a059;\n  }\n  .cr-doc-icon.mandatory {\n    background: rgba(16, 185, 129, 0.15);\n    color: #10b981;\n  }\n  .cr-doc-name {\n    font-size: 13px;\n    font-weight: 600;\n    color: #f1f5f9;\n    margin-bottom: 3px;\n  }\n  .cr-doc-desc {\n    font-size: 11px;\n    color: #94a3b8;\n    line-height: 1.4;\n  }\n  .cr-doc-tag {\n    display: inline-block;\n    font-size: 9px;\n    font-weight: 600;\n    padding: 1px 5px;\n    border-radius: 3px;\n    margin-left: 6px;\n    text-transform: uppercase;\n  }\n  .cr-doc-tag.mandatory {\n    background: rgba(16, 185, 129, 0.2);\n    color: #34d399;\n  }\n  .cr-doc-tag.optional {\n    background: rgba(148, 163, 184, 0.15);\n    color: #cbd5e1;\n  }\n\n  /* Специфические поля модальностей */\n  .cr-modality-inputs-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n    gap: 16px;\n    margin-top: 16px;\n  }";
+  var WIDGET_HTML = "<!-- ====================================================================\n     CARAVAN RAILROAD — ИНТЕРАКТИВНЫЙ МОДУЛЬ ТРЕКИНГА, КАЛЬКУЛЯТОРА И B2B КАБИНЕТА\n     Версия с поддержкой Incoterms 2020 («Под ключ», DAP, DDP, CIP, FCA), \n     разграничением ролей отправитель/получатель и разделом коммерческих предложений (КП)\n     ==================================================================== -->\n\n<div id=\"caravan-tracking-root\" class=\"cr-widget\">\n  \n  <!-- ВЕРХНИЙ БЛОК: 3 ДИНАМИЧЕСКИХ ПОКАЗАТЕЛЯ КОМПАНИИ -->\n  <div class=\"cr-stats-bar\">\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\"></rect>\n          <path d=\"M2 10h20M7 15h2M15 15h2M7 19v2M17 19v2\"></path>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-wagons\" data-target=\"1480\">0</div>\n        <div class=\"cr-stat-label\">Вагонов в дислокации</div>\n      </div>\n    </div>\n\n    <div class=\"cr-stat-divider\"></div>\n\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path>\n          <polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline>\n          <line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-tonnage\" data-target=\"920000\">0</div>\n        <div class=\"cr-stat-label\">Тонн груза перевезено</div>\n      </div>\n    </div>\n\n    <div class=\"cr-stat-divider\"></div>\n\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n          <line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line>\n          <path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-routes\" data-target=\"48\">0</div>\n        <div class=\"cr-stat-label\">Регулярных ж/д маршрутов</div>\n      </div>\n    </div>\n\n    <div class=\"cr-live-pill\">\n      <span class=\"cr-pulse-dot\"></span>\n      <span id=\"cr-live-status-text\">Мониторинг 24/7</span>\n    </div>\n  </div>\n\n  <!-- ОСНОВНАЯ КАРТОЧКА С ТАБАМИ -->\n  <div class=\"cr-card\">\n    \n    <!-- НАВИГАЦИЯ ПО ТАБАМ -->\n    <div class=\"cr-tabs-header\">\n      <button type=\"button\" class=\"cr-tab-btn active\" data-tab=\"track\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"></line></svg>\n        <span>Быстрый трекинг</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"calc\" id=\"cr-calc-tab-btn\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect><line x1=\"8\" y1=\"6\" x2=\"16\" y2=\"6\"></line><line x1=\"16\" y1=\"14\" x2=\"16\" y2=\"18\"></line><path d=\"M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01\"></path></svg>\n        <span>Расчет тарифов и Incoterms</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"login\" id=\"cr-cabinet-tab-btn\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n        <span>Личный кабинет (КП и грузы)</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"register\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"8.5\" cy=\"7\" r=\"4\"></circle><line x1=\"20\" y1=\"8\" x2=\"20\" y2=\"14\"></line><line x1=\"23\" y1=\"11\" x2=\"17\" y2=\"11\"></line></svg>\n        <span>Регистрация</span>\n      </button>\n    </div>\n\n    <!-- ТАБ 1: БЫСТРЫЙ ПОИСК ДИСЛОКАЦИИ ПО НОМЕРУ (ДОСТУПЕН ПОСЛЕ АВТОРИЗАЦИИ) -->\n    <div class=\"cr-tab-content active\" id=\"cr-tab-track\">\n\n      <!-- ЭКРАН 1: ОГРАНИЧЕНИЕ ДОСТУПА ДЛЯ НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ -->\n      <div id=\"cr-track-auth-lock\" class=\"cr-auth-lock-card\">\n        <div class=\"cr-lock-icon-wrap\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect>\n            <path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path>\n          </svg>\n        </div>\n        <div class=\"cr-lock-badge\">Защищенный B2B контур</div>\n        <h3>Отслеживание дислокации доступно после входа в кабинет</h3>\n        <p>\n          В целях коммерческой безопасности и защиты конфиденциальности грузоперевозок, онлайн-мониторинг открыт только зарегистрированным клиентам Caravan Railroad. Каждый контрагент может отслеживать только прикрепленный подвижной состав и грузы по своему договору.\n        </p>\n        <div class=\"cr-lock-actions\">\n          <button type=\"button\" class=\"cr-btn-primary\" id=\"cr-lock-btn-login\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n            <span>Войти в личный кабинет</span>\n          </button>\n          <button type=\"button\" class=\"cr-btn-secondary\" id=\"cr-lock-btn-register\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"8.5\" cy=\"7\" r=\"4\"></circle><line x1=\"20\" y1=\"8\" x2=\"20\" y2=\"14\"></line><line x1=\"23\" y1=\"11\" x2=\"17\" y2=\"11\"></line></svg>\n            <span>Зарегистрировать компанию</span>\n          </button>\n        </div>\n        <div class=\"cr-lock-hint\">\n          Тестовый B2B доступ для проверки: логин <code>kaz_trans</code> / пароль <code>pass2026</code>\n        </div>\n      </div>\n\n      <!-- ЭКРАН 2: ПАНЕЛЬ ТРЕКИНГА ДЛЯ АВТОРИЗОВАННОГО КЛИЕНТА (ТОЛЬКО СВОЙ ТРАНСПОРТ) -->\n      <div id=\"cr-track-authed-panel\" >\n        <!-- Верхний статус авторизованного контрагента -->\n        <div class=\"cr-authed-user-bar\">\n          <div class=\"cr-aub-left\">\n            <span class=\"cr-aub-indicator\"></span>\n            <span>Контрагент: <strong id=\"cr-track-user-company\" style=\"color:#FFFFFF;\">ТОО \"КазТрансЛогистик\"</strong> • Договор: <code id=\"cr-track-user-b2b\" style=\"color:var(--cr-amber);\">B2B-CR-9021</code></span>\n          </div>\n          <div class=\"cr-aub-actions\">\n            <button type=\"button\" class=\"cr-aub-btn\" id=\"cr-track-go-cabinet\">Все грузы в кабинете</button>\n            <button type=\"button\" class=\"cr-aub-btn\" id=\"cr-track-logout-btn\" style=\"color:#F87171; border-color:rgba(239,68,68,0.3);\">Выйти</button>\n          </div>\n        </div>\n\n        <form id=\"cr-track-form\" class=\"cr-form\" onsubmit=\"return false;\">\n          <div class=\"cr-input-group\">\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"7\" width=\"20\" height=\"14\" rx=\"2\"></rect><path d=\"M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"></path></svg>\n              <input type=\"text\" id=\"cr-track-input\" class=\"cr-input\" placeholder=\"Введите номер вашего вагона, контейнера или накладной...\" autocomplete=\"off\" required />\n              <button type=\"button\" class=\"cr-clear-btn\" id=\"cr-track-clear\" style=\"display:none;\">×</button>\n            </div>\n            <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-track-submit\">\n              <span>Отследить дислокацию</span>\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>\n            </button>\n          </div>\n\n          <div class=\"cr-quick-chips\" id=\"cr-track-user-chips\">\n            <!-- Заполняется динамически вагонами и контейнерами только текущего пользователя -->\n          </div>\n        </form>\n\n        <!-- Индикатор загрузки -->\n        <div class=\"cr-loader\" id=\"cr-track-loader\" >\n          <div class=\"cr-spinner\"></div>\n          <span>Запрос дислокации в Ж/Д шлюзе Caravan Railroad...</span>\n        </div>\n\n        <!-- Контейнер вывода дислокации или отказа в доступе -->\n        <div id=\"cr-dislocation-result\" class=\"cr-result-box\" ></div>\n      </div>\n\n    </div>\n\n    <!-- ТАБ 2: КАЛЬКУЛЯТОР ТАРИФОВ, INCOTERMS 2020 И МАРШРУТОВ -->\n        <div class=\"cr-tab-content\" id=\"cr-tab-calc\">\n      <div class=\"cr-calc-header-box\">\n        <div class=\"cr-tab-intro\">\n          <h3>Интеллектуальный калькулятор железнодорожных тарифов 1520 мм</h3>\n          <p>Поучастковый расчет провозной платы по железным дорогам стран СНГ (КТЖ, УТИ, РЖД), подбор межгосударственных стыков, расчет аренды парка Caravan Railroad и условий Incoterms 2020.</p>\n        </div>\n\n        \n        <!-- МУЛЬТИМОДАЛЬНЫЙ СЕЛЕКТОР (6 НАПРАВЛЕНИЙ CARAVAN) -->\n        <div class=\"cr-modality-bar\" id=\"cr-modality-bar\">\n          <button type=\"button\" class=\"cr-modality-btn active\" data-modality=\"rail\">\n            <span class=\"cr-mod-icon\">\n              <svg class=\"cr-mod-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n                <rect x=\"4\" y=\"3\" width=\"16\" height=\"15\" rx=\"3\"></rect>\n                <path d=\"M4 11h16M8 15h.01M16 15h.01\"></path>\n                <path d=\"M7 18l-3 4M17 18l3 4M8 22h8\"></path>\n              </svg>\n            </span>\n            <span class=\"cr-mod-title\">Ж/Д 1520</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"fleet\">\n            <span class=\"cr-mod-icon\">\n              <svg class=\"cr-mod-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n                <rect x=\"2\" y=\"6\" width=\"20\" height=\"10\" rx=\"2\"></rect>\n                <path d=\"M6 16v3M18 16v3M4 19h4M16 19h4\"></path>\n                <circle cx=\"6\" cy=\"19\" r=\"2\"></circle>\n                <circle cx=\"18\" cy=\"19\" r=\"2\"></circle>\n                <path d=\"M2 11h20M9 6v10M15 6v10\"></path>\n              </svg>\n            </span>\n            <span class=\"cr-mod-title\">Аренда ПС</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"road\">\n            <span class=\"cr-mod-icon\">\n              <svg class=\"cr-mod-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n                <rect x=\"1\" y=\"5\" width=\"14\" height=\"11\" rx=\"1\"></rect>\n                <path d=\"M15 8h4l3 4v4h-7V8z\"></path>\n                <circle cx=\"5.5\" cy=\"18.5\" r=\"2.5\"></circle>\n                <circle cx=\"18.5\" cy=\"18.5\" r=\"2.5\"></circle>\n              </svg>\n            </span>\n            <span class=\"cr-mod-title\">Автоперевозки</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"air\">\n            <span class=\"cr-mod-icon\">\n              <svg class=\"cr-mod-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n                <path d=\"M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3.5c-.5-.5-2.5 0-4 1.5L13.5 8.5 5.3 6.7c-.8-.2-1.6.2-2 1l-.3.5 6 4-3 3-2.5-.5L2 16l3.5 1.5L7 21l1.3-1.5-.5-2.5 3-3 4 6 .5-.3c.8-.4 1.2-1.2 1-2l-1.5-7.5\"></path>\n              </svg>\n            </span>\n            <span class=\"cr-mod-title\">Авиакарго</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"multimodal\">\n            <span class=\"cr-mod-icon\">\n              <svg class=\"cr-mod-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n                <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n                <line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line>\n                <path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path>\n              </svg>\n            </span>\n            <span class=\"cr-mod-title\">Мультимодал</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"customs\">\n            <span class=\"cr-mod-icon\">\n              <svg class=\"cr-mod-svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n                <path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path>\n                <path d=\"M9 12l2 2 4-4\"></path>\n              </svg>\n            </span>\n            <span class=\"cr-mod-title\">Таможня & ВЭД</span>\n          </button>\n        </div>\n\n        <div class=\"cr-submode-toggles\">\n          <button type=\"button\" class=\"cr-submode-btn\" id=\"cr-btn-mode-preset\">Регулярные направления</button>\n          <button type=\"button\" class=\"cr-submode-btn active\" id=\"cr-btn-mode-custom\">Индивидуальный расчет маршрута</button>\n        </div>\n      </div>\n\n      <!-- РЕЖИМ А: РЕГУЛЯРНЫЕ МАРШРУТЫ С ОБНОВЛЯЕМЫМИ ЦЕНАМИ -->\n      <div id=\"cr-calc-preset-view\" >\n        <div class=\"cr-preset-routes-grid\" id=\"cr-preset-routes-container\"></div>\n      </div>\n\n      <!-- РЕЖИМ Б: ИНДИВИДУАЛЬНЫЙ РАСЧЕТ ПО СЕТИ И ПРАВИЛАМ R-ТАРИФ -->\n      <div id=\"cr-calc-custom-view\" style=\"display: block;\">\n        <form id=\"cr-calc-form\" class=\"cr-calc-form\" onsubmit=\"return false;\">\n          \n          <!-- ВЫБОР СТОРОНЫ ДОГОВОРА (РОЛЬ КЛИЕНТА) -->\n          <div class=\"cr-role-selection-box\">\n            <label class=\"cr-field-caption\">Ваша сторона в перевозке (определение зоны ответственности):</label>\n            <div class=\"cr-role-pills\">\n              <label class=\"cr-role-pill active\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"shipper\" checked />\n                <span>Грузоотправитель (Shipper)</span>\n              </label>\n              <label class=\"cr-role-pill\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"consignee\" />\n                <span>Грузополучатель (Consignee)</span>\n              </label>\n              <label class=\"cr-role-pill\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"forwarder\" />\n                <span>Экспедитор / Агент (Forwarder)</span>\n              </label>\n            </div>\n          </div>\n\n          <!-- СЕТКА ПАРАМЕТРОВ РАСЧЕТА -->\n          <div class=\"cr-mod-panel active\" id=\"cr-mod-panel-rail\">\n          <div class=\"cr-calc-inputs-grid\">\n            \n            <!-- СТАНЦИЯ ОТПРАВЛЕНИЯ -->\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\">\n              <label>Станция отправления (название или 6-значный код)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 14 14\"></polyline></svg>\n                <input type=\"text\" id=\"cr-calc-from\" class=\"cr-input\" placeholder=\"Введите название или код (напр. Кокшетау, 687008)\" value=\"Кокшетау (687008, КТЖ)\" autocomplete=\"off\" />\n                <div id=\"cr-calc-from-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n\n            <!-- СТАНЦИЯ НАЗНАЧЕНИЯ -->\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\">\n              <label>Станция назначения (название или 6-значный код)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z\"></path><circle cx=\"12\" cy=\"10\" r=\"3\"></circle></svg>\n                <input type=\"text\" id=\"cr-calc-to\" class=\"cr-input\" placeholder=\"Введите станцию (напр. Ташкент-Товарный, 720000)\" value=\"Ташкент-Товарный (720000, УТИ)\" autocomplete=\"off\" />\n                <div id=\"cr-calc-to-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n\n            <!-- ПОГРАНПЕРЕХОДЫ / СТЫКИ -->\n            <div id=\"cr-border-selection-container\" style=\"grid-column: 1 / -1;\">\n              <!-- Одиночный стык (двустороннее сообщение) -->\n              <div id=\"cr-border-single-wrap\" class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                <label id=\"cr-border-single-label\">Межгосударственный стыковой пункт</label>\n                <div class=\"cr-input-wrapper\">\n                  <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                  <select id=\"cr-calc-border\" class=\"cr-select\">\n                    <option value=\"auto\" selected>Определять автоматически по плану формирования</option>\n                    <option value=\"704101\">Сарыагаш (эксп.) [КТЖ] / Келес [УТИ] (Казахстан — Узбекистан)</option>\n                    <option value=\"708507\">Достык (эксп.) [КТЖ] / Алашанькоу (Китай — Казахстан)</option>\n                    <option value=\"707701\">Алтынколь (эксп.) [КТЖ] / Хоргос (Китай — Казахстан)</option>\n                    <option value=\"666501\">Илецк I (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"664900\">Озинки (эксп.) [Прив / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"816909\">Карталы I (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"815502\">Орск (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"711105\">Локоть (эксп.) [З-Сиб / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"688708\">Петропавловск (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"843905\">Кулунда (эксп.) [З-Сиб / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"662905\">Бейнеу (эксп.) / Каракалпакстан (Мангышлак — Узбекистан)</option>\n                    <option value=\"734606\">Галаба (эксп.) [УТИ] / Хайратан (Узбекистан — Афганистан)</option>\n                    <option value=\"736501\">Ходжадавлет (эксп.) [УТИ] / Фарап (Узбекистан — Туркменистан)</option>\n                    <option value=\"736003\">Кудукли (эксп.) [УТИ] / Пахтаабад (Узбекистан — Таджикистан)</option>\n                  </select>\n                </div>\n              </div>\n\n              <!-- Двойной стык (транзитное сообщение: Россия -> Казахстан [Транзит] -> Узбекистан) -->\n              <div id=\"cr-border-dual-wrap\" class=\"cr-dual-borders-grid\" >\n                <div class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                  <label id=\"cr-border-1-label\">Стык 1: РЖД ⇄ КТЖ (Вход в транзит)</label>\n                  <div class=\"cr-input-wrapper\">\n                    <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                    <select id=\"cr-calc-border-1\" class=\"cr-select\">\n                      <option value=\"auto\">Определять автоматически (Оптимальный)</option>\n                      <option value=\"666501\">ст. Илецк I (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"664900\">ст. Озинки (эксп.) [Прив / КТЖ]</option>\n                      <option value=\"816909\">ст. Карталы I (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"815502\">ст. Орск (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"688708\">ст. Петропавловск (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"711105\">ст. Локоть (эксп.) [З-Сиб / КТЖ]</option>\n                      <option value=\"843905\">ст. Кулунда (эксп.) [З-Сиб / КТЖ]</option>\n                    </select>\n                  </div>\n                </div>\n                <div class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                  <label id=\"cr-border-2-label\">Стык 2: КТЖ ⇄ УТИ (Выход из транзита)</label>\n                  <div class=\"cr-input-wrapper\">\n                    <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                    <select id=\"cr-calc-border-2\" class=\"cr-select\">\n                      <option value=\"auto\">Определять автоматически (Оптимальный)</option>\n                      <option value=\"704101\">ст. Сарыагаш (эксп.) [КТЖ] / Келес [УТИ]</option>\n                      <option value=\"662905\">ст. Бейнеу (эксп.) [КТЖ] / Каракалпакстан [УТИ]</option>\n                    </select>\n                  </div>\n                </div>\n              </div>\n            </div>\n\n            <!-- РАССТОЯНИЕ -->\n            <div class=\"cr-form-field\">\n              <label>Расстояние маршрута (км)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polygon points=\"1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6\"></polygon><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"18\"></line><line x1=\"16\" y1=\"6\" x2=\"16\" y2=\"22\"></line></svg>\n                <input type=\"number\" id=\"cr-calc-km\" class=\"cr-input\" value=\"1805\" min=\"50\" max=\"15000\" />\n              </div>\n              <div class=\"cr-quick-km\">\n                <span class=\"cr-km-chip\" data-km=\"500\">500 км</span>\n                <span class=\"cr-km-chip\" data-km=\"1200\">1 200 км</span>\n                <span class=\"cr-km-chip\" data-km=\"1805\">1 805 км</span>\n                <span class=\"cr-km-chip\" data-km=\"2800\">2 800 км</span>\n                <span class=\"cr-km-chip\" data-km=\"4200\">4 200 км</span>\n              </div>\n            </div>\n\n            <!-- РОД ПОДВИЖНОГО СОСТАВА -->\n            <div class=\"cr-form-field\">\n              <label>Род подвижного состава</label>\n              <select id=\"cr-calc-transport\" class=\"cr-select\">\n                <option value=\"grain\" selected>Зерновоз / Хоппер (для зерна, 70 тн, 116 м³)</option>\n                <option value=\"boxcar\">Крытый вагон (грузовой, 68 тн, 138 м³)</option>\n                <option value=\"gondola\">Полувагон (универсальный 4-осный, 70 тн)</option>\n                <option value=\"tank\">Цистерна (наливные грузы / ГСМ, 66 тн)</option>\n                <option value=\"platform\">Фитинговая платформа (тяжеловесы/негабарит)</option>\n                <option value=\"cont40\">Контейнер 40ft High Cube (HQ, 28 тн, 76 м³)</option>\n                <option value=\"cont20\">Контейнер 20ft (универсальный, 24 тн, 33 м³)</option>\n              </select>\n            </div>\n\n            <!-- ПРИНАДЛЕЖНОСТЬ ПАРКА -->\n            <div class=\"cr-form-field\">\n              <label>Принадлежность подвижного состава</label>\n              <select id=\"cr-calc-park\" class=\"cr-select\">\n                <option value=\"caravan\" selected>Собственный парк Caravan Railroad (СПС) — фикс. ставка</option>\n                <option value=\"inventory\">Инвентарный парк ж/д администраций (КТЖ/УТИ/РЖД)</option>\n              </select>\n            </div>\n\n            <!-- НОМЕНКЛАТУРА ГРУЗА (ЕТСНГ / ГНГ) -->\n            <div class=\"cr-form-field cr-cargo-autocomplete-wrap\">\n              <label>Номенклатура груза (поиск по названию, коду ЕТСНГ или ГНГ)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                  <path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path>\n                  <polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline>\n                  <line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line>\n                </svg>\n                <input type=\"text\" id=\"cr-calc-cargo-search\" class=\"cr-input\" placeholder=\"Введите название (напр. пшеница, уголь, металл) или код\" value=\"Пшеница прочая (ЕТСНГ: 100199, ГНГ: 10019900)\" autocomplete=\"off\" />\n                <input type=\"hidden\" id=\"cr-calc-cargo\" value=\"grain\" />\n                <input type=\"hidden\" id=\"cr-calc-cargo-code\" value=\"100199\" />\n                <div id=\"cr-calc-cargo-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n\n            <!-- МАССА ГРУЗА -->\n            <div class=\"cr-form-field\">\n              <label>Масса груза нетто (тонн)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n                <input type=\"number\" id=\"cr-calc-weight\" class=\"cr-input\" value=\"68\" min=\"1\" max=\"75\" />\n              </div>\n            </div>\n\n            <!-- БАЗИС INCOTERMS 2020 -->\n            <div class=\"cr-form-field\">\n              <label>Базис поставки (Incoterms 2020)</label>\n              <select id=\"cr-calc-incoterms\" class=\"cr-select\">\n                <option value=\"DAP\" selected>DAP — Доставка «До двери» (склад получателя)</option>\n                <option value=\"CIP\">CIP — Перевозка + Страхование груза (110% стоимости)</option>\n                <option value=\"CPT\">CPT — Перевозка оплачена до станции назначения</option>\n                <option value=\"FCA\">FCA — Перевозчик в месте отправления (забор у поставщика)</option>\n                <option value=\"DDP\">DDP — «Под ключ» (полная таможенная очистка + пошлины + склад)</option>\n              </select>\n            </div>\n\n            <!-- ВИД СООБЩЕНИЯ -->\n            <div class=\"cr-form-field\">\n              <label>Вид перевозки</label>\n              <select id=\"cr-calc-freight-type\" class=\"cr-select\">\n                <option value=\"rail\" selected>Прямая Ж/Д перевозка (поезда / повагонно)</option>\n                <option value=\"multimodal\">Мультимодальная (Ж/Д + Авто до склада)</option>\n                <option value=\"intermodal\">Интермодальная (Ж/Д + Море / Паромный стык)</option>\n              </select>\n            </div>\n\n            <!-- ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ -->\n            <div class=\"cr-form-field cr-span-2\">\n              <label>Дополнительные опции безопасности и сопровождения</label>\n              <div class=\"cr-checkbox-group-inline\">\n                <label class=\"cr-checkbox-label\">\n                  <input type=\"checkbox\" id=\"cr-opt-security\" checked />\n                  <span>Военизированная охрана и сменное сопровождение (ВЖДО на всем пути)</span>\n                </label>\n                <label class=\"cr-checkbox-label\">\n                  <input type=\"checkbox\" id=\"cr-opt-customs\" />\n                  <span>Таможенно-брокерское декларирование и сертификация</span>\n                </label>\n              </div>\n            </div>\n\n          </div>\n\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 2: АРЕНДА ПОДВИЖНОГО СОСТАВА (ПС) -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-fleet\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Тип подвижного состава</label>\n              <select id=\"cr-fleet-type\" class=\"cr-select\">\n                <option value=\"grain\" selected>Хоппер-зерновоз (116–120 м³, 70 т)</option>\n                <option value=\"covered\">Крытый вагон (138–161 м³, 68 т)</option>\n                <option value=\"gondola\">Полувагон люковый (85 м³, 70 т)</option>\n                <option value=\"platform\">Фитинговая платформа (20'/40' HC)</option>\n                <option value=\"tank\">Ж/Д цистерна (нефть, ГСМ, масла)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Формат аренды</label>\n              <select id=\"cr-fleet-rent-type\" class=\"cr-select\">\n                <option value=\"daily\" selected>Посуточная аренда (Daily lease)</option>\n                <option value=\"roundtrip\">Аренда на кругорейс (Round-trip)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Количество вагонов (ед.)</label>\n              <input type=\"number\" id=\"cr-fleet-count\" class=\"cr-input\" value=\"10\" min=\"1\" max=\"500\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Срок аренды (суток)</label>\n              <input type=\"number\" id=\"cr-fleet-days\" class=\"cr-input\" value=\"30\" min=\"5\" max=\"365\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Регион курсирования / Станция погрузки</label>\n              <input type=\"text\" id=\"cr-fleet-route\" class=\"cr-input\" value=\"Акмола (Казахстан) ➔ Сарыагаш\" />\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 3: АВТОТРАНСПОРТ -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-road\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Город отправления</label>\n              <input type=\"text\" id=\"cr-road-from\" class=\"cr-input\" value=\"Москва\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Город назначения</label>\n              <input type=\"text\" id=\"cr-road-to\" class=\"cr-input\" value=\"Ташкент\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Тип автотранспорта</label>\n              <select id=\"cr-road-type\" class=\"cr-select\">\n                <option value=\"tent\" selected>Тент стандарт (86–92 м³, до 22 т)</option>\n                <option value=\"mega\">Сцепка Мега (110–120 м³, до 24 т)</option>\n                <option value=\"reefer\">Рефрижератор (-20°C / +20°C)</option>\n                <option value=\"lowbed\">Низкорамный трал (негабарит)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Масса груза (тонн)</label>\n              <input type=\"number\" id=\"cr-road-weight\" class=\"cr-input\" value=\"20\" min=\"1\" max=\"45\" />\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 4: АВИАКАРГО -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-air\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Аэропорт вылета (IATA)</label>\n              <select id=\"cr-air-from\" class=\"cr-select\">\n                <option value=\"CAN\" selected>Гуанчжоу (CAN) — Китай</option>\n                <option value=\"PVG\">Шанхай (PVG) — Китай</option>\n                <option value=\"SVO\">Москва (SVO) — Россия</option>\n                <option value=\"IST\">Стамбул (IST) — Турция</option>\n                <option value=\"DXB\">Дубай (DXB) — ОАЭ</option>\n                <option value=\"FRA\">Франкфурт (FRA) — Германия</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Аэропорт прилёта</label>\n              <input type=\"text\" id=\"cr-air-to\" class=\"cr-input\" value=\"Ташкент (TAS) — Узбекистан\" readonly />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Фактический вес брутто (кг)</label>\n              <input type=\"number\" id=\"cr-air-weight\" class=\"cr-input\" value=\"350\" min=\"10\" max=\"25000\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Общий объем груза (м³)</label>\n              <input type=\"number\" id=\"cr-air-volume\" class=\"cr-input\" value=\"2.5\" step=\"0.1\" min=\"0.1\" />\n            </div>\n            <div class=\"cr-form-field\" style=\"display: flex; align-items: center; gap: 8px; margin-top: 24px;\">\n              <input type=\"checkbox\" id=\"cr-air-danger\" style=\"width: 18px; height: 18px;\" />\n              <label for=\"cr-air-danger\" style=\"margin: 0; cursor: pointer;\">Опасный груз (IATA DGR / батареи / химия)</label>\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 5: МУЛЬТИМОДАЛ -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-multimodal\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field\">\n              <label>Сквозной международный коридор</label>\n              <select id=\"cr-multi-corridor\" class=\"cr-select\">\n                <option value=\"china_uzb\" selected>Китай (Нинбо/Шанхай) ➔ Алтынколь ➔ Ташкент</option>\n                <option value=\"uae_uzb\">ОАЭ (Джебель-Али) ➔ Бендер-Аббас ➔ Серахс ➔ Ташкент</option>\n                <option value=\"turkey_uzb\">Турция (Мерсин) ➔ Баку ➔ Актау ➔ Ташкент</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Тип контейнера</label>\n              <select id=\"cr-multi-container\" class=\"cr-select\">\n                <option value=\"40hc\" selected>40' High Cube (76 м³, до 28 т)</option>\n                <option value=\"20dc\">20' Dry Container (33 м³, до 24 т)</option>\n              </select>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Количество контейнеров</label>\n              <input type=\"number\" id=\"cr-multi-count\" class=\"cr-input\" value=\"1\" min=\"1\" max=\"100\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Город доставки «последней мили»</label>\n              <input type=\"text\" id=\"cr-multi-city\" class=\"cr-input\" value=\"Ташкент (склад получателя)\" />\n            </div>\n          </div>\n        </div>\n\n        <!-- ПАНЕЛЬ 6: ТАМОЖНЯ И ВЭД -->\n        <div class=\"cr-mod-panel\" id=\"cr-mod-panel-customs\" >\n          <div class=\"cr-modality-inputs-grid\">\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\" style=\"grid-column: 1 / -1;\">\n              <label>Код ТН ВЭД (10 знаков) или наименование товара из базы АИС Таможня</label>\n              <div class=\"cr-input-wrapper\">\n                <input type=\"text\" id=\"cr-customs-tnved\" class=\"cr-input\" placeholder=\"Введите код или товар (напр. 1001 99 000 0 или Пшеница)\" value=\"1001 99 000 0 — Пшеница твердая\" autocomplete=\"off\" />\n                <div id=\"cr-customs-tnved-dropdown\" class=\"cr-station-dropdown\" ></div>\n              </div>\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Стоимость партии по инвойсу (USD)</label>\n              <input type=\"number\" id=\"cr-customs-value\" class=\"cr-input\" value=\"25000\" min=\"100\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Стоимость доставки до границы / фрахт (USD)</label>\n              <input type=\"number\" id=\"cr-customs-freight\" class=\"cr-input\" value=\"2500\" min=\"0\" />\n            </div>\n            <div class=\"cr-form-field\">\n              <label>Таможенный режим</label>\n              <select id=\"cr-customs-regime\" class=\"cr-select\">\n                <option value=\"import\" selected>Импорт 40 (Выпуск для свободного обращения)</option>\n                <option value=\"export\">Экспорт 10</option>\n                <option value=\"transit\">Транзит 80</option>\n              </select>\n            </div>\n          </div>\n        </div>\n\n\n          <div class=\"cr-calc-actions-bar\">\n            <button type=\"button\" class=\"cr-btn-primary cr-btn-calc-action\" id=\"cr-btn-execute-calc\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 14 14\"></polyline></svg>\n              <span>Рассчитать маршрут и тариф</span>\n            </button>\n          </div>\n\n          <!-- ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА -->\n          <div class=\"cr-route-scheme-card\" id=\"cr-route-scheme-box\">\n            <div class=\"cr-rs-header\">\n              <span class=\"cr-rs-badge\" id=\"cr-rs-badge\">Международное сообщение (Казахстан ➔ Узбекистан)</span>\n              <span class=\"cr-rs-distance\" id=\"cr-rs-distance\">Общий путь: 1 805 км</span>\n            </div>\n            <div class=\"cr-rs-flow\" id=\"cr-rs-flow\">\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot origin\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-from-name\">ст. Кокшетау (687008)</div>\n                  <div class=\"cr-rs-sub\" id=\"cr-rs-from-sub\">Казахстанские ж.д. (КТЖ)</div>\n                </div>\n              </div>\n              <div class=\"cr-rs-line\">\n                <span class=\"cr-rs-line-info\" id=\"cr-rs-line-1\">КТЖ: 1 770 км</span>\n              </div>\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot border\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-border-name\">ст. Сарыагаш (эксп.) / Келес</div>\n                  <div class=\"cr-rs-sub\">Межгосударственный стыковой пункт</div>\n                </div>\n              </div>\n              <div class=\"cr-rs-line\">\n                <span class=\"cr-rs-line-info\" id=\"cr-rs-line-2\">УТИ: 35 км</span>\n              </div>\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot dest\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-to-name\">ст. Ташкент-Товарный (720000)</div>\n                  <div class=\"cr-rs-sub\" id=\"cr-rs-to-sub\">Узбекские ж.д. (УТИ)</div>\n                </div>\n              </div>\n            </div>\n\n            <!-- МАРШРУТНЫЙ ЛИСТ СО ВСЕМИ СТАНЦИЯМИ (Р-ТАРИФ) -->\n            <div class=\"cr-intermediate-stations-wrap\" id=\"cr-intermediate-stations-wrap\" style=\"margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.15); display: none;\">\n              <div style=\"display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;\">\n                <span style=\"font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cr-gold, #c5a059);\">\n                  <i class=\"fas fa-route\" style=\"margin-right: 5px;\"></i> Маршрутный лист (станции следования по ТР-4)\n                </span>\n                <span style=\"font-size: 10px; color: #94a3b8;\" id=\"cr-intermediate-count\"></span>\n              </div>\n              <div class=\"cr-intermediate-badges\" id=\"cr-intermediate-badges\" style=\"display: flex; flex-wrap: wrap; gap: 6px; align-items: center;\"></div>\n            </div>\n          </div>\n\n          <!-- ДИНАМИЧЕСКИЙ БЛОК: ЗОНА ОТВЕТСТВЕННОСТИ CARAVAN RAILROAD -->\n          <div class=\"cr-incoterms-banner\" id=\"cr-incoterms-banner\">\n            <div class=\"cr-ib-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg></div>\n            <div>\n              <div class=\"cr-ib-title\" id=\"cr-ib-title\">Зона ответственности Caravan Railroad: DAP (Delivered at Place)</div>\n              <div class=\"cr-ib-desc\" id=\"cr-ib-desc\">\n                Компания берет на себя: подачу подвижного состава ➔ станционные сборы ➔ оплату Ж/Д тарифа всех администраций (КТЖ/УТИ) ➔ прохождение межгосударственного стыка ➔ автодоставку «последней мили» непосредственно на склад грузополучателя.\n              </div>\n            </div>\n          </div>\n\n        \n          <!-- УМНЫЙ ЧЕК-ЛИСТ ДОКУМЕНТОВ (MANAGER OFFLOADING SYSTEM) -->\n          <div class=\"cr-doc-checklist-card\" id=\"cr-doc-checklist-card\">\n            <div class=\"cr-doc-header\">\n              <div class=\"cr-doc-header-left\">\n                <span class=\"cr-doc-badge\">АВТОМАТИЧЕСКИЙ ПОДБОР ВЭД</span>\n                <h4 class=\"cr-doc-title\"><i class=\"fas fa-file-contract\" style=\"color: var(--cr-gold); margin-right: 8px;\"></i> Необходимый пакет документов для перевозки</h4>\n              </div>\n              <div class=\"cr-doc-actions\">\n                <button type=\"button\" class=\"cr-doc-btn\" id=\"cr-btn-copy-docs\">\n                  <i class=\"far fa-copy\"></i> Скопировать чек-лист\n                </button>\n                <button type=\"button\" class=\"cr-doc-btn whatsapp\" id=\"cr-btn-wa-docs\">\n                  <i class=\"fab fa-whatsapp\"></i> В WhatsApp\n                </button>\n              </div>\n            </div>\n            <p class=\"cr-doc-subtitle\">Список сопутствующих и разрешительных документов, необходимых для таможенного оформления и беспрепятственного прохождения границ.</p>\n            <div class=\"cr-doc-items-grid\" id=\"cr-doc-items-grid\"></div>\n          </div>\n\n        </form>\n      </div>\n\n      <!-- КАРТОЧКА РАСЧИТАННОГО ТАРИФА И МАРШРУТА -->\n      <div id=\"cr-calc-result-box\" class=\"cr-calc-result-box\">\n        <div class=\"cr-crb-top\">\n          <div>\n            <div class=\"cr-crb-title\" id=\"cr-quote-route-title\">ст. Кокшетау ➔ ст. Ташкент-Товарный</div>\n            <div class=\"cr-quote-badges\" id=\"cr-quote-badges\">\n              <span class=\"cr-qbadge\" id=\"cr-qb-transport\">Зерновоз / Хоппер (70 тн)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-park\">Собственный парк Caravan (СПС)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-cargo\">Зерновые (2 класс)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-incoterms\">DAP (До склада)</span>\n            </div>\n          </div>\n\n          <div class=\"cr-crb-total-box\">\n            <!-- ПЕРЕКЛЮЧАТЕЛЬ ВАЛЮТ РАСЧЕТА -->\n            <div class=\"cr-currency-pills\">\n              <button type=\"button\" class=\"cr-cur-pill active\" data-cur=\"USD\">USD ($)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"KZT\">KZT (₸)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"UZS\">UZS (сум)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"RUB\">RUB (₽)</button>\n            </div>\n            <div class=\"cr-crb-total-val\" id=\"cr-quote-total-price\">$2 680 USD</div>\n            <div class=\"cr-crb-transit\" id=\"cr-quote-transit-days\">Нормативный срок доставки: 5-7 суток</div>\n          </div>\n        </div>\n\n        <div class=\"cr-client-discount-badge\" id=\"cr-client-discount-pill\" >\n          Партнерская скидка контрагента: <strong id=\"cr-client-discount-val\">0%</strong>\n        </div>\n\n        <!-- ДЕТАЛИЗИРОВАННАЯ ИТОГОВАЯ ТАБЛИЦА ПО СТРАНАМ (ПО СТАНДАРТУ R-ТАРИФ) -->\n        <div class=\"cr-rtariff-table-wrap\">\n          <div class=\"cr-rtariff-table-title\">Поучастковая тарификация железных дорог:</div>\n          <table class=\"cr-rtariff-table\" id=\"cr-rtariff-table\">\n            <thead>\n              <tr>\n                <th>Страна / Администрация</th>\n                <th>Участок маршрута</th>\n                <th class=\"cr-text-right\">Расст., км</th>\n                <th class=\"cr-text-right\">Ж/Д тариф (Инфраструктура)</th>\n                <th class=\"cr-text-right\">Предоставление вагона (Caravan)</th>\n                <th class=\"cr-text-right\">Сборы и стык</th>\n                <th class=\"cr-text-right\">Охрана ВЖДО</th>\n                <th class=\"cr-text-right\">Итого по участку</th>\n              </tr>\n            </thead>\n            <tbody id=\"cr-rtariff-tbody\">\n              <!-- Заполняется динамически JS -->\n            </tbody>\n          </table>\n        </div>\n\n        <div class=\"cr-calc-actions\">\n          <button type=\"button\" class=\"cr-btn-primary cr-btn-book\" id=\"cr-btn-open-booking\">\n            <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" style=\"width:18px;height:18px;min-width:18px;min-height:18px;flex-shrink:0;\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"></path><polyline points=\"22 4 12 14.01 9 11.01\"></polyline></svg>\n            <span>Забронировать ставку и запросить официальное КП</span>\n          </button>\n          <div class=\"cr-disclaimer-text\">\n            * Расчет выполнен цифровым тарифным ядром Caravan 1520 по правилам железных дорог пространства 1520 мм (ОСЖД / ТП КТЖ / ТП УТИ / Прейскурант 10-01). Для фиксации ставки нажмите «Забронировать», и заявка будет передана в B2B платформу Caravan Railroad.\n          </div>\n        </div>\n      </div>\n    </div>\n\n\n    <div class=\"cr-tab-content\" id=\"cr-tab-login\">\n      <div id=\"cr-login-section\">\n        <div class=\"cr-tab-intro\">\n          <h3>Вход в систему онлайн-дислокации и B2B кабинет</h3>\n          <p>Единый доступ (SSO) к дислокации всех ваших вагонов, подписанным коммерческим предложениям (КП), инвойсам и расчетам со скидкой контрагента.</p>\n        </div>\n\n        <form id=\"cr-login-form\" class=\"cr-auth-form\" onsubmit=\"return false;\">\n          <div class=\"cr-form-field\">\n            <label>Логин или код договора</label>\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n              <input type=\"text\" id=\"cr-login-input\" class=\"cr-input\" placeholder=\"например: kaz_trans\" required />\n            </div>\n          </div>\n\n          <div class=\"cr-form-field\">\n            <label>Пароль</label>\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path></svg>\n              <input type=\"password\" id=\"cr-password-input\" class=\"cr-input\" placeholder=\"Введите пароль\" required />\n            </div>\n          </div>\n\n          <button type=\"submit\" class=\"cr-btn-primary cr-btn-block\" id=\"cr-login-submit\">\n            <span>Войти в личный кабинет</span>\n          </button>\n\n          <div class=\"cr-auth-hint\">\n            Тестовый доступ: логин <code>kaz_trans</code>, пароль <code>pass2026</code>\n          </div>\n        </form>\n      </div>\n\n      <!-- КАБИНЕТ АВТОРИЗОВАННОГО КЛИЕНТА (появляется после входа) -->\n      <div id=\"cr-cabinet-section\" >\n        <div class=\"cr-cabinet-header\">\n          <div class=\"cr-client-profile\">\n            <div class=\"cr-client-avatar\" id=\"cr-client-avatar\">КЛ</div>\n            <div>\n              <h4 id=\"cr-client-company\">ТОО \"КазТрансЛогистик\"</h4>\n              <p id=\"cr-client-person\">Бахтияр Алиев • <span class=\"cr-badge-active\">Активен (Скидка 5%)</span> • ID: <code id=\"cr-client-b2b-id\">B2B-CR-9021</code></p>\n            </div>\n          </div>\n          \n          <div class=\"cr-cab-right-actions\">\n            <button type=\"button\" class=\"cr-btn-calc-jump\" id=\"cr-btn-cab-calc\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect><line x1=\"8\" y1=\"6\" x2=\"16\" y2=\"6\"></line></svg>\n              <span>Калькулятор со скидкой</span>\n            </button>\n            <button type=\"button\" class=\"cr-btn-logout\" id=\"cr-btn-logout\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"></path><polyline points=\"16 17 21 12 16 7\"></polyline><line x1=\"21\" y1=\"12\" x2=\"9\" y2=\"12\"></line></svg>\n              <span>Выйти</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- ПОДВКЛАДКИ ЛИЧНОГО КАБИНЕТА: ВАГОНЫ vs КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ -->\n        <div class=\"cr-cab-subtabs\">\n          <button type=\"button\" class=\"cr-cab-subtab-btn active\" id=\"cr-cab-tab-disloc-btn\">\n            Дислокация грузов (<span id=\"cr-client-wagons-count\">0</span>)\n          </button>\n          <button type=\"button\" class=\"cr-cab-subtab-btn\" id=\"cr-cab-tab-kp-btn\">\n            Коммерческие предложения и счета (<span id=\"cr-client-kp-count\">2</span>)\n          </button>\n        </div>\n\n        <!-- 1. ПОДВКЛАДКА: ДИСЛОКАЦИЯ ВАГОНОВ -->\n        <div id=\"cr-cab-view-dislocation\">\n          <div class=\"cr-cabinet-toolbar\">\n            <div class=\"cr-count-tag\">Активных единиц в пути: <strong id=\"cr-client-wagons-count-label\">0</strong></div>\n            <div class=\"cr-search-filter\">\n              <input type=\"text\" id=\"cr-cabinet-filter\" class=\"cr-input cr-input-sm\" placeholder=\"Фильтр по номеру вагона или станции...\" />\n            </div>\n          </div>\n          <div id=\"cr-client-shipments-list\" class=\"cr-shipments-container\"></div>\n        </div>\n\n        <!-- 2. ПОДВКЛАДКА: КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ (КП) И ИНВОЙСЫ ИЗ B2B ПЛАТФОРМЫ -->\n        <div id=\"cr-cab-view-proposals\" >\n          <div class=\"cr-proposals-intro\">\n            <p>Официальные коммерческие предложения, сформированные логистами Caravan Railroad и подписанные руководством. Вы можете скачать PDF или запросить счет на оплату.</p>\n          </div>\n          <div id=\"cr-client-proposals-list\" class=\"cr-proposals-container\"></div>\n        </div>\n\n      </div>\n    </div>\n\n    <!-- ТАБ 4: РЕГИСТРАЦИЯ НОВОГО КЛИЕНТА (СИНХРОНИЗАЦИЯ С B2B) -->\n    <div class=\"cr-tab-content\" id=\"cr-tab-register\">\n      <div class=\"cr-tab-intro\">\n        <h3>Подключение к системе слежения и B2B платформе Caravan Railroad</h3>\n        <p>Заполните форму для открытия персонального доступа. Данные мгновенно синхронизируются с нашей B2B платформой для оперативной выдачи подписанных КП и онлайн-дислокации.</p>\n      </div>\n\n      <form id=\"cr-register-form\" class=\"cr-reg-grid\" onsubmit=\"return false;\">\n        <div class=\"cr-form-field\">\n          <label>Название компании *</label>\n          <input type=\"text\" id=\"cr-reg-company\" class=\"cr-input\" placeholder=\"ТОО / ООО / ЗАО\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Контактное лицо *</label>\n          <input type=\"text\" id=\"cr-reg-name\" class=\"cr-input\" placeholder=\"ФИО ответственного\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Сторона в договоре</label>\n          <select id=\"cr-reg-role\" class=\"cr-select\">\n            <option value=\"Грузоотправитель\">Грузоотправитель (Shipper)</option>\n            <option value=\"Грузополучатель\">Грузополучатель (Consignee)</option>\n            <option value=\"Экспедитор\">Экспедитор / Брокер</option>\n          </select>\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Телефон диспетчера/логиста *</label>\n          <input type=\"tel\" id=\"cr-reg-phone\" class=\"cr-input\" placeholder=\"+7 (___) ___-__-__\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Электронная почта *</label>\n          <input type=\"email\" id=\"cr-reg-email\" class=\"cr-input\" placeholder=\"corp@company.com\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Желаемый логин (единый для сайта и B2B) *</label>\n          <input type=\"text\" id=\"cr-reg-login\" class=\"cr-input\" placeholder=\"company_login\" required />\n        </div>\n\n        <div class=\"cr-form-field cr-span-2\">\n          <label>Пароль *</label>\n          <input type=\"password\" id=\"cr-reg-pass\" class=\"cr-input\" placeholder=\"Придумайте пароль\" required />\n        </div>\n\n        <div class=\"cr-reg-footer\">\n          <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-reg-submit\">\n            <span>Отправить заявку на регистрацию в B2B</span>\n          </button>\n          <p class=\"cr-privacy-text\">Нажимая кнопку, вы подтверждаете согласие на обработку данных для доступа к дислокации и тарифам Caravan Railroad.</p>\n        </div>\n      </form>\n\n      <div id=\"cr-reg-success\" class=\"cr-alert-success\" >\n        <div class=\"cr-alert-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" style=\"width:20px;height:20px;\"><polyline points=\"20 6 9 17 4 12\"></polyline></svg></div>\n        <div>\n          <h4>Заявка успешно отправлена в B2B платформу!</h4>\n          <p id=\"cr-reg-success-msg\">Менеджер Caravan Railroad активирует ваш личный кабинет в течение 15 минут и отправит подтверждение по телефону/email.</p>\n        </div>\n      </div>\n    </div>\n\n  </div>\n\n  <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ПОДПИСАННОГО КП -->\n  \n  <!-- МОДАЛЬНОЕ ОКНО БРОНИРОВАНИЯ СТАВКИ (ДЛЯ B2B ПЛАТФОРМЫ) -->\n  <div id=\"cr-booking-modal\" class=\"cr-booking-modal\" >\n    <div class=\"cr-bm-card\">\n      <div class=\"cr-bm-header\">\n        <h4>Бронирование ставки и заказ официального КП</h4>\n        <button type=\"button\" class=\"cr-bm-close\" id=\"cr-bm-close\">&times;</button>\n      </div>\n      <div class=\"cr-bm-body\">\n        <div class=\"cr-bm-summary-text\" id=\"cr-bm-summary-text\">\n          <!-- Заполняется динамически -->\n        </div>\n        <form id=\"cr-booking-form\" class=\"cr-booking-form\" onsubmit=\"return false;\">\n          <div class=\"cr-form-field\">\n            <label>Контактное лицо (ФИО ответственного) *</label>\n            <input type=\"text\" id=\"cr-book-name\" class=\"cr-input\" placeholder=\"Иванов Алексей Петрович\" required />\n          </div>\n          <div class=\"cr-form-field\">\n            <label>Телефон для связи и подтверждения *</label>\n            <input type=\"tel\" id=\"cr-book-phone\" class=\"cr-input\" placeholder=\"+7 (___) ___-__-__\" required />\n          </div>\n          <div class=\"cr-form-field\">\n            <label>Наименование компании (грузоотправителя/получателя) *</label>\n            <input type=\"text\" id=\"cr-book-company\" class=\"cr-input\" placeholder=\"ТОО / ООО / ИП Название Компании\" required />\n          </div>\n          <div class=\"cr-bm-actions\">\n            <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-btn-submit-booking\">\n              Подтвердить бронирование ставки\n            </button>\n          </div>\n        </form>\n        <div id=\"cr-booking-success\" class=\"cr-alert-success\" >\n          <h4 id=\"cr-book-success-title\">Заявка на расчет и бронирование принята!</h4>\n          <p>Специалисты Caravan Railroad зафиксировали ставку и сформируют официальное коммерческое предложение с печатью в вашем личном кабинете B2B в течение 15 минут.</p>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"cr-kp-modal\" class=\"cr-booking-modal\" >\n    <div class=\"cr-bm-card cr-kp-card-view\">\n      <div class=\"cr-bm-header\">\n        <h4>Коммерческое предложение Caravan Railroad</h4>\n        <button type=\"button\" class=\"cr-bm-close\" id=\"cr-kp-close\">&times;</button>\n      </div>\n      <div class=\"cr-kp-sheet\" id=\"cr-kp-sheet-content\">\n        <!-- Генерируется динамически -->\n      </div>\n      <div class=\"cr-kp-actions\">\n        <button type=\"button\" class=\"cr-btn-primary\" onclick=\"window.print()\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polyline points=\"6 9 6 2 18 2 18 9\"></polyline><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"></path><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"></rect></svg>\n          <span>Распечатать / Сохранить в PDF</span>\n        </button>\n        <button type=\"button\" class=\"cr-btn-outline\" id=\"cr-kp-invoice-btn\">Запросить счет на оплату</button>\n      </div>\n    </div>\n  </div>\n\n</div>\n\n<!-- ====================================================================\n     СТИЛИ МОДУЛЯ\n     ==================================================================== -->";
+  var WIDGET_CSS = "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap');\n  /* СОВМЕСТИМОСТЬ С TILDA: отключаем белый/серый фон оберток Тильды */\n  .t123, \n  .t123 .t-container, \n  .t123 .t-col,\n  .t123 .t-col_12,\n  .t-records,\n  .t-records > div {\n    background-color: transparent !important;\n    background: transparent !important;\n  }\n\n  #caravan-tracking-root {\n    --cr-bg-main: transparent;\n    --cr-bg-card: rgba(15, 26, 48, 0.88);\n    --cr-bg-input: rgba(10, 17, 32, 0.85);\n    --cr-border: rgba(255, 255, 255, 0.12);\n    --cr-border-focus: #F59E0B;\n    --cr-amber: #F59E0B;\n    --cr-amber-hover: #D97706;\n    --cr-amber-light: rgba(245, 158, 11, 0.12);\n    --cr-gold: #C5A059;\n    --cr-gold-hover: #DFBA73;\n    --cr-gold-light: rgba(197, 160, 89, 0.15);\n    --cr-blue: #2563EB;\n    --cr-emerald: #10B981;\n    --cr-text-main: #F8FAFC;\n    --cr-text-muted: #94A3B8;\n    --cr-radius: 16px;\n    --cr-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n    \n    font-family: var(--cr-font);\n    color: var(--cr-text-main);\n    background: transparent !important;\n    background-color: transparent !important;\n    box-shadow: none !important;\n    width: 100%;\n    max-width: 1160px;\n    margin: 0 auto;\n    padding: 0 !important;\n    box-sizing: border-box;\n  }\n\n  #caravan-tracking-root *, \n  #caravan-tracking-root *::before, \n  #caravan-tracking-root *::after {\n    box-sizing: border-box;\n  }\n\n  /* СТАТИСТИКА */\n  .cr-stats-bar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    background: rgba(20, 31, 54, 0.82);\n    border: 1px solid var(--cr-border);\n    border-radius: var(--cr-radius);\n    padding: 16px 28px;\n    margin-bottom: 20px;\n    backdrop-filter: blur(16px);\n    -webkit-backdrop-filter: blur(16px);\n    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);\n    flex-wrap: wrap;\n    gap: 16px;\n  }\n\n  .cr-stat-item {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n  }\n\n  .cr-stat-icon {\n    width: 44px;\n    height: 44px;\n    border-radius: 12px;\n    background: var(--cr-amber-light);\n    color: var(--cr-amber);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  .cr-stat-icon svg { width: 22px; height: 22px; }\n\n  .cr-stat-number {\n    font-size: 26px;\n    font-weight: 800;\n    color: #FFFFFF;\n    line-height: 1.1;\n    letter-spacing: -0.5px;\n  }\n\n  .cr-stat-label {\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    margin-top: 3px;\n  }\n\n  .cr-stat-divider {\n    width: 1px;\n    height: 36px;\n    background: var(--cr-border);\n  }\n\n  .cr-live-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    color: #34D399;\n    padding: 6px 14px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 600;\n  }\n\n  .cr-pulse-dot {\n    width: 8px;\n    height: 8px;\n    background: #10B981;\n    border-radius: 50%;\n    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);\n    animation: crPulse 2s infinite;\n  }\n\n  @keyframes crPulse {\n    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }\n    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }\n    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }\n  }\n\n  /* КАРТОЧКА И ТАБЫ */\n  .cr-card {\n    background: var(--cr-bg-card);\n    border: 1px solid var(--cr-border);\n    border-radius: 20px;\n    padding: 28px;\n    backdrop-filter: blur(20px);\n    -webkit-backdrop-filter: blur(20px);\n    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);\n  }\n\n  .cr-tabs-header {\n    display: flex;\n    gap: 8px;\n    background: var(--cr-bg-input);\n    padding: 6px;\n    border-radius: 12px;\n    border: 1px solid var(--cr-border);\n    margin-bottom: 24px;\n    overflow-x: auto;\n  }\n\n  .cr-tab-btn {\n    flex: 1;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 14px;\n    font-weight: 600;\n    padding: 12px 16px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    white-space: nowrap;\n  }\n  .cr-tab-btn svg { width: 18px; height: 18px; }\n\n  .cr-tab-btn:hover {\n    color: #FFFFFF;\n    background: rgba(255, 255, 255, 0.05);\n  }\n\n  .cr-tab-btn.active {\n    background: var(--cr-amber);\n    color: #0F172A;\n    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);\n  }\n\n  .cr-tab-content { display: none; }\n  .cr-tab-content.active {\n    display: block;\n    animation: crFadeIn 0.3s ease;\n  }\n\n  @keyframes crFadeIn {\n    from { opacity: 0; transform: translateY(6px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n\n  .cr-tab-intro { margin-bottom: 18px; }\n  .cr-tab-intro h3 {\n    margin: 0 0 6px 0;\n    font-size: 20px;\n    font-weight: 700;\n    color: #FFFFFF;\n  }\n  .cr-tab-intro p {\n    margin: 0;\n    font-size: 14px;\n    color: var(--cr-text-muted);\n  }\n\n  /* ФОРМЫ */\n  .cr-input-group {\n    display: flex;\n    gap: 12px;\n    align-items: stretch;\n    flex-wrap: wrap;\n  }\n\n  .cr-input-wrapper {\n    position: relative;\n    width: 100%;\n    display: flex;\n    align-items: center;\n  }\n\n  /* Иконка поля ввода смещена в правый край (устраняет наложение на текст) */\n  .cr-input-icon {\n    position: absolute;\n    right: 14px !important;\n    left: auto !important;\n    top: 50%;\n    transform: translateY(-50%);\n    width: 18px;\n    height: 18px;\n    color: var(--cr-gold) !important;\n    pointer-events: none;\n    z-index: 2;\n  }\n\n  /* ЕДИНЫЙ ПРЕМИАЛЬНЫЙ ДИЗАЙН СТРОК ВВОДА: БЕЛЫЙ НА ГЛУБОКОМ СИНЕМ С ЗОЛОТОЙ КАЙМОЙ */\n  .cr-input,\n  input[type=\"text\"].cr-input,\n  input[type=\"number\"].cr-input,\n  .cr-form-field input,\n  .cr-modality-inputs-grid input {\n    width: 100%;\n    background: rgba(15, 23, 42, 0.88) !important;\n    border: 1px solid rgba(197, 160, 89, 0.28) !important;\n    border-radius: 10px !important;\n    color: #F8FAFC !important;\n    font-size: 14px !important;\n    font-family: inherit;\n    padding: 12px 44px 12px 16px !important;\n    outline: none !important;\n    box-sizing: border-box;\n    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);\n    transition: all 0.25s ease;\n  }\n\n  .cr-input:focus,\n  .cr-form-field input:focus,\n  .cr-modality-inputs-grid input:focus {\n    border-color: #C5A059 !important;\n    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;\n  }\n\n  .cr-input::placeholder,\n  .cr-form-field input::placeholder,\n  .cr-modality-inputs-grid input::placeholder {\n    color: #64748B !important;\n  }\n\n  /* ЕДИНЫЙ ДИЗАЙН СЕЛЕКТОРОВ */\n  .cr-select,\n  .cr-form-field select,\n  .cr-modality-inputs-grid select {\n    width: 100%;\n    background: rgba(15, 23, 42, 0.88) !important;\n    border: 1px solid rgba(197, 160, 89, 0.28) !important;\n    border-radius: 10px !important;\n    color: #F8FAFC !important;\n    font-size: 14px !important;\n    font-family: inherit;\n    padding: 12px 40px 12px 16px !important;\n    outline: none !important;\n    cursor: pointer;\n    box-sizing: border-box;\n    appearance: none;\n    -webkit-appearance: none;\n    background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23C5A059' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\") !important;\n    background-repeat: no-repeat !important;\n    background-position: right 14px center !important;\n    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);\n    transition: all 0.25s ease;\n  }\n\n  .cr-select:focus,\n  .cr-form-field select:focus,\n  .cr-modality-inputs-grid select:focus {\n    border-color: #C5A059 !important;\n    box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;\n  }\n\n  .cr-select option {\n    background: #0F172A !important;\n    color: #FFFFFF !important;\n    padding: 8px 12px;\n  }\n\n  .cr-dual-borders-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 16px;\n    width: 100%;\n  }\n\n  .cr-clear-btn {\n    position: absolute;\n    right: 14px;\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 20px;\n    cursor: pointer;\n  }\n\n  .cr-btn-primary {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 10px;\n    background: var(--cr-amber) !important;\n    color: #0F172A !important;\n    border: none !important;\n    font-size: 15px !important;\n    font-weight: 700 !important;\n    padding: 14px 28px !important;\n    border-radius: 12px !important;\n    cursor: pointer !important;\n    transition: all 0.2s ease !important;\n    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35) !important;\n  }\n  .cr-btn-primary svg,\n  .cr-btn-book svg {\n    width: 18px !important;\n    height: 18px !important;\n    min-width: 18px !important;\n    max-width: 18px !important;\n    min-height: 18px !important;\n    max-height: 18px !important;\n    flex-shrink: 0 !important;\n    stroke: currentColor !important;\n  }\n  .cr-btn-primary:hover {\n    background: var(--cr-amber-hover) !important;\n    transform: translateY(-1px) !important;\n    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45) !important;\n  }\n  .cr-btn-block { width: 100%; margin-top: 10px; }\n\n  .cr-btn-outline {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    background: transparent;\n    border: 1px solid var(--cr-amber);\n    color: var(--cr-amber);\n    font-size: 14px;\n    font-weight: 600;\n    padding: 12px 20px;\n    border-radius: 10px;\n    cursor: pointer;\n  }\n\n  .cr-quick-chips {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-top: 14px;\n    flex-wrap: wrap;\n  }\n  .cr-chips-title { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-chip {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #CBD5E1;\n    font-size: 12px;\n    padding: 4px 10px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n  }\n  .cr-chip:hover {\n    background: rgba(245, 158, 11, 0.15);\n    border-color: var(--cr-amber);\n    color: var(--cr-amber);\n  }\n\n  /* ЭКРАН ОГРАНИЧЕНИЯ ДОСТУПА К ТРЕКИНГУ (ДЛЯ ГОСТЕЙ) */\n  .cr-auth-lock-card {\n    text-align: center;\n    padding: 42px 24px;\n    background: rgba(10, 17, 32, 0.65);\n    border: 1px dashed rgba(245, 158, 11, 0.4);\n    border-radius: 16px;\n    margin: 8px 0;\n    backdrop-filter: blur(12px);\n    -webkit-backdrop-filter: blur(12px);\n  }\n  .cr-lock-icon-wrap {\n    width: 60px;\n    height: 60px;\n    border-radius: 18px;\n    background: rgba(245, 158, 11, 0.12);\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    color: var(--cr-amber);\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 16px;\n    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);\n  }\n  .cr-lock-icon-wrap svg { width: 30px; height: 30px; }\n  .cr-lock-badge {\n    display: inline-block;\n    padding: 4px 12px;\n    border-radius: 9999px;\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n    font-size: 11px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.8px;\n    margin-bottom: 12px;\n  }\n  .cr-auth-lock-card h3 {\n    font-size: 20px;\n    font-weight: 700;\n    color: #FFFFFF;\n    margin: 0 0 10px 0;\n    line-height: 1.3;\n  }\n  .cr-auth-lock-card p {\n    font-size: 14px;\n    color: var(--cr-text-muted);\n    max-width: 640px;\n    margin: 0 auto 24px auto;\n    line-height: 1.6;\n  }\n  .cr-lock-actions {\n    display: flex;\n    justify-content: center;\n    gap: 12px;\n    flex-wrap: wrap;\n    margin-bottom: 18px;\n  }\n  .cr-lock-hint {\n    font-size: 12px;\n    color: #64748B;\n  }\n  .cr-lock-hint code {\n    background: rgba(255, 255, 255, 0.08);\n    padding: 2px 6px;\n    border-radius: 4px;\n    color: var(--cr-amber);\n    font-family: monospace;\n  }\n\n  /* ПАНЕЛЬ АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ В ТРЕКИНГЕ */\n  .cr-authed-user-bar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    background: rgba(16, 185, 129, 0.08);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    padding: 10px 16px;\n    border-radius: 12px;\n    margin-bottom: 18px;\n    font-size: 13px;\n    flex-wrap: wrap;\n    gap: 10px;\n  }\n  .cr-aub-left {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    color: #F8FAFC;\n  }\n  .cr-aub-indicator {\n    width: 8px;\n    height: 8px;\n    border-radius: 50%;\n    background: #10B981;\n    box-shadow: 0 0 8px #10B981;\n  }\n  .cr-aub-actions {\n    display: flex;\n    gap: 8px;\n  }\n  .cr-aub-btn {\n    background: transparent;\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #CBD5E1;\n    padding: 4px 10px;\n    border-radius: 6px;\n    font-size: 12px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-aub-btn:hover {\n    background: rgba(255, 255, 255, 0.1);\n    color: #FFFFFF;\n  }\n\n  /* КАРТОЧКА ОГРАНИЧЕНИЯ ДОСТУПА К ЧУЖОМУ ТРАНСПОРТУ */\n  .cr-access-denied-box {\n    background: rgba(239, 68, 68, 0.08);\n    border: 1px solid rgba(239, 68, 68, 0.35);\n    border-radius: 16px;\n    padding: 26px;\n    margin-top: 20px;\n    text-align: center;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-ad-icon {\n    width: 52px;\n    height: 52px;\n    border-radius: 14px;\n    background: rgba(239, 68, 68, 0.15);\n    color: #F87171;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 12px;\n  }\n  .cr-ad-icon svg { width: 26px; height: 26px; }\n  .cr-access-denied-box h4 {\n    color: #FCA5A5;\n    font-size: 17px;\n    font-weight: 700;\n    margin: 0 0 8px 0;\n  }\n  .cr-access-denied-box p {\n    color: #E2E8F0;\n    font-size: 14px;\n    line-height: 1.6;\n    max-width: 600px;\n    margin: 0 auto 16px auto;\n  }\n  .cr-ad-footer {\n    font-size: 12px;\n    color: #94A3B8;\n    border-top: 1px solid rgba(255, 255, 255, 0.08);\n    padding-top: 12px;\n  }\n\n  /* РОЛИ В ДОГОВОРЕ */\n  .cr-role-selection-box {\n    margin-bottom: 18px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 14px 16px;\n  }\n  .cr-field-caption {\n    font-size: 13px;\n    font-weight: 600;\n    color: #CBD5E1;\n    display: block;\n    margin-bottom: 10px;\n  }\n  .cr-role-pills {\n    display: flex;\n    gap: 10px;\n    flex-wrap: wrap;\n  }\n  .cr-role-pill {\n    flex: 1;\n    min-width: 180px;\n    background: var(--cr-bg-input);\n    border: 1px solid var(--cr-border);\n    border-radius: 8px;\n    padding: 10px 14px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    font-size: 13px;\n    font-weight: 600;\n    transition: all 0.2s;\n  }\n  .cr-role-pill input { display: none; }\n  .cr-role-pill.active {\n    border-color: var(--cr-amber);\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n  }\n\n  /* БАННЕР ЗОНЫ ОТВЕТСТВЕННОСТИ */\n  .cr-incoterms-banner {\n    display: flex;\n    align-items: flex-start;\n    gap: 14px;\n    background: rgba(37, 99, 235, 0.12);\n    border: 1px solid rgba(37, 99, 235, 0.3);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 18px;\n  }\n  .cr-ib-icon {\n    font-size: 24px;\n    line-height: 1;\n  }\n  .cr-ib-title {\n    font-size: 14px;\n    font-weight: 700;\n    color: #93C5FD;\n    margin-bottom: 4px;\n  }\n  .cr-ib-desc {\n    font-size: 13px;\n    color: #E2E8F0;\n    line-height: 1.5;\n  }\n\n  /* СЕТКА КАЛЬКУЛЯТОРА */\n  .cr-calc-header-box {\n    display: flex;\n    align-items: flex-start;\n    justify-content: space-between;\n    gap: 16px;\n    margin-bottom: 20px;\n    flex-wrap: wrap;\n  }\n\n  .cr-submode-toggles {\n    display: flex;\n    background: var(--cr-bg-input);\n    padding: 4px;\n    border-radius: 10px;\n    border: 1px solid var(--cr-border);\n  }\n\n  .cr-submode-btn {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 13px;\n    font-weight: 600;\n    padding: 8px 14px;\n    border-radius: 7px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-submode-btn.active {\n    background: rgba(245, 158, 11, 0.2);\n    color: var(--cr-amber);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n  }\n\n  .cr-preset-routes-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n    gap: 14px;\n    margin-bottom: 24px;\n  }\n\n  .cr-preset-route-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px 18px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n  }\n  .cr-preset-route-card:hover, .cr-preset-route-card.selected {\n    border-color: var(--cr-amber);\n    background: rgba(15, 23, 42, 0.95);\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);\n  }\n  .cr-preset-route-card.selected { border-width: 2px; }\n\n  .cr-pr-top {\n    font-size: 14px;\n    font-weight: 700;\n    color: #FFFFFF;\n    margin-bottom: 8px;\n    display: flex;\n    align-items: center;\n    gap: 6px;\n  }\n  .cr-pr-arrow { color: var(--cr-amber); }\n  .cr-pr-info { font-size: 12px; color: var(--cr-text-muted); margin-bottom: 12px; }\n  .cr-pr-bottom {\n    display: flex;\n    align-items: flex-end;\n    justify-content: space-between;\n    border-top: 1px solid rgba(255, 255, 255, 0.06);\n    padding-top: 10px;\n  }\n  .cr-pr-price { font-size: 18px; font-weight: 800; color: var(--cr-amber); }\n  .cr-pr-days { font-size: 12px; color: #34D399; font-weight: 600; }\n\n  .cr-calc-inputs-grid {\n    display: grid;\n    grid-template-columns: repeat(2, 1fr);\n    gap: 16px;\n  }\n  .cr-span-2 { grid-column: span 2; }\n\n  .cr-quick-km { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }\n  .cr-km-chip {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #94A3B8;\n    font-size: 11px;\n    padding: 3px 8px;\n    border-radius: 4px;\n    cursor: pointer;\n  }\n  .cr-km-chip:hover { border-color: var(--cr-amber); color: var(--cr-amber); }\n\n  .cr-checkbox-group-inline {\n    display: flex;\n    gap: 20px;\n    flex-wrap: wrap;\n  }\n  .cr-checkbox-label {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    font-size: 13px;\n    color: #CBD5E1;\n    cursor: pointer;\n  }\n  .cr-checkbox-label input {\n    accent-color: var(--cr-amber);\n    width: 16px;\n    height: 16px;\n    cursor: pointer;\n  }\n\n  /* РЕЗУЛЬТАТ КАЛЬКУЛЯТОРА */\n  .cr-calc-result-box {\n    margin-top: 24px;\n    background: #0F172A;\n    border: 1px solid rgba(245, 158, 11, 0.4);\n    border-radius: 16px;\n    padding: 24px;\n    animation: crFadeIn 0.3s ease;\n  }\n\n  .cr-crb-top {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    flex-wrap: wrap;\n    gap: 16px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 18px;\n  }\n  .cr-crb-title { font-size: 20px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px; }\n  .cr-crb-sub { font-size: 13px; color: var(--cr-text-muted); }\n  .cr-crb-total-box { text-align: right; }\n  .cr-crb-total-label { font-size: 12px; color: var(--cr-text-muted); text-transform: uppercase; }\n  .cr-crb-total-val { font-size: 28px; font-weight: 800; color: var(--cr-amber); line-height: 1.1; }\n  .cr-crb-transit { font-size: 13px; color: #34D399; font-weight: 700; margin-top: 4px; }\n\n  .cr-client-discount-badge {\n    background: rgba(245, 158, 11, 0.15);\n    border: 1px solid var(--cr-amber);\n    color: var(--cr-amber);\n    padding: 6px 14px;\n    border-radius: 8px;\n    font-size: 13px;\n    margin-top: 14px;\n  }\n\n  .cr-quote-breakdown {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));\n    gap: 12px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 16px;\n  }\n  .cr-qb-item { display: flex; flex-direction: column; gap: 4px; }\n  .cr-qb-label { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-qb-val { font-size: 15px; font-weight: 700; color: #F1F5F9; }\n\n  .cr-calc-actions {\n    margin-top: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 16px;\n    flex-wrap: wrap;\n  }\n  .cr-btn-book { padding: 14px 32px; }\n  .cr-disclaimer-text { font-size: 12px; color: var(--cr-text-muted); max-width: 500px; }\n\n  /* ПОДВКЛАДКИ ЛИЧНОГО КАБИНЕТА */\n  .cr-cab-subtabs {\n    display: flex;\n    gap: 10px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 12px;\n    margin-bottom: 20px;\n  }\n  .cr-cab-subtab-btn {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 14px;\n    font-weight: 700;\n    padding: 8px 16px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-cab-subtab-btn.active {\n    background: rgba(245, 158, 11, 0.2);\n    color: var(--cr-amber);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n  }\n\n  /* СПИСОК КОММЕРЧЕСКИХ ПРЕДЛОЖЕНИЙ */\n  .cr-proposals-intro {\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    margin-bottom: 16px;\n  }\n\n  .cr-proposal-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 18px 22px;\n    margin-bottom: 14px;\n    transition: all 0.2s;\n  }\n  .cr-proposal-card:hover {\n    border-color: var(--cr-amber);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);\n  }\n\n  .cr-pc-header {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 10px;\n    margin-bottom: 10px;\n  }\n  .cr-pc-id { font-size: 16px; font-weight: 800; color: #FFFFFF; }\n  .cr-pc-badge-signed {\n    background: rgba(16, 185, 129, 0.15);\n    color: #34D399;\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    padding: 4px 10px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 700;\n  }\n  .cr-pc-route {\n    font-size: 14px;\n    color: #CBD5E1;\n    margin-bottom: 8px;\n  }\n  .cr-pc-route strong { color: var(--cr-amber); }\n  .cr-pc-details {\n    display: flex;\n    align-items: center;\n    gap: 16px;\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    flex-wrap: wrap;\n    margin-bottom: 14px;\n  }\n  .cr-pc-actions {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    flex-wrap: wrap;\n    border-top: 1px solid rgba(255, 255, 255, 0.06);\n    padding-top: 12px;\n  }\n  .cr-btn-pc {\n    background: rgba(255, 255, 255, 0.08);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #FFFFFF;\n    font-size: 12px;\n    font-weight: 600;\n    padding: 6px 14px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-btn-pc:hover { background: var(--cr-amber); color: #0F172A; border-color: var(--cr-amber); }\n\n  /* ПЕЧАТНЫЙ ЛИСТ КП В МОДАЛКЕ */\n  .cr-kp-card-view { max-width: 680px; }\n  .cr-kp-sheet {\n    background: #FFFFFF;\n    color: #0F172A;\n    border-radius: 10px;\n    padding: 24px;\n    margin: 16px 0;\n    max-height: 480px;\n    overflow-y: auto;\n    font-family: 'Inter', sans-serif;\n  }\n  .cr-kp-actions {\n    display: flex;\n    justify-content: space-between;\n    gap: 12px;\n    flex-wrap: wrap;\n  }\n\n  /* МОДАЛЬНЫЕ ОКНА */\n  .cr-booking-modal {\n    position: fixed;\n    top: 0; left: 0; right: 0; bottom: 0;\n    background: rgba(0, 0, 0, 0.8);\n    backdrop-filter: blur(8px);\n    z-index: 9999;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n  }\n  .cr-bm-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-amber);\n    border-radius: 18px;\n    width: 100%;\n    max-width: 480px;\n    padding: 28px;\n    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);\n    position: relative;\n    animation: crFadeIn 0.25s ease;\n  }\n  .cr-bm-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 16px;\n  }\n  .cr-bm-header h4 { margin: 0; font-size: 18px; color: #FFFFFF; }\n  .cr-bm-close {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 26px;\n    cursor: pointer;\n  }\n  .cr-bm-summary {\n    background: rgba(255, 255, 255, 0.05);\n    border-radius: 8px;\n    padding: 12px 14px;\n    font-size: 13px;\n    color: #CBD5E1;\n    margin-bottom: 16px;\n    line-height: 1.5;\n  }\n  .cr-bm-summary strong { color: var(--cr-amber); }\n\n  /* ЛОАДЕР */\n  .cr-loader {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 12px;\n    padding: 30px;\n    color: var(--cr-amber);\n    font-size: 14px;\n    font-weight: 600;\n  }\n  .cr-spinner {\n    width: 24px;\n    height: 24px;\n    border: 3px solid rgba(245, 158, 11, 0.2);\n    border-top-color: var(--cr-amber);\n    border-radius: 50%;\n    animation: crSpin 0.8s linear infinite;\n  }\n  @keyframes crSpin { to { transform: rotate(360deg); } }\n\n  /* РЕЗУЛЬТАТ ДИСЛОКАЦИИ */\n  .cr-result-box {\n    margin-top: 24px;\n    background: #0F172A;\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    border-radius: 16px;\n    padding: 24px;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-disloc-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    gap: 12px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 16px;\n    margin-bottom: 20px;\n  }\n  .cr-disloc-title { display: flex; align-items: center; gap: 12px; }\n  .cr-disloc-title h4 { margin: 0; font-size: 20px; font-weight: 800; color: #FFFFFF; }\n  .cr-type-badge {\n    background: rgba(255, 255, 255, 0.08);\n    color: #CBD5E1;\n    font-size: 12px;\n    font-weight: 600;\n    padding: 4px 10px;\n    border-radius: 6px;\n  }\n\n  .cr-status-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    padding: 6px 12px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 700;\n  }\n  .cr-status-in-transit {\n    background: rgba(16, 185, 129, 0.15);\n    color: #34D399;\n    border: 1px solid rgba(16, 185, 129, 0.3);\n  }\n\n  /* ВИЗУАЛЬНЫЙ ТРЕК */\n  .cr-route-timeline { position: relative; margin: 24px 0 20px 0; }\n  .cr-route-track {\n    position: absolute;\n    top: 18px; left: 40px; right: 40px;\n    height: 4px;\n    background: rgba(255, 255, 255, 0.1);\n    border-radius: 2px;\n    z-index: 1;\n  }\n  .cr-route-progress-fill {\n    height: 100%;\n    background: linear-gradient(90deg, #10B981, #F59E0B);\n    border-radius: 2px;\n    transition: width 0.8s ease-in-out;\n  }\n  .cr-route-nodes { display: flex; justify-content: space-between; position: relative; z-index: 2; }\n  .cr-route-node { text-align: center; flex: 1; max-width: 30%; }\n  .cr-node-point {\n    width: 36px; height: 36px; border-radius: 50%;\n    background: #0B1325;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    color: #94A3B8;\n    display: flex; align-items: center; justify-content: center;\n    margin: 0 auto 10px auto;\n  }\n  .cr-node-point svg { width: 16px; height: 16px; }\n  .cr-node-point.completed { background: #10B981; border-color: #10B981; color: #0F172A; }\n  .cr-node-point.current {\n    background: var(--cr-amber); border-color: #FFFFFF; color: #0F172A;\n    box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);\n  }\n  .cr-node-tag { font-size: 11px; text-transform: uppercase; color: var(--cr-amber); font-weight: 700; }\n  .cr-node-station { font-size: 14px; font-weight: 700; color: #FFFFFF; margin: 4px 0 2px 0; }\n  .cr-node-date { font-size: 12px; color: var(--cr-text-muted); }\n\n  .cr-operation-banner {\n    margin-top: 14px;\n    background: rgba(245, 158, 11, 0.08);\n    border-left: 3px solid var(--cr-amber);\n    padding: 12px 16px;\n    border-radius: 0 8px 8px 0;\n    font-size: 13px;\n  }\n  .cr-operation-banner strong { color: var(--cr-amber); }\n\n  .cr-details-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 12px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 20px;\n  }\n  .cr-detail-item { display: flex; flex-direction: column; gap: 4px; }\n  .cr-detail-k { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-detail-v { font-size: 14px; font-weight: 600; color: #F1F5F9; }\n\n  /* КАБИНЕТ КЛИЕНТА */\n  .cr-cabinet-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 16px;\n    margin-bottom: 18px;\n    flex-wrap: wrap;\n    gap: 12px;\n  }\n  .cr-client-profile { display: flex; align-items: center; gap: 12px; }\n  .cr-client-avatar {\n    width: 44px; height: 44px; border-radius: 50%;\n    background: var(--cr-amber); color: #0F172A;\n    display: flex; align-items: center; justify-content: center;\n    font-weight: 800; font-size: 16px;\n  }\n  .cr-client-profile h4 { margin: 0 0 4px 0; font-size: 18px; color: #FFFFFF; }\n  .cr-client-profile p { margin: 0; font-size: 13px; color: var(--cr-text-muted); }\n  .cr-badge-active { color: #34D399; font-weight: 600; }\n\n  .cr-cab-right-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }\n  .cr-btn-calc-jump {\n    display: inline-flex; align-items: center; gap: 6px;\n    background: rgba(245, 158, 11, 0.15);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n    color: var(--cr-amber);\n    padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;\n  }\n  .cr-btn-calc-jump svg { width: 16px; height: 16px; }\n  .cr-btn-logout {\n    display: inline-flex; align-items: center; gap: 6px;\n    background: rgba(239, 68, 68, 0.12);\n    border: 1px solid rgba(239, 68, 68, 0.25);\n    color: #F87171; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;\n  }\n  .cr-btn-logout svg { width: 16px; height: 16px; }\n\n  .cr-cabinet-toolbar {\n    display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;\n  }\n  .cr-count-tag { font-size: 14px; color: #CBD5E1; }\n  .cr-count-tag strong { color: var(--cr-amber); font-size: 16px; }\n\n  .cr-shipment-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px 20px;\n    margin-bottom: 12px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n  }\n  .cr-shipment-card:hover {\n    border-color: var(--cr-amber);\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);\n  }\n  .cr-sc-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }\n  .cr-sc-id { font-size: 16px; font-weight: 700; color: #FFFFFF; }\n  .cr-sc-route { font-size: 13px; color: #CBD5E1; display: flex; align-items: center; gap: 8px; }\n  .cr-sc-route span.arrow { color: var(--cr-amber); font-weight: bold; }\n\n  /* РЕГИСТРАЦИЯ */\n  .cr-reg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }\n  .cr-reg-footer { grid-column: span 2; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 8px; }\n  .cr-privacy-text { font-size: 12px; color: var(--cr-text-muted); text-align: center; margin: 0; }\n\n  .cr-alert-success {\n    display: flex; align-items: center; gap: 16px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    border-radius: 12px; padding: 20px; margin-top: 16px;\n  }\n  .cr-alert-icon {\n    width: 40px; height: 40px; border-radius: 50%;\n    background: #10B981; color: #0B1325;\n    display: flex; align-items: center; justify-content: center;\n    font-weight: 800; font-size: 20px; flex-shrink: 0;\n  }\n  .cr-alert-success h4 { margin: 0 0 4px 0; color: #34D399; font-size: 16px; }\n  .cr-alert-success p { margin: 0; font-size: 13px; color: #CBD5E1; }\n\n  @media (max-width: 768px) {\n    .cr-stats-bar { flex-direction: column; align-items: stretch; padding: 16px; }\n    .cr-stat-divider { display: none; }\n    .cr-card { padding: 18px; }\n    .cr-tab-btn { font-size: 12px; padding: 10px 8px; }\n    .cr-input-group { flex-direction: column; }\n    .cr-btn-primary { width: 100%; }\n    .cr-calc-inputs-grid, .cr-reg-grid { grid-template-columns: 1fr; }\n    .cr-span-2, .cr-reg-footer { grid-column: span 1; }\n    .cr-route-track { left: 20px; right: 20px; }\n  }\n\n  /* AUTOCOMPLETE DROPDOWN ДЛЯ СТАНЦИЙ */\n  .cr-station-autocomplete-wrap { position: relative; }\n  .cr-station-dropdown {\n    position: absolute;\n    top: calc(100% + 4px);\n    left: 0; right: 0;\n    background: #0B1325;\n    border: 1px solid var(--cr-amber);\n    border-radius: 12px;\n    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);\n    z-index: 1000;\n    max-height: 280px;\n    overflow-y: auto;\n    padding: 6px;\n    backdrop-filter: blur(16px);\n  }\n  .cr-station-item {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 10px 14px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.15s ease;\n    gap: 10px;\n  }\n  .cr-station-item:hover { background: rgba(245, 158, 11, 0.18); }\n  .cr-st-left { display: flex; align-items: center; gap: 10px; }\n  .cr-st-code {\n    font-family: monospace;\n    font-size: 11px;\n    font-weight: 700;\n    color: var(--cr-amber);\n    background: rgba(245, 158, 11, 0.15);\n    padding: 2px 6px;\n    border-radius: 4px;\n  }\n  .cr-st-name { font-size: 13px; font-weight: 600; color: #F8FAFC; }\n  .cr-st-badges { display: flex; align-items: center; gap: 6px; }\n  .cr-st-badge-road {\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(37, 99, 235, 0.2);\n    color: #60A5FA;\n    border: 1px solid rgba(37, 99, 235, 0.3);\n  }\n  .cr-st-badge-border {\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(239, 68, 68, 0.2);\n    color: #F87171;\n    border: 1px solid rgba(239, 68, 68, 0.3);\n  }\n\n  /* ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА */\n  .cr-route-scheme-card {\n    background: rgba(15, 23, 42, 0.88);\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    border-radius: 14px;\n    padding: 18px 24px;\n    margin: 20px 0;\n  }\n  .cr-rs-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 16px;\n    flex-wrap: wrap;\n    gap: 8px;\n  }\n  .cr-rs-badge {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n    font-size: 12px;\n    font-weight: 700;\n    padding: 4px 12px;\n    border-radius: 9999px;\n    border: 1px solid rgba(245, 158, 11, 0.3);\n  }\n  .cr-rs-distance { font-size: 13px; color: #94A3B8; font-weight: 600; }\n  .cr-rs-flow {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    flex-wrap: wrap;\n  }\n  .cr-rs-step { display: flex; align-items: center; gap: 10px; }\n  .cr-rs-dot {\n    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;\n  }\n  .cr-rs-dot.origin { background: #10B981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }\n  .cr-rs-dot.border { background: #F59E0B; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }\n  .cr-rs-dot.dest { background: #3B82F6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }\n  .cr-rs-name { font-size: 14px; font-weight: 700; color: #F8FAFC; }\n  .cr-rs-sub { font-size: 12px; color: #94A3B8; }\n  .cr-rs-line {\n    flex: 1; height: 2px;\n    background: rgba(255, 255, 255, 0.15);\n    position: relative;\n    min-width: 60px;\n    text-align: center;\n  }\n  .cr-rs-line-info {\n    position: absolute;\n    top: -18px; left: 50%;\n    transform: translateX(-50%);\n    font-size: 11px;\n    color: var(--cr-amber);\n    font-weight: 600;\n    white-space: nowrap;\n  }\n\n  /* ПЕРЕКЛЮЧАТЕЛЬ ВАЛЮТ */\n  .cr-currency-pills { display: flex; gap: 6px; margin-bottom: 8px; justify-content: flex-end; }\n  .cr-cur-pill {\n    background: rgba(255, 255, 255, 0.08);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #94A3B8;\n    font-size: 11px;\n    font-weight: 700;\n    padding: 4px 10px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-cur-pill.active {\n    background: var(--cr-amber);\n    color: #070B14;\n    border-color: var(--cr-amber);\n  }\n\n  /* R-ТАРИФ ТАБЛИЦА */\n  .cr-rtariff-table-wrap {\n    margin-top: 20px;\n    background: rgba(11, 19, 37, 0.85);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    overflow-x: auto;\n  }\n  .cr-rtariff-table-title {\n    font-size: 13px;\n    font-weight: 700;\n    color: var(--cr-amber);\n    text-transform: uppercase;\n    letter-spacing: 0.6px;\n    margin-bottom: 12px;\n  }\n  .cr-rtariff-table {\n    width: 100%;\n    border-collapse: collapse;\n    font-size: 13px;\n    color: #E2E8F0;\n  }\n  .cr-rtariff-table th {\n    text-align: left;\n    padding: 10px 12px;\n    background: rgba(255, 255, 255, 0.04);\n    color: #94A3B8;\n    font-size: 11px;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n  }\n  .cr-rtariff-table td {\n    padding: 12px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.05);\n  }\n  .cr-rtariff-table tr.total-row td {\n    font-weight: 800;\n    color: var(--cr-amber);\n    border-top: 2px solid rgba(245, 158, 11, 0.4);\n    background: rgba(245, 158, 11, 0.06);\n  }\n  .cr-text-right { text-align: right !important; }\n  .cr-quote-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }\n  .cr-qbadge {\n    background: rgba(255, 255, 255, 0.06);\n    border: 1px solid rgba(255, 255, 255, 0.12);\n    font-size: 12px;\n    padding: 3px 8px;\n    border-radius: 6px;\n    color: #CBD5E1;\n  }\n\n\n  /* Станции следования по ТР-4 (Маршрутный лист) */\n  .cr-inter-badge {\n    display: inline-flex;\n    align-items: center;\n    padding: 3px 8px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 215, 0, 0.18);\n    border-radius: 4px;\n    font-size: 11px;\n    color: #e2e8f0;\n  }\n  .cr-inter-badge.origin {\n    border-color: #10b981;\n    color: #34d399;\n    font-weight: 600;\n  }\n  .cr-inter-badge.border {\n    border-color: #f59e0b;\n    color: #fbbf24;\n    font-weight: 600;\n  }\n  .cr-inter-badge.dest {\n    border-color: #ef4444;\n    color: #f87171;\n    font-weight: 600;\n  }\n  .cr-inter-arrow {\n    color: rgba(255, 255, 255, 0.4);\n    font-size: 9px;\n    margin: 0 2px;\n  }\n\n\n  /* МУЛЬТИМОДАЛЬНЫЙ СУПЕР-КАЛЬКУЛЯТОР: СТИЛИ МОДАЛЬНОСТЕЙ И ЧЕК-ЛИСТА ДОКУМЕНТОВ */\n  .cr-modality-bar {\n    display: flex;\n    gap: 8px;\n    margin: 14px 0 18px;\n    overflow-x: auto;\n    padding-bottom: 6px;\n    scrollbar-width: thin;\n  }\n  .cr-modality-btn {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    padding: 10px 16px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 8px;\n    color: #94a3b8;\n    font-size: 13px;\n    font-weight: 500;\n    cursor: pointer;\n    white-space: nowrap;\n    transition: all 0.25s ease;\n  }\n  .cr-modality-btn:hover {\n    background: rgba(255, 255, 255, 0.08);\n    color: #f8fafc;\n    border-color: rgba(197, 160, 89, 0.4);\n  }\n  .cr-modality-btn.active {\n    background: linear-gradient(135deg, rgba(197, 160, 89, 0.25), rgba(197, 160, 89, 0.06));\n    border-color: #c5a059;\n    color: #f8fafc;\n    box-shadow: 0 4px 14px rgba(197, 160, 89, 0.18);\n  }\n  .cr-mod-icon {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    width: 20px;\n    height: 20px;\n  }\n  .cr-mod-svg {\n    width: 20px;\n    height: 20px;\n    stroke: #C5A059 !important;\n    stroke-width: 2;\n    transition: all 0.25s ease;\n  }\n  .cr-modality-btn:hover .cr-mod-svg {\n    stroke: #FFFFFF !important;\n  }\n  .cr-modality-btn.active .cr-mod-svg {\n    stroke: #FFFFFF !important;\n    filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.9));\n  }\n  .cr-station-road-tag {\n    display: inline-block;\n    font-size: 11px;\n    color: var(--cr-gold);\n    background: rgba(197, 160, 89, 0.12);\n    border: 1px solid rgba(197, 160, 89, 0.25);\n    border-radius: 4px;\n    padding: 1px 6px;\n    margin-left: 6px;\n  }\n  .cr-mod-icon_old {\n    font-size: 16px;\n  }\n\n  /* Панели модальностей */\n  .cr-mod-panel {\n    display: none;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-mod-panel.active {\n    display: block !important;\n  }\n\n  /* ЧЕК-ЛИСТ ДОКУМЕНТОВ */\n  .cr-doc-checklist-card {\n    background: linear-gradient(180deg, rgba(15, 23, 42, 0.8), rgba(7, 11, 20, 0.95));\n    border: 1px solid rgba(197, 160, 89, 0.25);\n    border-radius: 12px;\n    padding: 20px;\n    margin-top: 20px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);\n  }\n  .cr-doc-header {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    flex-wrap: wrap;\n    gap: 12px;\n    margin-bottom: 6px;\n  }\n  .cr-doc-badge {\n    display: inline-block;\n    font-size: 10px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.8px;\n    color: #c5a059;\n    background: rgba(197, 160, 89, 0.12);\n    padding: 2px 8px;\n    border-radius: 4px;\n    margin-bottom: 6px;\n  }\n  .cr-doc-title {\n    margin: 0;\n    font-size: 16px;\n    font-weight: 600;\n    color: #f8fafc;\n    display: flex;\n    align-items: center;\n  }\n  .cr-doc-subtitle {\n    margin: 0 0 16px;\n    font-size: 12px;\n    color: #94a3b8;\n    line-height: 1.5;\n  }\n  .cr-doc-actions {\n    display: flex;\n    gap: 8px;\n  }\n  .cr-doc-btn {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    padding: 6px 12px;\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    border-radius: 6px;\n    color: #e2e8f0;\n    font-size: 12px;\n    font-weight: 500;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-doc-btn:hover {\n    background: rgba(255, 255, 255, 0.1);\n    color: #fff;\n    border-color: #c5a059;\n  }\n  .cr-doc-btn.whatsapp {\n    background: rgba(37, 211, 102, 0.12);\n    border-color: rgba(37, 211, 102, 0.3);\n    color: #4ade80;\n  }\n  .cr-doc-btn.whatsapp:hover {\n    background: rgba(37, 211, 102, 0.2);\n    border-color: #25d366;\n    color: #fff;\n  }\n  .cr-doc-items-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));\n    gap: 10px;\n  }\n  .cr-doc-item {\n    display: flex;\n    gap: 12px;\n    padding: 12px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    align-items: flex-start;\n  }\n  .cr-doc-icon {\n    width: 28px;\n    height: 28px;\n    border-radius: 6px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 13px;\n    flex-shrink: 0;\n    background: rgba(197, 160, 89, 0.15);\n    color: #c5a059;\n  }\n  .cr-doc-icon.mandatory {\n    background: rgba(16, 185, 129, 0.15);\n    color: #10b981;\n  }\n  .cr-doc-name {\n    font-size: 13px;\n    font-weight: 600;\n    color: #f1f5f9;\n    margin-bottom: 3px;\n  }\n  .cr-doc-desc {\n    font-size: 11px;\n    color: #94a3b8;\n    line-height: 1.4;\n  }\n  .cr-doc-tag {\n    display: inline-block;\n    font-size: 9px;\n    font-weight: 600;\n    padding: 1px 5px;\n    border-radius: 3px;\n    margin-left: 6px;\n    text-transform: uppercase;\n  }\n  .cr-doc-tag.mandatory {\n    background: rgba(16, 185, 129, 0.2);\n    color: #34d399;\n  }\n  .cr-doc-tag.optional {\n    background: rgba(148, 163, 184, 0.15);\n    color: #cbd5e1;\n  }\n\n  /* Специфические поля модальностей */\n  .cr-modality-inputs-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n    gap: 16px;\n    margin-top: 16px;\n  }";
 
   // 1. Динамическое внедрение стилей в <head>
   function injectStyles() {
@@ -74,180 +74,5033 @@
  * транзитные коридоры (РЖД -> КТЖ -> УТИ), расчет нормативного километража, подбор погранпереходов, предоставление парка СПС и Incoterms 2020.
  */
 
+/**
+ * Caravan Railroad — Цифровое тарифное ядро "Caravan 1520" v3.6.0
+ * Поучастковая тарификация по правилам Тарифного руководства № 4 (ТР-4 / План формирования)
+ * Точный аддитивный километраж по межгосударственным и междорожным стыкам без коэффициентов.
+ * 85 дорог пользования по 17 администрациям СНГ и Азии.
+ */
+
+/**
+ * Caravan Railroad — Цифровое тарифное ядро "Caravan 1520" v3.6.0
+ * Поучастковая тарификация по правилам Тарифного руководства № 4 (ТР-4 / План формирования)
+ * Точный аддитивный километраж по межгосударственным и междорожным стыкам без эвристических коэффициентов.
+ * 85 дорог пользования по 17 администрациям СНГ и Азии.
+ */
+
 var CaravanRailwayEngine = (function() {
 
-  // 1. БАЗА СТАНЦИЙ СЕТИ 1520 ММ
+  // 1. БАЗА СТАНЦИЙ СЕТИ 1520 ММ С ДОРОГАМИ ПОЛЬЗОВАНИЯ
   var STATIONS = [
   {
-    "code": "000251",
-    "name": "Хайратан (эксп.)",
-    "country": "AFG",
-    "road": "АРА",
-    "is_border": true,
-    "road_label": "АРА (Афганистан)",
-    "country_name": "Афганистан"
+    "code": "035601",
+    "name": "Автово (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "560330",
+    "name": "Авчала (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "510308",
+    "name": "Азов (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Ростов)",
+    "is_border": true
+  },
+  {
+    "code": "745402",
+    "name": "Айни (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "000243",
+    "name": "Акина (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "401401",
+    "name": "Аккаржа (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "618404",
+    "name": "Аксарайская II (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "679107",
+    "name": "Аксу (обп) (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
   },
   {
     "code": "663404",
     "name": "Актау-Порт (эксп.)",
     "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "689409",
+    "name": "Актау-Порт-Паром (эксп. на Туркменбаши I)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "877000",
+    "name": "Акяйла (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Томск)",
+    "is_border": true
+  },
+  {
+    "code": "719802",
+    "name": "Ала-Тоо (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "538905",
+    "name": "Алагир (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Мин. Воды)",
+    "is_border": true
+  },
+  {
+    "code": "649101",
+    "name": "Алань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Пенза)",
+    "is_border": true
+  },
+  {
+    "code": "814509",
+    "name": "Алимбет (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "80",
+    "road_label": "Южно-Уральская ж. д. (Оренбург/Карталы/Орск)",
+    "is_border": true
   },
   {
     "code": "707701",
     "name": "Алтынколь (эксп.)",
     "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "553002",
+    "name": "Алят (эксп. на Курык)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "548803",
+    "name": "Алят (эксп. на Туркменбаши I)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "is_border": true
+  },
+  {
+    "code": "736507",
+    "name": "Амузанг (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "869802",
+    "name": "Армянск (стык)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Кузбасс)",
+    "is_border": true
+  },
+  {
+    "code": "981701",
+    "name": "Артем-Приморский I (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "752302",
+    "name": "Артык (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "470906",
+    "name": "Аршинцево (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "554503",
+    "name": "Астара (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "566002",
+    "name": "Ахурян (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "102308",
+    "name": "Багратионовск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "291001",
+    "name": "Бакарица (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Архангельск)",
+    "is_border": true
+  },
+  {
+    "code": "547406",
+    "name": "Баку-Торговая Пристань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "is_border": true
+  },
+  {
+    "code": "104500",
+    "name": "Балтийск (паром, эксп. в порты третьих стр.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "104074",
+    "name": "Балтийск (паром, эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "103508",
+    "name": "Балтийский Лес (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "557709",
+    "name": "Бархударлы (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "399502",
+    "name": "Басарабяска (эксп. на Серпнево I)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "382605",
+    "name": "Батево (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "579905",
+    "name": "Батуми-Товарная (паром, эксп. на Варну)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "571405",
+    "name": "Батуми-Товарная (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
   },
   {
     "code": "662905",
     "name": "Бейнеу (эксп.)",
     "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "726204",
+    "name": "Бекабад (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "747501",
+    "name": "Бекобод (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "403303",
+    "name": "Белгород-Днестровский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "014501",
+    "name": "Белое Море (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "202807",
+    "name": "Белынковичи (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "478300",
+    "name": "Бердянск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "400606",
+    "name": "Береговая (эксп. на Порт Южный)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "386108",
+    "name": "Берлебаш (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "558701",
+    "name": "Беюк-Кясик (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "842903",
+    "name": "Бийск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Новосибирск)",
+    "is_border": true
+  },
+  {
+    "code": "649008",
+    "name": "Биклянь (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Пенза)",
+    "is_border": true
+  },
+  {
+    "code": "954901",
+    "name": "Благовещенск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "94",
+    "road_label": "Забайкальская ж. д. (Могоча/Свободный)",
+    "is_border": true
+  },
+  {
+    "code": "986902",
+    "name": "Блюхер (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "162440",
+    "name": "Богданов-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "664703",
+    "name": "Болашак (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "097400",
+    "name": "Болдерая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "734709",
+    "name": "Болдыр (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "577596",
+    "name": "Боржоми (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "351700",
+    "name": "Броды (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "134807",
+    "name": "Брузги (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "126209",
+    "name": "Бугяняй (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "419100",
+    "name": "Вадим (эксп. условный)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "368701",
+    "name": "Вадул-Сирет (эксп.ЧФР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "561136",
+    "name": "Вазиани (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "083501",
+    "name": "Вайвара (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "099209",
+    "name": "Вайнеде (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "004930",
+    "name": "Вайниккала (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "086302",
+    "name": "Валга (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "578207",
+    "name": "Вале (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "009490",
+    "name": "Вартиус (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "562923",
+    "name": "Вели (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "098306",
+    "name": "Вентспилс (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "146096",
+    "name": "Верейцы-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "645702",
+    "name": "Верхняя Терраса (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Пенза)",
+    "is_border": true
+  },
+  {
+    "code": "203706",
+    "name": "Витемля (оп) (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "980200",
+    "name": "Владивосток (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "538801",
+    "name": "Владикавказ (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Мин. Воды)",
+    "is_border": true
+  },
+  {
+    "code": "611208",
+    "name": "Волгоград-Порт (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "611301",
+    "name": "Волжский (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "073904",
+    "name": "Волосово (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "432804",
+    "name": "Волчанск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "020108",
+    "name": "Выборг (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "131809",
+    "name": "Высоко-Литовск (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "020706",
+    "name": "Высоцк (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "016507",
+    "name": "Выходной (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "519406",
+    "name": "Вышестеблиевская (мост, экспорт)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Ростов)",
+    "is_border": true
+  },
+  {
+    "code": "523100",
+    "name": "Вышестеблиевская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "980501",
+    "name": "Гайдамак (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "522004",
+    "name": "Гайдук (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "501101",
+    "name": "Галута (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "747107",
+    "name": "Гаравути (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "160206",
+    "name": "Годутишки (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "578620",
+    "name": "Гоми (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "579036",
+    "name": "Гори (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "138808",
+    "name": "Горынь (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "139213",
+    "name": "Горынь-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "855142",
+    "name": "Граковка (эксп.) (стык)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Алтай/Локоть/Кулунда)",
+    "is_border": true
+  },
+  {
+    "code": "398603",
+    "name": "Гречень (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "989309",
+    "name": "Гродеково (эксп. КЖД)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "521105",
+    "name": "Грушевая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "579801",
+    "name": "Дедоплис-Цкаро (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "718405",
+    "name": "Джалал-Абад (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "704012",
+    "name": "Джетысай (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "720509",
+    "name": "Джилга (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "550108",
+    "name": "Джульфа (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "738004",
+    "name": "Джумуртау (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "397704",
+    "name": "Джурджулешть (эксп. УЗ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "398001",
+    "name": "Джурджулешть-Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000373",
+    "name": "Дзамын-Ууд (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "560523",
+    "name": "Дзегви (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "968603",
+    "name": "Дземги (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Хабаровск)",
+    "is_border": true
+  },
+  {
+    "code": "000011",
+    "name": "Дзунбаян-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
   },
   {
     "code": "708507",
     "name": "Достык (эксп.)",
     "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
   },
   {
-    "code": "666501",
-    "name": "Илецк I (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "693602",
-    "name": "Курык-Порт (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "711105",
-    "name": "Локоть (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "704402",
-    "name": "Луговая (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "664900",
-    "name": "Озинки (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "688708",
-    "name": "Петропавловск (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "704101",
-    "name": "Сарыагаш (эксп.)",
-    "country": "KAZ",
-    "road": "КТЖ",
-    "is_border": true,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "945404",
-    "name": "Забайкальск (эксп.)",
+    "code": "106101",
+    "name": "Драугисте (эксп.)",
     "country": "RUS",
-    "road": "РЖД",
-    "is_border": true,
-    "road_label": "РЖД",
-    "country_name": "Россия"
-  },
-  {
-    "code": "033907",
-    "name": "Санкт-Петербург-Варшавский (эксп.)",
-    "country": "RUS",
-    "road": "Okt",
-    "is_border": true,
-    "road_label": "РЖД (Окт)",
-    "country_name": "Россия"
-  },
-  {
-    "code": "038402",
-    "name": "Санкт-Петербург-Финляндский (эксп.)",
-    "country": "RUS",
-    "road": "Okt",
-    "is_border": true,
-    "road_label": "РЖД (Окт)",
-    "country_name": "Россия"
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
   },
   {
     "code": "938805",
     "name": "Душанбе II (эксп.)",
     "country": "TJK",
-    "road": "Tdzh",
-    "is_border": true,
-    "road_label": "Tdzh",
-    "country_name": "Таджикистан"
+    "country_name": "Таджикистан",
+    "admin": "TJK",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "384901",
+    "name": "Дьяково (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "474703",
+    "name": "Евпатория-Товарная (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "160816",
+    "name": "Езерище-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "816504",
+    "name": "Елимай (обп) (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "80",
+    "road_label": "Южно-Уральская ж. д. (Оренбург/Карталы/Орск)",
+    "is_border": true
+  },
+  {
+    "code": "131300",
+    "name": "Жабинка (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "637000",
+    "name": "Жигулевское Море (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Самара)",
+    "is_border": true
+  },
+  {
+    "code": "152171",
+    "name": "Житковичи-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "418101",
+    "name": "Жовтневая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "759104",
+    "name": "Жумуртов (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "159306",
+    "name": "Журбин (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "945404",
+    "name": "Забайкальск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "94",
+    "road_label": "Забайкальская ж. д. (Чита/Забайкальск)",
+    "is_border": true
+  },
+  {
+    "code": "946905",
+    "name": "Забайкальск (эксп.ДСВН)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "94",
+    "road_label": "Забайкальская ж. д. (Чита/Забайкальск)",
+    "is_border": true
+  },
+  {
+    "code": "947109",
+    "name": "Забайкальск (эксп.ЗЧ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "94",
+    "road_label": "Забайкальская ж. д. (Чита/Забайкальск)",
+    "is_border": true
+  },
+  {
+    "code": "150405",
+    "name": "Закопытье (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "150528",
+    "name": "Закопытье-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "310037",
+    "name": "Замын-Ууд (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Котлас)",
+    "is_border": true
+  },
+  {
+    "code": "037202",
+    "name": "Заневский Пост (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "165805",
+    "name": "Заольша (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "165627",
+    "name": "Заольша-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "103300",
+    "name": "Западный-Новый (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "460405",
+    "name": "Запорожье-Пристань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "094807",
+    "name": "Земитаны (3 км Рига-Краста эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "615707",
+    "name": "Зензели (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "827104",
+    "name": "Зерновая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "80",
+    "road_label": "Южно-Уральская ж. д. (Курган/Петропавловск)",
+    "is_border": true
+  },
+  {
+    "code": "095903",
+    "name": "Зиемельблазма (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "682203",
+    "name": "Золотая Сопка (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "076003",
+    "name": "Ивангород-Нарвский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "504805",
+    "name": "Изварино (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "404607",
+    "name": "Измаил (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "352609",
+    "name": "Изов (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "666501",
+    "name": "Илецк I (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "097203",
+    "name": "Ильгюциемс (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "402103",
+    "name": "Ильичевск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "419208",
+    "name": "Ильичевск-Паромная (прочий эксп. Турция)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "402705",
+    "name": "Ильичевск-Паромная (прочий эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "402601",
+    "name": "Ильичевск-Паромная (эксп. БДЖ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "402207",
+    "name": "Ильичевск-Паромная (эксп. на Батуми)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "404005",
+    "name": "Ильичевск-Паромная (эксп. на Поти)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "005030",
+    "name": "Иматранкоски (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "110200",
+    "name": "Индра (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "478403",
+    "name": "Инкерман I (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "938504",
+    "name": "Исфара (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "92",
+    "road_label": "Восточно-Сибирская ж. д. (Улан-Удэ/БАМ)",
+    "is_border": true
+  },
+  {
+    "code": "528208",
+    "name": "Кавказ (паром эксп. на Поти)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "528104",
+    "name": "Кавказ (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "451805",
+    "name": "Кайдакская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "100105",
+    "name": "Калининград-Сортировочный (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "257208",
+    "name": "Кама (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "24",
+    "road_label": "Горьковская ж. д. (Н. Новгород)",
+    "is_border": true
+  },
+  {
+    "code": "623101",
+    "name": "Камышин (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (Волгоград/Астрахань)",
+    "is_border": true
+  },
+  {
+    "code": "472407",
+    "name": "Камышовая Бухта (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "039903",
+    "name": "Капитолово (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "744005",
+    "name": "Кара-Суу (эксп. на Савай)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "744202",
+    "name": "Кара-Суу (эксп. на Султанабад)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "718208",
+    "name": "Карасу-Узбекский (эксп. на Савай)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "080503",
+    "name": "Кейла (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
   },
   {
     "code": "720104",
     "name": "Келес (эксп.)",
     "country": "UZB",
-    "road": "УТИ",
-    "is_border": true,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "470702",
+    "name": "Керчь-Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "479707",
+    "name": "Керчь-Порт-Паром (эксп. на Поти)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "662002",
+    "name": "Кигаш (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "513804",
+    "name": "Кизитеринка (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Ростов)",
+    "is_border": true
+  },
+  {
+    "code": "317409",
+    "name": "Кинешма (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Котлас)",
+    "is_border": true
+  },
+  {
+    "code": "678405",
+    "name": "Киргильда (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "108107",
+    "name": "Клайпеда (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "359505",
+    "name": "Клевань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "201908",
+    "name": "Климов (эксп.) (удалена)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "383307",
+    "name": "Ключарки (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "439502",
+    "name": "Козачок (бп) (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "394803",
+    "name": "Колбасна (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "746903",
+    "name": "Колхозабад (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "018709",
+    "name": "Комсомольск-Мурманский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "990202",
+    "name": "Корсаков (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "280806",
+    "name": "Котлас-Северный (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Вологда)",
+    "is_border": true
+  },
+  {
+    "code": "076207",
+    "name": "Котлы (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "985505",
+    "name": "Крабовая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "529003",
+    "name": "Краснодар II (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "528903",
+    "name": "Краснодар-Сортировочный (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "000282",
+    "name": "Красное (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "147845",
+    "name": "Красный берег-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "099001",
+    "name": "Криеву сала (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "648804",
+    "name": "Круглое Поле (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Пенза)",
+    "is_border": true
+  },
+  {
+    "code": "529304",
+    "name": "Крымская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "560631",
+    "name": "Ксани (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "424507",
+    "name": "Ксениево (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "746000",
+    "name": "Кудукли (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "401204",
+    "name": "Кулиндорово (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "697509",
+    "name": "Кулунда (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "748805",
+    "name": "Куляб (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "033305",
+    "name": "Купчинская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "746104",
+    "name": "Курган-Тюбе (эксп.)",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": true
+  },
+  {
+    "code": "844805",
+    "name": "Куркамыс (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Новосибирск)",
+    "is_border": true
+  },
+  {
+    "code": "110304",
+    "name": "Курцумс (рзд) (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "693602",
+    "name": "Курык-Порт (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "693706",
+    "name": "Курык-Порт эксп. перев.",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "574795",
+    "name": "Кутаиси II (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "619303",
+    "name": "Кутум (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "120202",
+    "name": "Кяна (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "760807",
+    "name": "Левшино (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "76",
+    "road_label": "Свердловская ж. д. (Пермь)",
+    "is_border": true
+  },
+  {
+    "code": "134328",
+    "name": "Лесная-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "391106",
+    "name": "Ливада (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "098704",
+    "name": "Лиепая-Пасажиеру (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "564007",
+    "name": "Лило (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "711302",
+    "name": "Локоть (эксп. на Малиновое Озеро)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "711105",
+    "name": "Локоть (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "207209",
+    "name": "Локоть (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "704402",
+    "name": "Луговая (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "076404",
+    "name": "Лужская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "165400",
+    "name": "Лынтупы (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "352008",
+    "name": "Любомль (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "081703",
+    "name": "Маарду (эксп. через порт Мийдуранна)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "082208",
+    "name": "Маарду (эксп. через порт Мууга)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "725305",
+    "name": "Мактаарал (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "132106",
+    "name": "Малорита (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "367408",
+    "name": "Мамалыга (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "102806",
+    "name": "Мамоново (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "744404",
+    "name": "Манас (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "096605",
+    "name": "Мангали (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "564098",
+    "name": "Марнеули (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "986404",
+    "name": "Махалино (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "661902",
+    "name": "Махамбет (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "543405",
+    "name": "Махачкала (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "is_border": true
+  },
+  {
+    "code": "543602",
+    "name": "Махачкала (эксп.)(паром)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "is_border": true
+  },
+  {
+    "code": "091404",
+    "name": "Мейтене (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "478507",
+    "name": "Мекензиевы Горы (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "331800",
+    "name": "Могилев-Подольский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "199905",
+    "name": "Москва-Южный Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Москва)",
+    "is_border": true
+  },
+  {
+    "code": "373606",
+    "name": "Мостиска II (эксп. ДБ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "373803",
+    "name": "Мостиска II (эксп. ЧД)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "265204",
+    "name": "Моховые Горы (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "24",
+    "road_label": "Горьковская ж. д. (Киров)",
+    "is_border": true
+  },
+  {
+    "code": "123003",
+    "name": "Моцкава (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "380807",
+    "name": "Мукачево (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "081900",
+    "name": "Мууга (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "089207",
+    "name": "Мыйзакюла (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "985702",
+    "name": "Мыс Астафьева (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "980906",
+    "name": "Мыс-Чуркин (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "758607",
+    "name": "Найманкул (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "937200",
+    "name": "Наушки (эксп. ДСВН)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "92",
+    "road_label": "Восточно-Сибирская ж. д. (Улан-Удэ/БАМ)",
+    "is_border": true
+  },
+  {
+    "code": "937304",
+    "name": "Наушки (эксп. КЖД)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "92",
+    "road_label": "Восточно-Сибирская ж. д. (Улан-Удэ/БАМ)",
+    "is_border": true
+  },
+  {
+    "code": "984700",
+    "name": "Находка (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "984803",
+    "name": "Находка (эксп.-уголь)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "986103",
+    "name": "Находка-Восточная (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "144014",
+    "name": "Негорелое-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "000003",
+    "name": "Нерюнгри-Грузовая-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000004",
+    "name": "Нерюнгри-Пассажирская-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "100406",
+    "name": "Нестеров (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "257903",
+    "name": "Нефтекамск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "24",
+    "road_label": "Горьковская ж. д. (Н. Новгород)",
+    "is_border": true
+  },
+  {
+    "code": "450906",
+    "name": "Нижнеднепровск-Пристань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "004450",
+    "name": "Нийрала (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "669209",
+    "name": "Никельтау (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "415601",
+    "name": "Николаев-Грузовой (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "734408",
+    "name": "Нишан (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "759301",
+    "name": "Нишон (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "346702",
+    "name": "Новоград-Волынский I (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "499407",
+    "name": "Новозолотаревка (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "521001",
+    "name": "Новороссийск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "392306",
+    "name": "Новосавицкая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "035902",
+    "name": "Новый Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "000006",
+    "name": "ОП 378 км (стык)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000934",
+    "name": "ОП Берлебаш (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "024611",
+    "name": "ОП Погранкондуши",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "736808",
+    "name": "Оазис (рзд) (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "402902",
+    "name": "Одесса-Западная (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "404109",
+    "name": "Одесса-Застава I (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "419800",
+    "name": "Одесса-Лиски (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "400700",
+    "name": "Одесса-Пересыпь (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "400409",
+    "name": "Одесса-Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "410805",
+    "name": "Одесса-Товарная (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "664900",
+    "name": "Озинки (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "506000",
+    "name": "Океанская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "638709",
+    "name": "Октябрьск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Самара)",
+    "is_border": true
+  },
+  {
+    "code": "507409",
+    "name": "Ольховая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "075806",
+    "name": "Ораниенбаум (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "166757",
+    "name": "Орша-Восточная-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "166719",
+    "name": "Орша-Западная-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "169100",
+    "name": "Осиновка (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "341107",
+    "name": "Острог (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "636506",
+    "name": "Отвага (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Самара)",
+    "is_border": true
+  },
+  {
+    "code": "719709",
+    "name": "Ош (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "135000",
+    "name": "ПОРЕЧЬЕ-ЭКСПОРТ",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "080908",
+    "name": "Палдиски (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "038600",
+    "name": "Парнас (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "419706",
+    "name": "Паромная (прочий эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000692",
+    "name": "Паромная (эксп. Болгария)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "579708",
+    "name": "Паромная (эксп. на Батуми)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "572304",
+    "name": "Паромная (эксп. на Поти)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "702905",
+    "name": "Пахтаарал (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "761301",
+    "name": "Пермь II (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "76",
+    "road_label": "Свердловская ж. д. (Пермь)",
+    "is_border": true
+  },
+  {
+    "code": "688708",
+    "name": "Петропавловск (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "100209",
+    "name": "Пионерский Курорт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "758008",
+    "name": "Питнак (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "738803",
+    "name": "Питняк (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "971004",
+    "name": "Покровка-Пристань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Владивосток/Находка)",
+    "is_border": true
+  },
+  {
+    "code": "625709",
+    "name": "Покровск-Приволжский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (Волгоград/Астрахань)",
+    "is_border": true
+  },
+  {
+    "code": "577806",
+    "name": "Поничала (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "135509",
+    "name": "Поречье (эксп. на Друскининкай)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "614507",
+    "name": "Порт Оля (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "461205",
+    "name": "Порт-Великое Запорожье (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "718903",
+    "name": "Пост 38 км (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "987801",
+    "name": "Посьет (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "572003",
+    "name": "Поти (паром, эксп. на Варну)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "572200",
+    "name": "Поти (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "956201",
+    "name": "Поярково (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "94",
+    "road_label": "Забайкальская ж. д. (Могоча/Свободный)",
+    "is_border": true
+  },
+  {
+    "code": "619604",
+    "name": "Правый Берег (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "036200",
+    "name": "Предпортовая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "685803",
+    "name": "Пресногорьковская (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "418309",
+    "name": "Прибугская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "529200",
+    "name": "Протока (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "397009",
+    "name": "Прут II (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "078109",
+    "name": "Пурвмала (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "433609",
+    "name": "Пушкарное (рзд) (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "153901",
+    "name": "Пхов (эксп. через Мозырьский порт)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "456828",
+    "name": "Пятихатки-Стыковая",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "084871",
+    "name": "Рава-Русская (эксп. на Верхрату)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "372707",
+    "name": "Рава-Русская (эксп. на Гребенне)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "372603",
+    "name": "Рава-Русская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "415902",
+    "name": "Раздельная I (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "471001",
+    "name": "Разъезд 11 км (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "082706",
+    "name": "Раквере (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "403407",
+    "name": "Рени (эксп. ЧФР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "404908",
+    "name": "Рени-Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "099707",
+    "name": "Реньге (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "391303",
+    "name": "Рзд 208 км (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "090609",
+    "name": "Рига-Краста (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "155930",
+    "name": "Рогачев-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "562707",
+    "name": "Рустави-Грузовая (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "717807",
+    "name": "Рыбачье (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "985100",
+    "name": "Рыбники (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "564204",
+    "name": "Садахло (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "033907",
+    "name": "Санкт-Петербург-Варшавский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "038402",
+    "name": "Санкт-Петербург-Финляндский (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "629004",
+    "name": "Саратов-Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (Волгоград/Астрахань)",
+    "is_border": true
+  },
+  {
+    "code": "756905",
+    "name": "Сарахс (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "095602",
+    "name": "Саркандаугава (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "704101",
+    "name": "Сарыагаш (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "736206",
+    "name": "Сарыасия (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "135706",
+    "name": "Свислочь (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "473402",
+    "name": "Севастополь-Товарный (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "571833",
+    "name": "Сенаки (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "475300",
+    "name": "Сиваш (эксп. условный)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "106900",
+    "name": "Скуодас (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "151200",
+    "name": "Словечно (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "151145",
+    "name": "Словечно-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "148706",
+    "name": "Слуцк-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "983904",
+    "name": "Смоляниново (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "649309",
+    "name": "Соболеково (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Пенза)",
+    "is_border": true
+  },
+  {
+    "code": "105005",
+    "name": "Советск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "968500",
+    "name": "Советская Гавань-Город (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Хабаровск)",
+    "is_border": true
+  },
+  {
+    "code": "968105",
+    "name": "Советская Гавань-Сорт. (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Хабаровск)",
+    "is_border": true
+  },
+  {
+    "code": "368102",
+    "name": "Сокиряны (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "855903",
+    "name": "Соленое Озеро (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Алтай/Локоть/Кулунда)",
+    "is_border": true
+  },
+  {
+    "code": "441201",
+    "name": "Соловей (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "209501",
+    "name": "Соловьевск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "291904",
+    "name": "Соломбалка (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Архангельск)",
+    "is_border": true
+  },
+  {
+    "code": "374100",
+    "name": "Старжава (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "121101",
+    "name": "Стасилос (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "383909",
+    "name": "Страбичево (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "204408",
+    "name": "Суземка (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "202421",
+    "name": "Сураж (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "000689",
+    "name": "Сухэ-Батор (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "511601",
+    "name": "Таганрог (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Ростов)",
+    "is_border": true
+  },
+  {
+    "code": "081506",
+    "name": "Таллинн (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "088609",
+    "name": "Тамсалу (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "560063",
+    "name": "Тбилиси-Сортировочная (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "577702",
+    "name": "Тбилиси-Товарная (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "560097",
+    "name": "Тбилиси-Узловая (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "562514",
+    "name": "Телави (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "385105",
+    "name": "Тересва (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "150805",
+    "name": "Тереховка (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "150782",
+    "name": "Тереховка-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
   },
   {
     "code": "735203",
     "name": "Термез (эксп.)",
     "country": "UZB",
-    "road": "Uzb",
-    "is_border": true,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "151003",
+    "name": "Терюха (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "150354",
+    "name": "Терюха-стык",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "207001",
+    "name": "Теткино (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "17",
+    "road_label": "Московская ж. д. (Тула)",
+    "is_border": true
+  },
+  {
+    "code": "563926",
+    "name": "Тетри-Цкаро (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "529107",
+    "name": "Тимашевская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "984108",
+    "name": "Тихоокеанская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "520206",
+    "name": "Тихорецкая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "is_border": true
+  },
+  {
+    "code": "682608",
+    "name": "Тобол (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "637405",
+    "name": "Тольятти (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Самара)",
+    "is_border": true
+  },
+  {
+    "code": "431801",
+    "name": "Тополи (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000245",
+    "name": "Торгунди (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "006780",
+    "name": "Торнио (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "619407",
+    "name": "Трусово (эксп.)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГР",
+    "road": "56",
+    "road_label": "Грузинская ж. д. (ГР)",
+    "is_border": true
+  },
+  {
+    "code": "533102",
+    "name": "Туапсе-Сортировочная (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Мин. Воды)",
+    "is_border": true
+  },
+  {
+    "code": "877508",
+    "name": "Туркменбаши I (эксп., перев.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Томск)",
+    "is_border": true
+  },
+  {
+    "code": "877103",
+    "name": "Туркменбаши II (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Томск)",
+    "is_border": true
+  },
+  {
+    "code": "715106",
+    "name": "Турксиб (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "000360",
+    "name": "Турку-Пансио (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "982300",
+    "name": "Угловая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "381104",
+    "name": "Ужгород (эксп. ЖСР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "392202",
+    "name": "Унгень (эксп. БДЖ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "392109",
+    "name": "Унгень (эксп. ЧФР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "401806",
+    "name": "Усатово (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "445121",
+    "name": "Успенская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "988607",
+    "name": "Уссурийск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "513908",
+    "name": "Усть-Донецкая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Ростов)",
+    "is_border": true
+  },
+  {
+    "code": "741416",
+    "name": "Учкурган (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "970603",
+    "name": "Хабаровск I (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Владивосток/Находка)",
+    "is_border": true
+  },
+  {
+    "code": "000251",
+    "name": "Хайратан (эксп.)",
+    "country": "AFG",
+    "country_name": "Афганистан",
+    "admin": "AFG",
+    "road": "135",
+    "road_label": "Афганская ж. д. (АРА)",
+    "is_border": true
+  },
+  {
+    "code": "002311",
+    "name": "Хамина (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000361",
+    "name": "Ханко (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "987106",
+    "name": "Хасан (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "577100",
+    "name": "Хашури (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "002314",
+    "name": "Хельсинки-Вуосаари (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000136",
+    "name": "Хельсинки-Лансисатама (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "000138",
+    "name": "Хельсинки-Сорнаинен (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "418604",
+    "name": "Херсон (эксп. морской)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "418506",
+    "name": "Херсон (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "418008",
+    "name": "Херсон-Порт (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "403002",
+    "name": "Химическая (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "984907",
+    "name": "Хмыловский (рзд) (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "96",
+    "road_label": "Дальневосточная ж. д. (Комсомольск/Сахалин)",
+    "is_border": true
+  },
+  {
+    "code": "730801",
+    "name": "Ходжадавлет (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "993501",
+    "name": "Холмск (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "354107",
+    "name": "Хотислав (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "750307",
+    "name": "Хужадавлат (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "000012",
+    "name": "Цогтцэций-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "571299",
+    "name": "Чаква (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "577401",
+    "name": "Чаладиди (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "698305",
+    "name": "Ченгельды (эксп.)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": true
+  },
+  {
+    "code": "166628",
+    "name": "Червено-стык",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Сосногорск)",
+    "is_border": true
+  },
+  {
+    "code": "401308",
+    "name": "Черноморская (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "424600",
+    "name": "Черноморская (эксп.для ОПЗ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "101004",
+    "name": "Чернышевское (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "10",
+    "road_label": "Калининградская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "399201",
+    "name": "Чимишлия (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "380205",
+    "name": "Чоп (эксп. МАВ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "380506",
+    "name": "Чоп (эксп. ОББ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "380600",
+    "name": "Чоп (эксп. ЧД)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "415404",
+    "name": "Шабо (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "738201",
+    "name": "Шават (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "710600",
+    "name": "Шагыр (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "741505",
+    "name": "Шамалды-Сай (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
+  },
+  {
+    "code": "719304",
+    "name": "Шамалдысай (эксп.)",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": true
+  },
+  {
+    "code": "550409",
+    "name": "Шарур (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "158604",
+    "name": "Шестеровка (эксп.)",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": true
+  },
+  {
+    "code": "579337",
+    "name": "Шиндиси (эксп.)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": true
+  },
+  {
+    "code": "758205",
+    "name": "Шовот (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "032904",
+    "name": "Шушары (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "01",
+    "road_label": "Октябрьская ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "123501",
+    "name": "Шяштокай (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "113707",
+    "name": "Эглайне (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "11",
+    "road_label": "Литовские ж. д.",
+    "is_border": true
+  },
+  {
+    "code": "001287",
+    "name": "Эрээнцав (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "351403",
+    "name": "Ягодин (эксп. ДБ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": true
+  },
+  {
+    "code": "754609",
+    "name": "Ялама (эксп.)",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": true
+  },
+  {
+    "code": "541109",
+    "name": "Яндыки (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "is_border": true
+  },
+  {
+    "code": "310404",
+    "name": "Ярославль-Пристань (эксп.)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "28",
+    "road_label": "Северная ж. д. (Котлас)",
+    "is_border": true
   },
   {
     "code": "667909",
     "name": "Актобе",
     "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "548502",
+    "name": "Алят",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "is_border": false
+  },
+  {
+    "code": "722608",
+    "name": "Ангрен",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "690002",
+    "name": "Астана",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "661705",
+    "name": "Атырау",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "138507",
+    "name": "Барановичи-Центральные",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": false
+  },
+  {
+    "code": "558631",
+    "name": "Беюк-Кясик",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": false
+  },
+  {
+    "code": "130007",
+    "name": "Брест-Центральный",
+    "country": "BLR",
+    "country_name": "Беларусь",
+    "admin": "БЧ",
+    "road": "13",
+    "road_label": "Белорусская ж. д. (БЧ)",
+    "is_border": false
+  },
+  {
+    "code": "718301",
+    "name": "Джалал-Абад",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": false
+  },
+  {
+    "code": "726903",
+    "name": "Джизак",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "780302",
+    "name": "Екатеринбург-Товарный",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "76",
+    "road_label": "Свердловская ж. д. (Н. Тагил)",
+    "is_border": false
+  },
+  {
+    "code": "663607",
+    "name": "Ералиево",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "930108",
+    "name": "Иркутск-Пассажирский",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "92",
+    "road_label": "Восточно-Сибирская ж. д. (Улан-Удэ/БАМ)",
+    "is_border": false
+  },
+  {
+    "code": "250302",
+    "name": "Казань",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "24",
+    "road_label": "Горьковская ж. д. (Н. Новгород)",
+    "is_border": false
+  },
+  {
+    "code": "673905",
+    "name": "Караганда",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "733104",
+    "name": "Карши",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "687008",
+    "name": "Кокшетау I",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "684001",
+    "name": "Костанай",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "746405",
+    "name": "Курган-Тюбе",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "ТДЖ",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": false
+  },
+  {
+    "code": "671707",
+    "name": "Кызылорда",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "663306",
+    "name": "Мангышлак",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "751309",
+    "name": "Мары",
+    "country": "TKM",
+    "country_name": "Туркменистан",
+    "admin": "ТРК",
+    "road": "75",
+    "road_label": "Туркменская ж. д. (ТРК)",
+    "is_border": false
+  },
+  {
+    "code": "193504",
+    "name": "Москва-Товарная-Павелецкая",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "17",
+    "road_label": "Московская ж. д. (Москва)",
+    "is_border": false
+  },
+  {
+    "code": "193523",
+    "name": "Москва-Товарная-Павелецкая",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "17",
+    "road_label": "Московская ж. д. (Москва)",
+    "is_border": false
+  },
+  {
+    "code": "731306",
+    "name": "Навои",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "850609",
+    "name": "Новосибирск-Главный",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Алтай/Локоть/Кулунда)",
+    "is_border": false
+  },
+  {
+    "code": "739007",
+    "name": "Нукус",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "830709",
+    "name": "Омск-Пассажирский",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (Омск)",
+    "is_border": false
+  },
+  {
+    "code": "719605",
+    "name": "Ош",
+    "country": "KGZ",
+    "country_name": "Кыргызстан",
+    "admin": "КРГ",
+    "road": "70",
+    "road_label": "Кыргызская ж. д. (КРГ)",
+    "is_border": false
+  },
+  {
+    "code": "696102",
+    "name": "Павлодар",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "572107",
+    "name": "Поти",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": false
+  },
+  {
+    "code": "510100",
+    "name": "Ростов-Товарный",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "51",
+    "road_label": "Северо-Кавказская ж. д. (Ростов)",
+    "is_border": false
+  },
+  {
+    "code": "657907",
+    "name": "Самара",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "63",
+    "road_label": "Куйбышевская ж. д. (Уфа/Ульяновск)",
+    "is_border": false
+  },
+  {
+    "code": "727809",
+    "name": "Самарканд",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "709406",
+    "name": "Семей",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "723507",
+    "name": "Сергели",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "706304",
+    "name": "Тараз",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "722400",
+    "name": "Ташкент-Товарный",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "560203",
+    "name": "Тбилиси-Товарная",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "is_border": false
+  },
+  {
+    "code": "735109",
+    "name": "Термез",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "000848",
+    "name": "Улан-Батор",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "РЖД",
+    "road_label": "РЖД",
+    "is_border": false
+  },
+  {
+    "code": "738305",
+    "name": "Ургенч",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "713702",
+    "name": "Усть-Каменогорск",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
+  },
+  {
+    "code": "747802",
+    "name": "Худжанд",
+    "country": "TJK",
+    "country_name": "Таджикистан",
+    "admin": "TJK",
+    "road": "74",
+    "road_label": "Таджикская ж. д. (ТДЖ)",
+    "is_border": false
+  },
+  {
+    "code": "800008",
+    "name": "Челябинск-Главный",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "RUS",
+    "road": "80",
+    "road_label": "Южно-Уральская ж. д. (Челябинск)",
+    "is_border": false
+  },
+  {
+    "code": "720000",
+    "name": "Чукурсай",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "UZB",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "698606",
+    "name": "Шымкент",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "KAZ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "is_border": false
   },
   {
     "code": "689503",
@@ -295,26 +5148,8 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Казахстан"
   },
   {
-    "code": "690002",
-    "name": "Астана",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
     "code": "710507",
     "name": "Астана-Пассажирская",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "661705",
-    "name": "Атырау",
     "country": "KAZ",
     "road": "Kzh",
     "is_border": false,
@@ -349,15 +5184,6 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Казахстан"
   },
   {
-    "code": "673905",
-    "name": "Караганда",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
     "code": "673702",
     "name": "Караганда-Новая",
     "country": "KAZ",
@@ -385,44 +5211,8 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Казахстан"
   },
   {
-    "code": "687008",
-    "name": "Кокшетау I",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
     "code": "687103",
     "name": "Кокшетау II",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "684001",
-    "name": "Костанай",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "671707",
-    "name": "Кызылорда",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "663306",
-    "name": "Мангышлак",
     "country": "KAZ",
     "road": "Kzh",
     "is_border": false,
@@ -441,15 +5231,6 @@ var CaravanRailwayEngine = (function() {
   {
     "code": "698019",
     "name": "ОП Арысь II",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "696102",
-    "name": "Павлодар",
     "country": "KAZ",
     "road": "Kzh",
     "is_border": false,
@@ -484,15 +5265,6 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Казахстан"
   },
   {
-    "code": "709406",
-    "name": "Семей",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
     "code": "709508",
     "name": "Семей-Грузовой",
     "country": "KAZ",
@@ -504,15 +5276,6 @@ var CaravanRailwayEngine = (function() {
   {
     "code": "690200",
     "name": "Сороковая",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "706304",
-    "name": "Тараз",
     "country": "KAZ",
     "road": "Kzh",
     "is_border": false,
@@ -547,26 +5310,8 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Казахстан"
   },
   {
-    "code": "713702",
-    "name": "Усть-Каменогорск",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
     "code": "713906",
     "name": "Усть-Каменогорск (перев.)",
-    "country": "KAZ",
-    "road": "Kzh",
-    "is_border": false,
-    "road_label": "КТЖ",
-    "country_name": "Казахстан"
-  },
-  {
-    "code": "698606",
-    "name": "Шымкент",
     "country": "KAZ",
     "road": "Kzh",
     "is_border": false,
@@ -682,30 +5427,12 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Россия"
   },
   {
-    "code": "780302",
-    "name": "Екатеринбург-Товарный",
-    "country": "RUS",
-    "road": "Sverd",
-    "is_border": false,
-    "road_label": "РЖД (Сверд)",
-    "country_name": "Россия"
-  },
-  {
     "code": "769708",
     "name": "Заполье-Уральское",
     "country": "RUS",
     "road": "Sverd",
     "is_border": false,
     "road_label": "РЖД (Сверд)",
-    "country_name": "Россия"
-  },
-  {
-    "code": "250302",
-    "name": "Казань",
-    "country": "RUS",
-    "road": "Gor'k",
-    "is_border": false,
-    "road_label": "РЖД (Горьк)",
     "country_name": "Россия"
   },
   {
@@ -772,24 +5499,6 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Россия"
   },
   {
-    "code": "193504",
-    "name": "Москва-Товарная-Павелецкая",
-    "country": "RUS",
-    "road": "Mosk",
-    "is_border": false,
-    "road_label": "РЖД (Моск)",
-    "country_name": "Россия"
-  },
-  {
-    "code": "193523",
-    "name": "Москва-Товарная-Павелецкая",
-    "country": "RUS",
-    "road": "Mosk",
-    "is_border": false,
-    "road_label": "РЖД (Моск)",
-    "country_name": "Россия"
-  },
-  {
     "code": "194009",
     "name": "Москва-Товарная-Рязанская",
     "country": "RUS",
@@ -828,15 +5537,6 @@ var CaravanRailwayEngine = (function() {
   {
     "code": "851508",
     "name": "Новосибирск-Восточный",
-    "country": "RUS",
-    "road": "Z-Sib",
-    "is_border": false,
-    "road_label": "РЖД (З-Сиб)",
-    "country_name": "Россия"
-  },
-  {
-    "code": "850609",
-    "name": "Новосибирск-Главный",
     "country": "RUS",
     "road": "Z-Sib",
     "is_border": false,
@@ -958,24 +5658,6 @@ var CaravanRailwayEngine = (function() {
     "road": "Sverd",
     "is_border": false,
     "road_label": "РЖД (Сверд)",
-    "country_name": "Россия"
-  },
-  {
-    "code": "510100",
-    "name": "Ростов-Товарный",
-    "country": "RUS",
-    "road": "S-Kav",
-    "is_border": false,
-    "road_label": "РЖД (С-Кав)",
-    "country_name": "Россия"
-  },
-  {
-    "code": "657907",
-    "name": "Самара",
-    "country": "RUS",
-    "road": "Kbsh",
-    "is_border": false,
-    "road_label": "РЖД (Кбш)",
     "country_name": "Россия"
   },
   {
@@ -1123,15 +5805,6 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Россия"
   },
   {
-    "code": "800008",
-    "name": "Челябинск-Главный",
-    "country": "RUS",
-    "road": "Ju-Ur",
-    "is_border": false,
-    "road_label": "РЖД (Ю-Ур)",
-    "country_name": "Россия"
-  },
-  {
     "code": "800101",
     "name": "Челябинск-Грузовой",
     "country": "RUS",
@@ -1177,15 +5850,6 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Таджикистан"
   },
   {
-    "code": "747802",
-    "name": "Худжанд",
-    "country": "TJK",
-    "road": "Tdzh",
-    "is_border": false,
-    "road_label": "Tdzh",
-    "country_name": "Таджикистан"
-  },
-  {
     "code": "758900",
     "name": "Кенеургенч",
     "country": "TKM",
@@ -1211,15 +5875,6 @@ var CaravanRailwayEngine = (function() {
     "is_border": false,
     "road_label": "DON",
     "country_name": "UKR"
-  },
-  {
-    "code": "722608",
-    "name": "Ангрен",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
   },
   {
     "code": "743604",
@@ -1276,24 +5931,6 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Узбекистан"
   },
   {
-    "code": "726903",
-    "name": "Джизак",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "733104",
-    "name": "Карши",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
     "code": "740004",
     "name": "Коканд I",
     "country": "UZB",
@@ -1312,44 +5949,8 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Узбекистан"
   },
   {
-    "code": "731306",
-    "name": "Навои",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
     "code": "741100",
     "name": "Наманган",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "739007",
-    "name": "Нукус",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "727809",
-    "name": "Самарканд",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "723507",
-    "name": "Сергели",
     "country": "UZB",
     "road": "Uzb",
     "is_border": false,
@@ -1366,35 +5967,8 @@ var CaravanRailwayEngine = (function() {
     "country_name": "Узбекистан"
   },
   {
-    "code": "722400",
-    "name": "Ташкент-Товарный",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "735109",
-    "name": "Термез",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
     "code": "736704",
     "name": "Термез-Порт",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "738305",
-    "name": "Ургенч",
     "country": "UZB",
     "road": "Uzb",
     "is_border": false,
@@ -1413,15 +5987,6 @@ var CaravanRailwayEngine = (function() {
   {
     "code": "742809",
     "name": "Фергана II",
-    "country": "UZB",
-    "road": "Uzb",
-    "is_border": false,
-    "road_label": "УТИ",
-    "country_name": "Узбекистан"
-  },
-  {
-    "code": "720000",
-    "name": "Чукурсай",
     "country": "UZB",
     "road": "Uzb",
     "is_border": false,
@@ -8643,7 +13208,7 @@ var CaravanRailwayEngine = (function() {
   }
 ];
 
-  // 3. МЕЖГОСУДАРСТВЕННЫЕ ПОГРАНИЧНЫЕ СТЫКИ
+  // 3. МЕЖГОСУДАРСТВЕННЫЕ ПОГРАНИЧНЫЕ СТЫКИ (МГСП)
   var BORDER_CROSSINGS = {
     'KAZ-UZB': [
       { code: '704101', name: 'ст. Сарыагаш (эксп.) [КТЖ] / ст. Келес (эксп.) [УТИ]', exitCode: '704101', enterCode: '720104', fee: 85, days: 1, primary: true },
@@ -8676,92 +13241,15 @@ var CaravanRailwayEngine = (function() {
     ]
   };
 
-  // 4. КООРДИНАТНАЯ СЕТКА ХАБОВ И УЗЛОВ ДЛЯ РАСЧЕТА ДИСТАНЦИИ (ШИРОТА, ДОЛГОТА)
-  var HUB_COORDS = {
-    'астана': [51.16, 71.43],
-    'алматы': [43.23, 76.92],
-    'караганда': [49.80, 73.08],
-    'кокшетау': [53.28, 69.38],
-    'шымкент': [42.32, 69.60],
-    'актобе': [50.28, 57.16],
-    'атырау': [47.11, 51.88],
-    'актау': [43.65, 51.16],
-    'павлодар': [52.28, 76.96],
-    'костанай': [53.21, 63.63],
-    'семей': [50.41, 80.25],
-    'устькаменогорск': [49.95, 82.60],
-    'тараз': [42.90, 71.37],
-    'кызылорда': [44.84, 65.50],
-    'достык': [45.25, 82.48],
-    'алтынколь': [44.15, 80.35],
-    'сарыагаш': [41.47, 69.17],
-    'бейнеу': [45.32, 55.19],
-    'илецк': [51.16, 54.98],
-    'озинки': [51.20, 49.70],
-    'локоть': [50.98, 81.33],
-    'петропавловск': [54.87, 69.15],
-    'курык': [43.18, 51.65],
-    'луговая': [42.94, 72.76],
-    'ташкент': [41.31, 69.24],
-    'келес': [41.40, 69.20],
-    'сергели': [41.22, 69.22],
-    'чукурсай': [41.36, 69.23],
-    'самарканд': [39.65, 66.97],
-    'бухара': [39.77, 64.42],
-    'навои': [40.08, 65.37],
-    'карши': [38.86, 65.80],
-    'термез': [37.22, 67.27],
-    'галаба': [37.19, 67.43],
-    'хайратан': [37.21, 67.41],
-    'андижан': [40.78, 72.34],
-    'фергана': [40.38, 71.78],
-    'коканд': [40.53, 70.94],
-    'ургенч': [41.55, 60.63],
-    'нукус': [42.46, 59.61],
-    'джизак': [40.11, 67.84],
-    'ангрен': [41.01, 70.14],
-    'ходжадавлет': [39.22, 63.60],
-    'кудукли': [38.45, 68.10],
-    'москва': [55.75, 37.61],
-    'санктпетербург': [59.93, 30.33],
-    'екатеринбург': [56.83, 60.60],
-    'челябинск': [55.16, 61.43],
-    'новосибирск': [55.03, 82.92],
-    'самара': [53.20, 50.15],
-    'омск': [54.98, 73.36],
-    'барнаул': [53.35, 83.76],
-    'уфа': [54.73, 55.95],
-    'казань': [55.79, 49.12],
-    'волгоград': [48.70, 44.51],
-    'ростов': [47.23, 39.72],
-    'краснодар': [45.03, 38.97],
-    'новороссийск': [44.72, 37.76],
-    'забайкальск': [49.65, 117.33],
-    'карталы': [53.05, 60.65],
-    'орск': [51.20, 58.56],
-    'кулунда': [52.56, 78.94],
-    'саратов': [51.54, 46.00],
-    'оренбург': [51.77, 55.10],
-    'курган': [55.44, 65.34],
-    'магнитогорск': [53.41, 58.98],
-    'экибастуз': [51.72, 75.32],
-    'уральск': [51.23, 51.37],
-    'туркестан': [43.30, 68.25],
-    'бишкек': [42.87, 74.59],
-    'аламедин': [42.87, 74.59],
-    'душанбе': [38.56, 68.78],
-    'худжанд': [40.28, 69.62]
-  };
-
-  // 5. БАЗОВАЯ ТАБЛИЦА ТОЧНЫХ МЕЖСТАНЦИОННЫХ РАССТОЯНИЙ (КМ) ПО ТАРИФНОМУ РУКОВОДСТВУ
+  // 4. ТАБЛИЦА ТОЧНЫХ РАССТОЯНИЙ (КМ) ПО ТАРИФНОМУ РУКОВОДСТВУ № 4 (Р-ТАРИФ)
   var CANONICAL_DISTANCES = {
-    // КАЗАХСТАНСКИЕ ХАБЫ НА САРЫАГАШ
-    "кокшетау_сарыагаш": 1918,
-    "астана_сарыагаш": 1622,
-    "караганда_сарыагаш": 1386,
-    "павлодар_сарыагаш": 2045,
-    "костанай_сарыагаш": 2135,
+    // КТЖ: Отправление ➔ Сарыагаш (стык с Узбекистаном)
     "семей_сарыагаш": 1850,
+    "кокшетау_сарыагаш": 1777,
+    "астана_сарыагаш": 1481,
+    "караганда_сарыагаш": 1262,
+    "павлодар_сарыагаш": 1930,
+    "костанай_сарыагаш": 2135,
     "устькаменогорск_сарыагаш": 2020,
     "актобе_сарыагаш": 1960,
     "атырау_сарыагаш": 2350,
@@ -8772,33 +13260,77 @@ var CaravanRailwayEngine = (function() {
     "кызылорда_сарыагаш": 650,
     "достык_сарыагаш": 1980,
     "алтынколь_сарыагаш": 1620,
+    "бейнеу_сарыагаш": 2240,
 
-    // ТРАНЗИТ КТЖ: ВХОД РЖД/КТЖ ➔ ВЫХОД КТЖ/УТИ (САРЫАГАШ)
+    // КТЖ: Транзитные коридоры (Вход из РФ ➔ Сарыагаш)
     "илецк_сарыагаш": 2080,
-    "озинки_сарыагаш": 2350,
-    "карталы_сарыагаш": 1980,
-    "орск_сарыагаш": 1850,
-    "петропавловск_сарыагаш": 2140,
-    "локоть_сарыагаш": 2180,
-    "кулунда_сарыагаш": 2210,
+    "озинки_сарыагаш": 2150,
+    "карталы_сарыагаш": 1945,
+    "орск_сарыагаш": 1980,
+    "локоть_сарыагаш": 1820,
+    "кулунда_сарыагаш": 1910,
+    "петропавловск_сарыагаш": 2040,
 
-    // ТРАНЗИТ КТЖ: ВХОД РЖД/КТЖ ➔ ВЫХОД КТЖ/УТИ (БЕЙНЕУ)
-    "илецк_бейнеу": 1200,
-    "озинки_бейнеу": 1350,
-    "орск_бейнеу": 1050,
-    "карталы_бейнеу": 1380,
-    "петропавловск_бейнеу": 1950,
-    "локоть_бейнеу": 2650,
-    "кулунда_бейнеу": 2680,
+    // КТЖ: Транзитные коридоры (Вход из РФ ➔ Бейнеу)
+    "озинки_бейнеу": 1480,
+    "илецк_бейнеу": 1930,
+    "карталы_бейнеу": 1890,
+    "орск_бейнеу": 1680,
     "бейнеу_каракалпакстан": 410,
 
-    // РЖД: ОТПРАВЛЕНИЕ ➔ СТЫКИ РЖД/КТЖ
+    // УТИ: Вход Сарыагаш / Келес ➔ Станции назначения Узбекистана
+    "сарыагаш_чукурсай": 17,
+    "келес_чукурсай": 17,
+    "сарыагаш_ташкент": 28,
+    "келес_ташкент": 28,
+    "сарыагаш_сергели": 38,
+    "келес_сергели": 38,
+    "сарыагаш_самарканд": 350,
+    "келес_самарканд": 350,
+    "сарыагаш_бухара": 610,
+    "келес_бухара": 610,
+    "сарыагаш_навои": 510,
+    "келес_навои": 510,
+    "сарыагаш_карши": 490,
+    "келес_карши": 490,
+    "сарыагаш_термез": 710,
+    "келес_термез": 710,
+    "сарыагаш_галаба": 755,
+    "келес_галаба": 755,
+    "сарыагаш_андижан": 395,
+    "келес_андижан": 395,
+    "сарыагаш_фергана": 410,
+    "келес_фергана": 410,
+    "сарыагаш_коканд": 275,
+    "келес_коканд": 275,
+    "сарыагаш_ургенч": 990,
+    "келес_ургенч": 990,
+    "сарыагаш_нукус": 1140,
+    "келес_нукус": 1140,
+    "сарыагаш_джизак": 235,
+    "келес_джизак": 235,
+    "сарыагаш_ангрен": 150,
+    "келес_ангрен": 150,
+    "сарыагаш_ходжадавлет": 635,
+    "келес_ходжадавлет": 635,
+    "сарыагаш_кудукли": 475,
+    "келес_кудукли": 475,
+
+    // УТИ: Вход Каракалпакстан ➔ Станции назначения
+    "каракалпакстан_нукус": 170,
+    "каракалпакстан_ургенч": 320,
+    "каракалпакстан_навои": 800,
+    "каракалпакстан_бухара": 900,
+    "каракалпакстан_самарканд": 1040,
+    "каракалпакстан_ташкент": 1390,
+
+    // РЖД: Отправление ➔ Стыки с КТЖ
     "москва_илецк": 1480,
     "москва_озинки": 1320,
     "москва_карталы": 1890,
     "москва_петропавловск": 2280,
     "санктпетербург_илецк": 2150,
-    "санктпетербург_озинки": 2050,
+    "санктпетербург_озинки": 1980,
     "санктпетербург_карталы": 2420,
     "самара_илецк": 480,
     "самара_озинки": 450,
@@ -8821,200 +13353,194 @@ var CaravanRailwayEngine = (function() {
     "казань_илецк": 860,
     "волгоград_озинки": 690,
     "ростов_озинки": 1050,
-
-    // УТИ: ВХОД КЕЛЕС (САРЫАГАШ) ➔ СТАНЦИИ УЗБЕКИСТАНА
-    "келес_ташкент": 35,
-    "келес_сергели": 45,
-    "келес_чукурсай": 28,
-    "келес_самарканд": 350,
-    "келес_бухара": 610,
-    "келес_навои": 510,
-    "келес_карши": 490,
-    "келес_термез": 710,
-    "келес_галаба": 755,
-    "келес_андижан": 395,
-    "келес_фергана": 410,
-    "келес_коканд": 275,
-    "келес_ургенч": 990,
-    "келес_нукус": 1140,
-    "келес_джизак": 235,
-    "келес_ангрен": 150,
-    "келес_ходжадавлет": 635,
-    "келес_кудукли": 475,
-
-    // УТИ: ВХОД КАРАКАЛПАКСТАН (БЕЙНЕУ) ➔ СТАНЦИИ УЗБЕКИСТАНА
-    "каракалпакстан_нукус": 380,
-    "каракалпакстан_ургенч": 420,
-    "каракалпакстан_бухара": 780,
-    "каракалпакстан_навои": 880,
-    "каракалпакстан_ташкент": 1250,
-    "каракалпакстан_самарканд": 990,
-    "каракалпакстан_чукурсай": 1250,
-    "каракалпакстан_сергели": 1260,
-
-    // ДОПОЛНИТЕЛЬНЫЕ СВЯЗКИ КАЗАХСТАНСКИХ ХАБОВ НА ЧУКУРСАЙ / САРЫАГАШ
-    "семей_чукурсай": 1878,
-    "семей_ташкент": 1885,
-    "кокшетау_чукурсай": 1946,
-    "кокшетау_ташкент": 1953,
-    "астана_чукурсай": 1650,
-    "астана_ташкент": 1657,
-    "караганда_чукурсай": 1414,
-    "караганда_ташкент": 1421,
-    "павлодар_чукурсай": 2073,
-    "костанай_чукурсай": 2163,
-    "устькаменогорск_чукурсай": 2048,
-    "актобе_чукурсай": 1988,
-    "шымкент_чукурсай": 160,
-    "тараз_чукурсай": 338,
-    "экибастуз_сарыагаш": 1890,
-    "экибастуз_чукурсай": 1918,
-    "уральск_сарыагаш": 2210,
-    "туркестан_сарыагаш": 290,
-
-    // РЖД: ПОЛНАЯ МАТРИЦА СТАНЦИЙ ОТПРАВЛЕНИЯ НА ВСЕ 7 СТЫКОВ РЖД/КТЖ
-    "москва_орск": 1750,
-    "москва_локоть": 3500,
-    "москва_кулунда": 3380,
-    "санктпетербург_орск": 2380,
-    "санктпетербург_петропавловск": 2850,
-    "санктпетербург_локоть": 4050,
-    "санктпетербург_кулунда": 3950,
-    "екатеринбург_илецк": 980,
-    "екатеринбург_озинки": 1320,
-    "екатеринбург_орск": 810,
-    "екатеринбург_локоть": 1680,
-    "екатеринбург_кулунда": 1510,
-    "челябинск_илецк": 750,
-    "челябинск_озинки": 1100,
-    "челябинск_локоть": 1490,
-    "челябинск_кулунда": 1320,
-    "самара_карталы": 820,
-    "самара_орск": 730,
-    "самара_петропавловск": 1420,
-    "самара_локоть": 2680,
-    "самара_кулунда": 2520,
-    "казань_озинки": 810,
-    "казань_карталы": 950,
-    "казань_орск": 1120,
-    "казань_петропавловск": 1580,
-    "уфа_орск": 540,
-    "уфа_озинки": 760,
-    "уфа_петропавловск": 1080,
-    "новосибирск_петропавловск": 920,
-    "новосибирск_карталы": 1650,
-    "новосибирск_илецк": 2180,
-    "новосибирск_озинки": 2540
+    "краснодар_озинки": 1280,
+    "новороссийск_озинки": 1420,
+    "нижнийновгород_илецк": 1050,
+    "пермь_карталы": 880,
+    "красноярск_локоть": 1320,
+    "иркутск_локоть": 2370,
+    "владивосток_забайкальск": 2080
   };
 
-  // 6. ПАРК ВАГОНОВ И ТАРИФЫ ПРЕДОСТАВЛЕНИЯ CARAVAN
-  var ROLLING_STOCK = {
-    'grain': { name: 'Зерновоз / Хоппер (для зерна, 70 тн, 116 м³)', dailyRateUSD: 38, payloadTons: 70, volumeM3: 116, speedKmPerDay: 350, defaultCargo: '100199' },
-    'boxcar': { name: 'Крытый вагон (грузовой, 68 тн, 138 м³)', dailyRateUSD: 34, payloadTons: 68, volumeM3: 138, speedKmPerDay: 380, defaultCargo: '110100' },
-    'gondola': { name: 'Полувагон (универсальный 4-осный, 70 тн)', dailyRateUSD: 32, payloadTons: 70, volumeM3: 88, speedKmPerDay: 400, defaultCargo: '270112' },
-    'tank': { name: 'Цистерна (наливные грузы / ГСМ, 66 тн)', dailyRateUSD: 42, payloadTons: 66, volumeM3: 85, speedKmPerDay: 360, defaultCargo: '271012' },
-    'platform': { name: 'Фитинговая платформа (тяжеловесы/негабарит)', dailyRateUSD: 30, payloadTons: 72, volumeM3: 0, speedKmPerDay: 420, defaultCargo: '720810' },
-    'cont40': { name: 'Контейнер 40ft High Cube (HQ, 28 тн, 76 м³)', dailyRateUSD: 28, payloadTons: 28, volumeM3: 76, speedKmPerDay: 450, defaultCargo: '990100' },
-    'cont20': { name: 'Контейнер 20ft (универсальный, 24 тн, 33 м³)', dailyRateUSD: 20, payloadTons: 24, volumeM3: 33, speedKmPerDay: 450, defaultCargo: '990100' }
+  // 5. ГРАФ ТАРИФНЫХ УЧАСТКОВ СЕТИ 1520 ДЛЯ РАСЧЕТА СВЯЗНОСТИ
+  var RAILWAY_GRAPH = {
+    "кокшетау": { "астана": 296, "петропавловск": 222 },
+    "астана": { "кокшетау": 296, "караганда": 219, "павлодар": 450, "тобол": 580 },
+    "караганда": { "астана": 219, "мойынты": 360 },
+    "мойынты": { "караганда": 360, "шу": 310 },
+    "шу": { "мойынты": 310, "тараз": 230, "алматы": 305, "актогай": 690 },
+    "тараз": { "шу": 230, "шымкент": 178 },
+    "шымкент": { "тараз": 178, "сарыагаш": 132, "арыс": 74 },
+    "арыс": { "шымкент": 74, "сарыагаш": 58, "туркестан": 145 },
+    "сарыагаш": { "шымкент": 132, "арыс": 58, "келес": 14 },
+    "келес": { "сарыагаш": 14, "чукурсай": 3, "ташкент": 14 },
+    "чукурсай": { "келес": 3, "ташкент": 11 },
+    "ташкент": { "келес": 14, "чукурсай": 11, "сергели": 10, "джизак": 200, "коканд": 240 },
+    "сергели": { "ташкент": 10 },
+    "джизак": { "ташкент": 200, "самарканд": 115 },
+    "самарканд": { "джизак": 115, "бухара": 260, "карши": 140 },
+    "бухара": { "самарканд": 260, "навои": 100, "ходжадавлет": 125 },
+    "навои": { "бухара": 100, "самарканд": 160 },
+    "карши": { "самарканд": 140, "термез": 220 },
+    "термез": { "карши": 220, "галаба": 45, "кудукли": 120 },
+    "галаба": { "термез": 45 },
+    "коканд": { "ташкент": 240, "фергана": 85, "андижан": 120 },
+    "фергана": { "коканд": 85, "андижан": 75 },
+    "андижан": { "коканд": 120, "фергана": 75 },
+    "семей": { "актогай": 540, "устькаменогорск": 170, "локоть": 150 },
+    "устькаменогорск": { "семей": 170 },
+    "актогай": { "семей": 540, "шу": 690, "алматы": 530, "достык": 310 },
+    "алматы": { "шу": 305, "актогай": 530, "алтынколь": 310 },
+    "достык": { "актогай": 310 },
+    "алтынколь": { "алматы": 310 },
+    "илецк": { "актобе": 120, "самара": 480, "москва": 1480 },
+    "актобе": { "илецк": 120, "кандыагаш": 95, "орск": 155, "уральск": 470 },
+    "кандыагаш": { "актобе": 95, "шалкар": 260, "макат": 380 },
+    "шалкар": { "кандыагаш": 260, "саксаульская": 195 },
+    "саксаульская": { "шалкар": 195, "казалинск": 115 },
+    "казалинск": { "саксаульская": 115, "кызылорда": 350 },
+    "кызылорда": { "казалинск": 350, "туркестан": 285 },
+    "туркестан": { "кызылорда": 285, "арыс": 145 },
+    "озинки": { "уральск": 130, "саратов": 320, "самара": 450 },
+    "уральск": { "озинки": 130, "актобе": 470 },
+    "макат": { "кандыагаш": 380, "атырау": 130, "бейнеу": 240 },
+    "атырау": { "макат": 130 },
+    "бейнеу": { "макат": 240, "мангышлак": 400, "каракалпакстан": 410 },
+    "мангышлак": { "бейнеу": 400 },
+    "каракалпакстан": { "бейнеу": 410, "кунград": 110, "нукус": 170 },
+    "кунград": { "каракалпакстан": 110, "нукус": 60 },
+    "нукус": { "кунград": 60, "ургенч": 150 },
+    "ургенч": { "нукус": 150, "бухара": 580 },
+    "карталы": { "тобол": 145, "челябинск": 260, "магнитогорск": 145 },
+    "тобол": { "карталы": 145, "костанай": 100, "астана": 580 },
+    "костанай": { "тобол": 100 },
+    "орск": { "актобе": 155, "челябинск": 490 },
+    "локоть": { "семей": 150, "рубцовск": 40, "барнаул": 340, "новосибирск": 560 },
+    "кулунда": { "павлодар": 140, "барнаул": 360, "новосибирск": 470 },
+    "павлодар": { "кулунда": 140, "астана": 450 },
+    "петропавловск": { "кокшетау": 222, "омск": 270, "курган": 260 }
   };
 
-  // 7. ТАРИФНЫЕ ПОЯСА ИНФРАСТРУКТУРЫ ($ / КМ)
+  // 6. СЕТКА ТАРИФНЫХ ПОЯСОВ (USD ЗА КМ)
   var TARIFF_BELTS = [
-    { maxKm: 200,  rateUSD: 0.78 },
-    { maxKm: 500,  rateUSD: 0.65 },
-    { maxKm: 1000, rateUSD: 0.54 },
-    { maxKm: 2000, rateUSD: 0.44 },
-    { maxKm: 3000, rateUSD: 0.38 },
-    { maxKm: 9999, rateUSD: 0.33 }
+    { maxKm: 200,   rateUSD: 0.62 },
+    { maxKm: 500,   rateUSD: 0.48 },
+    { maxKm: 1000,  rateUSD: 0.40 },
+    { maxKm: 2000,  rateUSD: 0.33 },
+    { maxKm: 3500,  rateUSD: 0.28 },
+    { maxKm: 5000,  rateUSD: 0.24 },
+    { maxKm: 15000, rateUSD: 0.20 }
   ];
 
-  // 8. КУРСЫ ВАЛЮТ
-  var CURRENCY_RATES = {
-    'USD': { code: 'USD', symbol: '$', rate: 1.0, title: 'Доллар США' },
-    'KZT': { code: 'KZT', symbol: '₸', rate: 485.0, title: 'Казахстанский тенге' },
-    'UZS': { code: 'UZS', symbol: 'сум', rate: 12750.0, title: 'Узбекский сум' },
-    'RUB': { code: 'RUB', symbol: '₽', rate: 92.5, title: 'Российский рубль' }
+  // 7. СТАВКИ ПАРКА И СКОРОСТИ КУРСИРОВАНИЯ
+  var ROLLING_STOCK = {
+    'grain':    { name: 'Хоппер-зерновоз (116-120 м³, 70 т)', dailyRateUSD: 36, speedKmPerDay: 480 },
+    'boxcar':   { name: 'Крытый вагон (138-161 м³, 68 т)', dailyRateUSD: 32, speedKmPerDay: 450 },
+    'covered':  { name: 'Крытый вагон (138-161 м³, 68 т)', dailyRateUSD: 32, speedKmPerDay: 450 },
+    'gondola':  { name: 'Полувагон (70 тн)', dailyRateUSD: 28, speedKmPerDay: 500 },
+    'tank':     { name: 'Цистерна (66 тн)', dailyRateUSD: 40, speedKmPerDay: 420 },
+    'platform': { name: 'Фитинговая платформа', dailyRateUSD: 26, speedKmPerDay: 550 },
+    'cont40':   { name: 'Контейнер 40ft HC (28 тн)', dailyRateUSD: 22, speedKmPerDay: 520 },
+    'cont20':   { name: 'Контейнер 20ft (24 тн)', dailyRateUSD: 16, speedKmPerDay: 520 }
   };
 
-  // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ПОИСКА
-  function cleanStationName(raw) {
-    if (!raw) return '';
-    var s = ('' + raw).toLowerCase();
-    s = s.replace(/ст\.\s*/gi, '')
-         .replace(/\(.* switch .*?\)/gi, '')
-         .replace(/\(.*?\)/g, '')
-         .replace(/\[.*?\]/g, '')
-         .replace(/\bоп\s+/g, '')
-         .trim();
+  // 8. КУРСЫ ВАЛЮТ РАСЧЕТА
+  var CURRENCY_RATES = {
+    'USD': { code: 'USD', symbol: '$', rate: 1.0 },
+    'KZT': { code: 'KZT', symbol: '₸', rate: 502.0 },
+    'UZS': { code: 'UZS', symbol: 'сум', rate: 12850.0 },
+    'RUB': { code: 'RUB', symbol: '₽', rate: 96.5 }
+  };
 
-    if (s.indexOf('жана-семей') !== -1 || s.indexOf('жана семей') !== -1 || s.indexOf('семей') !== -1) return 'семей';
-    if (s.indexOf('санкт-петербург') !== -1 || s.indexOf('санкт петербург') !== -1 || s.indexOf('санктпетербург') !== -1 || s.indexOf('петербург') !== -1) return 'санктпетербург';
-    if (s.indexOf('усть-каменогорск') !== -1 || s.indexOf('усть каменогорск') !== -1 || s.indexOf('устькаменогорск') !== -1) return 'устькаменогорск';
-    if (s.indexOf('каменск') !== -1 || s.indexOf('новоуральский') !== -1 || s.indexOf('заполье') !== -1 || s.indexOf('первоуральск') !== -1) return 'екатеринбург';
-    if (s.indexOf('новосемейкино') !== -1) return 'самара';
-    if (s.indexOf('дубровка-челябинская') !== -1 || s.indexOf('челябинск') !== -1) return 'челябинск';
-    if (s.indexOf('мичуринск') !== -1 || s.indexOf('бекасово') !== -1) return 'москва';
-    if (s.indexOf('берказань') !== -1 || s.indexOf('казань') !== -1) return 'казань';
-    if (s.indexOf('ростов') !== -1) return 'ростов';
-    if (s.indexOf('арысь') !== -1) return 'шымкент';
-    if (s.indexOf('бурундай') !== -1 || s.indexOf('медеу') !== -1) return 'алматы';
-    if (s.indexOf('маргилан') !== -1 || s.indexOf('наманган') !== -1) return 'фергана';
-    if (s.indexOf('чукурсай') !== -1) return 'чукурсай';
-    if (s.indexOf('сергели') !== -1) return 'сергели';
-    if (s.indexOf('ташкент') !== -1) return 'ташкент';
-    if (s.indexOf('илецк') !== -1) return 'илецк';
-    if (s.indexOf('озинки') !== -1) return 'озинки';
-    if (s.indexOf('карталы') !== -1) return 'карталы';
-    if (s.indexOf('орск') !== -1) return 'орск';
-    if (s.indexOf('петропавловск') !== -1) return 'петропавловск';
-    if (s.indexOf('локоть') !== -1) return 'локоть';
-    if (s.indexOf('кулунда') !== -1) return 'кулунда';
+  // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
+  function cleanStationName(name) {
+    if (!name) return '';
+    var s = name.toString()
+      .replace(/\[.*?\]/g, '')
+      .replace(/\(.*?\)/g, '')
+      .toLowerCase();
+    s = s.replace(/^(?:ст\.|ст\s|станция\s|оп\.|оп\s|рзд\.|рзд\s)/g, '').trim();
+    s = s.replace(/[^а-яa-z0-9]/g, '').trim();
+    // Normalize well-known variations
     if (s.indexOf('сарыагаш') !== -1) return 'сарыагаш';
     if (s.indexOf('келес') !== -1) return 'келес';
+    if (s.indexOf('чукурсай') !== -1) return 'чукурсай';
+    if (s.indexOf('ташкент') !== -1) return 'ташкент';
+    if (s.indexOf('сергели') !== -1) return 'сергели';
+    if (s.indexOf('семей') !== -1 || s.indexOf('семипалат') !== -1) return 'семей';
+    if (s.indexOf('кокшетау') !== -1) return 'кокшетау';
+    if (s.indexOf('астана') !== -1 || s.indexOf('нурсултан') !== -1) return 'астана';
+    if (s.indexOf('караганд') !== -1) return 'караганда';
+    if (s.indexOf('илецк') !== -1) return 'илецк';
+    if (s.indexOf('озинк') !== -1) return 'озинки';
+    if (s.indexOf('картал') !== -1) return 'карталы';
+    if (s.indexOf('орск') !== -1) return 'орск';
+    if (s.indexOf('локот') !== -1) return 'локоть';
+    if (s.indexOf('кулунд') !== -1) return 'кулунда';
+    if (s.indexOf('петропавл') !== -1) return 'петропавловск';
     if (s.indexOf('бейнеу') !== -1) return 'бейнеу';
-    if (s.indexOf('каракалпакстан') !== -1) return 'каракалпакстан';
-    if (s.indexOf('сороковая') !== -1) return 'астана';
-    if (s.indexOf('экибастуз') !== -1) return 'экибастуз';
-    if (s.indexOf('уральск') !== -1) return 'уральск';
-    if (s.indexOf('туркестан') !== -1) return 'туркестан';
-
-    var word = s.split(/[\s\-]/)[0];
-    return word.replace(/[^\u0400-\u04FFa-zA-Z]/g, '').toLowerCase();
+    if (s.indexOf('каракалпак') !== -1) return 'каракалпакстан';
+    if (s.indexOf('достык') !== -1) return 'достык';
+    if (s.indexOf('алтынкол') !== -1) return 'алтынколь';
+    if (s.indexOf('алмат') !== -1) return 'алматы';
+    if (s.indexOf('шымкент') !== -1) return 'шымкент';
+    if (s.indexOf('актобе') !== -1) return 'актобе';
+    if (s.indexOf('атырау') !== -1) return 'атырау';
+    if (s.indexOf('мангышлак') !== -1 || s.indexOf('актау') !== -1) return 'мангышлак';
+    if (s.indexOf('павлодар') !== -1) return 'павлодар';
+    if (s.indexOf('костанай') !== -1) return 'костанай';
+    if (s.indexOf('самарканд') !== -1) return 'самарканд';
+    if (s.indexOf('бухар') !== -1) return 'бухара';
+    if (s.indexOf('навои') !== -1) return 'навои';
+    if (s.indexOf('термез') !== -1) return 'термез';
+    if (s.indexOf('галаба') !== -1) return 'галаба';
+    if (s.indexOf('андижан') !== -1) return 'андижан';
+    if (s.indexOf('нукус') !== -1) return 'нукус';
+    if (s.indexOf('ургенч') !== -1) return 'ургенч';
+    if (s.indexOf('москв') !== -1) return 'москва';
+    if (s.indexOf('петербург') !== -1 || s.indexOf('спб') !== -1) return 'санктпетербург';
+    if (s.indexOf('самар') !== -1) return 'самара';
+    if (s.indexOf('саратов') !== -1) return 'саратов';
+    if (s.indexOf('екатеринбург') !== -1) return 'екатеринбург';
+    if (s.indexOf('челябинск') !== -1) return 'челябинск';
+    if (s.indexOf('новосибирск') !== -1) return 'новосибирск';
+    return s;
   }
 
   function findStation(query) {
     if (!query) return null;
-    query = ('' + query).trim();
-
-    var codeMatch = query.match(/\b\d{6}\b/);
-    if (codeMatch) {
-      var extractedCode = codeMatch[0];
-      for (var i = 0; i < STATIONS.length; i++) {
-        if (STATIONS[i].code === extractedCode) return STATIONS[i];
-      }
-    }
-
-    var clean = query.replace(/\(.*?\)/g, '').replace(/ст\.\s*/gi, '').trim().toLowerCase();
-    if (!clean) return null;
-
+    var q = query.toString().trim().toLowerCase();
+    
+    // Exact code match
     for (var i = 0; i < STATIONS.length; i++) {
-      if (STATIONS[i].name.toLowerCase().indexOf(clean) !== -1 ||
-          clean.indexOf(STATIONS[i].name.toLowerCase()) !== -1) {
-        return STATIONS[i];
+      if (STATIONS[i].code === q) return STATIONS[i];
+    }
+
+    // Clean name match
+    var qClean = cleanStationName(q);
+    for (var j = 0; j < STATIONS.length; j++) {
+      var sClean = cleanStationName(STATIONS[j].name);
+      if (sClean === qClean) return STATIONS[j];
+      if (STATIONS[j].name.toLowerCase() === q) return STATIONS[j];
+    }
+
+    // Substring match
+    for (var k = 0; k < STATIONS.length; k++) {
+      if (STATIONS[k].name.toLowerCase().indexOf(q) !== -1 || q.indexOf(STATIONS[k].name.toLowerCase()) !== -1) {
+        return STATIONS[k];
       }
     }
 
-    var cName = cleanStationName(query);
-    if (cName) {
-      for (var i = 0; i < STATIONS.length; i++) {
-        var stClean = cleanStationName(STATIONS[i].name);
-        if (stClean && (stClean === cName || stClean.indexOf(cName) !== -1 || cName.indexOf(stClean) !== -1)) {
-          return STATIONS[i];
-        }
-      }
-    }
-
-    return null;
+    return {
+      code: '687008',
+      name: query,
+      country: 'KAZ',
+      country_name: 'Казахстан',
+      admin: 'КТЖ',
+      road: '67',
+      road_label: 'Казахстанская ж. д. (КТЖ)',
+      is_border: false
+    };
   }
 
   function searchStations(query, limit) {
@@ -9024,9 +13550,11 @@ var CaravanRailwayEngine = (function() {
     var results = [];
 
     for (var i = 0; i < STATIONS.length; i++) {
-      var st = STATIONS[i];
-      if (st.code.indexOf(q) === 0 || st.name.toLowerCase().indexOf(q) !== -1) {
-        results.push(st);
+      var s = STATIONS[i];
+      if (s.code.indexOf(q) === 0 || 
+          s.name.toLowerCase().indexOf(q) !== -1 ||
+          (s.road_label && s.road_label.toLowerCase().indexOf(q) !== -1)) {
+        results.push(s);
         if (results.length >= limit) break;
       }
     }
@@ -9035,39 +13563,11 @@ var CaravanRailwayEngine = (function() {
 
   function findCargo(query) {
     if (!query) return CARGO_ITEMS[0];
-    var q = ('' + query).trim().toLowerCase();
-
-    var codeMatch = q.match(/\b\d{6}\b/);
-    if (codeMatch) {
-      var code = codeMatch[0];
-      for (var i = 0; i < CARGO_ITEMS.length; i++) {
-        if (CARGO_ITEMS[i].code_etsng === code) return CARGO_ITEMS[i];
-      }
-    }
-
+    var q = query.toString().trim().toLowerCase();
     for (var i = 0; i < CARGO_ITEMS.length; i++) {
-      if (CARGO_ITEMS[i].name.toLowerCase().indexOf(q) !== -1 ||
-          q.indexOf(CARGO_ITEMS[i].name.toLowerCase()) !== -1) {
-        return CARGO_ITEMS[i];
-      }
+      if (CARGO_ITEMS[i].code_etsng === q || CARGO_ITEMS[i].code_gng === q) return CARGO_ITEMS[i];
+      if (CARGO_ITEMS[i].name.toLowerCase().indexOf(q) !== -1) return CARGO_ITEMS[i];
     }
-
-    var wagonMap = {
-      'grain': '100199',
-      'boxcar': '110100',
-      'gondola': '270112',
-      'tank': '271012',
-      'platform': '720810',
-      'cont40': '990100',
-      'cont20': '990100'
-    };
-    if (wagonMap[q]) {
-      var defCode = wagonMap[q];
-      for (var i = 0; i < CARGO_ITEMS.length; i++) {
-        if (CARGO_ITEMS[i].code_etsng === defCode) return CARGO_ITEMS[i];
-      }
-    }
-
     return CARGO_ITEMS[0];
   }
 
@@ -9076,13 +13576,11 @@ var CaravanRailwayEngine = (function() {
     if (!query || query.trim().length < 2) return [];
     var q = query.trim().toLowerCase();
     var results = [];
-
     for (var i = 0; i < CARGO_ITEMS.length; i++) {
       var item = CARGO_ITEMS[i];
       if (item.code_etsng.indexOf(q) === 0 || 
           item.code_gng.indexOf(q) === 0 || 
-          item.name.toLowerCase().indexOf(q) !== -1 ||
-          item.category.toLowerCase().indexOf(q) !== -1) {
+          item.name.toLowerCase().indexOf(q) !== -1) {
         results.push(item);
         if (results.length >= limit) break;
       }
@@ -9090,40 +13588,80 @@ var CaravanRailwayEngine = (function() {
     return results;
   }
 
-  function getStationCoords(st) {
-    if (!st || !st.name) return [48.0, 68.0];
-    var norm = cleanStationName(st.name);
-    for (var k in HUB_COORDS) {
-      if (norm.indexOf(k) !== -1) return HUB_COORDS[k];
+  // РАСЧЕТ РАССТОЯНИЙ ПО ГРАФУ ДЕЙКСТРЫ (БЕЗ КОЭФФИЦИЕНТОВ)
+  function dijkstraShortestPath(startNode, targetNode) {
+    if (startNode === targetNode) return 0;
+    var dist = {};
+    var visited = {};
+    for (var n in RAILWAY_GRAPH) {
+      dist[n] = Infinity;
     }
-    if (st.country === 'RUS') return [55.75, 37.61];
-    if (st.country === 'UZB') return [41.31, 69.24];
-    return [48.0, 68.0];
-  }
+    dist[startNode] = 0;
 
-  function calculateGeoRailwayDistance(c1, c2) {
-    var R = 6371;
-    var dLat = (c2[0] - c1[0]) * Math.PI / 180;
-    var dLon = (c2[1] - c1[1]) * Math.PI / 180;
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(c1[0] * Math.PI / 180) * Math.cos(c2[0] * Math.PI / 180) *
-            Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return Math.max(35, Math.round(R * c * 1.46));
+    var unvisitedCount = Object.keys(RAILWAY_GRAPH).length;
+    while (unvisitedCount > 0) {
+      var u = null;
+      var minDist = Infinity;
+      for (var node in dist) {
+        if (!visited[node] && dist[node] < minDist) {
+          minDist = dist[node];
+          u = node;
+        }
+      }
+      if (u === null || minDist === Infinity || u === targetNode) break;
+      visited[u] = true;
+      unvisitedCount--;
+
+      var neighbors = RAILWAY_GRAPH[u];
+      for (var v in neighbors) {
+        if (!visited[v]) {
+          var alt = dist[u] + neighbors[v];
+          if (alt < dist[v]) {
+            dist[v] = alt;
+          }
+        }
+      }
+    }
+    return (dist[targetNode] !== Infinity) ? dist[targetNode] : null;
   }
 
   function resolveLegDistance(fromSt, toSt) {
-    var fClean = cleanStationName(fromSt.name);
-    var tClean = cleanStationName(toSt.name);
+    var fClean = cleanStationName(fromSt.name || fromSt);
+    var tClean = cleanStationName(toSt.name || toSt);
 
+    if (fClean === tClean) return 0;
+
+    // 1. Direct canonical lookup (both directions)
     var k1 = fClean + '_' + tClean;
     var k2 = tClean + '_' + fClean;
     if (CANONICAL_DISTANCES[k1]) return CANONICAL_DISTANCES[k1];
     if (CANONICAL_DISTANCES[k2]) return CANONICAL_DISTANCES[k2];
 
-    var c1 = getStationCoords(fromSt);
-    var c2 = getStationCoords(toSt);
-    return calculateGeoRailwayDistance(c1, c2);
+    // Special exact boundary pair
+    if ((fClean === 'сарыагаш' && tClean === 'келес') || (fClean === 'келес' && tClean === 'сарыагаш')) return 14;
+    if ((fClean === 'сарыагаш' || fClean === 'келес') && tClean === 'чукурсай') return 17;
+    if ((tClean === 'сарыагаш' || tClean === 'келес') && fClean === 'чукурсай') return 17;
+    if ((fClean === 'сарыагаш' || fClean === 'келес') && tClean === 'ташкент') return 28;
+    if ((tClean === 'сарыагаш' || tClean === 'келес') && fClean === 'ташкент') return 28;
+
+    // 2. Network graph shortest path
+    if (RAILWAY_GRAPH[fClean] && RAILWAY_GRAPH[tClean]) {
+      var graphDist = dijkstraShortestPath(fClean, tClean);
+      if (graphDist && graphDist > 0) return graphDist;
+    }
+
+    // 3. Fallback to anchor corridor calculation
+    if (fromSt.country === 'KAZ' && (tClean === 'сарыагаш' || tClean === 'келес')) {
+      return 1777; // default KTZ trunk distance
+    }
+    if (fromSt.country === 'UZB' && (fClean === 'сарыагаш' || fClean === 'келес')) {
+      return 28; // default Tashkent hub
+    }
+    if (fromSt.country === 'RUS' && (tClean === 'илецк' || tClean === 'озинки')) {
+      return 1480; // default central Russia to border
+    }
+
+    return 500;
   }
 
   function determineRouteLegs(fromSt, toSt, manualBorderCode, manualBorderCode2) {
@@ -9174,12 +13712,6 @@ var CaravanRailwayEngine = (function() {
       var availBorders1 = BORDER_CROSSINGS['RUS-KAZ'];
       var availBorders2 = BORDER_CROSSINGS['KAZ-UZB'];
 
-      // If a border code was passed that belongs to KAZ-UZB (exit) and b2Code is not set, reassign it
-      if (b1Code && availBorders2.some(function(b) { return b.code === b1Code || b.exitCode === b1Code; }) && !b2Code) {
-        b2Code = b1Code;
-        b1Code = null;
-      }
-
       // Подбор Стыка 1 (РЖД ⇄ КТЖ)
       if (b1Code) {
         for (var i = 0; i < availBorders1.length; i++) {
@@ -9191,16 +13723,12 @@ var CaravanRailwayEngine = (function() {
       }
       if (!border1) {
         var fNorm = cleanStationName(fromSt.name);
-        if (fNorm.indexOf('новосибирск') !== -1 || fNorm.indexOf('барнаул') !== -1 || fNorm.indexOf('красноярск') !== -1 || fNorm.indexOf('локоть') !== -1) {
-          border1 = availBorders1.find(function(b) { return b.code === '711105'; }) || availBorders1[0];
-        } else if (fNorm.indexOf('екатеринбург') !== -1 || fNorm.indexOf('челябинск') !== -1 || fNorm.indexOf('магнитогорск') !== -1 || fNorm.indexOf('карталы') !== -1) {
-          border1 = availBorders1.find(function(b) { return b.code === '816909'; }) || availBorders1[0];
-        } else if (fNorm.indexOf('омск') !== -1 || fNorm.indexOf('курган') !== -1 || fNorm.indexOf('петропавловск') !== -1) {
-          border1 = availBorders1.find(function(b) { return b.code === '688708'; }) || availBorders1[0];
+        if (fNorm.indexOf('москва') !== -1 || fNorm.indexOf('петербург') !== -1) {
+          border1 = availBorders1[0]; // ст. Илецк I (666501)
         } else if (fNorm.indexOf('саратов') !== -1 || fNorm.indexOf('самара') !== -1 || fNorm.indexOf('волгоград') !== -1 || fNorm.indexOf('озинки') !== -1) {
           border1 = availBorders1.find(function(b) { return b.code === '664900'; }) || availBorders1[0];
         } else {
-          border1 = availBorders1[0]; // ст. Илецк I (666501)
+          border1 = availBorders1[0];
         }
       }
 
@@ -9222,10 +13750,10 @@ var CaravanRailwayEngine = (function() {
         }
       }
 
-      var b1St = { name: border1.name.split('/')[0].trim(), country: 'RUS' };
-      var b1KzSt = { name: border1.name.split('/')[0].trim(), country: 'KAZ' };
-      var b2KzSt = { name: border2.name.split('/')[0].trim(), country: 'KAZ' };
-      var b2UzSt = { name: (border2.name.split('/')[1] || border2.name).trim(), country: 'UZB' };
+      var b1St = { name: border1.name.split('/')[0].trim(), country: 'RUS', road_label: 'РЖД' };
+      var b1KzSt = { name: border1.name.split('/')[0].trim(), country: 'KAZ', road_label: 'КТЖ' };
+      var b2KzSt = { name: border2.name.split('/')[0].trim(), country: 'KAZ', road_label: 'КТЖ' };
+      var b2UzSt = { name: (border2.name.split('/')[1] || border2.name).trim(), country: 'UZB', road_label: 'УТИ' };
 
       if (isRusUzb) {
         messageType = 'Транзитное сообщение (Россия ➔ Казахстан [Транзит] ➔ Узбекистан)';
@@ -9236,7 +13764,7 @@ var CaravanRailwayEngine = (function() {
         legs.push({
           country: 'RUS',
           countryName: 'Россия',
-          road: 'РЖД',
+          road: fromSt.road_label || 'РЖД',
           from: fromSt.name,
           to: border1.name.split('/')[0].trim(),
           distanceKm: d1,
@@ -9246,7 +13774,7 @@ var CaravanRailwayEngine = (function() {
         legs.push({
           country: 'KAZ',
           countryName: 'Казахстан (Транзит)',
-          road: 'КТЖ (Транзит)',
+          road: 'Казахстанская ж. д. (КТЖ Транзит)',
           from: border1.name.split('/')[0].trim(),
           to: border2.name.split('/')[0].trim(),
           distanceKm: d2,
@@ -9256,7 +13784,7 @@ var CaravanRailwayEngine = (function() {
         legs.push({
           country: 'UZB',
           countryName: 'Узбекистан',
-          road: 'УТИ',
+          road: toSt.road_label || 'Узбекская ж. д. (УТИ)',
           from: (border2.name.split('/')[1] || border2.name).trim(),
           to: toSt.name,
           distanceKm: d3,
@@ -9271,7 +13799,7 @@ var CaravanRailwayEngine = (function() {
         legs.push({
           country: 'UZB',
           countryName: 'Узбекистан',
-          road: 'УТИ',
+          road: fromSt.road_label || 'Узбекская ж. д. (УТИ)',
           from: fromSt.name,
           to: (border2.name.split('/')[1] || border2.name).trim(),
           distanceKm: d1,
@@ -9281,7 +13809,7 @@ var CaravanRailwayEngine = (function() {
         legs.push({
           country: 'KAZ',
           countryName: 'Казахстан (Транзит)',
-          road: 'КТЖ (Транзит)',
+          road: 'Казахстанская ж. д. (КТЖ Транзит)',
           from: border2.name.split('/')[0].trim(),
           to: border1.name.split('/')[0].trim(),
           distanceKm: d2,
@@ -9291,7 +13819,7 @@ var CaravanRailwayEngine = (function() {
         legs.push({
           country: 'RUS',
           countryName: 'Россия',
-          road: 'РЖД',
+          road: toSt.road_label || 'РЖД',
           from: border1.name.split('/')[0].trim(),
           to: toSt.name,
           distanceKm: d3,
@@ -9310,7 +13838,7 @@ var CaravanRailwayEngine = (function() {
       };
     }
 
-    // Двустороннее сообщение (например KAZ ⇄ UZB, RUS ⇄ KAZ)
+    // Двустороннее сообщение (например KAZ ⇄ UZB, RUS ⇄ KAZ, KAZ ⇄ CHN)
     messageType = 'Международное (' + fromSt.country_name + ' ➔ ' + toSt.country_name + ')';
     var pairKey = fromSt.country + '-' + toSt.country;
     var reverseKey = toSt.country + '-' + fromSt.country;
@@ -9327,8 +13855,8 @@ var CaravanRailwayEngine = (function() {
     }
     if (!border) border = availBorders[0];
 
-    var borderSt = { name: border.name.split('/')[0].trim(), country: fromSt.country };
-    var borderDestSt = { name: (border.name.split('/')[1] || border.name).trim(), country: toSt.country };
+    var borderSt = { name: border.name.split('/')[0].trim(), country: fromSt.country, road_label: fromSt.road_label };
+    var borderDestSt = { name: (border.name.split('/')[1] || border.name).trim(), country: toSt.country, road_label: toSt.road_label };
 
     var dist1 = resolveLegDistance(fromSt, borderSt);
     var dist2 = resolveLegDistance(borderDestSt, toSt);
@@ -9336,7 +13864,7 @@ var CaravanRailwayEngine = (function() {
     legs.push({
       country: fromSt.country,
       countryName: fromSt.country_name,
-      road: fromSt.road_label,
+      road: fromSt.road_label || (fromSt.country === 'KAZ' ? 'Казахстанская ж. д. (КТЖ)' : 'РЖД'),
       from: fromSt.name,
       to: border.name.split('/')[0].trim(),
       distanceKm: dist1,
@@ -9346,7 +13874,7 @@ var CaravanRailwayEngine = (function() {
     legs.push({
       country: toSt.country,
       countryName: toSt.country_name,
-      road: toSt.road_label,
+      road: toSt.road_label || (toSt.country === 'UZB' ? 'Узбекская ж. д. (УТИ)' : 'РЖД'),
       from: (border.name.split('/')[1] || border.name).trim(),
       to: toSt.name,
       distanceKm: dist2,
@@ -9373,22 +13901,17 @@ var CaravanRailwayEngine = (function() {
 
   // ГЛАВНЫЙ МЕТОД РАСЧЕТА ТАРИФОВ
   function calculateTariff(params) {
-    var fromStation = findStation(params.from) || STATIONS[11]; // Кокшетау
-    var toStation = findStation(params.to) || STATIONS[14];     // Ташкент-Товарный
+    var fromStation = findStation(params.from) || STATIONS[0];
+    var toStation = findStation(params.to) || STATIONS[1];
     var wagonType = ROLLING_STOCK[params.wagonType] || ROLLING_STOCK['grain'];
     var cargoItem = findCargo(params.cargoSearch || params.cargoType);
     var parkType = params.parkType || 'caravan';
     var incoterms = (params.incoterms || 'DAP').toUpperCase();
     var hasSecurity = params.security === true || params.security === 'true' || cargoItem.security_required;
     var hasCustoms = params.customs === true || params.customs === 'true';
-    var clientRole = params.clientRole || 'Грузоотправитель';
     var discountPercent = parseFloat(params.discount) || 0;
-    var currency = params.currency || 'USD';
 
-    // 1. Построение маршрута и расстояний
-    var b1 = params.manualBorder1 || (params.manualBorderCode && typeof params.manualBorderCode === 'object' ? (params.manualBorderCode.border1 || params.manualBorderCode.code) : params.manualBorderCode);
-    var b2 = params.manualBorder2 || (params.manualBorderCode && typeof params.manualBorderCode === 'object' ? params.manualBorderCode.border2 : null);
-    var routePlan = determineRouteLegs(fromStation, toStation, b1, b2);
+    var routePlan = determineRouteLegs(fromStation, toStation, params.manualBorderCode || params.manualBorder1, params.manualBorder2);
     var totalKm = 0;
     var detailedLegs = [];
     var totalInfraUSD = 0;
@@ -9396,7 +13919,6 @@ var CaravanRailwayEngine = (function() {
     var totalBorderFeesUSD = 0;
     var totalSecurityUSD = 0;
 
-    // Класс груза и тарифный коэффициент
     var cargoFactor = cargoItem.tariff_class === 1 ? 0.75 : (cargoItem.tariff_class === 3 ? 1.25 : 1.0);
 
     for (var l = 0; l < routePlan.legs.length; l++) {
@@ -9441,7 +13963,6 @@ var CaravanRailwayEngine = (function() {
       });
     }
 
-    // Incoterms надбавки
     var incotermsFeeUSD = 0;
     if (incoterms === 'DAP') incotermsFeeUSD = 325;
     else if (incoterms === 'CIP') incotermsFeeUSD = 180;
@@ -9452,7 +13973,6 @@ var CaravanRailwayEngine = (function() {
     if (hasCustoms) incotermsFeeUSD += 120;
 
     var grandTotalUSD = totalInfraUSD + totalWagonUSD + totalBorderFeesUSD + totalSecurityUSD + incotermsFeeUSD;
-
     if (discountPercent > 0) {
       grandTotalUSD = Math.round(grandTotalUSD * (1 - discountPercent / 100));
     }
@@ -9461,40 +13981,66 @@ var CaravanRailwayEngine = (function() {
     var transitDaysMax = transitDaysMin + 2;
     var transitStr = transitDaysMin + '-' + transitDaysMax + ' суток';
 
-    var curInfo = CURRENCY_RATES[currency] || CURRENCY_RATES['USD'];
-    var convertedTotal = Math.round(grandTotalUSD * curInfo.rate);
+    var cur = CURRENCY_RATES[params.currency || 'USD'] || CURRENCY_RATES['USD'];
+    var convertedTotal = Math.round(grandTotalUSD * cur.rate);
 
     return {
+      // Flat properties
+      fromStation: fromStation,
+      toStation: toStation,
+      wagonType: wagonType,
+      cargoItem: cargoItem,
+      incoterms: incoterms,
+      totalKm: totalKm,
+      transitDaysStr: transitStr,
+      totalCostUSD: grandTotalUSD,
+      infraUSD: totalInfraUSD,
+      wagonUSD: totalWagonUSD,
+      borderFeesUSD: totalBorderFeesUSD,
+      securityUSD: totalSecurityUSD,
+      incotermsUSD: incotermsFeeUSD,
+      isTransit: routePlan.isTransit,
+      border: routePlan.border,
+      border1: routePlan.border1,
+      border2: routePlan.border2,
+      availBorders: routePlan.availBorders,
+      availBorders1: routePlan.availBorders1,
+      availBorders2: routePlan.availBorders2,
+      messageType: routePlan.messageType,
+      legs: detailedLegs,
+
+      // Nested structure for widget UI
       route: {
         from: fromStation,
         to: toStation,
-        isTransit: routePlan.isTransit,
         borderCrossing: routePlan.border,
         border1: routePlan.border1,
         border2: routePlan.border2,
         availBorders: routePlan.availBorders,
         availBorders1: routePlan.availBorders1,
         availBorders2: routePlan.availBorders2,
+        isTransit: routePlan.isTransit,
         messageType: routePlan.messageType,
         totalDistanceKm: totalKm,
         legs: detailedLegs
       },
       wagon: wagonType,
       cargo: cargoItem,
-      parkType: parkType === 'caravan' ? 'Собственный СПС Caravan Railroad' : 'Инвентарный парк ж/д',
-      incoterms: incoterms,
+      parkType: parkType === 'caravan' ? 'Собственный парк Caravan' : 'Инвентарный парк ж/д',
       transitDays: transitStr,
       totals: {
         usd: grandTotalUSD,
         converted: convertedTotal,
-        currencyCode: curInfo.code,
-        currencySymbol: curInfo.symbol,
-        formattedTotal: convertedTotal.toLocaleString('ru-RU') + ' ' + curInfo.symbol
+        currencyCode: cur.code,
+        currencySymbol: cur.symbol,
+        formattedTotal: convertedTotal.toLocaleString('ru-RU') + ' ' + cur.symbol
       },
       breakdownUSD: {
         infrastructure: totalInfraUSD,
         wagonProvision: totalWagonUSD,
-        borderAndHandling: totalBorderFeesUSD + incotermsFeeUSD,
+        borderAndHandling: totalBorderFeesUSD,
+        documentationAndIncoterms: incotermsFeeUSD,
+        customsService: hasCustoms ? 120 : 0,
         security: totalSecurityUSD
       }
     };
@@ -9504,24 +14050,26 @@ var CaravanRailwayEngine = (function() {
     STATIONS: STATIONS,
     CARGO_ITEMS: CARGO_ITEMS,
     BORDER_CROSSINGS: BORDER_CROSSINGS,
+    CANONICAL_DISTANCES: CANONICAL_DISTANCES,
+    RAILWAY_GRAPH: RAILWAY_GRAPH,
     ROLLING_STOCK: ROLLING_STOCK,
     CURRENCY_RATES: CURRENCY_RATES,
-    cleanStationName: cleanStationName,
     findStation: findStation,
     searchStations: searchStations,
     findCargo: findCargo,
     searchCargo: searchCargo,
+    resolveLegDistance: resolveLegDistance,
     determineRouteLegs: determineRouteLegs,
     calculateTariff: calculateTariff
   };
 
 })();
 
-if (typeof window !== 'undefined') {
-  window.CaravanRailwayEngine = CaravanRailwayEngine;
-}
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CaravanRailwayEngine;
+}
+if (typeof window !== 'undefined') {
+  window.CaravanRailwayEngine = CaravanRailwayEngine;
 }
 
 (function() {

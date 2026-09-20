@@ -114,10 +114,10 @@ def build():
 </script>
 
 <!-- Стили виджета (v3.5 с обходом кеша) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.css?v=3.5.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.css?v=3.6.0">
 
 <!-- Движок мультимодального виджета (v3.5 с обходом кеша) -->
-<script src="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.js?v=3.5.0"></script>
+<script src="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.js?v=3.6.0"></script>
 
 <!-- Контейнер для отображения на странице -->
 <div id="caravan-tracking-app"></div>
@@ -161,7 +161,7 @@ def build():
 
     <!-- ТОЧНО ТАКОЙ ЖЕ КОД ВСТАВЛЯЕТСЯ В T123 ТИЛЬДЫ: -->
     <div id="caravan-tracking-root"></div>
-    <script src="caravan-widget.js?v=241" defer></script>
+    <script src="caravan-widget.js?v=360" defer></script>
   </div>
 </body>
 </html>
