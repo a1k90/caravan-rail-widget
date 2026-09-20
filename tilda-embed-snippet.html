@@ -3,10 +3,15 @@
      Инструкция: Скопируйте этот блок целиком и вставьте в блок T123 на вашей Tilda.
      ==================================================================== -->
 <script>
-  // Адрес вашего серверного API Caravan на Render
+  // Адрес вашего серверного API Caravan на Render (замените на ваш URL из Render, если отличается):
   window.CARAVAN_API_URL = "https://caravan-rail-widget.onrender.com";
 </script>
 
-<link rel="stylesheet" href="https://a1k90.github.io/caravan-rail-widget/caravan-widget.css">
-<script src="https://a1k90.github.io/caravan-rail-widget/caravan-widget.js"></script>
+<!-- Стили виджета (загрузка через глобальный быстрый CDN jsDelivr) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.css">
+
+<!-- Движок виджета -->
+<script src="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.js"></script>
+
+<!-- Контейнер для встраивания виджета на страницу -->
 <div id="caravan-tracking-app"></div>
