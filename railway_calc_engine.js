@@ -13439,6 +13439,7 @@ var CaravanRailwayEngine = (function() {
     // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
     // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
     // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
+    // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
   function cleanStationName(name) {
     if (!name) return '';
     var s = (typeof name === 'object' && name !== null) ? (name.name || '') : name.toString();
@@ -13665,7 +13666,7 @@ var CaravanRailwayEngine = (function() {
     return (dist[targetNode] !== Infinity) ? dist[targetNode] : null;
   }
 
-      function resolveLegDistance(fromSt, toSt) {
+        function resolveLegDistance(fromSt, toSt) {
     var fClean = cleanStationName(fromSt.name || fromSt);
     var tClean = cleanStationName(toSt.name || toSt);
     var fRoot = getStationRootKey(fromSt.name || fromSt);
@@ -13685,9 +13686,9 @@ var CaravanRailwayEngine = (function() {
     if (CANONICAL_DISTANCES[kr2]) return CANONICAL_DISTANCES[kr2];
 
     // Специальные стыковые перегоны
-    if ((fRoot === 'сарыагаш' && tRoot === 'келес') || (fRoot === 'келес' && tRoot === 'сарыагаш')) return 14;
-    if ((fRoot === 'сарыагаш' || fRoot === 'келес') && tRoot === 'чукурсай') return 17;
-    if ((tRoot === 'сарыагаш' || tRoot === 'келес') && fRoot === 'чукурсай') return 17;
+    if ((fRoot === 'сарыагаш' && tRoot === 'келес') || (fRoot === 'келес' && tRoot === 'сарыагаш')) return 13;
+    if ((fRoot === 'сарыагаш' || fRoot === 'келес') && tRoot === 'чукурсай') return 25;
+    if ((tRoot === 'сарыагаш' || tRoot === 'келес') && fRoot === 'чукурсай') return 25;
     if ((fRoot === 'сарыагаш' || fRoot === 'келес') && tRoot === 'ташкент') return 28;
     if ((tRoot === 'сарыагаш' || tRoot === 'келес') && fRoot === 'ташкент') return 28;
 
@@ -13952,7 +13953,7 @@ var CaravanRailwayEngine = (function() {
 
   // ГЛАВНЫЙ МЕТОД РАСЧЕТА ТАРИФОВ
   
-            // БАЗА ДАННЫХ СТАНЦИЙ СЛЕДОВАНИЯ ПО ТР-4 (МАРШРУТНЫЕ ЛИСТЫ ПОЕЗДА)
+              // БАЗА ДАННЫХ СТАНЦИЙ СЛЕДОВАНИЯ ПО ТР-4 (МАРШРУТНЫЕ ЛИСТЫ ПОЕЗДА)
   var CORRIDOR_STATION_CHAINS = {
     "spb_moscow": [
       { name: "Санкт-Петербург-Тов.-Московский", code: "031808", road: "Октябрьская ж. д.", country: "RUS", countryName: "Россия", dist: 0 },
@@ -14073,40 +14074,38 @@ var CaravanRailwayEngine = (function() {
       { name: "Аккум", code: "672703", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 52 },
       { name: "Туркестан", code: "697800", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 70 },
       { name: "Тимур", code: "697904", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
-      { name: "Арысь I", code: "698004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
-      { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 52 },
-      { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 20 },
-      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 150, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
+      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 131, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
     ],
     "lokot_saryagash": [
       { name: "Локоть (эксп.)", code: "711105", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
       { name: "Аул (эксп.)", code: "711209", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 18 },
       { name: "Бель-Агач", code: "711406", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 42 },
       { name: "Жана-Семей", code: "709302", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 48 },
-      { name: "Дегелен", code: "709506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 54 },
-      { name: "Шар", code: "709707", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 56 },
-      { name: "Жарма", code: "710006", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
-      { name: "Ушбиик", code: "710203", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 98 },
-      { name: "Аягоз", code: "710504", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 82 },
-      { name: "Актогай", code: "707502", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 168 },
-      { name: "Лепсы", code: "707803", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
-      { name: "Матай", code: "708007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 75 },
-      { name: "Уштобе", code: "708308", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 85 },
-      { name: "Коксу", code: "708505", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 50 },
-      { name: "Сарыозек", code: "708702", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
-      { name: "Капчагай", code: "708906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 90 },
-      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 70 },
-      { name: "Чемолган", code: "700204", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 45 },
-      { name: "Отар", code: "700505", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 125 },
-      { name: "Шу (Чу)", code: "701004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
-      { name: "Луговая", code: "701506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 123 },
-      { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 107 },
-      { name: "Боранды", code: "706501", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 65 },
-      { name: "Тюлькубас", code: "706709", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
-      { name: "Манкент", code: "706906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
-      { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 25 },
-      { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 20 },
-      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 120, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
+      { name: "Шар", code: "709105", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 63 },
+      { name: "Жарма", code: "708901", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 68 },
+      { name: "Ушбиик", code: "708808", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 90 },
+      { name: "Аягоз", code: "708704", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 75 },
+      { name: "Актогай", code: "708009", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 141 },
+      { name: "Лепсы", code: "702604", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
+      { name: "Матай", code: "702500", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 69 },
+      { name: "Уштобе", code: "702106", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 78 },
+      { name: "Коксу", code: "701508", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 46 },
+      { name: "Сарыозек", code: "701207", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Капчагай", code: "700702", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 83 },
+      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 73 },
+      { name: "Чемолган", code: "703700", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 41 },
+      { name: "Отар", code: "703306", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 115 },
+      { name: "Шу (Чу)", code: "704600", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 120 },
+      { name: "Турксиб (Луговая)", code: "704506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 113 },
+      { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 98 },
+      { name: "Боранды", code: "706501", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
+      { name: "Тюлькубас", code: "706709", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Манкент", code: "706906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 55 },
+      { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 23 },
+      { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 18 },
+      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58 },
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 131, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
     ],
     "kokshetau_saryagash": [
       { name: "Петропавловск", code: "680004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
@@ -14130,12 +14129,13 @@ var CaravanRailwayEngine = (function() {
       { name: "Чиганак", code: "675707", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 145 },
       { name: "Мынарал", code: "676004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 54 },
       { name: "Шу (Чу)", code: "701004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 111 },
-      { name: "Луговая", code: "701506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 123 },
+      { name: "Турксиб (Луговая)", code: "704506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 123 },
       { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 107 },
       { name: "Тюлькубас", code: "706709", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 145 },
       { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 85 },
-      { name: "Арысь I", code: "698004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
-      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
+      { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 18 },
+      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58 },
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 131, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
     ],
     "ural_kartaly_astana": [
       { name: "Екатеринбург-Сортировочный", code: "780108", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 0 },
@@ -14154,8 +14154,8 @@ var CaravanRailwayEngine = (function() {
     ],
     "saryagash_chukursay": [
       { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
-      { name: "Келес (эксп.)", code: "720104", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 14, isBorder: true, borderLabel: "КТЖ ➔ УТИ" },
-      { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 3 }
+      { name: "Келес (эксп.)", code: "720602", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 13, isBorder: true, borderLabel: "КТЖ ➔ УТИ" },
+      { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 12 }
     ],
     "chukursay_bukhara": [
       { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 0 },
