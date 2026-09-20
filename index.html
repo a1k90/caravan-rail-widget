@@ -18831,26 +18831,8 @@ if (typeof window !== 'undefined') {
 
     setupBookingModal();
 
-    // Слушатель разворачивания/сворачивания маршрутного листа станций следования
-    var itinToggleBtn = document.getElementById('cr-itinerary-toggle-btn');
-    if (itinToggleBtn) {
-      itinToggleBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var content = document.getElementById('cr-itinerary-content');
-        var btnText = document.getElementById('cr-itin-btn-text');
-        var chevron = document.getElementById('cr-itin-chevron');
-        if (!content) return;
-        if (content.style.display === 'none' || !content.style.display) {
-          content.style.display = 'block';
-          if (btnText) btnText.textContent = 'Свернуть список станций';
-          if (chevron) chevron.style.transform = 'rotate(180deg)';
-        } else {
-          content.style.display = 'none';
-          if (btnText) btnText.textContent = 'Развернуть список станций';
-          if (chevron) chevron.style.transform = 'rotate(0deg)';
-        }
-      });
-    }
+    // Слушатель разворачивания/сворачивания маршрутного листа — только через window.toggleItineraryList (onclick)
+    // Дублирующий addEventListener намеренно убран: одновременный вызов onclick + listener флипал состояние дважды
     // Первоначальный расчет
     setTimeout(triggerCustomCalculation, 150);
   }
