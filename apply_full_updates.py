@@ -1,146 +1,215 @@
-import re
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Apply Full Updates:
+1. Injects missing 5 modality panels into caravan-tracking-widget.html and index.html
+2. Connects triggerCustomCalculation() to handleNonRailCalculation()
+3. Adds cache-busting version query string to tilda snippet
+4. Rebuilds caravan-widget.js and caravan-widget.css
+"""
 
-with open('railway_calc_engine.js', 'r', encoding='utf-8') as f:
-    engine_code = f.read()
+import json
+import subprocess
 
-def process_file(filepath):
-    print(f"Processing {filepath}...")
+PANELS_HTML = """          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 2: АРЕНДА ПОДВИЖНОГО СОСТАВА (ПС) -->
+        <div class="cr-mod-panel" id="cr-mod-panel-fleet" style="display: none;">
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Тип подвижного состава</label>
+              <select id="cr-fleet-type" class="cr-select">
+                <option value="grain" selected>Хоппер-зерновоз (116–120 м³, 70 т)</option>
+                <option value="covered">Крытый вагон (138–161 м³, 68 т)</option>
+                <option value="gondola">Полувагон люковый (85 м³, 70 т)</option>
+                <option value="platform">Фитинговая платформа (20'/40' HC)</option>
+                <option value="tank">Ж/Д цистерна (нефть, ГСМ, масла)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Формат аренды</label>
+              <select id="cr-fleet-rent-type" class="cr-select">
+                <option value="daily" selected>Посуточная аренда (Daily lease)</option>
+                <option value="roundtrip">Аренда на кругорейс (Round-trip)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Количество вагонов (ед.)</label>
+              <input type="number" id="cr-fleet-count" class="cr-input" value="10" min="1" max="500" />
+            </div>
+            <div class="cr-form-field">
+              <label>Срок аренды (суток)</label>
+              <input type="number" id="cr-fleet-days" class="cr-input" value="30" min="5" max="365" />
+            </div>
+            <div class="cr-form-field">
+              <label>Регион курсирования / Станция погрузки</label>
+              <input type="text" id="cr-fleet-route" class="cr-input" value="Акмола (Казахстан) ➔ Сарыагаш" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 3: АВТОТРАНСПОРТ -->
+        <div class="cr-mod-panel" id="cr-mod-panel-road" style="display: none;">
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Город отправления</label>
+              <input type="text" id="cr-road-from" class="cr-input" value="Москва" />
+            </div>
+            <div class="cr-form-field">
+              <label>Город назначения</label>
+              <input type="text" id="cr-road-to" class="cr-input" value="Ташкент" />
+            </div>
+            <div class="cr-form-field">
+              <label>Тип автотранспорта</label>
+              <select id="cr-road-type" class="cr-select">
+                <option value="tent" selected>Тент стандарт (86–92 м³, до 22 т)</option>
+                <option value="mega">Сцепка Мега (110–120 м³, до 24 т)</option>
+                <option value="reefer">Рефрижератор (-20°C / +20°C)</option>
+                <option value="lowbed">Низкорамный трал (негабарит)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Масса груза (тонн)</label>
+              <input type="number" id="cr-road-weight" class="cr-input" value="20" min="1" max="45" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 4: АВИАКАРГО -->
+        <div class="cr-mod-panel" id="cr-mod-panel-air" style="display: none;">
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Аэропорт вылета (IATA)</label>
+              <select id="cr-air-from" class="cr-select">
+                <option value="CAN" selected>Гуанчжоу (CAN) — Китай</option>
+                <option value="PVG">Шанхай (PVG) — Китай</option>
+                <option value="SVO">Москва (SVO) — Россия</option>
+                <option value="IST">Стамбул (IST) — Турция</option>
+                <option value="DXB">Дубай (DXB) — ОАЭ</option>
+                <option value="FRA">Франкфурт (FRA) — Германия</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Аэропорт прилёта</label>
+              <input type="text" id="cr-air-to" class="cr-input" value="Ташкент (TAS) — Узбекистан" readonly />
+            </div>
+            <div class="cr-form-field">
+              <label>Фактический вес брутто (кг)</label>
+              <input type="number" id="cr-air-weight" class="cr-input" value="350" min="10" max="25000" />
+            </div>
+            <div class="cr-form-field">
+              <label>Общий объем груза (м³)</label>
+              <input type="number" id="cr-air-volume" class="cr-input" value="2.5" step="0.1" min="0.1" />
+            </div>
+            <div class="cr-form-field" style="display: flex; align-items: center; gap: 8px; margin-top: 24px;">
+              <input type="checkbox" id="cr-air-danger" style="width: 18px; height: 18px;" />
+              <label for="cr-air-danger" style="margin: 0; cursor: pointer;">Опасный груз (IATA DGR / батареи / химия)</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 5: МУЛЬТИМОДАЛ -->
+        <div class="cr-mod-panel" id="cr-mod-panel-multimodal" style="display: none;">
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Сквозной международный коридор</label>
+              <select id="cr-multi-corridor" class="cr-select">
+                <option value="china_uzb" selected>Китай (Нинбо/Шанхай) ➔ Алтынколь ➔ Ташкент</option>
+                <option value="uae_uzb">ОАЭ (Джебель-Али) ➔ Бендер-Аббас ➔ Серахс ➔ Ташкент</option>
+                <option value="turkey_uzb">Турция (Мерсин) ➔ Баку ➔ Актау ➔ Ташкент</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Тип контейнера</label>
+              <select id="cr-multi-container" class="cr-select">
+                <option value="40hc" selected>40' High Cube (76 м³, до 28 т)</option>
+                <option value="20dc">20' Dry Container (33 м³, до 24 т)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Количество контейнеров</label>
+              <input type="number" id="cr-multi-count" class="cr-input" value="1" min="1" max="100" />
+            </div>
+            <div class="cr-form-field">
+              <label>Город доставки «последней мили»</label>
+              <input type="text" id="cr-multi-city" class="cr-input" value="Ташкент (склад получателя)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 6: ТАМОЖНЯ И ВЭД -->
+        <div class="cr-mod-panel" id="cr-mod-panel-customs" style="display: none;">
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field cr-station-autocomplete-wrap" style="grid-column: 1 / -1;">
+              <label>Код ТН ВЭД (10 знаков) или наименование товара из базы АИС Таможня</label>
+              <div class="cr-input-wrapper">
+                <input type="text" id="cr-customs-tnved" class="cr-input" placeholder="Введите код или товар (напр. 1001 99 000 0 или Пшеница)" value="1001 99 000 0 — Пшеница твердая" autocomplete="off" />
+                <div id="cr-customs-tnved-dropdown" class="cr-station-dropdown" style="display: none;"></div>
+              </div>
+            </div>
+            <div class="cr-form-field">
+              <label>Стоимость партии по инвойсу (USD)</label>
+              <input type="number" id="cr-customs-value" class="cr-input" value="25000" min="100" />
+            </div>
+            <div class="cr-form-field">
+              <label>Стоимость доставки до границы / фрахт (USD)</label>
+              <input type="number" id="cr-customs-freight" class="cr-input" value="2500" min="0" />
+            </div>
+            <div class="cr-form-field">
+              <label>Таможенный режим</label>
+              <select id="cr-customs-regime" class="cr-select">
+                <option value="import" selected>Импорт 40 (Выпуск для свободного обращения)</option>
+                <option value="export">Экспорт 10</option>
+                <option value="transit">Транзит 80</option>
+              </select>
+            </div>
+          </div>
+        </div>
+"""
+
+TRIGGER_INJECTION = """    // Маршрутизация на расчет выбранного направления
+    if (typeof currentModality !== 'undefined' && currentModality !== 'rail') {
+      handleNonRailCalculation(currentModality);
+      return;
+    }
+"""
+
+def patch_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         content = f.read()
 
-    # 1. Replace embedded CaravanRailwayEngine block
-    engine_start = content.find('var CaravanRailwayEngine = (function()')
-    if engine_start != -1:
-        engine_end = content.find('// ---------------------------------------------------------------------\n  // ДЕМО-ДАННЫЕ ДЛЯ РЕЖИМА "РЕГУЛЯРНЫЕ МАРШРУТЫ"', engine_start)
-        if engine_end == -1:
-            engine_end = content.find('// ДЕМО-ДАННЫЕ', engine_start)
-        if engine_end != -1:
-            # Extract just the IIFE definition from engine_code
-            iife_start = engine_code.find('var CaravanRailwayEngine = (function()')
-            iife_end = engine_code.find('if (typeof module !==', iife_start)
-            if iife_end == -1:
-                iife_end = len(engine_code)
-            new_engine_part = engine_code[iife_start:iife_end].strip() + '\n\n  '
-            content = content[:engine_start] + new_engine_part + content[engine_end:]
-            print(f"  Replaced CaravanRailwayEngine in {filepath}")
+    # 1. Insert panels before cr-calc-actions-bar if not present
+    if 'id="cr-mod-panel-fleet"' not in content:
+        target = '<div class="cr-calc-actions-bar">'
+        if target in content:
+            # We also need to remove the extra closing </div> before actions-bar if any
+            # Look at:
+            #   </div>
+            # </div>
+            # <div class="cr-calc-actions-bar">
+            idx = content.find(target)
+            content = content[:idx] + PANELS_HTML + '\n\n          ' + content[idx:]
+            print(f"[OK] Injected 5 modality panels into {filepath}")
+        else:
+            print(f"[WARN] Target actions bar not found in {filepath}")
 
-    # 2. Clean R-Тариф branding in HTML
-    replacements = [
-        ('Железнодорожный калькулятор тарифов (База R-Тариф 1520 мм)', 'Интеллектуальный калькулятор железнодорожных тарифов 1520 мм'),
-        ('Железнодорожный калькулятор тарифов (база R-Тариф 1520 мм)', 'Интеллектуальный калькулятор железнодорожных тарифов 1520 мм'),
-        ('Индивидуальный расчет (R-Тариф)', 'Индивидуальный расчет маршрута'),
-        ('КАРТОЧКА РАСЧИТАННОГО ТАРИФА (R-ТАРИФ ДЕТАЛИЗАЦИЯ)', 'КАРТОЧКА РАСЧИТАННОГО ТАРИФА И МАРШРУТА'),
-        ('Подробности расчета по участкам маршрута (R-Тариф):', 'Поучастковая тарификация железных дорог:'),
-        ('ПОДРОБНОСТИ РАСЧЕТА ПО УЧАСТКАМ МАРШРУТА (R-ТАРИФ):', 'ПОУЧАСТКОВАЯ ТАРИФИКАЦИЯ ЖЕЛЕЗНЫХ ДОРОГ:'),
-        ('* Расчет выполнен по алгоритмам Тарифной политики ОСЖД / СНГ, ТП КТЖ и ТП УТИ.', '* Расчет выполнен цифровым тарифным ядром Caravan 1520 по правилам железных дорог пространства 1520 мм (ОСЖД / ТП КТЖ / ТП УТИ / Прейскурант 10-01).')
-    ]
-    for old_txt, new_txt in replacements:
-        if old_txt in content:
-            content = content.replace(old_txt, new_txt)
-            print(f"  Replaced '{old_txt}' -> '{new_txt}'")
-
-    # 3. Replace Cargo Selector with Cargo Autocomplete Search
-    cargo_sel_pattern = re.compile(r'<!-- НОМЕНКЛАТУРА ГРУЗА -->\s*<div class="cr-form-field">.*?</div>\s*<!-- МАССА ГРУЗА -->', re.DOTALL)
-    new_cargo_html = """<!-- НОМЕНКЛАТУРА ГРУЗА (ЕТСНГ / ГНГ) -->
-            <div class="cr-form-field cr-cargo-autocomplete-wrap">
-              <label>Номенклатура груза (поиск по названию, коду ЕТСНГ или ГНГ)</label>
-              <div class="cr-input-wrapper">
-                <svg class="cr-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                  <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
-                </svg>
-                <input type="text" id="cr-calc-cargo-search" class="cr-input" placeholder="Введите название (напр. пшеница, уголь, металл) или код" value="Пшеница прочая (ЕТСНГ: 100199, ГНГ: 10019900)" autocomplete="off" />
-                <input type="hidden" id="cr-calc-cargo" value="grain" />
-                <input type="hidden" id="cr-calc-cargo-code" value="100199" />
-                <div id="cr-calc-cargo-dropdown" class="cr-station-dropdown" style="display: none;"></div>
-              </div>
-            </div>
-
-            <!-- МАССА ГРУЗА -->"""
-    
-    if cargo_sel_pattern.search(content):
-        content = cargo_sel_pattern.sub(new_cargo_html, content)
-        print("  Replaced cargo select with autocomplete in HTML")
-
-    # 4. Insert Primary "Рассчитать маршрут и тариф" button before Route Scheme
-    calc_btn_html = """<!-- КНОПКА РАСЧЕТА ТАРИФА И МАРШРУТА -->
-          <div class="cr-calc-actions-bar">
-            <button type="button" class="cr-btn-primary cr-btn-calc-action" id="cr-btn-execute-calc">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
-              <span>Рассчитать маршрут и тариф</span>
-            </button>
-          </div>
-
-          <!-- ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА -->"""
-    
-    if 'id="cr-btn-execute-calc"' not in content and '<!-- ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА -->' in content:
-        content = content.replace('<!-- ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА -->', calc_btn_html)
-        print("  Added primary calculate button before route scheme")
-
-    # 5. Add CSS for cr-calc-actions-bar & cr-btn-calc-action if not present
-    if '.cr-calc-actions-bar' not in content:
-        css_addition = """
-  .cr-calc-actions-bar {
-    margin: 18px 0 10px 0;
-    display: flex;
-    justify-content: flex-end;
-  }
-  .cr-btn-calc-action {
-    padding: 14px 28px;
-    font-size: 15px;
-    font-weight: 700;
-    gap: 10px;
-    box-shadow: 0 4px 18px rgba(245, 158, 11, 0.4);
-    cursor: pointer;
-  }
-  .cr-btn-calc-action:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.55);
-  }
-  .cr-cargo-item {
-    padding: 10px 14px;
-    cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background 0.15s;
-  }
-  .cr-cargo-item:hover {
-    background: rgba(245, 158, 11, 0.15);
-  }
-  .cr-cargo-codes {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--cr-amber, #F59E0B);
-    margin-bottom: 2px;
-  }
-  .cr-cargo-name {
-    font-size: 13px;
-    color: #FFFFFF;
-  }
-  .cr-cargo-meta {
-    font-size: 11px;
-    color: #94A3B8;
-    text-align: right;
-  }
-  .cr-cargo-class {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    font-size: 10px;
-    font-weight: 600;
-    margin-left: 6px;
-  }
-"""
-        content = content.replace('/* КАЛЬКУЛЯТОР ТАРИФОВ */', '/* КАЛЬКУЛЯТОР ТАРИФОВ */' + css_addition)
-        print("  Added CSS for calculate action bar and cargo items")
+    # 2. Hook triggerCustomCalculation
+    trig_target = 'function triggerCustomCalculation() {'
+    if trig_target in content and 'handleNonRailCalculation(currentModality)' not in content:
+        content = content.replace(trig_target, trig_target + '\n' + TRIGGER_INJECTION, 1)
+        print(f"[OK] Hooked triggerCustomCalculation in {filepath}")
 
     with open(filepath, 'w', encoding='utf-8') as f:
         f.write(content)
-    print(f"Saved {filepath}")
 
-process_file('caravan-tracking-widget.html')
-process_file('index.html')
+def main():
+    patch_file('caravan-tracking-widget.html')
+    patch_file('index.html')
+
+    # Rebuild bundle
+    subprocess.run(["python3", "build_widget_bundle.py"], check=True)
+    print("[OK] Rebuilt caravan-widget.js and caravan-widget.css")
+
+if __name__ == '__main__':
+    main()

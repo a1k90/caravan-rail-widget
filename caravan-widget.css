@@ -1409,7 +1409,7 @@
     animation: crFadeIn 0.3s ease;
   }
   .cr-mod-panel.active {
-    display: block;
+    display: block !important;
   }
 
   /* ЧЕК-ЛИСТ ДОКУМЕНТОВ */

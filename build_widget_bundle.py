@@ -63,7 +63,8 @@ def build():
   function mountWidget() {{
     injectStyles();
 
-    var container = document.getElementById('caravan-tracking-root') || 
+    var container = document.getElementById('caravan-tracking-app') ||
+                    document.getElementById('caravan-tracking-root') || 
                     document.getElementById('caravan-calc-app') ||
                     document.getElementById('caravan-widget');
 
@@ -105,12 +106,21 @@ def build():
 
     # 4. Create snippet for Tilda
     snippet_html = """<!-- ====================================================================
-     CARAVAN RAILROAD — ВИДЖЕТ ТРЕКИНГА И КАЛЬКУЛЯТОРА ДЛЯ БЛОКА T123 В ТИЛЬДЕ
-     Инструкция: Скопируйте этот блок кода целиком и вставьте в блок T123.
-     Замените YOUR_CDN_URL на ссылку вашего скрипта (GitHub Pages, jsDelivr или ваш сервер)
+     CARAVAN RAILROAD — МУЛЬТИМОДАЛЬНЫЙ СУПЕР-КАЛЬКУЛЯТОР & ТРЕКИНГ
+     Вставьте этот код в блок T123 на странице Tilda.
      ==================================================================== -->
-<div id="caravan-tracking-root"></div>
-<script src="https://cdn.jsdelivr.net/gh/USERNAME/CaravanRailRoad@main/caravan-widget.js" defer></script>
+<script>
+  window.CARAVAN_API_URL = "https://caravan-rail-widget.onrender.com";
+</script>
+
+<!-- Стили виджета (v3.5 с обходом кеша) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.css?v=3.5.0">
+
+<!-- Движок мультимодального виджета (v3.5 с обходом кеша) -->
+<script src="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.js?v=3.5.0"></script>
+
+<!-- Контейнер для отображения на странице -->
+<div id="caravan-tracking-app"></div>
 """
     with open('tilda-embed-snippet.html', 'w', encoding='utf-8') as f:
         f.write(snippet_html)

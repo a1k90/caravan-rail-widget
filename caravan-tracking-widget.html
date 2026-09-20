@@ -117,7 +117,7 @@
       </div>
 
       <!-- ЭКРАН 2: ПАНЕЛЬ ТРЕКИНГА ДЛЯ АВТОРИЗОВАННОГО КЛИЕНТА (ТОЛЬКО СВОЙ ТРАНСПОРТ) -->
-      <div id="cr-track-authed-panel" style="display: none;">
+      <div id="cr-track-authed-panel" >
         <!-- Верхний статус авторизованного контрагента -->
         <div class="cr-authed-user-bar">
           <div class="cr-aub-left">
@@ -149,13 +149,13 @@
         </form>
 
         <!-- Индикатор загрузки -->
-        <div class="cr-loader" id="cr-track-loader" style="display: none;">
+        <div class="cr-loader" id="cr-track-loader" >
           <div class="cr-spinner"></div>
           <span>Запрос дислокации в Ж/Д шлюзе Caravan Railroad...</span>
         </div>
 
         <!-- Контейнер вывода дислокации или отказа в доступе -->
-        <div id="cr-dislocation-result" class="cr-result-box" style="display: none;"></div>
+        <div id="cr-dislocation-result" class="cr-result-box" ></div>
       </div>
 
     </div>
@@ -204,7 +204,7 @@
       </div>
 
       <!-- РЕЖИМ А: РЕГУЛЯРНЫЕ МАРШРУТЫ С ОБНОВЛЯЕМЫМИ ЦЕНАМИ -->
-      <div id="cr-calc-preset-view" style="display: none;">
+      <div id="cr-calc-preset-view" >
         <div class="cr-preset-routes-grid" id="cr-preset-routes-container"></div>
       </div>
 
@@ -241,7 +241,7 @@
               <div class="cr-input-wrapper">
                 <svg class="cr-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
                 <input type="text" id="cr-calc-from" class="cr-input" placeholder="Введите название или код (напр. Кокшетау, 687008)" value="Кокшетау (687008, КТЖ)" autocomplete="off" />
-                <div id="cr-calc-from-dropdown" class="cr-station-dropdown" style="display: none;"></div>
+                <div id="cr-calc-from-dropdown" class="cr-station-dropdown" ></div>
               </div>
             </div>
 
@@ -251,7 +251,7 @@
               <div class="cr-input-wrapper">
                 <svg class="cr-input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
                 <input type="text" id="cr-calc-to" class="cr-input" placeholder="Введите станцию (напр. Ташкент-Товарный, 720000)" value="Ташкент-Товарный (720000, УТИ)" autocomplete="off" />
-                <div id="cr-calc-to-dropdown" class="cr-station-dropdown" style="display: none;"></div>
+                <div id="cr-calc-to-dropdown" class="cr-station-dropdown" ></div>
               </div>
             </div>
 
@@ -283,7 +283,7 @@
               </div>
 
               <!-- Двойной стык (транзитное сообщение: Россия -> Казахстан [Транзит] -> Узбекистан) -->
-              <div id="cr-border-dual-wrap" class="cr-dual-borders-grid" style="display: none;">
+              <div id="cr-border-dual-wrap" class="cr-dual-borders-grid" >
                 <div class="cr-form-field" style="margin-bottom: 0;">
                   <label id="cr-border-1-label">Стык 1: РЖД ⇄ КТЖ (Вход в транзит)</label>
                   <div class="cr-input-wrapper">
@@ -365,7 +365,7 @@
                 <input type="text" id="cr-calc-cargo-search" class="cr-input" placeholder="Введите название (напр. пшеница, уголь, металл) или код" value="Пшеница прочая (ЕТСНГ: 100199, ГНГ: 10019900)" autocomplete="off" />
                 <input type="hidden" id="cr-calc-cargo" value="grain" />
                 <input type="hidden" id="cr-calc-cargo-code" value="100199" />
-                <div id="cr-calc-cargo-dropdown" class="cr-station-dropdown" style="display: none;"></div>
+                <div id="cr-calc-cargo-dropdown" class="cr-station-dropdown" ></div>
               </div>
             </div>
 
@@ -417,7 +417,163 @@
 
           </div>
 
-          <!-- КНОПКА РАСЧЕТА ТАРИФА И МАРШРУТА -->
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 2: АРЕНДА ПОДВИЖНОГО СОСТАВА (ПС) -->
+        <div class="cr-mod-panel" id="cr-mod-panel-fleet" >
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Тип подвижного состава</label>
+              <select id="cr-fleet-type" class="cr-select">
+                <option value="grain" selected>Хоппер-зерновоз (116–120 м³, 70 т)</option>
+                <option value="covered">Крытый вагон (138–161 м³, 68 т)</option>
+                <option value="gondola">Полувагон люковый (85 м³, 70 т)</option>
+                <option value="platform">Фитинговая платформа (20'/40' HC)</option>
+                <option value="tank">Ж/Д цистерна (нефть, ГСМ, масла)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Формат аренды</label>
+              <select id="cr-fleet-rent-type" class="cr-select">
+                <option value="daily" selected>Посуточная аренда (Daily lease)</option>
+                <option value="roundtrip">Аренда на кругорейс (Round-trip)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Количество вагонов (ед.)</label>
+              <input type="number" id="cr-fleet-count" class="cr-input" value="10" min="1" max="500" />
+            </div>
+            <div class="cr-form-field">
+              <label>Срок аренды (суток)</label>
+              <input type="number" id="cr-fleet-days" class="cr-input" value="30" min="5" max="365" />
+            </div>
+            <div class="cr-form-field">
+              <label>Регион курсирования / Станция погрузки</label>
+              <input type="text" id="cr-fleet-route" class="cr-input" value="Акмола (Казахстан) ➔ Сарыагаш" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 3: АВТОТРАНСПОРТ -->
+        <div class="cr-mod-panel" id="cr-mod-panel-road" >
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Город отправления</label>
+              <input type="text" id="cr-road-from" class="cr-input" value="Москва" />
+            </div>
+            <div class="cr-form-field">
+              <label>Город назначения</label>
+              <input type="text" id="cr-road-to" class="cr-input" value="Ташкент" />
+            </div>
+            <div class="cr-form-field">
+              <label>Тип автотранспорта</label>
+              <select id="cr-road-type" class="cr-select">
+                <option value="tent" selected>Тент стандарт (86–92 м³, до 22 т)</option>
+                <option value="mega">Сцепка Мега (110–120 м³, до 24 т)</option>
+                <option value="reefer">Рефрижератор (-20°C / +20°C)</option>
+                <option value="lowbed">Низкорамный трал (негабарит)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Масса груза (тонн)</label>
+              <input type="number" id="cr-road-weight" class="cr-input" value="20" min="1" max="45" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 4: АВИАКАРГО -->
+        <div class="cr-mod-panel" id="cr-mod-panel-air" >
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Аэропорт вылета (IATA)</label>
+              <select id="cr-air-from" class="cr-select">
+                <option value="CAN" selected>Гуанчжоу (CAN) — Китай</option>
+                <option value="PVG">Шанхай (PVG) — Китай</option>
+                <option value="SVO">Москва (SVO) — Россия</option>
+                <option value="IST">Стамбул (IST) — Турция</option>
+                <option value="DXB">Дубай (DXB) — ОАЭ</option>
+                <option value="FRA">Франкфурт (FRA) — Германия</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Аэропорт прилёта</label>
+              <input type="text" id="cr-air-to" class="cr-input" value="Ташкент (TAS) — Узбекистан" readonly />
+            </div>
+            <div class="cr-form-field">
+              <label>Фактический вес брутто (кг)</label>
+              <input type="number" id="cr-air-weight" class="cr-input" value="350" min="10" max="25000" />
+            </div>
+            <div class="cr-form-field">
+              <label>Общий объем груза (м³)</label>
+              <input type="number" id="cr-air-volume" class="cr-input" value="2.5" step="0.1" min="0.1" />
+            </div>
+            <div class="cr-form-field" style="display: flex; align-items: center; gap: 8px; margin-top: 24px;">
+              <input type="checkbox" id="cr-air-danger" style="width: 18px; height: 18px;" />
+              <label for="cr-air-danger" style="margin: 0; cursor: pointer;">Опасный груз (IATA DGR / батареи / химия)</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 5: МУЛЬТИМОДАЛ -->
+        <div class="cr-mod-panel" id="cr-mod-panel-multimodal" >
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field">
+              <label>Сквозной международный коридор</label>
+              <select id="cr-multi-corridor" class="cr-select">
+                <option value="china_uzb" selected>Китай (Нинбо/Шанхай) ➔ Алтынколь ➔ Ташкент</option>
+                <option value="uae_uzb">ОАЭ (Джебель-Али) ➔ Бендер-Аббас ➔ Серахс ➔ Ташкент</option>
+                <option value="turkey_uzb">Турция (Мерсин) ➔ Баку ➔ Актау ➔ Ташкент</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Тип контейнера</label>
+              <select id="cr-multi-container" class="cr-select">
+                <option value="40hc" selected>40' High Cube (76 м³, до 28 т)</option>
+                <option value="20dc">20' Dry Container (33 м³, до 24 т)</option>
+              </select>
+            </div>
+            <div class="cr-form-field">
+              <label>Количество контейнеров</label>
+              <input type="number" id="cr-multi-count" class="cr-input" value="1" min="1" max="100" />
+            </div>
+            <div class="cr-form-field">
+              <label>Город доставки «последней мили»</label>
+              <input type="text" id="cr-multi-city" class="cr-input" value="Ташкент (склад получателя)" />
+            </div>
+          </div>
+        </div>
+
+        <!-- ПАНЕЛЬ 6: ТАМОЖНЯ И ВЭД -->
+        <div class="cr-mod-panel" id="cr-mod-panel-customs" >
+          <div class="cr-modality-inputs-grid">
+            <div class="cr-form-field cr-station-autocomplete-wrap" style="grid-column: 1 / -1;">
+              <label>Код ТН ВЭД (10 знаков) или наименование товара из базы АИС Таможня</label>
+              <div class="cr-input-wrapper">
+                <input type="text" id="cr-customs-tnved" class="cr-input" placeholder="Введите код или товар (напр. 1001 99 000 0 или Пшеница)" value="1001 99 000 0 — Пшеница твердая" autocomplete="off" />
+                <div id="cr-customs-tnved-dropdown" class="cr-station-dropdown" ></div>
+              </div>
+            </div>
+            <div class="cr-form-field">
+              <label>Стоимость партии по инвойсу (USD)</label>
+              <input type="number" id="cr-customs-value" class="cr-input" value="25000" min="100" />
+            </div>
+            <div class="cr-form-field">
+              <label>Стоимость доставки до границы / фрахт (USD)</label>
+              <input type="number" id="cr-customs-freight" class="cr-input" value="2500" min="0" />
+            </div>
+            <div class="cr-form-field">
+              <label>Таможенный режим</label>
+              <select id="cr-customs-regime" class="cr-select">
+                <option value="import" selected>Импорт 40 (Выпуск для свободного обращения)</option>
+                <option value="export">Экспорт 10</option>
+                <option value="transit">Транзит 80</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+
           <div class="cr-calc-actions-bar">
             <button type="button" class="cr-btn-primary cr-btn-calc-action" id="cr-btn-execute-calc">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
@@ -534,7 +690,7 @@
           </div>
         </div>
 
-        <div class="cr-client-discount-badge" id="cr-client-discount-pill" style="display: none;">
+        <div class="cr-client-discount-badge" id="cr-client-discount-pill" >
           Партнерская скидка контрагента: <strong id="cr-client-discount-val">0%</strong>
         </div>
 
@@ -608,7 +764,7 @@
       </div>
 
       <!-- КАБИНЕТ АВТОРИЗОВАННОГО КЛИЕНТА (появляется после входа) -->
-      <div id="cr-cabinet-section" style="display: none;">
+      <div id="cr-cabinet-section" >
         <div class="cr-cabinet-header">
           <div class="cr-client-profile">
             <div class="cr-client-avatar" id="cr-client-avatar">КЛ</div>
@@ -652,7 +808,7 @@
         </div>
 
         <!-- 2. ПОДВКЛАДКА: КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ (КП) И ИНВОЙСЫ ИЗ B2B ПЛАТФОРМЫ -->
-        <div id="cr-cab-view-proposals" style="display: none;">
+        <div id="cr-cab-view-proposals" >
           <div class="cr-proposals-intro">
             <p>Официальные коммерческие предложения, сформированные логистами Caravan Railroad и подписанные руководством. Вы можете скачать PDF или запросить счет на оплату.</p>
           </div>
@@ -717,7 +873,7 @@
         </div>
       </form>
 
-      <div id="cr-reg-success" class="cr-alert-success" style="display: none;">
+      <div id="cr-reg-success" class="cr-alert-success" >
         <div class="cr-alert-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:20px;height:20px;"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
         <div>
           <h4>Заявка успешно отправлена в B2B платформу!</h4>
@@ -731,7 +887,7 @@
   <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ПОДПИСАННОГО КП -->
   
   <!-- МОДАЛЬНОЕ ОКНО БРОНИРОВАНИЯ СТАВКИ (ДЛЯ B2B ПЛАТФОРМЫ) -->
-  <div id="cr-booking-modal" class="cr-booking-modal" style="display: none;">
+  <div id="cr-booking-modal" class="cr-booking-modal" >
     <div class="cr-bm-card">
       <div class="cr-bm-header">
         <h4>Бронирование ставки и заказ официального КП</h4>
@@ -760,7 +916,7 @@
             </button>
           </div>
         </form>
-        <div id="cr-booking-success" class="cr-alert-success" style="display: none;">
+        <div id="cr-booking-success" class="cr-alert-success" >
           <h4 id="cr-book-success-title">Заявка на расчет и бронирование принята!</h4>
           <p>Специалисты Caravan Railroad зафиксировали ставку и сформируют официальное коммерческое предложение с печатью в вашем личном кабинете B2B в течение 15 минут.</p>
         </div>
@@ -768,7 +924,7 @@
     </div>
   </div>
 
-  <div id="cr-kp-modal" class="cr-booking-modal" style="display: none;">
+  <div id="cr-kp-modal" class="cr-booking-modal" >
     <div class="cr-bm-card cr-kp-card-view">
       <div class="cr-bm-header">
         <h4>Коммерческое предложение Caravan Railroad</h4>
@@ -2204,7 +2360,7 @@
     animation: crFadeIn 0.3s ease;
   }
   .cr-mod-panel.active {
-    display: block;
+    display: block !important;
   }
 
   /* ЧЕК-ЛИСТ ДОКУМЕНТОВ */
@@ -13436,25 +13592,75 @@ if (typeof module !== 'undefined' && module.exports) {
   
   function handleNonRailCalculation(modality) {
     var apiUrl = getCaravanApiUrl();
-    var tableBody = document.getElementById('cr-calc-table-body');
-    var totalEl = document.getElementById('cr-calc-total');
-    if (!tableBody) return;
+    var tableWrap = document.querySelector('.cr-rtariff-table-wrap');
+    var tableTitle = document.querySelector('.cr-rtariff-table-title');
+    var thead = document.querySelector('#cr-rtariff-table thead');
+    var tbody = document.getElementById('cr-rtariff-tbody');
+    var resBox = document.getElementById('cr-calc-result-box');
+    var routeEl = document.getElementById('cr-quote-route-title');
+    var badgeTrans = document.getElementById('cr-qb-transport');
+    var badgePark = document.getElementById('cr-qb-park');
+    var badgeCargo = document.getElementById('cr-qb-cargo');
+    var badgeInco = document.getElementById('cr-qb-incoterms');
+    var totalEl = document.getElementById('cr-quote-total-price');
+    var transitEl = document.getElementById('cr-quote-transit-days');
+    var schemeBox = document.getElementById('cr-route-scheme-box');
+
+    if (!tbody) return;
+    if (resBox) resBox.style.display = 'block';
+    if (schemeBox) schemeBox.style.display = (modality === 'rail') ? 'block' : 'none';
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString('ru-RU');
+    }
 
     if (modality === 'fleet') {
       var wType = (document.getElementById('cr-fleet-type') ? document.getElementById('cr-fleet-type').value : 'grain');
       var wCount = parseInt(document.getElementById('cr-fleet-count') ? document.getElementById('cr-fleet-count').value : 10) || 10;
       var wDays = parseInt(document.getElementById('cr-fleet-days') ? document.getElementById('cr-fleet-days').value : 30) || 30;
       var rType = (document.getElementById('cr-fleet-rent-type') ? document.getElementById('cr-fleet-rent-type').value : 'daily');
-      var routeText = (document.getElementById('cr-fleet-route') ? document.getElementById('cr-fleet-route').value : 'Акмола ➔ Ташкент');
+      var routeText = (document.getElementById('cr-fleet-route') ? document.getElementById('cr-fleet-route').value : 'Акмола ➔ Сарыагаш');
 
+      var wNames = {
+        grain: 'Хоппер-зерновоз (116–120 м³, 70 т)',
+        covered: 'Крытый вагон (138–161 м³, 68 т)',
+        gondola: 'Полувагон люковый (85 м³, 70 т)',
+        platform: 'Фитинговая платформа (20\'/40\' HC)',
+        tank: 'Ж/Д цистерна (нефть, ГСМ, масла)'
+      };
       var rateMap = { grain: 42, covered: 38, gondola: 32, platform: 29, tank: 45 };
       var dailyRate = rateMap[wType] || 40;
       var totalUsd = dailyRate * wDays * wCount;
 
-      tableBody.innerHTML = '<tr><td>Суточная аренда парка Caravan (' + wCount + ' ваг. x ' + wDays + ' сут.)</td><td>' + wDays + ' сут.</td><td>$' + dailyRate + '/сут.</td><td>$' + totalUsd.toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Обеспечение дислокации и подсыла под погрузку</td><td>' + escapeHtml(routeText) + '</td><td>Включено</td><td>$0</td></tr>';
-      if (totalEl) totalEl.textContent = '$' + totalUsd.toLocaleString('ru-RU');
+      if (routeEl) routeEl.textContent = routeText + ' (Аренда подвижного состава)';
+      if (badgeTrans) badgeTrans.textContent = (wNames[wType] || 'Вагон Caravan') + ' — ' + wCount + ' ед.';
+      if (badgePark) badgePark.textContent = 'Собственный парк СПС (Caravan Railroad)';
+      if (badgeCargo) badgeCargo.textContent = (rType === 'daily' ? 'Посуточная аренда' : 'Аренда на кругорейс') + ' (' + wDays + ' сут.)';
+      if (badgeInco) badgeInco.textContent = 'Договор аренды и оперирования ПС';
+      if (totalEl) totalEl.textContent = fmt(totalUsd) + ' USD';
+      if (transitEl) transitEl.textContent = 'Готовность к подаче под погрузку: 2–3 суток';
+      if (tableTitle) tableTitle.textContent = 'Расчет стоимости аренды подвижного состава:';
+
+      if (thead) {
+        thead.innerHTML = '<tr><th>Наименование услуги</th><th>Параметры</th><th class="cr-text-right">Период / Объем</th><th class="cr-text-right">Ставка</th><th class="cr-text-right" colspan="4">Итого</th></tr>';
+      }
+      tbody.innerHTML = '<tr><td>Суточная аренда парка Caravan (' + (wNames[wType] || 'Вагоны') + ')</td><td>' + wCount + ' ед. вагонов</td><td class="cr-text-right">' + wDays + ' сут.</td><td class="cr-text-right">$' + dailyRate + '/сут.</td><td class="cr-text-right" colspan="4" style="color:var(--cr-amber); font-weight:700;">' + fmt(totalUsd) + '</td></tr>' +
+                        '<tr><td>Диспетчерский мониторинг и слежение за дислокацией 24/7</td><td>АСУ «Caravan Fleet Tracker»</td><td class="cr-text-right">' + wDays + ' сут.</td><td class="cr-text-right">Включено</td><td class="cr-text-right" colspan="4">$0</td></tr>' +
+                        '<tr><td>Техническое освидетельствование и допуск (ВУ-23М / ВУ-36М)</td><td>Станция формирования</td><td class="cr-text-right">Перед рейсом</td><td class="cr-text-right">Включено</td><td class="cr-text-right" colspan="4">$0</td></tr>';
+
       renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['fleet']);
+
+      currentCalculatedQuote = {
+        from: routeText,
+        to: 'Пункт выгрузки',
+        transport: wNames[wType] || 'Вагоны Caravan',
+        park_type: 'Собственный парк СПС Caravan',
+        cargo_name: 'Аренда подвижного состава',
+        incoterms: 'Аренда ПС',
+        client_role: 'Арендатор',
+        total_price_usd: totalUsd,
+        transit_days: '2-3 суток'
+      };
 
       if (apiUrl) {
         fetch(apiUrl + '/api/calculate/fleet', {
@@ -13465,18 +13671,50 @@ if (typeof module !== 'undefined' && module.exports) {
           if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
         }).catch(function() {});
       }
+
     } else if (modality === 'road') {
       var rFrom = (document.getElementById('cr-road-from') ? document.getElementById('cr-road-from').value : 'Москва');
       var rTo = (document.getElementById('cr-road-to') ? document.getElementById('cr-road-to').value : 'Ташкент');
       var rType = (document.getElementById('cr-road-type') ? document.getElementById('cr-road-type').value : 'tent');
       var rWeight = parseFloat(document.getElementById('cr-road-weight') ? document.getElementById('cr-road-weight').value : 20) || 20;
 
+      var tNames = {
+        tent: 'Тент стандарт (86–92 м³, до 22 т)',
+        mega: 'Сцепка Мега (110–120 м³, до 24 т)',
+        reefer: 'Рефрижератор (-20°C / +20°C)',
+        lowbed: 'Низкорамный трал (негабарит)'
+      };
       var baseCost = (rType === 'reefer' ? 6200 : (rType === 'mega' ? 5600 : 4900));
-      tableBody.innerHTML = '<tr><td>Международный автофрахт FTL (' + escapeHtml(rFrom) + ' ➔ ' + escapeHtml(rTo) + ')</td><td>~3 400 км</td><td>$' + baseCost.toLocaleString('ru-RU') + '</td><td>$' + baseCost.toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Транзитные погранпереходы и таможенное сопровождение</td><td>РФ / КЗХ / УЗБ</td><td>Включено</td><td>$250</td></tr>';
       var totalRoad = baseCost + 250;
-      if (totalEl) totalEl.textContent = '$' + totalRoad.toLocaleString('ru-RU');
+
+      if (routeEl) routeEl.textContent = rFrom + ' ➔ ' + rTo + ' (Международный автофрахт)';
+      if (badgeTrans) badgeTrans.textContent = tNames[rType] || 'Еврофура';
+      if (badgePark) badgePark.textContent = 'Автопарк Caravan Logistics (FTL)';
+      if (badgeCargo) badgeCargo.textContent = 'Груз нетто: ' + rWeight + ' т';
+      if (badgeInco) badgeInco.textContent = 'CMR / Доставка «До двери»';
+      if (totalEl) totalEl.textContent = fmt(totalRoad) + ' USD';
+      if (transitEl) transitEl.textContent = 'Срок автодоставки: 7–9 суток';
+      if (tableTitle) tableTitle.textContent = 'Тарификация международной автоперевозки:';
+
+      if (thead) {
+        thead.innerHTML = '<tr><th>Наименование расхода</th><th>Маршрут / Параметры</th><th class="cr-text-right">Расстояние</th><th class="cr-text-right">Базис</th><th class="cr-text-right" colspan="4">Сумма</th></tr>';
+      }
+      tbody.innerHTML = '<tr><td>Международный автофрахт FTL (' + escapeHtml(rFrom) + ' ➔ ' + escapeHtml(rTo) + ')</td><td>' + (tNames[rType] || 'Автопоезд') + '</td><td class="cr-text-right">~3 400 км</td><td class="cr-text-right">FTL</td><td class="cr-text-right" colspan="4" style="color:var(--cr-amber); font-weight:700;">' + fmt(baseCost) + '</td></tr>' +
+                        '<tr><td>Таможенный транзит, обеспечение книжки Carnet TIR и CMR</td><td>РФ / Казахстан / Узбекистан</td><td class="cr-text-right">Погранпереходы</td><td class="cr-text-right">Фикс</td><td class="cr-text-right" colspan="4">$250</td></tr>';
+
       renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['road']);
+
+      currentCalculatedQuote = {
+        from: rFrom,
+        to: rTo,
+        transport: tNames[rType] || 'Автофура',
+        park_type: 'Автопарк Caravan FTL',
+        cargo_name: 'Автоперевозка FTL ' + rWeight + ' т',
+        incoterms: 'DAP (До склада)',
+        client_role: 'Грузоотправитель',
+        total_price_usd: totalRoad,
+        transit_days: '7-9 суток'
+      };
 
       if (apiUrl) {
         fetch(apiUrl + '/api/calculate/road', {
@@ -13487,6 +13725,7 @@ if (typeof module !== 'undefined' && module.exports) {
           if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
         }).catch(function() {});
       }
+
     } else if (modality === 'air') {
       var aFrom = (document.getElementById('cr-air-from') ? document.getElementById('cr-air-from').value : 'CAN');
       var aWeight = parseFloat(document.getElementById('cr-air-weight') ? document.getElementById('cr-air-weight').value : 350) || 350;
@@ -13494,10 +13733,36 @@ if (typeof module !== 'undefined' && module.exports) {
       var chWeight = Math.max(aWeight, aVol * 167);
       var airCost = Math.round(chWeight * 3.85 + 120);
 
-      tableBody.innerHTML = '<tr><td>Авиафрахт карго (' + aFrom + ' ➔ TAS) Оплачиваемый вес: ' + Math.round(chWeight) + ' кг</td><td>3-5 дней</td><td>$3.85/кг</td><td>$' + Math.round(chWeight * 3.85).toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Терминальный сбор аэропорта TAS и обработка</td><td>СВХ Карго</td><td>Включено</td><td>$120</td></tr>';
-      if (totalEl) totalEl.textContent = '$' + airCost.toLocaleString('ru-RU');
+      var aNames = { CAN: 'Гуанчжоу (CAN)', PVG: 'Шанхай (PVG)', SVO: 'Москва (SVO)', IST: 'Стамбул (IST)', DXB: 'Дубай (DXB)', FRA: 'Франкфурт (FRA)' };
+
+      if (routeEl) routeEl.textContent = (aNames[aFrom] || aFrom) + ' ➔ Ташкент (TAS) (Авиакарго)';
+      if (badgeTrans) badgeTrans.textContent = 'Авиафрахт IATA Cargo';
+      if (badgePark) badgePark.textContent = 'Регулярные грузовые рейсы';
+      if (badgeCargo) badgeCargo.textContent = 'Вес: ' + aWeight + ' кг (Оплач.: ' + Math.round(chWeight) + ' кг)';
+      if (badgeInco) badgeInco.textContent = 'CIP Аэропорт Ташкент (TAS)';
+      if (totalEl) totalEl.textContent = fmt(airCost) + ' USD';
+      if (transitEl) transitEl.textContent = 'Срок авиадоставки: 3–5 суток';
+      if (tableTitle) tableTitle.textContent = 'Калькуляция авиаперевозки:';
+
+      if (thead) {
+        thead.innerHTML = '<tr><th>Элемент авиатарифа</th><th>Параметры</th><th class="cr-text-right">Вес / Объем</th><th class="cr-text-right">Тариф</th><th class="cr-text-right" colspan="4">Сумма</th></tr>';
+      }
+      tbody.innerHTML = '<tr><td>Авиафрахт карго (' + (aNames[aFrom] || aFrom) + ' ➔ TAS)</td><td>Плотность 1:167 (IATA)</td><td class="cr-text-right">' + Math.round(chWeight) + ' кг</td><td class="cr-text-right">$3.85/кг</td><td class="cr-text-right" colspan="4" style="color:var(--cr-amber); font-weight:700;">' + fmt(chWeight * 3.85) + '</td></tr>' +
+                        '<tr><td>Терминальная обработка аэропорта назначения TAS и СВХ</td><td>Обработка и выпуск</td><td class="cr-text-right">1 партия</td><td class="cr-text-right">Фикс</td><td class="cr-text-right" colspan="4">$120</td></tr>';
+
       renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['air']);
+
+      currentCalculatedQuote = {
+        from: (aNames[aFrom] || aFrom),
+        to: 'Ташкент (TAS)',
+        transport: 'Авиафрахт Карго',
+        park_type: 'IATA Air Carrier',
+        cargo_name: 'Авиагруз ' + Math.round(chWeight) + ' кг',
+        incoterms: 'CIP Аэропорт Ташкент',
+        client_role: 'Грузополучатель',
+        total_price_usd: airCost,
+        transit_days: '3-5 суток'
+      };
 
       if (apiUrl) {
         fetch(apiUrl + '/api/calculate/air', {
@@ -13508,16 +13773,48 @@ if (typeof module !== 'undefined' && module.exports) {
           if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
         }).catch(function() {});
       }
+
     } else if (modality === 'multimodal') {
       var mCorridor = (document.getElementById('cr-multi-corridor') ? document.getElementById('cr-multi-corridor').value : 'china_uzb');
       var mCount = parseInt(document.getElementById('cr-multi-count') ? document.getElementById('cr-multi-count').value : 1) || 1;
+      var mCity = (document.getElementById('cr-multi-city') ? document.getElementById('cr-multi-city').value : 'Ташкент');
       var mTotal = 5400 * mCount;
 
-      tableBody.innerHTML = '<tr><td>Морской фрахт + Терминальная обработка THC в порту</td><td>Контейнер 40HC x ' + mCount + '</td><td>$1 450/ед</td><td>$' + (1450 * mCount).toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Ускоренный контейнерный поезд (Ж/Д платформа до Ташкента)</td><td>16-20 дней</td><td>$3 600/ед</td><td>$' + (3600 * mCount).toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Автодоставка последней мили на склад грузополучателя</td><td>Door-to-Door</td><td>$350/ед</td><td>$' + (350 * mCount).toLocaleString('ru-RU') + '</td></tr>';
-      if (totalEl) totalEl.textContent = '$' + mTotal.toLocaleString('ru-RU');
+      var cNames = {
+        china_uzb: 'Китай (Нинбо/Шанхай) ➔ Алтынколь ➔ Ташкент',
+        uae_uzb: 'ОАЭ (Джебель-Али) ➔ Бендер-Аббас ➔ Серахс ➔ Ташкент',
+        turkey_uzb: 'Турция (Мерсин) ➔ Баку ➔ Актау ➔ Ташкент'
+      };
+
+      if (routeEl) routeEl.textContent = (cNames[mCorridor] || mCorridor);
+      if (badgeTrans) badgeTrans.textContent = 'Контейнер 40\' High Cube (' + mCount + ' ед.)';
+      if (badgePark) badgePark.textContent = 'Мультимодальный сервис (Море + Ж/Д + Авто)';
+      if (badgeCargo) badgeCargo.textContent = 'FCL контейнерная партия';
+      if (badgeInco) badgeInco.textContent = 'Door-to-Door (' + mCity + ')';
+      if (totalEl) totalEl.textContent = fmt(mTotal) + ' USD';
+      if (transitEl) transitEl.textContent = 'Срок мультимодальной доставки: 16–20 суток';
+      if (tableTitle) tableTitle.textContent = 'Поэтапный расчет мультимодальной перевозки:';
+
+      if (thead) {
+        thead.innerHTML = '<tr><th>Плечо перевозки</th><th>Вид транспорта / Операция</th><th class="cr-text-right">Кол-во</th><th class="cr-text-right">Ставка</th><th class="cr-text-right" colspan="4">Сумма</th></tr>';
+      }
+      tbody.innerHTML = '<tr><td>Морской фрахт + Перевалка THC в порту погрузки</td><td>Морской контейнеровоз</td><td class="cr-text-right">' + mCount + ' ед.</td><td class="cr-text-right">$1 450/ед</td><td class="cr-text-right" colspan="4">' + fmt(1450 * mCount) + '</td></tr>' +
+                        '<tr><td>Ускоренный контейнерный поезд (Сухопутный переход ➔ станция назначения)</td><td>Ж/Д фитинговая платформа</td><td class="cr-text-right">' + mCount + ' ед.</td><td class="cr-text-right">$3 600/ед</td><td class="cr-text-right" colspan="4">' + fmt(3600 * mCount) + '</td></tr>' +
+                        '<tr><td>Автодоставка «последней мили» контейнеровозом до склада</td><td>Автоконтейнеровоз (Door)</td><td class="cr-text-right">' + mCount + ' ед.</td><td class="cr-text-right">$350/ед</td><td class="cr-text-right" colspan="4" style="color:var(--cr-amber); font-weight:700;">' + fmt(350 * mCount) + '</td></tr>';
+
       renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['multimodal']);
+
+      currentCalculatedQuote = {
+        from: (cNames[mCorridor] || mCorridor).split('➔')[0].trim(),
+        to: mCity,
+        transport: 'Контейнер 40HC (' + mCount + ' ед.)',
+        park_type: 'Мультимодальный контейнерный парк',
+        cargo_name: 'FCL Контейнерная партия',
+        incoterms: 'Door-to-Door',
+        client_role: 'Грузополучатель',
+        total_price_usd: mTotal,
+        transit_days: '16-20 суток'
+      };
 
       if (apiUrl) {
         fetch(apiUrl + '/api/calculate/multimodal', {
@@ -13528,28 +13825,59 @@ if (typeof module !== 'undefined' && module.exports) {
           if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
         }).catch(function() {});
       }
+
     } else if (modality === 'customs') {
       var cVal = parseFloat(document.getElementById('cr-customs-value') ? document.getElementById('cr-customs-value').value : 25000) || 25000;
       var cFreight = parseFloat(document.getElementById('cr-customs-freight') ? document.getElementById('cr-customs-freight').value : 2500) || 2500;
+      var tnvedInput = document.getElementById('cr-customs-tnved') ? document.getElementById('cr-customs-tnved').value : '1001 99 000 0 — Пшеница твердая';
       var cTotalBase = cVal + cFreight;
       var cDuty = Math.round(cTotalBase * 0.05);
       var cVat = Math.round((cTotalBase + cDuty) * 0.12);
       var cFee = 65;
       var cTotalFiscal = cDuty + cVat + cFee;
 
-      tableBody.innerHTML = '<tr><td>Ввозная таможенная пошлина (базовая ставка 5%)</td><td>База: $' + cTotalBase.toLocaleString('ru-RU') + '</td><td>5%</td><td>$' + cDuty.toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Налог на добавленную стоимость (НДС 12% Узбекистан)</td><td>База: $' + (cTotalBase + cDuty).toLocaleString('ru-RU') + '</td><td>12%</td><td>$' + cVat.toLocaleString('ru-RU') + '</td></tr>' +
-                            '<tr><td>Сбор за таможенное оформление (БРВ)</td><td>Декларация</td><td>Фикс</td><td>$' + cFee + '</td></tr>';
-      if (totalEl) totalEl.textContent = '$' + cTotalFiscal.toLocaleString('ru-RU') + ' (~' + Math.round(cTotalFiscal * 12850).toLocaleString('ru-RU') + ' сум)';
+      if (routeEl) routeEl.textContent = 'Таможенная очистка ВЭД: ' + escapeHtml(tnvedInput);
+      if (badgeTrans) badgeTrans.textContent = 'Таможенный режим: Импорт 40';
+      if (badgePark) badgePark.textContent = 'АИС Таможенный калькулятор';
+      if (badgeCargo) badgeCargo.textContent = 'Таможенная стоимость (CIF): ' + fmt(cTotalBase);
+      if (badgeInco) badgeInco.textContent = 'DDP («Под ключ» с таможней)';
+      if (totalEl) totalEl.textContent = fmt(cTotalFiscal) + ' (~' + Math.round(cTotalFiscal * 12850).toLocaleString('ru-RU') + ' сум)';
+      if (transitEl) transitEl.textContent = 'Срок выпуска таможенной декларации (ГТД): 1–2 рабочих дня';
+      if (tableTitle) tableTitle.textContent = 'Расчет фискальных таможенных платежей в бюджет:';
+
+      if (thead) {
+        thead.innerHTML = '<tr><th>Вид таможенного платежа</th><th>База начисления (USD)</th><th class="cr-text-right">Ставка</th><th class="cr-text-right">Сумма в валюте</th><th class="cr-text-right" colspan="4">Сумма в национальной валюте</th></tr>';
+      }
+      tbody.innerHTML = '<tr><td>Ввозная таможенная пошлина (базовая ставка)</td><td>' + fmt(cTotalBase) + '</td><td class="cr-text-right">5.0%</td><td class="cr-text-right">' + fmt(cDuty) + '</td><td class="cr-text-right" colspan="4">' + Math.round(cDuty * 12850).toLocaleString('ru-RU') + ' сум</td></tr>' +
+                        '<tr><td>Налог на добавленную стоимость (НДС 12% Узбекистан)</td><td>' + fmt(cTotalBase + cDuty) + '</td><td class="cr-text-right">12.0%</td><td class="cr-text-right">' + fmt(cVat) + '</td><td class="cr-text-right" colspan="4">' + Math.round(cVat * 12850).toLocaleString('ru-RU') + ' сум</td></tr>' +
+                        '<tr><td>Сбор за таможенное оформление декларации (БРВ)</td><td>Таможенный сбор</td><td class="cr-text-right">Фикс</td><td class="cr-text-right">' + fmt(cFee) + '</td><td class="cr-text-right" colspan="4">' + Math.round(cFee * 12850).toLocaleString('ru-RU') + ' сум</td></tr>';
+
       renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['customs']);
 
+      currentCalculatedQuote = {
+        from: 'Граница / Погранпереход',
+        to: 'Таможенный пост назначения',
+        transport: 'Таможенная декларация (ГТД)',
+        park_type: 'АИС Таможенный калькулятор',
+        cargo_name: tnvedInput,
+        incoterms: 'DDP (Очищен для свободного обращения)',
+        client_role: 'Декларант / Брокер',
+        total_price_usd: cTotalFiscal,
+        transit_days: '1-2 рабочих дня'
+      };
+
       if (apiUrl) {
-        var tnvedVal = document.getElementById('cr-customs-tnved') ? document.getElementById('cr-customs-tnved').value : '1001990000';
         fetch(apiUrl + '/api/calculate/customs', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ tnved: tnvedVal, value: cVal, freight: cFreight })
+          body: JSON.stringify({ tnved: tnvedInput, value: cVal, freight: cFreight })
         }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d && d.payments) {
+            tbody.innerHTML = '<tr><td>Ввозная таможенная пошлина (' + d.duty_pct + '%)</td><td>' + fmt(d.customs_value_usd) + '</td><td class="cr-text-right">' + d.duty_pct + '%</td><td class="cr-text-right">' + fmt(d.payments.duty_usd) + '</td><td class="cr-text-right" colspan="4">' + Math.round(d.payments.duty_usd * 12850).toLocaleString('ru-RU') + ' сум</td></tr>' +
+                              '<tr><td>Налог на добавленную стоимость (НДС ' + d.vat_pct + '%)</td><td>' + fmt(d.customs_value_usd + d.payments.duty_usd) + '</td><td class="cr-text-right">' + d.vat_pct + '%</td><td class="cr-text-right">' + fmt(d.payments.vat_usd) + '</td><td class="cr-text-right" colspan="4">' + Math.round(d.payments.vat_usd * 12850).toLocaleString('ru-RU') + ' сум</td></tr>' +
+                              '<tr><td>Сбор за таможенное оформление декларации (БРВ)</td><td>Таможенный сбор</td><td class="cr-text-right">Фикс</td><td class="cr-text-right">' + fmt(d.payments.customs_fee_usd) + '</td><td class="cr-text-right" colspan="4">' + Math.round(d.payments.customs_fee_usd * 12850).toLocaleString('ru-RU') + ' сум</td></tr>';
+            if (totalEl) totalEl.textContent = fmt(d.payments.total_usd) + ' (~' + Math.round(d.payments.total_usd * 12850).toLocaleString('ru-RU') + ' сум)';
+          }
           if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
         }).catch(function() {});
       }
@@ -13744,6 +14072,12 @@ if (typeof module !== 'undefined' && module.exports) {
   }
 
   function triggerCustomCalculation() {
+    // Маршрутизация на расчет выбранного направления
+    if (typeof currentModality !== 'undefined' && currentModality !== 'rail') {
+      handleNonRailCalculation(currentModality);
+      return;
+    }
+
     var fromVal = (document.getElementById('cr-calc-from') ? document.getElementById('cr-calc-from').value : '') || 'Кокшетау';
     var toVal = (document.getElementById('cr-calc-to') ? document.getElementById('cr-calc-to').value : '') || 'Ташкент-Товарный';
     

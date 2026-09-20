@@ -1,17 +1,16 @@
 <!-- ====================================================================
-     CARAVAN RAILROAD — МУЛЬТИМОДАЛЬНЫЙ СУПЕР-КАЛЬКУЛЯТОР & ТРЕКИНГ ДЛЯ TILDA (T123)
-     Инструкция: Скопируйте этот блок целиком и вставьте в блок T123 на вашей Tilda.
+     CARAVAN RAILROAD — МУЛЬТИМОДАЛЬНЫЙ СУПЕР-КАЛЬКУЛЯТОР & ТРЕКИНГ
+     Вставьте этот код в блок T123 на странице Tilda.
      ==================================================================== -->
 <script>
-  // Адрес вашего серверного API Caravan на Render (замените на ваш URL из Render, если отличается):
   window.CARAVAN_API_URL = "https://caravan-rail-widget.onrender.com";
 </script>
 
-<!-- Стили виджета (загрузка через глобальный быстрый CDN jsDelivr) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.css">
+<!-- Стили виджета (v3.5 с обходом кеша) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.css?v=3.5.0">
 
-<!-- Движок виджета -->
-<script src="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.js"></script>
+<!-- Движок мультимодального виджета (v3.5 с обходом кеша) -->
+<script src="https://cdn.jsdelivr.net/gh/a1k90/caravan-rail-widget@main/caravan-widget.js?v=3.5.0"></script>
 
-<!-- Контейнер для встраивания виджета на страницу -->
+<!-- Контейнер для отображения на странице -->
 <div id="caravan-tracking-app"></div>
