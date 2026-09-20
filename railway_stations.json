@@ -12,11 +12,11 @@
   {
     "code": "560330",
     "name": "Авчала (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -62,11 +62,11 @@
   {
     "code": "618404",
     "name": "Аксарайская II (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -172,11 +172,11 @@
   {
     "code": "548803",
     "name": "Алят (эксп. на Туркменбаши I)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "51",
-    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
     "is_border": true
   },
   {
@@ -242,11 +242,11 @@
   {
     "code": "566002",
     "name": "Ахурян (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "ARM",
+    "country_name": "Армения",
+    "admin": "ЮКЖД",
+    "road": "58",
+    "road_label": "Южно-Кавказская ж. д. (ЮКЖД)",
     "is_border": true
   },
   {
@@ -272,11 +272,11 @@
   {
     "code": "547406",
     "name": "Баку-Торговая Пристань (эксп.)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "51",
-    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
     "is_border": true
   },
   {
@@ -342,21 +342,21 @@
   {
     "code": "579905",
     "name": "Батуми-Товарная (паром, эксп. на Варну)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "571405",
     "name": "Батуми-Товарная (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -542,11 +542,11 @@
   {
     "code": "577596",
     "name": "Боржоми (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -602,11 +602,11 @@
   {
     "code": "561136",
     "name": "Вазиани (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -652,11 +652,11 @@
   {
     "code": "578207",
     "name": "Вале (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -672,11 +672,11 @@
   {
     "code": "562923",
     "name": "Вели (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -742,21 +742,21 @@
   {
     "code": "611208",
     "name": "Волгоград-Порт (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
     "code": "611301",
     "name": "Волжский (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -892,21 +892,21 @@
   {
     "code": "578620",
     "name": "Гоми (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "579036",
     "name": "Гори (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -972,11 +972,11 @@
   {
     "code": "579801",
     "name": "Дедоплис-Цкаро (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -1062,11 +1062,11 @@
   {
     "code": "560523",
     "name": "Дзегви (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -1342,11 +1342,11 @@
   {
     "code": "615707",
     "name": "Зензели (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -1482,21 +1482,21 @@
   {
     "code": "402207",
     "name": "Ильичевск-Паромная (эксп. на Батуми)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "РЖД",
-    "road_label": "РЖД",
+    "country": "UKR",
+    "country_name": "Украина",
+    "admin": "УЗ",
+    "road": "40",
+    "road_label": "Одесская ж. д. (УЗ)",
     "is_border": true
   },
   {
     "code": "404005",
     "name": "Ильичевск-Паромная (эксп. на Поти)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "РЖД",
-    "road_label": "РЖД",
+    "country": "UKR",
+    "country_name": "Украина",
+    "admin": "УЗ",
+    "road": "40",
+    "road_label": "Одесская ж. д. (УЗ)",
     "is_border": true
   },
   {
@@ -1545,8 +1545,8 @@
     "country": "RUS",
     "country_name": "Россия",
     "admin": "РЖД",
-    "road": "51",
-    "road_label": "Северо-Кавказская ж. д. (Краснодар)",
+    "road": "52",
+    "road_label": "Северо-Кавказская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -1684,9 +1684,9 @@
     "name": "Керчь-Порт-Паром (эксп. на Поти)",
     "country": "RUS",
     "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "РЖД",
-    "road_label": "РЖД",
+    "admin": "КЖД",
+    "road": "47",
+    "road_label": "Крымская ж. д.",
     "is_border": true
   },
   {
@@ -1922,11 +1922,11 @@
   {
     "code": "560631",
     "name": "Ксани (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -2042,21 +2042,21 @@
   {
     "code": "574795",
     "name": "Кутаиси II (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "619303",
     "name": "Кутум (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -2112,31 +2112,31 @@
   {
     "code": "564007",
     "name": "Лило (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "711302",
     "name": "Локоть (эксп. на Малиновое Озеро)",
-    "country": "KGZ",
-    "country_name": "Кыргызстан",
-    "admin": "КРГ",
-    "road": "70",
-    "road_label": "Кыргызская ж. д. (КРГ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (РЖД)",
     "is_border": true
   },
   {
     "code": "711105",
     "name": "Локоть (эксп.)",
-    "country": "KAZ",
-    "country_name": "Казахстан",
-    "admin": "KAZ",
-    "road": "67",
-    "road_label": "Казахстанская ж. д. (КТЖ)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -2145,8 +2145,8 @@
     "country": "RUS",
     "country_name": "Россия",
     "admin": "РЖД",
-    "road": "17",
-    "road_label": "Московская ж. д. (Тула)",
+    "road": "83",
+    "road_label": "Западно-Сибирская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -2272,11 +2272,11 @@
   {
     "code": "564098",
     "name": "Марнеули (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -2932,21 +2932,21 @@
   {
     "code": "579708",
     "name": "Паромная (эксп. на Батуми)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "572304",
     "name": "Паромная (эксп. на Поти)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3032,11 +3032,11 @@
   {
     "code": "577806",
     "name": "Поничала (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3052,21 +3052,21 @@
   {
     "code": "614507",
     "name": "Порт Оля (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
     "code": "461205",
     "name": "Порт-Великое Запорожье (эксп.)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "РЖД",
-    "road_label": "РЖД",
+    "country": "UKR",
+    "country_name": "Украина",
+    "admin": "УЗ",
+    "road": "46",
+    "road_label": "Приднепровская ж. д. (УЗ)",
     "is_border": true
   },
   {
@@ -3092,21 +3092,21 @@
   {
     "code": "572003",
     "name": "Поти (паром, эксп. на Варну)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "572200",
     "name": "Поти (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3122,11 +3122,11 @@
   {
     "code": "619604",
     "name": "Правый Берег (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -3342,11 +3342,11 @@
   {
     "code": "562707",
     "name": "Рустави-Грузовая (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3372,11 +3372,11 @@
   {
     "code": "564204",
     "name": "Садахло (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3472,11 +3472,11 @@
   {
     "code": "571833",
     "name": "Сенаки (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3722,41 +3722,41 @@
   {
     "code": "560063",
     "name": "Тбилиси-Сортировочная (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "577702",
     "name": "Тбилиси-Товарная (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "560097",
     "name": "Тбилиси-Узловая (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "562514",
     "name": "Телави (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3832,11 +3832,11 @@
   {
     "code": "563926",
     "name": "Тетри-Цкаро (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -3922,11 +3922,11 @@
   {
     "code": "619407",
     "name": "Трусово (эксп.)",
-    "country": "GEO",
-    "country_name": "Грузия",
-    "admin": "ГР",
-    "road": "56",
-    "road_label": "Грузинская ж. д. (ГР)",
+    "country": "RUS",
+    "country_name": "Россия",
+    "admin": "РЖД",
+    "road": "61",
+    "road_label": "Приволжская ж. д. (РЖД)",
     "is_border": true
   },
   {
@@ -3962,11 +3962,11 @@
   {
     "code": "715106",
     "name": "Турксиб (эксп.)",
-    "country": "KGZ",
-    "country_name": "Кыргызстан",
-    "admin": "КРГ",
-    "road": "70",
-    "road_label": "Кыргызская ж. д. (КРГ)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
     "is_border": true
   },
   {
@@ -4122,11 +4122,11 @@
   {
     "code": "577100",
     "name": "Хашури (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -4262,21 +4262,21 @@
   {
     "code": "571299",
     "name": "Чаква (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "577401",
     "name": "Чаладиди (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -4392,11 +4392,11 @@
   {
     "code": "710600",
     "name": "Шагыр (эксп.)",
-    "country": "KGZ",
-    "country_name": "Кыргызстан",
-    "admin": "КРГ",
-    "road": "70",
-    "road_label": "Кыргызская ж. д. (КРГ)",
+    "country": "KAZ",
+    "country_name": "Казахстан",
+    "admin": "КТЖ",
+    "road": "67",
+    "road_label": "Казахстанская ж. д. (КТЖ)",
     "is_border": true
   },
   {
@@ -4442,11 +4442,11 @@
   {
     "code": "579337",
     "name": "Шиндиси (эксп.)",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -4510,13 +4510,13 @@
     "is_border": true
   },
   {
-    "code": "754609",
+    "code": "554609",
     "name": "Ялама (эксп.)",
-    "country": "TKM",
-    "country_name": "Туркменистан",
-    "admin": "ТРК",
-    "road": "75",
-    "road_label": "Туркменская ж. д. (ТРК)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
     "is_border": true
   },
   {
@@ -4552,11 +4552,11 @@
   {
     "code": "548502",
     "name": "Алят",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "51",
-    "road_label": "Северо-Кавказская ж. д. (Махачкала)",
+    "country": "AZE",
+    "country_name": "Азербайджан",
+    "admin": "АДЮ",
+    "road": "55",
+    "road_label": "Азербайджанские ж. д. (АДЮ)",
     "is_border": false
   },
   {
@@ -4842,11 +4842,11 @@
   {
     "code": "572107",
     "name": "Поти",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": false
   },
   {
@@ -4922,11 +4922,11 @@
   {
     "code": "560203",
     "name": "Тбилиси-Товарная",
-    "country": "AZE",
-    "country_name": "Азербайджан",
-    "admin": "АДЮ",
-    "road": "55",
-    "road_label": "Азербайджанские ж. д. (АДЮ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": false
   },
   {
@@ -5364,10 +5364,11 @@
     "code": "600909",
     "name": "Мичуринск-Уральский",
     "country": "RUS",
-    "road": "Ju-Vost",
+    "road": "61",
     "is_border": false,
-    "road_label": "Ju-Vost",
-    "country_name": "Россия"
+    "road_label": "Приволжская ж. д. (РЖД)",
+    "country_name": "Россия",
+    "admin": "РЖД"
   },
   {
     "code": "060209",
@@ -5899,5 +5900,25 @@
     "is_border": false,
     "road_label": "УТИ",
     "country_name": "Узбекистан"
+  },
+  {
+    "code": "565103",
+    "name": "Ереван",
+    "country": "ARM",
+    "country_name": "Армения",
+    "admin": "ЮКЖД",
+    "road": "58",
+    "road_label": "Южно-Кавказская ж. д. (ЮКЖД)",
+    "is_border": false
+  },
+  {
+    "code": "566708",
+    "name": "Гюмри",
+    "country": "ARM",
+    "country_name": "Армения",
+    "admin": "ЮКЖД",
+    "road": "58",
+    "road_label": "Южно-Кавказская ж. д. (ЮКЖД)",
+    "is_border": false
   }
 ]
