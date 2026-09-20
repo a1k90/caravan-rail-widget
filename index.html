@@ -752,6 +752,46 @@
           </table>
         </div>
 
+        <!-- МАРШРУТНЫЙ ЛИСТ ПОЕЗДА: СТАНЦИИ СЛЕДОВАНИЯ ПО ТР-4 (РЕЙЛ-ТАРИФ) -->
+        <div class="cr-itinerary-card" id="cr-itinerary-card" style="display: none;">
+          <div class="cr-itinerary-header" id="cr-itinerary-toggle-btn" onclick="toggleItineraryList(event)">
+            <div class="cr-itinerary-title-box">
+              <span class="cr-itinerary-gold-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C5A059" stroke-width="2"><circle cx="4" cy="19" r="2"></circle><circle cx="9" cy="14" r="2"></circle><circle cx="14" cy="17" r="2"></circle><circle cx="20" cy="7" r="2"></circle><path d="M4 19L9 14L14 17L20 7"></path></svg>
+              </span>
+              <div>
+                <div class="cr-itinerary-title">Маршрутный лист поезда (Станции следования по ТР-4)</div>
+                <div class="cr-itinerary-sub" id="cr-itinerary-summary">
+                  Всего станций по маршруту: <span id="cr-itin-count">0</span> • Точное расстояние: <span id="cr-itin-dist">0</span> км (сумма перегонов)
+                </div>
+              </div>
+            </div>
+            <button type="button" class="cr-itinerary-btn">
+              <span id="cr-itin-btn-text">Развернуть список станций</span>
+              <svg id="cr-itin-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+          </div>
+          <div class="cr-itinerary-content" id="cr-itinerary-content" style="display: none;">
+            <div class="cr-itinerary-table-wrap">
+              <table class="cr-itinerary-table">
+                <thead>
+                  <tr>
+                    <th style="width: 45px;">№</th>
+                    <th>Станция</th>
+                    <th style="width: 90px;">Код ЕСР</th>
+                    <th>Дорога / Страна</th>
+                    <th class="cr-text-right" style="width: 120px;">Перегон</th>
+                    <th class="cr-text-right" style="width: 140px;">Нарастающий итог</th>
+                  </tr>
+                </thead>
+                <tbody id="cr-itinerary-tbody">
+                  <!-- Заполняется динамически -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
         <div class="cr-calc-actions">
           <button type="button" class="cr-btn-primary cr-btn-book" id="cr-btn-open-booking">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;min-width:18px;min-height:18px;flex-shrink:0;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
@@ -2372,7 +2412,164 @@
   }
 
 
-  /* Станции следования по ТР-4 (Маршрутный лист) */
+  
+  /* МАРШРУТНЫЙ ЛИСТ ПОЕЗДА (СТАНЦИИ СЛЕДОВАНИЯ ПО ТР-4) */
+  .cr-itinerary-card {
+    margin-top: 16px;
+    background: rgba(11, 19, 37, 0.9);
+    border: 1px solid rgba(197, 160, 89, 0.35);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: border-color 0.2s ease;
+  }
+  .cr-itinerary-card:hover {
+    border-color: rgba(197, 160, 89, 0.65);
+  }
+  .cr-itinerary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    cursor: pointer;
+    background: rgba(15, 23, 42, 0.65);
+    user-select: none;
+    transition: background 0.2s ease;
+  }
+  .cr-itinerary-header:hover {
+    background: rgba(197, 160, 89, 0.08);
+  }
+  .cr-itinerary-title-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cr-itinerary-gold-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(197, 160, 89, 0.12);
+    border: 1px solid rgba(197, 160, 89, 0.25);
+    flex-shrink: 0;
+  }
+  .cr-itinerary-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #F8FAFC;
+    letter-spacing: 0.2px;
+  }
+  .cr-itinerary-sub {
+    font-size: 12px;
+    color: #94A3B8;
+    margin-top: 2px;
+  }
+  .cr-itinerary-sub span {
+    color: #C5A059;
+    font-weight: 600;
+  }
+  .cr-itinerary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(197, 160, 89, 0.12);
+    border: 1px solid rgba(197, 160, 89, 0.4);
+    border-radius: 6px;
+    color: #F8FAFC;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .cr-itinerary-btn:hover {
+    background: #C5A059;
+    color: #070B14;
+  }
+  .cr-itinerary-content {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .cr-itinerary-table-wrap {
+    max-height: 480px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 8px 12px;
+  }
+  .cr-itinerary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    color: #E2E8F0;
+  }
+  .cr-itinerary-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #0B132B;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #94A3B8;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .cr-itinerary-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  .cr-itinerary-table tr:hover td {
+    background: rgba(197, 160, 89, 0.04);
+  }
+  .cr-itinerary-table tr.origin-row td {
+    color: #34D399;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.06);
+  }
+  .cr-itinerary-table tr.border-row td {
+    color: #FBBF24;
+    font-weight: 600;
+    background: rgba(245, 158, 11, 0.08);
+    border-top: 1px dashed rgba(245, 158, 11, 0.3);
+    border-bottom: 1px dashed rgba(245, 158, 11, 0.3);
+  }
+  .cr-itinerary-table tr.dest-row td {
+    color: #F87171;
+    font-weight: 600;
+    background: rgba(239, 68, 68, 0.06);
+  }
+  .cr-itinerary-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .cr-itinerary-badge.border {
+    background: rgba(245, 158, 11, 0.2);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+  }
+  .cr-itinerary-badge.origin {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+  }
+  .cr-itinerary-badge.dest {
+    background: rgba(239, 68, 68, 0.2);
+    color: #F87171;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+  }
+  .cr-cum-km {
+    font-weight: 700;
+    color: #C5A059;
+  }
+
+/* Станции следования по ТР-4 (Маршрутный лист) */
   .cr-inter-badge {
     display: inline-flex;
     align-items: center;
@@ -2660,6 +2857,13 @@
  * Caravan Railroad — Цифровое тарифное ядро "Caravan 1520" v3.6.0
  * Поучастковая тарификация по правилам Тарифного руководства № 4 (ТР-4 / План формирования)
  * Точный аддитивный километраж по межгосударственным и междорожным стыкам без коэффициентов.
+ * 85 дорог пользования по 17 администрациям СНГ и Азии.
+ */
+
+/**
+ * Caravan Railroad — Цифровое тарифное ядро "Caravan 1520" v3.6.0
+ * Поучастковая тарификация по правилам Тарифного руководства № 4 (ТР-4 / План формирования)
+ * Точный аддитивный километраж по межгосударственным и междорожным стыкам без эвристических коэффициентов.
  * 85 дорог пользования по 17 администрациям СНГ и Азии.
  */
 
@@ -16482,6 +16686,378 @@ var CaravanRailwayEngine = (function() {
   }
 
   // ГЛАВНЫЙ МЕТОД РАСЧЕТА ТАРИФОВ
+  
+  // БАЗА ДАННЫХ СТАНЦИЙ СЛЕДОВАНИЯ ПО ТР-4 (МАРШРУТНЫЕ ЛИСТЫ ПОЕЗДА)
+  var CORRIDOR_STATION_CHAINS = {
+    "moscow_iletsk": [
+      { name: "Москва-Товарная-Павелецкая", code: "193504", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 0 },
+      { name: "Домодедово", code: "193307", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 36 },
+      { name: "Михнево", code: "193006", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 37 },
+      { name: "Ступино", code: "192802", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 26 },
+      { name: "Кашира", code: "192709", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 12 },
+      { name: "Ожерелье", code: "192605", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 10 },
+      { name: "Павелец-Тульский", code: "221302", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 140 },
+      { name: "Раненбург (Чаплыгин)", code: "222004", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 75 },
+      { name: "Богоявленск", code: "222305", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 42 },
+      { name: "Мичуринск-Уральский", code: "222502", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 48 },
+      { name: "Тамбов I", code: "223007", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 72 },
+      { name: "Кирсанов", code: "223401", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 95 },
+      { name: "Ртищево I", code: "223806", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 85 },
+      { name: "Аткарск", code: "224207", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 108 },
+      { name: "Татищево", code: "224508", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 52 },
+      { name: "Саратов-1-Пассажирский", code: "225002", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 42 },
+      { name: "Анисовка", code: "225203", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 18 },
+      { name: "Урбах", code: "225500", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 74 },
+      { name: "Мокроус", code: "225708", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 45 },
+      { name: "Ершов", code: "226005", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 52 },
+      { name: "Дергачи", code: "226306", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 60 },
+      { name: "Озинки (эксп.)", code: "226700", road: "Приволжская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 74 },
+      { name: "Переметная", code: "664101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58 },
+      { name: "Уральск", code: "664205", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 52 },
+      { name: "Федоровка", code: "664506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 68 },
+      { name: "Чингирлау", code: "664807", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 77 },
+      { name: "Илецк I (эксп.)", code: "666501", road: "Южно-Уральская ж. д. (РЖД / КТЖ)", country: "RUS", countryName: "Россия", dist: 22, isBorder: true, borderLabel: "РЖД ➔ КТЖ" }
+    ],
+    "iletsk_saryagash": [
+      { name: "Илецк I (эксп.)", code: "666501", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
+      { name: "Жайсан (эксп.)", code: "666802", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 22 },
+      { name: "Мартук", code: "667006", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 46 },
+      { name: "Курайлы", code: "667608", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58 },
+      { name: "Актобе", code: "667909", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 22 },
+      { name: "Бестамак", code: "668102", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 45 },
+      { name: "Алга", code: "668303", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 19 },
+      { name: "Тамды", code: "668507", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 34 },
+      { name: "Кандыагаш", code: "660007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 26 },
+      { name: "Эмба", code: "669001", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 69 },
+      { name: "Мугалжар", code: "669209", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 79 },
+      { name: "Биршогыр", code: "669406", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 45 },
+      { name: "Шалкар", code: "669904", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 131 },
+      { name: "Каукей", code: "670009", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 94 },
+      { name: "Саксаульская", code: "670102", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 88 },
+      { name: "Аральское Море", code: "670308", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
+      { name: "Камыстыбас", code: "670403", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
+      { name: "Казалинск", code: "670507", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 88 },
+      { name: "Майлыбас", code: "670704", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 64 },
+      { name: "Тюратам (Байконур)", code: "670901", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 56 },
+      { name: "Джусалы", code: "671209", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Жалагаш", code: "671406", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 62 },
+      { name: "Теренозек", code: "671500", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 48 },
+      { name: "Кызылорда", code: "671707", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 50 },
+      { name: "Берказань", code: "671904", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 42 },
+      { name: "Чиили", code: "672127", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 86 },
+      { name: "Байгакум", code: "672305", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 44 },
+      { name: "Яныкурган", code: "672502", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 70 },
+      { name: "Аккум", code: "672703", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 52 },
+      { name: "Туркестан", code: "697800", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 70 },
+      { name: "Тимур", code: "697904", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Арысь I", code: "698004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
+      { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 52 },
+      { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 20 },
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 150, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
+    ],
+    "saryagash_chukursay": [
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
+      { name: "Келес (эксп.)", code: "720104", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 14, isBorder: true, borderLabel: "КТЖ ➔ УТИ" },
+      { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 3, isDestination: true }
+    ],
+    "saryagash_tashkent_tov": [
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
+      { name: "Келес (эксп.)", code: "720104", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 14, isBorder: true, borderLabel: "КТЖ ➔ УТИ" },
+      { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 3 },
+      { name: "Ташкент-Товарный", code: "722400", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 11, isDestination: true }
+    ],
+    "saryagash_sergeli": [
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
+      { name: "Келес (эксп.)", code: "720104", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 14, isBorder: true, borderLabel: "КТЖ ➔ УТИ" },
+      { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 3 },
+      { name: "Ташкент-Товарный", code: "722400", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 11 },
+      { name: "Сергели", code: "723507", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 10, isDestination: true }
+    ],
+    "moscow_rostov": [
+      { name: "Москва-Товарная-Павелецкая", code: "193504", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 0 },
+      { name: "Домодедово", code: "193307", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 36 },
+      { name: "Михнево", code: "193006", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 37 },
+      { name: "Ступино", code: "192802", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 26 },
+      { name: "Кашира", code: "192709", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 12 },
+      { name: "Ожерелье", code: "192605", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 10 },
+      { name: "Венёв", code: "221105", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 58 },
+      { name: "Узловая I", code: "221209", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 42 },
+      { name: "Богородицк (Жданка)", code: "221406", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 34 },
+      { name: "Ефремов", code: "221603", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 78 },
+      { name: "Елец", code: "221800", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 84 },
+      { name: "Липецк", code: "222108", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 78 },
+      { name: "Грязи-Воронежские", code: "222409", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 52 },
+      { name: "Усмань", code: "222606", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 58 },
+      { name: "Воронеж I", code: "222803", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 62 },
+      { name: "Лиски", code: "223204", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 98 },
+      { name: "Россошь", code: "223609", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 116 },
+      { name: "Кантемировка", code: "223908", road: "Юго-Восточная ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 65 },
+      { name: "Чертково", code: "511207", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 52 },
+      { name: "Миллерово", code: "511508", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 68 },
+      { name: "Каменская", code: "511809", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 74 },
+      { name: "Лихая", code: "512002", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 24 },
+      { name: "Зверево", code: "512200", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 32 },
+      { name: "Красный Сулин", code: "512407", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 22 },
+      { name: "Шахтная", code: "512604", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 28 },
+      { name: "Новочеркасск", code: "512905", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 42 },
+      { name: "Ростов-Товарный", code: "510100", road: "Северо-Кавказская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 51, isDestination: true }
+    ],
+    "moscow_lokot": [
+      { name: "Москва-Товарная-Курская", code: "191509", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 0 },
+      { name: "Орехово-Зуево", code: "191804", road: "Московская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 89 },
+      { name: "Владимир", code: "240003", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 102 },
+      { name: "Ковров I", code: "240304", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 64 },
+      { name: "Вязники", code: "240501", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 67 },
+      { name: "Гороховец", code: "240709", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 38 },
+      { name: "Нижний Новгород-Сортировочный", code: "241006", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 80 },
+      { name: "Семенов", code: "241400", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 69 },
+      { name: "Шахунья", code: "241805", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 171 },
+      { name: "Котельнич I", code: "242206", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 139 },
+      { name: "Киров", code: "242600", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 89 },
+      { name: "Зуевка", code: "243001", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 105 },
+      { name: "Глазов", code: "243406", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 116 },
+      { name: "Балезино", code: "243603", road: "Горьковская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 30 },
+      { name: "Верещагино", code: "760205", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 102 },
+      { name: "Пермь-Сортировочная", code: "760506", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 119 },
+      { name: "Кунгур", code: "761000", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 101 },
+      { name: "Шаля", code: "761405", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 127 },
+      { name: "Первоуральск", code: "761803", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 107 },
+      { name: "Екатеринбург-Сортировочный", code: "780108", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 44 },
+      { name: "Богданович", code: "780502", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 99 },
+      { name: "Камышлов", code: "780709", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 44 },
+      { name: "Тюмень", code: "790008", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 182 },
+      { name: "Заводоуковская", code: "790309", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 96 },
+      { name: "Ишим", code: "790703", road: "Свердловская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 193 },
+      { name: "Называевская", code: "830105", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 145 },
+      { name: "Омск-Пассажирский", code: "830508", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 147 },
+      { name: "Калачинская", code: "830800", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 83 },
+      { name: "Татарская", code: "831201", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 86 },
+      { name: "Чаны", code: "831409", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 48 },
+      { name: "Барабинск", code: "831707", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 85 },
+      { name: "Чулымская", code: "832204", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 131 },
+      { name: "Обь", code: "850202", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 118 },
+      { name: "Новосибирск-Главный", code: "850005", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 22 },
+      { name: "Сеятель", code: "850503", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 26 },
+      { name: "Бердск", code: "850700", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 12 },
+      { name: "Искитим", code: "850908", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 14 },
+      { name: "Черепаново", code: "851309", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 57 },
+      { name: "Среднесибирская", code: "851703", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 65 },
+      { name: "Алтайская (Новоалтайск)", code: "840103", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 48 },
+      { name: "Барнаул", code: "840008", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 14 },
+      { name: "Калманка", code: "840404", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 58 },
+      { name: "Топчиха", code: "840601", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 32 },
+      { name: "Алейская", code: "840902", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 43 },
+      { name: "Шипуново", code: "841200", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 45 },
+      { name: "Поспелиха", code: "841500", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 42 },
+      { name: "Рубцовск", code: "841905", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 72 },
+      { name: "Мамонтово", code: "842202", road: "Западно-Сибирская ж. д. (РЖД)", country: "RUS", countryName: "Россия", dist: 24 },
+      { name: "Локоть (эксп.)", code: "711105", road: "Западно-Сибирская ж. д. (РЖД / КТЖ)", country: "RUS", countryName: "Россия", dist: 21, isBorder: true, borderLabel: "РЖД ➔ КТЖ" }
+    ],
+    "lokot_saryagash": [
+      { name: "Локоть (эксп.)", code: "711105", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
+      { name: "Аул (эксп.)", code: "711209", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 18 },
+      { name: "Бель-Агач", code: "711406", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 42 },
+      { name: "Семей (Жана-Семей)", code: "709302", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 48 },
+      { name: "Дегелен", code: "709506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 54 },
+      { name: "Шар", code: "709707", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 56 },
+      { name: "Жарма", code: "710006", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Ушбиик", code: "710203", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 98 },
+      { name: "Аягоз", code: "710504", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 82 },
+      { name: "Актогай", code: "707502", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 168 },
+      { name: "Лепсы", code: "707803", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
+      { name: "Матай", code: "708007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 75 },
+      { name: "Уштобе", code: "708308", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 85 },
+      { name: "Коксу", code: "708505", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 50 },
+      { name: "Сарыозек", code: "708702", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
+      { name: "Капчагай", code: "708906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 90 },
+      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 70 },
+      { name: "Чемолган", code: "700204", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 45 },
+      { name: "Отар", code: "700505", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 125 },
+      { name: "Шу (Чу)", code: "701004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
+      { name: "Луговая", code: "701506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 123 },
+      { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 107 },
+      { name: "Боранды", code: "706501", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 65 },
+      { name: "Тюлькубас", code: "706709", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 80 },
+      { name: "Манкент", code: "706906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
+      { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 25 },
+      { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 20 },
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 120, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
+    ],
+    "kokshetau_saryagash": [
+      { name: "Кокшетау I", code: "687008", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 0 },
+      { name: "Курорт-Боровое", code: "687309", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 72 },
+      { name: "Макинск", code: "687506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 52 },
+      { name: "Акколь", code: "687807", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Шортанды", code: "688000", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 47 },
+      { name: "Астана", code: "690002", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 51 },
+      { name: "Аршалы (Вишневка)", code: "690407", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 68 },
+      { name: "Осакаровка", code: "690708", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 48 },
+      { name: "Мырза (Темиртау)", code: "691005", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 56 },
+      { name: "Караганда-Сортировочная", code: "673604", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 33 },
+      { name: "Караганда", code: "673905", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 14 },
+      { name: "Жарык", code: "674403", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 120 },
+      { name: "Агадырь", code: "674704", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 73 },
+      { name: "Мойынты", code: "675209", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 167 },
+      { name: "Чиганак", code: "675707", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 145 },
+      { name: "Мынарал", code: "676004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 54 },
+      { name: "Шу (Чу)", code: "701004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 111 },
+      { name: "Луговая", code: "701506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 123 },
+      { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 107 },
+      { name: "Тюлькубас", code: "706709", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 145 },
+      { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 85 },
+      { name: "Арысь I", code: "698004", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
+      { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
+    ],
+    "chukursay_bukhara": [
+      { name: "Чукурсай", code: "720000", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 0 },
+      { name: "Ташкент-Товарный", code: "722400", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 14 },
+      { name: "Сергели", code: "723507", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 10 },
+      { name: "Янгиер", code: "725409", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 111 },
+      { name: "Джизак", code: "726007", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 55 },
+      { name: "Галляарал", code: "726308", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 32 },
+      { name: "Булунгур", code: "726806", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 48 },
+      { name: "Самарканд", code: "727404", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 35 },
+      { name: "Каттакурган", code: "728106", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 75 },
+      { name: "Навои", code: "729005", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 68 },
+      { name: "Бухара II", code: "730101", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 117, isDestination: true }
+    ],
+    "samarkand_termez_galaba": [
+      { name: "Самарканд", code: "727404", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 0 },
+      { name: "Карши", code: "732003", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 140 },
+      { name: "Дехканабад", code: "732408", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 95 },
+      { name: "Ташгузар", code: "732802", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 45 },
+      { name: "Кумкурган", code: "734003", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 100 },
+      { name: "Термез (эксп.)", code: "735203", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 65 },
+      { name: "Галаба (эксп.)", code: "735805", road: "Узбекская ж. д. (УТИ)", country: "UZB", countryName: "Узбекистан", dist: 45, isBorder: true, borderLabel: "УТИ ➔ АРА (Афганистан)", isDestination: true }
+    ]
+  };
+
+  function buildRouteItinerary(fromSt, toSt, legs, border1, border2) {
+    var itinerary = [];
+    var cumKm = 0;
+    var fClean = cleanStationName(fromSt.name || fromSt);
+    var tClean = cleanStationName(toSt.name || toSt);
+
+    // Функция поиска коридора для плеча
+    function getChainForLeg(leg, index, totalLegs) {
+      var lf = cleanStationName(leg.from);
+      var lt = cleanStationName(leg.to);
+
+      if ((lf.indexOf("москва") !== -1 || lf.indexOf("петербург") !== -1) && (lt.indexOf("илецк") !== -1 || lt.indexOf("озинки") !== -1)) {
+        return CORRIDOR_STATION_CHAINS["moscow_iletsk"];
+      }
+      if (lf.indexOf("москва") !== -1 && lt.indexOf("локоть") !== -1) {
+        return CORRIDOR_STATION_CHAINS["moscow_lokot"];
+      }
+      if (lf.indexOf("москва") !== -1 && (lt.indexOf("ростов") !== -1 || lt.indexOf("новороссийск") !== -1)) {
+        return CORRIDOR_STATION_CHAINS["moscow_rostov"];
+      }
+      if (lf.indexOf("илецк") !== -1 && lt.indexOf("сарыагаш") !== -1) {
+        return CORRIDOR_STATION_CHAINS["iletsk_saryagash"];
+      }
+      if (lf.indexOf("локоть") !== -1 && lt.indexOf("сарыагаш") !== -1) {
+        return CORRIDOR_STATION_CHAINS["lokot_saryagash"];
+      }
+      if (lf.indexOf("кокшетау") !== -1 && lt.indexOf("сарыагаш") !== -1) {
+        return CORRIDOR_STATION_CHAINS["kokshetau_saryagash"];
+      }
+      if (lf.indexOf("астана") !== -1 && lt.indexOf("сарыагаш") !== -1) {
+        // Подцепочка от Астаны до Сарыагаша
+        var fullKokshetau = CORRIDOR_STATION_CHAINS["kokshetau_saryagash"];
+        var astanaIdx = fullKokshetau.findIndex(function(s) { return s.name.indexOf("Астана") !== -1; });
+        if (astanaIdx !== -1) {
+          var sub = fullKokshetau.slice(astanaIdx);
+          sub[0] = Object.assign({}, sub[0], { dist: 0 });
+          return sub;
+        }
+      }
+      if (lf.indexOf("сарыагаш") !== -1 && lt.indexOf("чукурсай") !== -1) {
+        return CORRIDOR_STATION_CHAINS["saryagash_chukursay"];
+      }
+      if (lf.indexOf("сарыагаш") !== -1 && lt.indexOf("ташкент") !== -1) {
+        return CORRIDOR_STATION_CHAINS["saryagash_tashkent_tov"];
+      }
+      if (lf.indexOf("сарыагаш") !== -1 && lt.indexOf("сергели") !== -1) {
+        return CORRIDOR_STATION_CHAINS["saryagash_sergeli"];
+      }
+      if (lf.indexOf("чукурсай") !== -1 && (lt.indexOf("бухара") !== -1 || lt.indexOf("навои") !== -1)) {
+        return CORRIDOR_STATION_CHAINS["chukursay_bukhara"];
+      }
+      if ((lf.indexOf("самарканд") !== -1 || lf.indexOf("карши") !== -1) && (lt.indexOf("термез") !== -1 || lt.indexOf("галаба") !== -1)) {
+        return CORRIDOR_STATION_CHAINS["samarkand_termez_galaba"];
+      }
+
+      return null;
+    }
+
+    // Собираем станции по каждому плечу маршрута
+    legs.forEach(function(leg, legIdx) {
+      var chain = getChainForLeg(leg, legIdx, legs.length);
+      var legSegs = [];
+
+      if (chain && chain.length > 0) {
+        // Коридорная цепочка
+        chain.forEach(function(st, sIdx) {
+          if (legIdx > 0 && sIdx === 0) {
+            // Первая станция этого плеча совпадает с последней предыдущего стыка
+            return;
+          }
+          legSegs.push(st);
+        });
+      } else {
+        // Динамическое построение плеча (начальная и конечная станции)
+        if (legIdx === 0) {
+          legSegs.push({
+            name: leg.from,
+            code: fromSt.code || "193504",
+            road: leg.road || fromSt.road_label || "РЖД",
+            country: leg.country,
+            countryName: leg.countryName,
+            dist: 0
+          });
+        }
+        legSegs.push({
+          name: leg.to,
+          code: (legIdx === legs.length - 1 ? toSt.code : (leg.borderCode || "704101")),
+          road: leg.road || "Железная дорога",
+          country: leg.country,
+          countryName: leg.countryName,
+          dist: leg.distanceKm || 500,
+          isBorder: (legIdx < legs.length - 1),
+          borderLabel: (legIdx < legs.length - 1 ? "Стык " + leg.road : "")
+        });
+      }
+
+      // Добавляем сегменты в маршрутный лист с пересчетом километров
+      legSegs.forEach(function(st) {
+        var segDist = st.dist || 0;
+        cumKm += segDist;
+        var item = {
+          seq: itinerary.length + 1,
+          code: st.code || "",
+          name: st.name,
+          road: st.road || leg.road,
+          country: st.country || leg.country,
+          countryName: st.countryName || leg.countryName,
+          segmentKm: segDist,
+          cumulativeKm: cumKm,
+          isOrigin: (itinerary.length === 0),
+          isBorder: !!st.isBorder,
+          borderLabel: st.borderLabel || "",
+          isDestination: false
+        };
+        itinerary.push(item);
+      });
+    });
+
+    if (itinerary.length > 0) {
+      itinerary[itinerary.length - 1].isDestination = true;
+    }
+
+    return itinerary;
+  }
+
+
   function calculateTariff(params) {
     var fromStation = findStation(params.from) || STATIONS[0];
     var toStation = findStation(params.to) || STATIONS[1];
@@ -16559,6 +17135,15 @@ var CaravanRailwayEngine = (function() {
       grandTotalUSD = Math.round(grandTotalUSD * (1 - discountPercent / 100));
     }
 
+        // Построение постанционного маршрутного листа по ТР4 (Рейл-Тариф)
+    var fullItinerary = buildRouteItinerary(fromStation, toStation, detailedLegs, routePlan.border1, routePlan.border2);
+    if (fullItinerary && fullItinerary.length > 0) {
+      var itinDist = fullItinerary[fullItinerary.length - 1].cumulativeKm;
+      if (itinDist > 0) {
+        totalKm = itinDist;
+      }
+    }
+
     var transitDaysMin = Math.ceil(totalKm / wagonType.speedKmPerDay) + 1;
     var transitDaysMax = transitDaysMin + 2;
     var transitStr = transitDaysMin + '-' + transitDaysMax + ' суток';
@@ -16604,7 +17189,9 @@ var CaravanRailwayEngine = (function() {
         isTransit: routePlan.isTransit,
         messageType: routePlan.messageType,
         totalDistanceKm: totalKm,
-        legs: detailedLegs
+        legs: detailedLegs,
+        itinerary: fullItinerary,
+        totalStationsCount: (fullItinerary ? fullItinerary.length : 0)
       },
       wagon: wagonType,
       cargo: cargoItem,
@@ -16646,6 +17233,14 @@ var CaravanRailwayEngine = (function() {
   };
 
 })();
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = CaravanRailwayEngine;
+}
+if (typeof window !== 'undefined') {
+  window.CaravanRailwayEngine = CaravanRailwayEngine;
+}
+
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CaravanRailwayEngine;
@@ -17511,6 +18106,27 @@ if (typeof window !== 'undefined') {
     }
 
     setupBookingModal();
+
+    // Слушатель разворачивания/сворачивания маршрутного листа станций следования
+    var itinToggleBtn = document.getElementById('cr-itinerary-toggle-btn');
+    if (itinToggleBtn) {
+      itinToggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var content = document.getElementById('cr-itinerary-content');
+        var btnText = document.getElementById('cr-itin-btn-text');
+        var chevron = document.getElementById('cr-itin-chevron');
+        if (!content) return;
+        if (content.style.display === 'none' || !content.style.display) {
+          content.style.display = 'block';
+          if (btnText) btnText.textContent = 'Свернуть список станций';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        } else {
+          content.style.display = 'none';
+          if (btnText) btnText.textContent = 'Развернуть список станций';
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
+        }
+      });
+    }
     // Первоначальный расчет
     setTimeout(triggerCustomCalculation, 150);
   }
@@ -18818,6 +19434,7 @@ if (typeof window !== 'undefined') {
 
     // Рендерим таблицу тарифов
     renderRTariffTable(calcResult);
+    renderRouteItinerary(calcResult.route.itinerary);
 
     // Запоминаем текущую квоту для бронирования
     currentCalculatedQuote = {
@@ -18839,6 +19456,72 @@ if (typeof window !== 'undefined') {
 
     updateQuoteDisplay(currentCalculatedQuote, discount);
   }
+
+  
+    window.toggleItineraryList = function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    var content = document.getElementById('cr-itinerary-content');
+    var btnText = document.getElementById('cr-itin-btn-text');
+    var chevron = document.getElementById('cr-itin-chevron');
+    if (!content) return;
+    if (content.style.display === 'none' || !content.style.display) {
+      content.style.display = 'block';
+      if (btnText) btnText.textContent = 'Свернуть список станций';
+      if (chevron) chevron.style.transform = 'rotate(180deg)';
+    } else {
+      content.style.display = 'none';
+      if (btnText) btnText.textContent = 'Развернуть список станций';
+      if (chevron) chevron.style.transform = 'rotate(0deg)';
+    }
+  };
+
+  function renderRouteItinerary(itinerary) {
+    var card = document.getElementById('cr-itinerary-card');
+    var tbody = document.getElementById('cr-itinerary-tbody');
+    var countEl = document.getElementById('cr-itin-count');
+    var distEl = document.getElementById('cr-itin-dist');
+    if (!card || !tbody) return;
+
+    if (!Array.isArray(itinerary) || itinerary.length === 0) {
+      card.style.display = 'none';
+      return;
+    }
+
+    card.style.display = 'block';
+    var totalDist = itinerary[itinerary.length - 1].cumulativeKm || 0;
+    if (countEl) countEl.textContent = itinerary.length;
+    if (distEl) distEl.textContent = totalDist.toLocaleString('ru-RU');
+
+    var html = '';
+    itinerary.forEach(function(st, idx) {
+      var rowClass = '';
+      var badgeHtml = '';
+      if (st.isOrigin) {
+        rowClass = 'origin-row';
+        badgeHtml = '<span class="cr-itinerary-badge origin">Отправление</span> ';
+      } else if (st.isDestination) {
+        rowClass = 'dest-row';
+        badgeHtml = '<span class="cr-itinerary-badge dest">Назначение</span> ';
+      } else if (st.isBorder) {
+        rowClass = 'border-row';
+        badgeHtml = '<span class="cr-itinerary-badge border">Стык ' + escapeHtml(st.borderLabel || '') + '</span> ';
+      }
+
+      var roadStr = (st.road || '') + (st.countryName ? ' (' + st.countryName + ')' : '');
+
+      html += '<tr class="' + rowClass + '">' +
+        '<td style="color: #64748B;">' + (idx + 1) + '</td>' +
+        '<td>' + badgeHtml + '<strong>' + escapeHtml(st.name) + '</strong></td>' +
+        '<td style="font-family: monospace; color: #94A3B8;">' + escapeHtml(st.code) + '</td>' +
+        '<td>' + escapeHtml(roadStr) + '</td>' +
+        '<td class="cr-text-right">' + (st.segmentKm > 0 ? '+' + st.segmentKm.toLocaleString('ru-RU') + ' км' : '—') + '</td>' +
+        '<td class="cr-text-right cr-cum-km">' + st.cumulativeKm.toLocaleString('ru-RU') + ' км</td>' +
+      '</tr>';
+    });
+
+    tbody.innerHTML = html;
+  }
+
 
   function renderRTariffTable(res) {
     var tbody = document.getElementById('cr-rtariff-tbody');

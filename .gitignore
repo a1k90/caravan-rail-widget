@@ -14,3 +14,5 @@ scratch/
 __pycache__/
 .DS_Store
 rt_docs/
+atlas_unpacked/
+rt_unpacked_nsi/
