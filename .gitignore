@@ -1,0 +1,16 @@
+# Ignore large Windows binaries and archives (> 100 MB)
+*.exe
+*.msi
+*.cab
+*.zip
+setup_*
+Install*
+rt_app/
+rt_extracted/
+extracted_*/
+scratch/
+*.dmg
+*.download
+__pycache__/
+.DS_Store
+rt_docs/

@@ -1,0 +1,12143 @@
+/**
+ * Caravan Railroad — Интерактивный модуль 1520 мм (Трекинг, Калькулятор, Incoterms 2020)
+ * Автономный SDK-бандл для мгновенного внедрения в Tilda Publishing и сторонние CMS.
+ * Версия: 2.4.0 (Caravan 1520 Digital Core)
+ */
+(function() {
+  'use strict';
+  if (window.__CARAVAN_RAILROAD_LOADED__) return;
+  window.__CARAVAN_RAILROAD_LOADED__ = true;
+
+  var WIDGET_HTML = "<!-- ====================================================================\n     CARAVAN RAILROAD — ИНТЕРАКТИВНЫЙ МОДУЛЬ ТРЕКИНГА, КАЛЬКУЛЯТОРА И B2B КАБИНЕТА\n     Версия с поддержкой Incoterms 2020 («Под ключ», DAP, DDP, CIP, FCA), \n     разграничением ролей отправитель/получатель и разделом коммерческих предложений (КП)\n     ==================================================================== -->\n\n<div id=\"caravan-tracking-root\" class=\"cr-widget\">\n  \n  <!-- ВЕРХНИЙ БЛОК: 3 ДИНАМИЧЕСКИХ ПОКАЗАТЕЛЯ КОМПАНИИ -->\n  <div class=\"cr-stats-bar\">\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\"></rect>\n          <path d=\"M2 10h20M7 15h2M15 15h2M7 19v2M17 19v2\"></path>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-wagons\" data-target=\"1480\">0</div>\n        <div class=\"cr-stat-label\">Вагонов в дислокации</div>\n      </div>\n    </div>\n\n    <div class=\"cr-stat-divider\"></div>\n\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path>\n          <polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline>\n          <line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-tonnage\" data-target=\"920000\">0</div>\n        <div class=\"cr-stat-label\">Тонн груза перевезено</div>\n      </div>\n    </div>\n\n    <div class=\"cr-stat-divider\"></div>\n\n    <div class=\"cr-stat-item\">\n      <div class=\"cr-stat-icon\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n          <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n          <line x1=\"2\" y1=\"12\" x2=\"22\" y2=\"12\"></line>\n          <path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z\"></path>\n        </svg>\n      </div>\n      <div class=\"cr-stat-info\">\n        <div class=\"cr-stat-number\" id=\"cr-stat-routes\" data-target=\"48\">0</div>\n        <div class=\"cr-stat-label\">Регулярных ж/д маршрутов</div>\n      </div>\n    </div>\n\n    <div class=\"cr-live-pill\">\n      <span class=\"cr-pulse-dot\"></span>\n      <span id=\"cr-live-status-text\">Мониторинг 24/7</span>\n    </div>\n  </div>\n\n  <!-- ОСНОВНАЯ КАРТОЧКА С ТАБАМИ -->\n  <div class=\"cr-card\">\n    \n    <!-- НАВИГАЦИЯ ПО ТАБАМ -->\n    <div class=\"cr-tabs-header\">\n      <button type=\"button\" class=\"cr-tab-btn active\" data-tab=\"track\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"8\"></circle><line x1=\"21\" y1=\"21\" x2=\"16.65\" y2=\"16.65\"></line></svg>\n        <span>Быстрый трекинг</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"calc\" id=\"cr-calc-tab-btn\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect><line x1=\"8\" y1=\"6\" x2=\"16\" y2=\"6\"></line><line x1=\"16\" y1=\"14\" x2=\"16\" y2=\"18\"></line><path d=\"M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01\"></path></svg>\n        <span>Расчет тарифов и Incoterms</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"login\" id=\"cr-cabinet-tab-btn\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n        <span>Личный кабинет (КП и грузы)</span>\n      </button>\n\n      <button type=\"button\" class=\"cr-tab-btn\" data-tab=\"register\">\n        <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"8.5\" cy=\"7\" r=\"4\"></circle><line x1=\"20\" y1=\"8\" x2=\"20\" y2=\"14\"></line><line x1=\"23\" y1=\"11\" x2=\"17\" y2=\"11\"></line></svg>\n        <span>Регистрация</span>\n      </button>\n    </div>\n\n    <!-- ТАБ 1: БЫСТРЫЙ ПОИСК ДИСЛОКАЦИИ ПО НОМЕРУ (ДОСТУПЕН ПОСЛЕ АВТОРИЗАЦИИ) -->\n    <div class=\"cr-tab-content active\" id=\"cr-tab-track\">\n\n      <!-- ЭКРАН 1: ОГРАНИЧЕНИЕ ДОСТУПА ДЛЯ НЕАВТОРИЗОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ -->\n      <div id=\"cr-track-auth-lock\" class=\"cr-auth-lock-card\">\n        <div class=\"cr-lock-icon-wrap\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n            <rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect>\n            <path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path>\n          </svg>\n        </div>\n        <div class=\"cr-lock-badge\">Защищенный B2B контур</div>\n        <h3>Отслеживание дислокации доступно после входа в кабинет</h3>\n        <p>\n          В целях коммерческой безопасности и защиты конфиденциальности грузоперевозок, онлайн-мониторинг открыт только зарегистрированным клиентам Caravan Railroad. Каждый контрагент может отслеживать только прикрепленный подвижной состав и грузы по своему договору.\n        </p>\n        <div class=\"cr-lock-actions\">\n          <button type=\"button\" class=\"cr-btn-primary\" id=\"cr-lock-btn-login\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n            <span>Войти в личный кабинет</span>\n          </button>\n          <button type=\"button\" class=\"cr-btn-secondary\" id=\"cr-lock-btn-register\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"8.5\" cy=\"7\" r=\"4\"></circle><line x1=\"20\" y1=\"8\" x2=\"20\" y2=\"14\"></line><line x1=\"23\" y1=\"11\" x2=\"17\" y2=\"11\"></line></svg>\n            <span>Зарегистрировать компанию</span>\n          </button>\n        </div>\n        <div class=\"cr-lock-hint\">\n          Тестовый B2B доступ для проверки: логин <code>kaz_trans</code> / пароль <code>pass2026</code>\n        </div>\n      </div>\n\n      <!-- ЭКРАН 2: ПАНЕЛЬ ТРЕКИНГА ДЛЯ АВТОРИЗОВАННОГО КЛИЕНТА (ТОЛЬКО СВОЙ ТРАНСПОРТ) -->\n      <div id=\"cr-track-authed-panel\" style=\"display: none;\">\n        <!-- Верхний статус авторизованного контрагента -->\n        <div class=\"cr-authed-user-bar\">\n          <div class=\"cr-aub-left\">\n            <span class=\"cr-aub-indicator\"></span>\n            <span>Контрагент: <strong id=\"cr-track-user-company\" style=\"color:#FFFFFF;\">ТОО \"КазТрансЛогистик\"</strong> • Договор: <code id=\"cr-track-user-b2b\" style=\"color:var(--cr-amber);\">B2B-CR-9021</code></span>\n          </div>\n          <div class=\"cr-aub-actions\">\n            <button type=\"button\" class=\"cr-aub-btn\" id=\"cr-track-go-cabinet\">Все грузы в кабинете</button>\n            <button type=\"button\" class=\"cr-aub-btn\" id=\"cr-track-logout-btn\" style=\"color:#F87171; border-color:rgba(239,68,68,0.3);\">Выйти</button>\n          </div>\n        </div>\n\n        <form id=\"cr-track-form\" class=\"cr-form\" onsubmit=\"return false;\">\n          <div class=\"cr-input-group\">\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"2\" y=\"7\" width=\"20\" height=\"14\" rx=\"2\"></rect><path d=\"M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16\"></path></svg>\n              <input type=\"text\" id=\"cr-track-input\" class=\"cr-input\" placeholder=\"Введите номер вашего вагона, контейнера или накладной...\" autocomplete=\"off\" required />\n              <button type=\"button\" class=\"cr-clear-btn\" id=\"cr-track-clear\" style=\"display:none;\">×</button>\n            </div>\n            <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-track-submit\">\n              <span>Отследить дислокацию</span>\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"></line><polyline points=\"12 5 19 12 12 19\"></polyline></svg>\n            </button>\n          </div>\n\n          <div class=\"cr-quick-chips\" id=\"cr-track-user-chips\">\n            <!-- Заполняется динамически вагонами и контейнерами только текущего пользователя -->\n          </div>\n        </form>\n\n        <!-- Индикатор загрузки -->\n        <div class=\"cr-loader\" id=\"cr-track-loader\" style=\"display: none;\">\n          <div class=\"cr-spinner\"></div>\n          <span>Запрос дислокации в Ж/Д шлюзе Caravan Railroad...</span>\n        </div>\n\n        <!-- Контейнер вывода дислокации или отказа в доступе -->\n        <div id=\"cr-dislocation-result\" class=\"cr-result-box\" style=\"display: none;\"></div>\n      </div>\n\n    </div>\n\n    <!-- ТАБ 2: КАЛЬКУЛЯТОР ТАРИФОВ, INCOTERMS 2020 И МАРШРУТОВ -->\n        <div class=\"cr-tab-content\" id=\"cr-tab-calc\">\n      <div class=\"cr-calc-header-box\">\n        <div class=\"cr-tab-intro\">\n          <h3>Интеллектуальный калькулятор железнодорожных тарифов 1520 мм</h3>\n          <p>Поучастковый расчет провозной платы по железным дорогам стран СНГ (КТЖ, УТИ, РЖД), подбор межгосударственных стыков, расчет аренды парка Caravan Railroad и условий Incoterms 2020.</p>\n        </div>\n\n        \n        <!-- МУЛЬТИМОДАЛЬНЫЙ СЕЛЕКТОР (6 НАПРАВЛЕНИЙ CARAVAN) -->\n        <div class=\"cr-modality-bar\" id=\"cr-modality-bar\">\n          <button type=\"button\" class=\"cr-modality-btn active\" data-modality=\"rail\">\n            <span class=\"cr-mod-icon\">🚆</span>\n            <span class=\"cr-mod-title\">Ж/Д 1520</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"fleet\">\n            <span class=\"cr-mod-icon\">🏢</span>\n            <span class=\"cr-mod-title\">Аренда ПС</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"road\">\n            <span class=\"cr-mod-icon\">🚛</span>\n            <span class=\"cr-mod-title\">Автоперевозки</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"air\">\n            <span class=\"cr-mod-icon\">✈️</span>\n            <span class=\"cr-mod-title\">Авиакарго</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"multimodal\">\n            <span class=\"cr-mod-icon\">🌐</span>\n            <span class=\"cr-mod-title\">Мультимодал</span>\n          </button>\n          <button type=\"button\" class=\"cr-modality-btn\" data-modality=\"customs\">\n            <span class=\"cr-mod-icon\">📋</span>\n            <span class=\"cr-mod-title\">Таможня & ВЭД</span>\n          </button>\n        </div>\n\n        <div class=\"cr-submode-toggles\">\n          <button type=\"button\" class=\"cr-submode-btn\" id=\"cr-btn-mode-preset\">Регулярные направления</button>\n          <button type=\"button\" class=\"cr-submode-btn active\" id=\"cr-btn-mode-custom\">Индивидуальный расчет маршрута</button>\n        </div>\n      </div>\n\n      <!-- РЕЖИМ А: РЕГУЛЯРНЫЕ МАРШРУТЫ С ОБНОВЛЯЕМЫМИ ЦЕНАМИ -->\n      <div id=\"cr-calc-preset-view\" style=\"display: none;\">\n        <div class=\"cr-preset-routes-grid\" id=\"cr-preset-routes-container\"></div>\n      </div>\n\n      <!-- РЕЖИМ Б: ИНДИВИДУАЛЬНЫЙ РАСЧЕТ ПО СЕТИ И ПРАВИЛАМ R-ТАРИФ -->\n      <div id=\"cr-calc-custom-view\" style=\"display: block;\">\n        <form id=\"cr-calc-form\" class=\"cr-calc-form\" onsubmit=\"return false;\">\n          \n          <!-- ВЫБОР СТОРОНЫ ДОГОВОРА (РОЛЬ КЛИЕНТА) -->\n          <div class=\"cr-role-selection-box\">\n            <label class=\"cr-field-caption\">Ваша сторона в перевозке (определение зоны ответственности):</label>\n            <div class=\"cr-role-pills\">\n              <label class=\"cr-role-pill active\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"shipper\" checked />\n                <span>Грузоотправитель (Shipper)</span>\n              </label>\n              <label class=\"cr-role-pill\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"consignee\" />\n                <span>Грузополучатель (Consignee)</span>\n              </label>\n              <label class=\"cr-role-pill\">\n                <input type=\"radio\" name=\"cr_client_role\" value=\"forwarder\" />\n                <span>Экспедитор / Агент (Forwarder)</span>\n              </label>\n            </div>\n          </div>\n\n          <!-- СЕТКА ПАРАМЕТРОВ РАСЧЕТА -->\n          <div class=\"cr-mod-panel active\" id=\"cr-mod-panel-rail\">\n          <div class=\"cr-calc-inputs-grid\">\n            \n            <!-- СТАНЦИЯ ОТПРАВЛЕНИЯ -->\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\">\n              <label>Станция отправления (название или 6-значный код)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 14 14\"></polyline></svg>\n                <input type=\"text\" id=\"cr-calc-from\" class=\"cr-input\" placeholder=\"Введите название или код (напр. Кокшетау, 687008)\" value=\"Кокшетау (687008, КТЖ)\" autocomplete=\"off\" />\n                <div id=\"cr-calc-from-dropdown\" class=\"cr-station-dropdown\" style=\"display: none;\"></div>\n              </div>\n            </div>\n\n            <!-- СТАНЦИЯ НАЗНАЧЕНИЯ -->\n            <div class=\"cr-form-field cr-station-autocomplete-wrap\">\n              <label>Станция назначения (название или 6-значный код)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z\"></path><circle cx=\"12\" cy=\"10\" r=\"3\"></circle></svg>\n                <input type=\"text\" id=\"cr-calc-to\" class=\"cr-input\" placeholder=\"Введите станцию (напр. Ташкент-Товарный, 720000)\" value=\"Ташкент-Товарный (720000, УТИ)\" autocomplete=\"off\" />\n                <div id=\"cr-calc-to-dropdown\" class=\"cr-station-dropdown\" style=\"display: none;\"></div>\n              </div>\n            </div>\n\n            <!-- ПОГРАНПЕРЕХОДЫ / СТЫКИ -->\n            <div id=\"cr-border-selection-container\" style=\"grid-column: 1 / -1;\">\n              <!-- Одиночный стык (двустороннее сообщение) -->\n              <div id=\"cr-border-single-wrap\" class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                <label id=\"cr-border-single-label\">Межгосударственный стыковой пункт</label>\n                <div class=\"cr-input-wrapper\">\n                  <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                  <select id=\"cr-calc-border\" class=\"cr-select\">\n                    <option value=\"auto\" selected>Определять автоматически по плану формирования</option>\n                    <option value=\"704101\">Сарыагаш (эксп.) [КТЖ] / Келес [УТИ] (Казахстан — Узбекистан)</option>\n                    <option value=\"708507\">Достык (эксп.) [КТЖ] / Алашанькоу (Китай — Казахстан)</option>\n                    <option value=\"707701\">Алтынколь (эксп.) [КТЖ] / Хоргос (Китай — Казахстан)</option>\n                    <option value=\"666501\">Илецк I (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"664900\">Озинки (эксп.) [Прив / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"816909\">Карталы I (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"815502\">Орск (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"711105\">Локоть (эксп.) [З-Сиб / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"688708\">Петропавловск (эксп.) [Ю-Ур / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"843905\">Кулунда (эксп.) [З-Сиб / КТЖ] (Россия — Казахстан)</option>\n                    <option value=\"662905\">Бейнеу (эксп.) / Каракалпакстан (Мангышлак — Узбекистан)</option>\n                    <option value=\"734606\">Галаба (эксп.) [УТИ] / Хайратан (Узбекистан — Афганистан)</option>\n                    <option value=\"736501\">Ходжадавлет (эксп.) [УТИ] / Фарап (Узбекистан — Туркменистан)</option>\n                    <option value=\"736003\">Кудукли (эксп.) [УТИ] / Пахтаабад (Узбекистан — Таджикистан)</option>\n                  </select>\n                </div>\n              </div>\n\n              <!-- Двойной стык (транзитное сообщение: Россия -> Казахстан [Транзит] -> Узбекистан) -->\n              <div id=\"cr-border-dual-wrap\" class=\"cr-dual-borders-grid\" style=\"display: none;\">\n                <div class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                  <label id=\"cr-border-1-label\">Стык 1: РЖД ⇄ КТЖ (Вход в транзит)</label>\n                  <div class=\"cr-input-wrapper\">\n                    <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                    <select id=\"cr-calc-border-1\" class=\"cr-select\">\n                      <option value=\"auto\">Определять автоматически (Оптимальный)</option>\n                      <option value=\"666501\">ст. Илецк I (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"664900\">ст. Озинки (эксп.) [Прив / КТЖ]</option>\n                      <option value=\"816909\">ст. Карталы I (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"815502\">ст. Орск (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"688708\">ст. Петропавловск (эксп.) [Ю-Ур / КТЖ]</option>\n                      <option value=\"711105\">ст. Локоть (эксп.) [З-Сиб / КТЖ]</option>\n                      <option value=\"843905\">ст. Кулунда (эксп.) [З-Сиб / КТЖ]</option>\n                    </select>\n                  </div>\n                </div>\n                <div class=\"cr-form-field\" style=\"margin-bottom: 0;\">\n                  <label id=\"cr-border-2-label\">Стык 2: КТЖ ⇄ УТИ (Выход из транзита)</label>\n                  <div class=\"cr-input-wrapper\">\n                    <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg>\n                    <select id=\"cr-calc-border-2\" class=\"cr-select\">\n                      <option value=\"auto\">Определять автоматически (Оптимальный)</option>\n                      <option value=\"704101\">ст. Сарыагаш (эксп.) [КТЖ] / Келес [УТИ]</option>\n                      <option value=\"662905\">ст. Бейнеу (эксп.) [КТЖ] / Каракалпакстан [УТИ]</option>\n                    </select>\n                  </div>\n                </div>\n              </div>\n            </div>\n\n            <!-- РАССТОЯНИЕ -->\n            <div class=\"cr-form-field\">\n              <label>Расстояние маршрута (км)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polygon points=\"1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6\"></polygon><line x1=\"8\" y1=\"2\" x2=\"8\" y2=\"18\"></line><line x1=\"16\" y1=\"6\" x2=\"16\" y2=\"22\"></line></svg>\n                <input type=\"number\" id=\"cr-calc-km\" class=\"cr-input\" value=\"1805\" min=\"50\" max=\"15000\" />\n              </div>\n              <div class=\"cr-quick-km\">\n                <span class=\"cr-km-chip\" data-km=\"500\">500 км</span>\n                <span class=\"cr-km-chip\" data-km=\"1200\">1 200 км</span>\n                <span class=\"cr-km-chip\" data-km=\"1805\">1 805 км</span>\n                <span class=\"cr-km-chip\" data-km=\"2800\">2 800 км</span>\n                <span class=\"cr-km-chip\" data-km=\"4200\">4 200 км</span>\n              </div>\n            </div>\n\n            <!-- РОД ПОДВИЖНОГО СОСТАВА -->\n            <div class=\"cr-form-field\">\n              <label>Род подвижного состава</label>\n              <select id=\"cr-calc-transport\" class=\"cr-select\">\n                <option value=\"grain\" selected>Зерновоз / Хоппер (для зерна, 70 тн, 116 м³)</option>\n                <option value=\"boxcar\">Крытый вагон (грузовой, 68 тн, 138 м³)</option>\n                <option value=\"gondola\">Полувагон (универсальный 4-осный, 70 тн)</option>\n                <option value=\"tank\">Цистерна (наливные грузы / ГСМ, 66 тн)</option>\n                <option value=\"platform\">Фитинговая платформа (тяжеловесы/негабарит)</option>\n                <option value=\"cont40\">Контейнер 40ft High Cube (HQ, 28 тн, 76 м³)</option>\n                <option value=\"cont20\">Контейнер 20ft (универсальный, 24 тн, 33 м³)</option>\n              </select>\n            </div>\n\n            <!-- ПРИНАДЛЕЖНОСТЬ ПАРКА -->\n            <div class=\"cr-form-field\">\n              <label>Принадлежность подвижного состава</label>\n              <select id=\"cr-calc-park\" class=\"cr-select\">\n                <option value=\"caravan\" selected>Собственный парк Caravan Railroad (СПС) — фикс. ставка</option>\n                <option value=\"inventory\">Инвентарный парк ж/д администраций (КТЖ/УТИ/РЖД)</option>\n              </select>\n            </div>\n\n            <!-- НОМЕНКЛАТУРА ГРУЗА (ЕТСНГ / ГНГ) -->\n            <div class=\"cr-form-field cr-cargo-autocomplete-wrap\">\n              <label>Номенклатура груза (поиск по названию, коду ЕТСНГ или ГНГ)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                  <path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path>\n                  <polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline>\n                  <line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line>\n                </svg>\n                <input type=\"text\" id=\"cr-calc-cargo-search\" class=\"cr-input\" placeholder=\"Введите название (напр. пшеница, уголь, металл) или код\" value=\"Пшеница прочая (ЕТСНГ: 100199, ГНГ: 10019900)\" autocomplete=\"off\" />\n                <input type=\"hidden\" id=\"cr-calc-cargo\" value=\"grain\" />\n                <input type=\"hidden\" id=\"cr-calc-cargo-code\" value=\"100199\" />\n                <div id=\"cr-calc-cargo-dropdown\" class=\"cr-station-dropdown\" style=\"display: none;\"></div>\n              </div>\n            </div>\n\n            <!-- МАССА ГРУЗА -->\n            <div class=\"cr-form-field\">\n              <label>Масса груза нетто (тонн)</label>\n              <div class=\"cr-input-wrapper\">\n                <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n                <input type=\"number\" id=\"cr-calc-weight\" class=\"cr-input\" value=\"68\" min=\"1\" max=\"75\" />\n              </div>\n            </div>\n\n            <!-- БАЗИС INCOTERMS 2020 -->\n            <div class=\"cr-form-field\">\n              <label>Базис поставки (Incoterms 2020)</label>\n              <select id=\"cr-calc-incoterms\" class=\"cr-select\">\n                <option value=\"DAP\" selected>DAP — Доставка «До двери» (склад получателя)</option>\n                <option value=\"CIP\">CIP — Перевозка + Страхование груза (110% стоимости)</option>\n                <option value=\"CPT\">CPT — Перевозка оплачена до станции назначения</option>\n                <option value=\"FCA\">FCA — Перевозчик в месте отправления (забор у поставщика)</option>\n                <option value=\"DDP\">DDP — «Под ключ» (полная таможенная очистка + пошлины + склад)</option>\n              </select>\n            </div>\n\n            <!-- ВИД СООБЩЕНИЯ -->\n            <div class=\"cr-form-field\">\n              <label>Вид перевозки</label>\n              <select id=\"cr-calc-freight-type\" class=\"cr-select\">\n                <option value=\"rail\" selected>Прямая Ж/Д перевозка (поезда / повагонно)</option>\n                <option value=\"multimodal\">Мультимодальная (Ж/Д + Авто до склада)</option>\n                <option value=\"intermodal\">Интермодальная (Ж/Д + Море / Паромный стык)</option>\n              </select>\n            </div>\n\n            <!-- ДОПОЛНИТЕЛЬНЫЕ ОПЦИИ -->\n            <div class=\"cr-form-field cr-span-2\">\n              <label>Дополнительные опции безопасности и сопровождения</label>\n              <div class=\"cr-checkbox-group-inline\">\n                <label class=\"cr-checkbox-label\">\n                  <input type=\"checkbox\" id=\"cr-opt-security\" checked />\n                  <span>Военизированная охрана и сменное сопровождение (ВЖДО на всем пути)</span>\n                </label>\n                <label class=\"cr-checkbox-label\">\n                  <input type=\"checkbox\" id=\"cr-opt-customs\" />\n                  <span>Таможенно-брокерское декларирование и сертификация</span>\n                </label>\n              </div>\n            </div>\n\n          </div>\n\n          <!-- КНОПКА РАСЧЕТА ТАРИФА И МАРШРУТА -->\n          <div class=\"cr-calc-actions-bar\">\n            <button type=\"button\" class=\"cr-btn-primary cr-btn-calc-action\" id=\"cr-btn-execute-calc\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><polyline points=\"12 6 12 12 14 14\"></polyline></svg>\n              <span>Рассчитать маршрут и тариф</span>\n            </button>\n          </div>\n\n          <!-- ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА -->\n          <div class=\"cr-route-scheme-card\" id=\"cr-route-scheme-box\">\n            <div class=\"cr-rs-header\">\n              <span class=\"cr-rs-badge\" id=\"cr-rs-badge\">Международное сообщение (Казахстан ➔ Узбекистан)</span>\n              <span class=\"cr-rs-distance\" id=\"cr-rs-distance\">Общий путь: 1 805 км</span>\n            </div>\n            <div class=\"cr-rs-flow\" id=\"cr-rs-flow\">\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot origin\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-from-name\">ст. Кокшетау (687008)</div>\n                  <div class=\"cr-rs-sub\" id=\"cr-rs-from-sub\">Казахстанские ж.д. (КТЖ)</div>\n                </div>\n              </div>\n              <div class=\"cr-rs-line\">\n                <span class=\"cr-rs-line-info\" id=\"cr-rs-line-1\">КТЖ: 1 770 км</span>\n              </div>\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot border\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-border-name\">ст. Сарыагаш (эксп.) / Келес</div>\n                  <div class=\"cr-rs-sub\">Межгосударственный стыковой пункт</div>\n                </div>\n              </div>\n              <div class=\"cr-rs-line\">\n                <span class=\"cr-rs-line-info\" id=\"cr-rs-line-2\">УТИ: 35 км</span>\n              </div>\n              <div class=\"cr-rs-step\">\n                <span class=\"cr-rs-dot dest\"></span>\n                <div>\n                  <div class=\"cr-rs-name\" id=\"cr-rs-to-name\">ст. Ташкент-Товарный (720000)</div>\n                  <div class=\"cr-rs-sub\" id=\"cr-rs-to-sub\">Узбекские ж.д. (УТИ)</div>\n                </div>\n              </div>\n            </div>\n\n            <!-- МАРШРУТНЫЙ ЛИСТ СО ВСЕМИ СТАНЦИЯМИ (Р-ТАРИФ) -->\n            <div class=\"cr-intermediate-stations-wrap\" id=\"cr-intermediate-stations-wrap\" style=\"margin-top: 14px; padding-top: 12px; border-top: 1px dashed rgba(255,255,255,0.15); display: none;\">\n              <div style=\"display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;\">\n                <span style=\"font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--cr-gold, #c5a059);\">\n                  <i class=\"fas fa-route\" style=\"margin-right: 5px;\"></i> Маршрутный лист (станции следования по ТР-4)\n                </span>\n                <span style=\"font-size: 10px; color: #94a3b8;\" id=\"cr-intermediate-count\"></span>\n              </div>\n              <div class=\"cr-intermediate-badges\" id=\"cr-intermediate-badges\" style=\"display: flex; flex-wrap: wrap; gap: 6px; align-items: center;\"></div>\n            </div>\n          </div>\n\n          <!-- ДИНАМИЧЕСКИЙ БЛОК: ЗОНА ОТВЕТСТВЕННОСТИ CARAVAN RAILROAD -->\n          <div class=\"cr-incoterms-banner\" id=\"cr-incoterms-banner\">\n            <div class=\"cr-ib-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg></div>\n            <div>\n              <div class=\"cr-ib-title\" id=\"cr-ib-title\">Зона ответственности Caravan Railroad: DAP (Delivered at Place)</div>\n              <div class=\"cr-ib-desc\" id=\"cr-ib-desc\">\n                Компания берет на себя: подачу подвижного состава ➔ станционные сборы ➔ оплату Ж/Д тарифа всех администраций (КТЖ/УТИ) ➔ прохождение межгосударственного стыка ➔ автодоставку «последней мили» непосредственно на склад грузополучателя.\n              </div>\n            </div>\n          </div>\n\n        \n          <!-- УМНЫЙ ЧЕК-ЛИСТ ДОКУМЕНТОВ (MANAGER OFFLOADING SYSTEM) -->\n          <div class=\"cr-doc-checklist-card\" id=\"cr-doc-checklist-card\">\n            <div class=\"cr-doc-header\">\n              <div class=\"cr-doc-header-left\">\n                <span class=\"cr-doc-badge\">АВТОМАТИЧЕСКИЙ ПОДБОР ВЭД</span>\n                <h4 class=\"cr-doc-title\"><i class=\"fas fa-file-contract\" style=\"color: var(--cr-gold); margin-right: 8px;\"></i> Необходимый пакет документов для перевозки</h4>\n              </div>\n              <div class=\"cr-doc-actions\">\n                <button type=\"button\" class=\"cr-doc-btn\" id=\"cr-btn-copy-docs\">\n                  <i class=\"far fa-copy\"></i> Скопировать чек-лист\n                </button>\n                <button type=\"button\" class=\"cr-doc-btn whatsapp\" id=\"cr-btn-wa-docs\">\n                  <i class=\"fab fa-whatsapp\"></i> В WhatsApp\n                </button>\n              </div>\n            </div>\n            <p class=\"cr-doc-subtitle\">Список сопутствующих и разрешительных документов, необходимых для таможенного оформления и беспрепятственного прохождения границ.</p>\n            <div class=\"cr-doc-items-grid\" id=\"cr-doc-items-grid\"></div>\n          </div>\n\n        </form>\n      </div>\n\n      <!-- КАРТОЧКА РАСЧИТАННОГО ТАРИФА И МАРШРУТА -->\n      <div id=\"cr-calc-result-box\" class=\"cr-calc-result-box\">\n        <div class=\"cr-crb-top\">\n          <div>\n            <div class=\"cr-crb-title\" id=\"cr-quote-route-title\">ст. Кокшетау ➔ ст. Ташкент-Товарный</div>\n            <div class=\"cr-quote-badges\" id=\"cr-quote-badges\">\n              <span class=\"cr-qbadge\" id=\"cr-qb-transport\">Зерновоз / Хоппер (70 тн)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-park\">Собственный парк Caravan (СПС)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-cargo\">Зерновые (2 класс)</span>\n              <span class=\"cr-qbadge\" id=\"cr-qb-incoterms\">DAP (До склада)</span>\n            </div>\n          </div>\n\n          <div class=\"cr-crb-total-box\">\n            <!-- ПЕРЕКЛЮЧАТЕЛЬ ВАЛЮТ РАСЧЕТА -->\n            <div class=\"cr-currency-pills\">\n              <button type=\"button\" class=\"cr-cur-pill active\" data-cur=\"USD\">USD ($)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"KZT\">KZT (₸)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"UZS\">UZS (сум)</button>\n              <button type=\"button\" class=\"cr-cur-pill\" data-cur=\"RUB\">RUB (₽)</button>\n            </div>\n            <div class=\"cr-crb-total-val\" id=\"cr-quote-total-price\">$2 680 USD</div>\n            <div class=\"cr-crb-transit\" id=\"cr-quote-transit-days\">Нормативный срок доставки: 5-7 суток</div>\n          </div>\n        </div>\n\n        <div class=\"cr-client-discount-badge\" id=\"cr-client-discount-pill\" style=\"display: none;\">\n          Партнерская скидка контрагента: <strong id=\"cr-client-discount-val\">0%</strong>\n        </div>\n\n        <!-- ДЕТАЛИЗИРОВАННАЯ ИТОГОВАЯ ТАБЛИЦА ПО СТРАНАМ (ПО СТАНДАРТУ R-ТАРИФ) -->\n        <div class=\"cr-rtariff-table-wrap\">\n          <div class=\"cr-rtariff-table-title\">Поучастковая тарификация железных дорог:</div>\n          <table class=\"cr-rtariff-table\" id=\"cr-rtariff-table\">\n            <thead>\n              <tr>\n                <th>Страна / Администрация</th>\n                <th>Участок маршрута</th>\n                <th class=\"cr-text-right\">Расст., км</th>\n                <th class=\"cr-text-right\">Ж/Д тариф (Инфраструктура)</th>\n                <th class=\"cr-text-right\">Предоставление вагона (Caravan)</th>\n                <th class=\"cr-text-right\">Сборы и стык</th>\n                <th class=\"cr-text-right\">Охрана ВЖДО</th>\n                <th class=\"cr-text-right\">Итого по участку</th>\n              </tr>\n            </thead>\n            <tbody id=\"cr-rtariff-tbody\">\n              <!-- Заполняется динамически JS -->\n            </tbody>\n          </table>\n        </div>\n\n        <div class=\"cr-calc-actions\">\n          <button type=\"button\" class=\"cr-btn-primary cr-btn-book\" id=\"cr-btn-open-booking\">\n            <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"></path><polyline points=\"22 4 12 14.01 9 11.01\"></polyline></svg>\n            <span>Забронировать ставку и запросить официальное КП</span>\n          </button>\n          <div class=\"cr-disclaimer-text\">\n            * Расчет выполнен цифровым тарифным ядром Caravan 1520 по правилам железных дорог пространства 1520 мм (ОСЖД / ТП КТЖ / ТП УТИ / Прейскурант 10-01). Для фиксации ставки нажмите «Забронировать», и заявка будет передана в B2B платформу Caravan Railroad.\n          </div>\n        </div>\n      </div>\n    </div>\n\n\n    <div class=\"cr-tab-content\" id=\"cr-tab-login\">\n      <div id=\"cr-login-section\">\n        <div class=\"cr-tab-intro\">\n          <h3>Вход в систему онлайн-дислокации и B2B кабинет</h3>\n          <p>Единый доступ (SSO) к дислокации всех ваших вагонов, подписанным коммерческим предложениям (КП), инвойсам и расчетам со скидкой контрагента.</p>\n        </div>\n\n        <form id=\"cr-login-form\" class=\"cr-auth-form\" onsubmit=\"return false;\">\n          <div class=\"cr-form-field\">\n            <label>Логин или код договора</label>\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\"></path><circle cx=\"12\" cy=\"7\" r=\"4\"></circle></svg>\n              <input type=\"text\" id=\"cr-login-input\" class=\"cr-input\" placeholder=\"например: kaz_trans\" required />\n            </div>\n          </div>\n\n          <div class=\"cr-form-field\">\n            <label>Пароль</label>\n            <div class=\"cr-input-wrapper\">\n              <svg class=\"cr-input-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\" ry=\"2\"></rect><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"></path></svg>\n              <input type=\"password\" id=\"cr-password-input\" class=\"cr-input\" placeholder=\"Введите пароль\" required />\n            </div>\n          </div>\n\n          <button type=\"submit\" class=\"cr-btn-primary cr-btn-block\" id=\"cr-login-submit\">\n            <span>Войти в личный кабинет</span>\n          </button>\n\n          <div class=\"cr-auth-hint\">\n            Тестовый доступ: логин <code>kaz_trans</code>, пароль <code>pass2026</code>\n          </div>\n        </form>\n      </div>\n\n      <!-- КАБИНЕТ АВТОРИЗОВАННОГО КЛИЕНТА (появляется после входа) -->\n      <div id=\"cr-cabinet-section\" style=\"display: none;\">\n        <div class=\"cr-cabinet-header\">\n          <div class=\"cr-client-profile\">\n            <div class=\"cr-client-avatar\" id=\"cr-client-avatar\">КЛ</div>\n            <div>\n              <h4 id=\"cr-client-company\">ТОО \"КазТрансЛогистик\"</h4>\n              <p id=\"cr-client-person\">Бахтияр Алиев • <span class=\"cr-badge-active\">Активен (Скидка 5%)</span> • ID: <code id=\"cr-client-b2b-id\">B2B-CR-9021</code></p>\n            </div>\n          </div>\n          \n          <div class=\"cr-cab-right-actions\">\n            <button type=\"button\" class=\"cr-btn-calc-jump\" id=\"cr-btn-cab-calc\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><rect x=\"4\" y=\"2\" width=\"16\" height=\"20\" rx=\"2\"></rect><line x1=\"8\" y1=\"6\" x2=\"16\" y2=\"6\"></line></svg>\n              <span>Калькулятор со скидкой</span>\n            </button>\n            <button type=\"button\" class=\"cr-btn-logout\" id=\"cr-btn-logout\">\n              <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4\"></path><polyline points=\"16 17 21 12 16 7\"></polyline><line x1=\"21\" y1=\"12\" x2=\"9\" y2=\"12\"></line></svg>\n              <span>Выйти</span>\n            </button>\n          </div>\n        </div>\n\n        <!-- ПОДВКЛАДКИ ЛИЧНОГО КАБИНЕТА: ВАГОНЫ vs КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ -->\n        <div class=\"cr-cab-subtabs\">\n          <button type=\"button\" class=\"cr-cab-subtab-btn active\" id=\"cr-cab-tab-disloc-btn\">\n            Дислокация грузов (<span id=\"cr-client-wagons-count\">0</span>)\n          </button>\n          <button type=\"button\" class=\"cr-cab-subtab-btn\" id=\"cr-cab-tab-kp-btn\">\n            Коммерческие предложения и счета (<span id=\"cr-client-kp-count\">2</span>)\n          </button>\n        </div>\n\n        <!-- 1. ПОДВКЛАДКА: ДИСЛОКАЦИЯ ВАГОНОВ -->\n        <div id=\"cr-cab-view-dislocation\">\n          <div class=\"cr-cabinet-toolbar\">\n            <div class=\"cr-count-tag\">Активных единиц в пути: <strong id=\"cr-client-wagons-count-label\">0</strong></div>\n            <div class=\"cr-search-filter\">\n              <input type=\"text\" id=\"cr-cabinet-filter\" class=\"cr-input cr-input-sm\" placeholder=\"Фильтр по номеру вагона или станции...\" />\n            </div>\n          </div>\n          <div id=\"cr-client-shipments-list\" class=\"cr-shipments-container\"></div>\n        </div>\n\n        <!-- 2. ПОДВКЛАДКА: КОММЕРЧЕСКИЕ ПРЕДЛОЖЕНИЯ (КП) И ИНВОЙСЫ ИЗ B2B ПЛАТФОРМЫ -->\n        <div id=\"cr-cab-view-proposals\" style=\"display: none;\">\n          <div class=\"cr-proposals-intro\">\n            <p>Официальные коммерческие предложения, сформированные логистами Caravan Railroad и подписанные руководством. Вы можете скачать PDF или запросить счет на оплату.</p>\n          </div>\n          <div id=\"cr-client-proposals-list\" class=\"cr-proposals-container\"></div>\n        </div>\n\n      </div>\n    </div>\n\n    <!-- ТАБ 4: РЕГИСТРАЦИЯ НОВОГО КЛИЕНТА (СИНХРОНИЗАЦИЯ С B2B) -->\n    <div class=\"cr-tab-content\" id=\"cr-tab-register\">\n      <div class=\"cr-tab-intro\">\n        <h3>Подключение к системе слежения и B2B платформе Caravan Railroad</h3>\n        <p>Заполните форму для открытия персонального доступа. Данные мгновенно синхронизируются с нашей B2B платформой для оперативной выдачи подписанных КП и онлайн-дислокации.</p>\n      </div>\n\n      <form id=\"cr-register-form\" class=\"cr-reg-grid\" onsubmit=\"return false;\">\n        <div class=\"cr-form-field\">\n          <label>Название компании *</label>\n          <input type=\"text\" id=\"cr-reg-company\" class=\"cr-input\" placeholder=\"ТОО / ООО / ЗАО\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Контактное лицо *</label>\n          <input type=\"text\" id=\"cr-reg-name\" class=\"cr-input\" placeholder=\"ФИО ответственного\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Сторона в договоре</label>\n          <select id=\"cr-reg-role\" class=\"cr-select\">\n            <option value=\"Грузоотправитель\">Грузоотправитель (Shipper)</option>\n            <option value=\"Грузополучатель\">Грузополучатель (Consignee)</option>\n            <option value=\"Экспедитор\">Экспедитор / Брокер</option>\n          </select>\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Телефон диспетчера/логиста *</label>\n          <input type=\"tel\" id=\"cr-reg-phone\" class=\"cr-input\" placeholder=\"+7 (___) ___-__-__\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Электронная почта *</label>\n          <input type=\"email\" id=\"cr-reg-email\" class=\"cr-input\" placeholder=\"corp@company.com\" required />\n        </div>\n\n        <div class=\"cr-form-field\">\n          <label>Желаемый логин (единый для сайта и B2B) *</label>\n          <input type=\"text\" id=\"cr-reg-login\" class=\"cr-input\" placeholder=\"company_login\" required />\n        </div>\n\n        <div class=\"cr-form-field cr-span-2\">\n          <label>Пароль *</label>\n          <input type=\"password\" id=\"cr-reg-pass\" class=\"cr-input\" placeholder=\"Придумайте пароль\" required />\n        </div>\n\n        <div class=\"cr-reg-footer\">\n          <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-reg-submit\">\n            <span>Отправить заявку на регистрацию в B2B</span>\n          </button>\n          <p class=\"cr-privacy-text\">Нажимая кнопку, вы подтверждаете согласие на обработку данных для доступа к дислокации и тарифам Caravan Railroad.</p>\n        </div>\n      </form>\n\n      <div id=\"cr-reg-success\" class=\"cr-alert-success\" style=\"display: none;\">\n        <div class=\"cr-alert-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" style=\"width:20px;height:20px;\"><polyline points=\"20 6 9 17 4 12\"></polyline></svg></div>\n        <div>\n          <h4>Заявка успешно отправлена в B2B платформу!</h4>\n          <p id=\"cr-reg-success-msg\">Менеджер Caravan Railroad активирует ваш личный кабинет в течение 15 минут и отправит подтверждение по телефону/email.</p>\n        </div>\n      </div>\n    </div>\n\n  </div>\n\n  <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА ПОДПИСАННОГО КП -->\n  \n  <!-- МОДАЛЬНОЕ ОКНО БРОНИРОВАНИЯ СТАВКИ (ДЛЯ B2B ПЛАТФОРМЫ) -->\n  <div id=\"cr-booking-modal\" class=\"cr-booking-modal\" style=\"display: none;\">\n    <div class=\"cr-bm-card\">\n      <div class=\"cr-bm-header\">\n        <h4>Бронирование ставки и заказ официального КП</h4>\n        <button type=\"button\" class=\"cr-bm-close\" id=\"cr-bm-close\">&times;</button>\n      </div>\n      <div class=\"cr-bm-body\">\n        <div class=\"cr-bm-summary-text\" id=\"cr-bm-summary-text\">\n          <!-- Заполняется динамически -->\n        </div>\n        <form id=\"cr-booking-form\" class=\"cr-booking-form\" onsubmit=\"return false;\">\n          <div class=\"cr-form-field\">\n            <label>Контактное лицо (ФИО ответственного) *</label>\n            <input type=\"text\" id=\"cr-book-name\" class=\"cr-input\" placeholder=\"Иванов Алексей Петрович\" required />\n          </div>\n          <div class=\"cr-form-field\">\n            <label>Телефон для связи и подтверждения *</label>\n            <input type=\"tel\" id=\"cr-book-phone\" class=\"cr-input\" placeholder=\"+7 (___) ___-__-__\" required />\n          </div>\n          <div class=\"cr-form-field\">\n            <label>Наименование компании (грузоотправителя/получателя) *</label>\n            <input type=\"text\" id=\"cr-book-company\" class=\"cr-input\" placeholder=\"ТОО / ООО / ИП Название Компании\" required />\n          </div>\n          <div class=\"cr-bm-actions\">\n            <button type=\"submit\" class=\"cr-btn-primary\" id=\"cr-btn-submit-booking\">\n              Подтвердить бронирование ставки\n            </button>\n          </div>\n        </form>\n        <div id=\"cr-booking-success\" class=\"cr-alert-success\" style=\"display: none;\">\n          <h4 id=\"cr-book-success-title\">Заявка на расчет и бронирование принята!</h4>\n          <p>Специалисты Caravan Railroad зафиксировали ставку и сформируют официальное коммерческое предложение с печатью в вашем личном кабинете B2B в течение 15 минут.</p>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div id=\"cr-kp-modal\" class=\"cr-booking-modal\" style=\"display: none;\">\n    <div class=\"cr-bm-card cr-kp-card-view\">\n      <div class=\"cr-bm-header\">\n        <h4>Коммерческое предложение Caravan Railroad</h4>\n        <button type=\"button\" class=\"cr-bm-close\" id=\"cr-kp-close\">&times;</button>\n      </div>\n      <div class=\"cr-kp-sheet\" id=\"cr-kp-sheet-content\">\n        <!-- Генерируется динамически -->\n      </div>\n      <div class=\"cr-kp-actions\">\n        <button type=\"button\" class=\"cr-btn-primary\" onclick=\"window.print()\">\n          <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><polyline points=\"6 9 6 2 18 2 18 9\"></polyline><path d=\"M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2\"></path><rect x=\"6\" y=\"14\" width=\"12\" height=\"8\"></rect></svg>\n          <span>Распечатать / Сохранить в PDF</span>\n        </button>\n        <button type=\"button\" class=\"cr-btn-outline\" id=\"cr-kp-invoice-btn\">Запросить счет на оплату</button>\n      </div>\n    </div>\n  </div>\n\n</div>\n\n<!-- ====================================================================\n     СТИЛИ МОДУЛЯ\n     ==================================================================== -->";
+  var WIDGET_CSS = "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap');\n  /* СОВМЕСТИМОСТЬ С TILDA: отключаем белый/серый фон оберток Тильды */\n  .t123, \n  .t123 .t-container, \n  .t123 .t-col,\n  .t123 .t-col_12,\n  .t-records,\n  .t-records > div {\n    background-color: transparent !important;\n    background: transparent !important;\n  }\n\n  #caravan-tracking-root {\n    --cr-bg-main: transparent;\n    --cr-bg-card: rgba(15, 26, 48, 0.88);\n    --cr-bg-input: rgba(10, 17, 32, 0.85);\n    --cr-border: rgba(255, 255, 255, 0.12);\n    --cr-border-focus: #F59E0B;\n    --cr-amber: #F59E0B;\n    --cr-amber-hover: #D97706;\n    --cr-amber-light: rgba(245, 158, 11, 0.12);\n    --cr-blue: #2563EB;\n    --cr-emerald: #10B981;\n    --cr-text-main: #F8FAFC;\n    --cr-text-muted: #94A3B8;\n    --cr-radius: 16px;\n    --cr-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n    \n    font-family: var(--cr-font);\n    color: var(--cr-text-main);\n    background: transparent !important;\n    background-color: transparent !important;\n    box-shadow: none !important;\n    width: 100%;\n    max-width: 1160px;\n    margin: 0 auto;\n    padding: 0 !important;\n    box-sizing: border-box;\n  }\n\n  #caravan-tracking-root *, \n  #caravan-tracking-root *::before, \n  #caravan-tracking-root *::after {\n    box-sizing: border-box;\n  }\n\n  /* СТАТИСТИКА */\n  .cr-stats-bar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    background: rgba(20, 31, 54, 0.82);\n    border: 1px solid var(--cr-border);\n    border-radius: var(--cr-radius);\n    padding: 16px 28px;\n    margin-bottom: 20px;\n    backdrop-filter: blur(16px);\n    -webkit-backdrop-filter: blur(16px);\n    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);\n    flex-wrap: wrap;\n    gap: 16px;\n  }\n\n  .cr-stat-item {\n    display: flex;\n    align-items: center;\n    gap: 14px;\n  }\n\n  .cr-stat-icon {\n    width: 44px;\n    height: 44px;\n    border-radius: 12px;\n    background: var(--cr-amber-light);\n    color: var(--cr-amber);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n  .cr-stat-icon svg { width: 22px; height: 22px; }\n\n  .cr-stat-number {\n    font-size: 26px;\n    font-weight: 800;\n    color: #FFFFFF;\n    line-height: 1.1;\n    letter-spacing: -0.5px;\n  }\n\n  .cr-stat-label {\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    margin-top: 3px;\n  }\n\n  .cr-stat-divider {\n    width: 1px;\n    height: 36px;\n    background: var(--cr-border);\n  }\n\n  .cr-live-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 8px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    color: #34D399;\n    padding: 6px 14px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 600;\n  }\n\n  .cr-pulse-dot {\n    width: 8px;\n    height: 8px;\n    background: #10B981;\n    border-radius: 50%;\n    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);\n    animation: crPulse 2s infinite;\n  }\n\n  @keyframes crPulse {\n    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }\n    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }\n    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }\n  }\n\n  /* КАРТОЧКА И ТАБЫ */\n  .cr-card {\n    background: var(--cr-bg-card);\n    border: 1px solid var(--cr-border);\n    border-radius: 20px;\n    padding: 28px;\n    backdrop-filter: blur(20px);\n    -webkit-backdrop-filter: blur(20px);\n    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);\n  }\n\n  .cr-tabs-header {\n    display: flex;\n    gap: 8px;\n    background: var(--cr-bg-input);\n    padding: 6px;\n    border-radius: 12px;\n    border: 1px solid var(--cr-border);\n    margin-bottom: 24px;\n    overflow-x: auto;\n  }\n\n  .cr-tab-btn {\n    flex: 1;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 14px;\n    font-weight: 600;\n    padding: 12px 16px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    white-space: nowrap;\n  }\n  .cr-tab-btn svg { width: 18px; height: 18px; }\n\n  .cr-tab-btn:hover {\n    color: #FFFFFF;\n    background: rgba(255, 255, 255, 0.05);\n  }\n\n  .cr-tab-btn.active {\n    background: var(--cr-amber);\n    color: #0F172A;\n    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);\n  }\n\n  .cr-tab-content { display: none; }\n  .cr-tab-content.active {\n    display: block;\n    animation: crFadeIn 0.3s ease;\n  }\n\n  @keyframes crFadeIn {\n    from { opacity: 0; transform: translateY(6px); }\n    to { opacity: 1; transform: translateY(0); }\n  }\n\n  .cr-tab-intro { margin-bottom: 18px; }\n  .cr-tab-intro h3 {\n    margin: 0 0 6px 0;\n    font-size: 20px;\n    font-weight: 700;\n    color: #FFFFFF;\n  }\n  .cr-tab-intro p {\n    margin: 0;\n    font-size: 14px;\n    color: var(--cr-text-muted);\n  }\n\n  /* ФОРМЫ */\n  .cr-input-group {\n    display: flex;\n    gap: 12px;\n    align-items: stretch;\n    flex-wrap: wrap;\n  }\n\n  .cr-input-wrapper {\n    position: relative;\n    flex: 1;\n    min-width: 240px;\n    display: flex;\n    align-items: center;\n  }\n\n  .cr-input-icon {\n    position: absolute;\n    left: 16px;\n    width: 20px;\n    height: 20px;\n    color: var(--cr-text-muted);\n    pointer-events: none;\n  }\n\n  .cr-input, .cr-dual-borders-grid {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 16px;\n    width: 100%;\n  }\n  @media (max-width: 768px) {\n    .cr-dual-borders-grid {\n      grid-template-columns: 1fr;\n      gap: 12px;\n    }\n  }\n\n  .cr-select {\n    width: 100%;\n    background: var(--cr-bg-input);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    color: #FFFFFF;\n    font-size: 15px;\n    padding: 14px 16px 14px 48px;\n    outline: none;\n    transition: all 0.2s ease;\n  }\n  .cr-select {\n    padding-left: 16px;\n    cursor: pointer;\n    appearance: none;\n    background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\");\n    background-repeat: no-repeat;\n    background-position: right 16px center;\n  }\n  .cr-select option { background: #0F172A; color: #FFFFFF; }\n  .cr-input:focus, .cr-select:focus {\n    border-color: var(--cr-border-focus);\n    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);\n  }\n  .cr-input::placeholder { color: #64748B; }\n  .cr-input-sm { padding: 10px 14px; font-size: 13px; }\n\n  .cr-clear-btn {\n    position: absolute;\n    right: 14px;\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 20px;\n    cursor: pointer;\n  }\n\n  .cr-btn-primary {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    gap: 10px;\n    background: var(--cr-amber);\n    color: #0F172A;\n    border: none;\n    font-size: 15px;\n    font-weight: 700;\n    padding: 14px 28px;\n    border-radius: 12px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.35);\n  }\n  .cr-btn-primary svg { width: 18px; height: 18px; }\n  .cr-btn-primary:hover {\n    background: var(--cr-amber-hover);\n    transform: translateY(-1px);\n    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);\n  }\n  .cr-btn-block { width: 100%; margin-top: 10px; }\n\n  .cr-btn-outline {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    background: transparent;\n    border: 1px solid var(--cr-amber);\n    color: var(--cr-amber);\n    font-size: 14px;\n    font-weight: 600;\n    padding: 12px 20px;\n    border-radius: 10px;\n    cursor: pointer;\n  }\n\n  .cr-quick-chips {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    margin-top: 14px;\n    flex-wrap: wrap;\n  }\n  .cr-chips-title { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-chip {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #CBD5E1;\n    font-size: 12px;\n    padding: 4px 10px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n  }\n  .cr-chip:hover {\n    background: rgba(245, 158, 11, 0.15);\n    border-color: var(--cr-amber);\n    color: var(--cr-amber);\n  }\n\n  /* ЭКРАН ОГРАНИЧЕНИЯ ДОСТУПА К ТРЕКИНГУ (ДЛЯ ГОСТЕЙ) */\n  .cr-auth-lock-card {\n    text-align: center;\n    padding: 42px 24px;\n    background: rgba(10, 17, 32, 0.65);\n    border: 1px dashed rgba(245, 158, 11, 0.4);\n    border-radius: 16px;\n    margin: 8px 0;\n    backdrop-filter: blur(12px);\n    -webkit-backdrop-filter: blur(12px);\n  }\n  .cr-lock-icon-wrap {\n    width: 60px;\n    height: 60px;\n    border-radius: 18px;\n    background: rgba(245, 158, 11, 0.12);\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    color: var(--cr-amber);\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 16px;\n    box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);\n  }\n  .cr-lock-icon-wrap svg { width: 30px; height: 30px; }\n  .cr-lock-badge {\n    display: inline-block;\n    padding: 4px 12px;\n    border-radius: 9999px;\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n    font-size: 11px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.8px;\n    margin-bottom: 12px;\n  }\n  .cr-auth-lock-card h3 {\n    font-size: 20px;\n    font-weight: 700;\n    color: #FFFFFF;\n    margin: 0 0 10px 0;\n    line-height: 1.3;\n  }\n  .cr-auth-lock-card p {\n    font-size: 14px;\n    color: var(--cr-text-muted);\n    max-width: 640px;\n    margin: 0 auto 24px auto;\n    line-height: 1.6;\n  }\n  .cr-lock-actions {\n    display: flex;\n    justify-content: center;\n    gap: 12px;\n    flex-wrap: wrap;\n    margin-bottom: 18px;\n  }\n  .cr-lock-hint {\n    font-size: 12px;\n    color: #64748B;\n  }\n  .cr-lock-hint code {\n    background: rgba(255, 255, 255, 0.08);\n    padding: 2px 6px;\n    border-radius: 4px;\n    color: var(--cr-amber);\n    font-family: monospace;\n  }\n\n  /* ПАНЕЛЬ АВТОРИЗОВАННОГО ПОЛЬЗОВАТЕЛЯ В ТРЕКИНГЕ */\n  .cr-authed-user-bar {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    background: rgba(16, 185, 129, 0.08);\n    border: 1px solid rgba(16, 185, 129, 0.25);\n    padding: 10px 16px;\n    border-radius: 12px;\n    margin-bottom: 18px;\n    font-size: 13px;\n    flex-wrap: wrap;\n    gap: 10px;\n  }\n  .cr-aub-left {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    color: #F8FAFC;\n  }\n  .cr-aub-indicator {\n    width: 8px;\n    height: 8px;\n    border-radius: 50%;\n    background: #10B981;\n    box-shadow: 0 0 8px #10B981;\n  }\n  .cr-aub-actions {\n    display: flex;\n    gap: 8px;\n  }\n  .cr-aub-btn {\n    background: transparent;\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #CBD5E1;\n    padding: 4px 10px;\n    border-radius: 6px;\n    font-size: 12px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-aub-btn:hover {\n    background: rgba(255, 255, 255, 0.1);\n    color: #FFFFFF;\n  }\n\n  /* КАРТОЧКА ОГРАНИЧЕНИЯ ДОСТУПА К ЧУЖОМУ ТРАНСПОРТУ */\n  .cr-access-denied-box {\n    background: rgba(239, 68, 68, 0.08);\n    border: 1px solid rgba(239, 68, 68, 0.35);\n    border-radius: 16px;\n    padding: 26px;\n    margin-top: 20px;\n    text-align: center;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-ad-icon {\n    width: 52px;\n    height: 52px;\n    border-radius: 14px;\n    background: rgba(239, 68, 68, 0.15);\n    color: #F87171;\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    margin-bottom: 12px;\n  }\n  .cr-ad-icon svg { width: 26px; height: 26px; }\n  .cr-access-denied-box h4 {\n    color: #FCA5A5;\n    font-size: 17px;\n    font-weight: 700;\n    margin: 0 0 8px 0;\n  }\n  .cr-access-denied-box p {\n    color: #E2E8F0;\n    font-size: 14px;\n    line-height: 1.6;\n    max-width: 600px;\n    margin: 0 auto 16px auto;\n  }\n  .cr-ad-footer {\n    font-size: 12px;\n    color: #94A3B8;\n    border-top: 1px solid rgba(255, 255, 255, 0.08);\n    padding-top: 12px;\n  }\n\n  /* РОЛИ В ДОГОВОРЕ */\n  .cr-role-selection-box {\n    margin-bottom: 18px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 14px 16px;\n  }\n  .cr-field-caption {\n    font-size: 13px;\n    font-weight: 600;\n    color: #CBD5E1;\n    display: block;\n    margin-bottom: 10px;\n  }\n  .cr-role-pills {\n    display: flex;\n    gap: 10px;\n    flex-wrap: wrap;\n  }\n  .cr-role-pill {\n    flex: 1;\n    min-width: 180px;\n    background: var(--cr-bg-input);\n    border: 1px solid var(--cr-border);\n    border-radius: 8px;\n    padding: 10px 14px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    font-size: 13px;\n    font-weight: 600;\n    transition: all 0.2s;\n  }\n  .cr-role-pill input { display: none; }\n  .cr-role-pill.active {\n    border-color: var(--cr-amber);\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n  }\n\n  /* БАННЕР ЗОНЫ ОТВЕТСТВЕННОСТИ */\n  .cr-incoterms-banner {\n    display: flex;\n    align-items: flex-start;\n    gap: 14px;\n    background: rgba(37, 99, 235, 0.12);\n    border: 1px solid rgba(37, 99, 235, 0.3);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 18px;\n  }\n  .cr-ib-icon {\n    font-size: 24px;\n    line-height: 1;\n  }\n  .cr-ib-title {\n    font-size: 14px;\n    font-weight: 700;\n    color: #93C5FD;\n    margin-bottom: 4px;\n  }\n  .cr-ib-desc {\n    font-size: 13px;\n    color: #E2E8F0;\n    line-height: 1.5;\n  }\n\n  /* СЕТКА КАЛЬКУЛЯТОРА */\n  .cr-calc-header-box {\n    display: flex;\n    align-items: flex-start;\n    justify-content: space-between;\n    gap: 16px;\n    margin-bottom: 20px;\n    flex-wrap: wrap;\n  }\n\n  .cr-submode-toggles {\n    display: flex;\n    background: var(--cr-bg-input);\n    padding: 4px;\n    border-radius: 10px;\n    border: 1px solid var(--cr-border);\n  }\n\n  .cr-submode-btn {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 13px;\n    font-weight: 600;\n    padding: 8px 14px;\n    border-radius: 7px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-submode-btn.active {\n    background: rgba(245, 158, 11, 0.2);\n    color: var(--cr-amber);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n  }\n\n  .cr-preset-routes-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));\n    gap: 14px;\n    margin-bottom: 24px;\n  }\n\n  .cr-preset-route-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px 18px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n    display: flex;\n    flex-direction: column;\n    justify-content: space-between;\n  }\n  .cr-preset-route-card:hover, .cr-preset-route-card.selected {\n    border-color: var(--cr-amber);\n    background: rgba(15, 23, 42, 0.95);\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);\n  }\n  .cr-preset-route-card.selected { border-width: 2px; }\n\n  .cr-pr-top {\n    font-size: 14px;\n    font-weight: 700;\n    color: #FFFFFF;\n    margin-bottom: 8px;\n    display: flex;\n    align-items: center;\n    gap: 6px;\n  }\n  .cr-pr-arrow { color: var(--cr-amber); }\n  .cr-pr-info { font-size: 12px; color: var(--cr-text-muted); margin-bottom: 12px; }\n  .cr-pr-bottom {\n    display: flex;\n    align-items: flex-end;\n    justify-content: space-between;\n    border-top: 1px solid rgba(255, 255, 255, 0.06);\n    padding-top: 10px;\n  }\n  .cr-pr-price { font-size: 18px; font-weight: 800; color: var(--cr-amber); }\n  .cr-pr-days { font-size: 12px; color: #34D399; font-weight: 600; }\n\n  .cr-calc-inputs-grid {\n    display: grid;\n    grid-template-columns: repeat(2, 1fr);\n    gap: 16px;\n  }\n  .cr-span-2 { grid-column: span 2; }\n\n  .cr-quick-km { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }\n  .cr-km-chip {\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    color: #94A3B8;\n    font-size: 11px;\n    padding: 3px 8px;\n    border-radius: 4px;\n    cursor: pointer;\n  }\n  .cr-km-chip:hover { border-color: var(--cr-amber); color: var(--cr-amber); }\n\n  .cr-checkbox-group-inline {\n    display: flex;\n    gap: 20px;\n    flex-wrap: wrap;\n  }\n  .cr-checkbox-label {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    font-size: 13px;\n    color: #CBD5E1;\n    cursor: pointer;\n  }\n  .cr-checkbox-label input {\n    accent-color: var(--cr-amber);\n    width: 16px;\n    height: 16px;\n    cursor: pointer;\n  }\n\n  /* РЕЗУЛЬТАТ КАЛЬКУЛЯТОРА */\n  .cr-calc-result-box {\n    margin-top: 24px;\n    background: #0F172A;\n    border: 1px solid rgba(245, 158, 11, 0.4);\n    border-radius: 16px;\n    padding: 24px;\n    animation: crFadeIn 0.3s ease;\n  }\n\n  .cr-crb-top {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    flex-wrap: wrap;\n    gap: 16px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 18px;\n  }\n  .cr-crb-title { font-size: 20px; font-weight: 800; color: #FFFFFF; margin-bottom: 4px; }\n  .cr-crb-sub { font-size: 13px; color: var(--cr-text-muted); }\n  .cr-crb-total-box { text-align: right; }\n  .cr-crb-total-label { font-size: 12px; color: var(--cr-text-muted); text-transform: uppercase; }\n  .cr-crb-total-val { font-size: 28px; font-weight: 800; color: var(--cr-amber); line-height: 1.1; }\n  .cr-crb-transit { font-size: 13px; color: #34D399; font-weight: 700; margin-top: 4px; }\n\n  .cr-client-discount-badge {\n    background: rgba(245, 158, 11, 0.15);\n    border: 1px solid var(--cr-amber);\n    color: var(--cr-amber);\n    padding: 6px 14px;\n    border-radius: 8px;\n    font-size: 13px;\n    margin-top: 14px;\n  }\n\n  .cr-quote-breakdown {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));\n    gap: 12px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 16px;\n  }\n  .cr-qb-item { display: flex; flex-direction: column; gap: 4px; }\n  .cr-qb-label { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-qb-val { font-size: 15px; font-weight: 700; color: #F1F5F9; }\n\n  .cr-calc-actions {\n    margin-top: 20px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 16px;\n    flex-wrap: wrap;\n  }\n  .cr-btn-book { padding: 14px 32px; }\n  .cr-disclaimer-text { font-size: 12px; color: var(--cr-text-muted); max-width: 500px; }\n\n  /* ПОДВКЛАДКИ ЛИЧНОГО КАБИНЕТА */\n  .cr-cab-subtabs {\n    display: flex;\n    gap: 10px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 12px;\n    margin-bottom: 20px;\n  }\n  .cr-cab-subtab-btn {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 14px;\n    font-weight: 700;\n    padding: 8px 16px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-cab-subtab-btn.active {\n    background: rgba(245, 158, 11, 0.2);\n    color: var(--cr-amber);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n  }\n\n  /* СПИСОК КОММЕРЧЕСКИХ ПРЕДЛОЖЕНИЙ */\n  .cr-proposals-intro {\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    margin-bottom: 16px;\n  }\n\n  .cr-proposal-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 18px 22px;\n    margin-bottom: 14px;\n    transition: all 0.2s;\n  }\n  .cr-proposal-card:hover {\n    border-color: var(--cr-amber);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);\n  }\n\n  .cr-pc-header {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 10px;\n    margin-bottom: 10px;\n  }\n  .cr-pc-id { font-size: 16px; font-weight: 800; color: #FFFFFF; }\n  .cr-pc-badge-signed {\n    background: rgba(16, 185, 129, 0.15);\n    color: #34D399;\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    padding: 4px 10px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 700;\n  }\n  .cr-pc-route {\n    font-size: 14px;\n    color: #CBD5E1;\n    margin-bottom: 8px;\n  }\n  .cr-pc-route strong { color: var(--cr-amber); }\n  .cr-pc-details {\n    display: flex;\n    align-items: center;\n    gap: 16px;\n    font-size: 13px;\n    color: var(--cr-text-muted);\n    flex-wrap: wrap;\n    margin-bottom: 14px;\n  }\n  .cr-pc-actions {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    flex-wrap: wrap;\n    border-top: 1px solid rgba(255, 255, 255, 0.06);\n    padding-top: 12px;\n  }\n  .cr-btn-pc {\n    background: rgba(255, 255, 255, 0.08);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #FFFFFF;\n    font-size: 12px;\n    font-weight: 600;\n    padding: 6px 14px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-btn-pc:hover { background: var(--cr-amber); color: #0F172A; border-color: var(--cr-amber); }\n\n  /* ПЕЧАТНЫЙ ЛИСТ КП В МОДАЛКЕ */\n  .cr-kp-card-view { max-width: 680px; }\n  .cr-kp-sheet {\n    background: #FFFFFF;\n    color: #0F172A;\n    border-radius: 10px;\n    padding: 24px;\n    margin: 16px 0;\n    max-height: 480px;\n    overflow-y: auto;\n    font-family: 'Inter', sans-serif;\n  }\n  .cr-kp-actions {\n    display: flex;\n    justify-content: space-between;\n    gap: 12px;\n    flex-wrap: wrap;\n  }\n\n  /* МОДАЛЬНЫЕ ОКНА */\n  .cr-booking-modal {\n    position: fixed;\n    top: 0; left: 0; right: 0; bottom: 0;\n    background: rgba(0, 0, 0, 0.8);\n    backdrop-filter: blur(8px);\n    z-index: 9999;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n  }\n  .cr-bm-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-amber);\n    border-radius: 18px;\n    width: 100%;\n    max-width: 480px;\n    padding: 28px;\n    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);\n    position: relative;\n    animation: crFadeIn 0.25s ease;\n  }\n  .cr-bm-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 16px;\n  }\n  .cr-bm-header h4 { margin: 0; font-size: 18px; color: #FFFFFF; }\n  .cr-bm-close {\n    background: transparent;\n    border: none;\n    color: var(--cr-text-muted);\n    font-size: 26px;\n    cursor: pointer;\n  }\n  .cr-bm-summary {\n    background: rgba(255, 255, 255, 0.05);\n    border-radius: 8px;\n    padding: 12px 14px;\n    font-size: 13px;\n    color: #CBD5E1;\n    margin-bottom: 16px;\n    line-height: 1.5;\n  }\n  .cr-bm-summary strong { color: var(--cr-amber); }\n\n  /* ЛОАДЕР */\n  .cr-loader {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 12px;\n    padding: 30px;\n    color: var(--cr-amber);\n    font-size: 14px;\n    font-weight: 600;\n  }\n  .cr-spinner {\n    width: 24px;\n    height: 24px;\n    border: 3px solid rgba(245, 158, 11, 0.2);\n    border-top-color: var(--cr-amber);\n    border-radius: 50%;\n    animation: crSpin 0.8s linear infinite;\n  }\n  @keyframes crSpin { to { transform: rotate(360deg); } }\n\n  /* РЕЗУЛЬТАТ ДИСЛОКАЦИИ */\n  .cr-result-box {\n    margin-top: 24px;\n    background: #0F172A;\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    border-radius: 16px;\n    padding: 24px;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-disloc-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    flex-wrap: wrap;\n    gap: 12px;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 16px;\n    margin-bottom: 20px;\n  }\n  .cr-disloc-title { display: flex; align-items: center; gap: 12px; }\n  .cr-disloc-title h4 { margin: 0; font-size: 20px; font-weight: 800; color: #FFFFFF; }\n  .cr-type-badge {\n    background: rgba(255, 255, 255, 0.08);\n    color: #CBD5E1;\n    font-size: 12px;\n    font-weight: 600;\n    padding: 4px 10px;\n    border-radius: 6px;\n  }\n\n  .cr-status-pill {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    padding: 6px 12px;\n    border-radius: 9999px;\n    font-size: 12px;\n    font-weight: 700;\n  }\n  .cr-status-in-transit {\n    background: rgba(16, 185, 129, 0.15);\n    color: #34D399;\n    border: 1px solid rgba(16, 185, 129, 0.3);\n  }\n\n  /* ВИЗУАЛЬНЫЙ ТРЕК */\n  .cr-route-timeline { position: relative; margin: 24px 0 20px 0; }\n  .cr-route-track {\n    position: absolute;\n    top: 18px; left: 40px; right: 40px;\n    height: 4px;\n    background: rgba(255, 255, 255, 0.1);\n    border-radius: 2px;\n    z-index: 1;\n  }\n  .cr-route-progress-fill {\n    height: 100%;\n    background: linear-gradient(90deg, #10B981, #F59E0B);\n    border-radius: 2px;\n    transition: width 0.8s ease-in-out;\n  }\n  .cr-route-nodes { display: flex; justify-content: space-between; position: relative; z-index: 2; }\n  .cr-route-node { text-align: center; flex: 1; max-width: 30%; }\n  .cr-node-point {\n    width: 36px; height: 36px; border-radius: 50%;\n    background: #0B1325;\n    border: 2px solid rgba(255, 255, 255, 0.2);\n    color: #94A3B8;\n    display: flex; align-items: center; justify-content: center;\n    margin: 0 auto 10px auto;\n  }\n  .cr-node-point svg { width: 16px; height: 16px; }\n  .cr-node-point.completed { background: #10B981; border-color: #10B981; color: #0F172A; }\n  .cr-node-point.current {\n    background: var(--cr-amber); border-color: #FFFFFF; color: #0F172A;\n    box-shadow: 0 0 15px rgba(245, 158, 11, 0.6);\n  }\n  .cr-node-tag { font-size: 11px; text-transform: uppercase; color: var(--cr-amber); font-weight: 700; }\n  .cr-node-station { font-size: 14px; font-weight: 700; color: #FFFFFF; margin: 4px 0 2px 0; }\n  .cr-node-date { font-size: 12px; color: var(--cr-text-muted); }\n\n  .cr-operation-banner {\n    margin-top: 14px;\n    background: rgba(245, 158, 11, 0.08);\n    border-left: 3px solid var(--cr-amber);\n    padding: 12px 16px;\n    border-radius: 0 8px 8px 0;\n    font-size: 13px;\n  }\n  .cr-operation-banner strong { color: var(--cr-amber); }\n\n  .cr-details-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n    gap: 12px;\n    background: rgba(255, 255, 255, 0.02);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    margin-top: 20px;\n  }\n  .cr-detail-item { display: flex; flex-direction: column; gap: 4px; }\n  .cr-detail-k { font-size: 12px; color: var(--cr-text-muted); }\n  .cr-detail-v { font-size: 14px; font-weight: 600; color: #F1F5F9; }\n\n  /* КАБИНЕТ КЛИЕНТА */\n  .cr-cabinet-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    border-bottom: 1px solid var(--cr-border);\n    padding-bottom: 16px;\n    margin-bottom: 18px;\n    flex-wrap: wrap;\n    gap: 12px;\n  }\n  .cr-client-profile { display: flex; align-items: center; gap: 12px; }\n  .cr-client-avatar {\n    width: 44px; height: 44px; border-radius: 50%;\n    background: var(--cr-amber); color: #0F172A;\n    display: flex; align-items: center; justify-content: center;\n    font-weight: 800; font-size: 16px;\n  }\n  .cr-client-profile h4 { margin: 0 0 4px 0; font-size: 18px; color: #FFFFFF; }\n  .cr-client-profile p { margin: 0; font-size: 13px; color: var(--cr-text-muted); }\n  .cr-badge-active { color: #34D399; font-weight: 600; }\n\n  .cr-cab-right-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }\n  .cr-btn-calc-jump {\n    display: inline-flex; align-items: center; gap: 6px;\n    background: rgba(245, 158, 11, 0.15);\n    border: 1px solid rgba(245, 158, 11, 0.4);\n    color: var(--cr-amber);\n    padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;\n  }\n  .cr-btn-calc-jump svg { width: 16px; height: 16px; }\n  .cr-btn-logout {\n    display: inline-flex; align-items: center; gap: 6px;\n    background: rgba(239, 68, 68, 0.12);\n    border: 1px solid rgba(239, 68, 68, 0.25);\n    color: #F87171; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;\n  }\n  .cr-btn-logout svg { width: 16px; height: 16px; }\n\n  .cr-cabinet-toolbar {\n    display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;\n  }\n  .cr-count-tag { font-size: 14px; color: #CBD5E1; }\n  .cr-count-tag strong { color: var(--cr-amber); font-size: 16px; }\n\n  .cr-shipment-card {\n    background: #0F172A;\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px 20px;\n    margin-bottom: 12px;\n    cursor: pointer;\n    transition: all 0.2s ease;\n  }\n  .cr-shipment-card:hover {\n    border-color: var(--cr-amber);\n    transform: translateY(-2px);\n    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);\n  }\n  .cr-sc-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }\n  .cr-sc-id { font-size: 16px; font-weight: 700; color: #FFFFFF; }\n  .cr-sc-route { font-size: 13px; color: #CBD5E1; display: flex; align-items: center; gap: 8px; }\n  .cr-sc-route span.arrow { color: var(--cr-amber); font-weight: bold; }\n\n  /* РЕГИСТРАЦИЯ */\n  .cr-reg-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }\n  .cr-reg-footer { grid-column: span 2; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 8px; }\n  .cr-privacy-text { font-size: 12px; color: var(--cr-text-muted); text-align: center; margin: 0; }\n\n  .cr-alert-success {\n    display: flex; align-items: center; gap: 16px;\n    background: rgba(16, 185, 129, 0.12);\n    border: 1px solid rgba(16, 185, 129, 0.3);\n    border-radius: 12px; padding: 20px; margin-top: 16px;\n  }\n  .cr-alert-icon {\n    width: 40px; height: 40px; border-radius: 50%;\n    background: #10B981; color: #0B1325;\n    display: flex; align-items: center; justify-content: center;\n    font-weight: 800; font-size: 20px; flex-shrink: 0;\n  }\n  .cr-alert-success h4 { margin: 0 0 4px 0; color: #34D399; font-size: 16px; }\n  .cr-alert-success p { margin: 0; font-size: 13px; color: #CBD5E1; }\n\n  @media (max-width: 768px) {\n    .cr-stats-bar { flex-direction: column; align-items: stretch; padding: 16px; }\n    .cr-stat-divider { display: none; }\n    .cr-card { padding: 18px; }\n    .cr-tab-btn { font-size: 12px; padding: 10px 8px; }\n    .cr-input-group { flex-direction: column; }\n    .cr-btn-primary { width: 100%; }\n    .cr-calc-inputs-grid, .cr-reg-grid { grid-template-columns: 1fr; }\n    .cr-span-2, .cr-reg-footer { grid-column: span 1; }\n    .cr-route-track { left: 20px; right: 20px; }\n  }\n\n  /* AUTOCOMPLETE DROPDOWN ДЛЯ СТАНЦИЙ */\n  .cr-station-autocomplete-wrap { position: relative; }\n  .cr-station-dropdown {\n    position: absolute;\n    top: calc(100% + 4px);\n    left: 0; right: 0;\n    background: #0B1325;\n    border: 1px solid var(--cr-amber);\n    border-radius: 12px;\n    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.75);\n    z-index: 1000;\n    max-height: 280px;\n    overflow-y: auto;\n    padding: 6px;\n    backdrop-filter: blur(16px);\n  }\n  .cr-station-item {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    padding: 10px 14px;\n    border-radius: 8px;\n    cursor: pointer;\n    transition: all 0.15s ease;\n    gap: 10px;\n  }\n  .cr-station-item:hover { background: rgba(245, 158, 11, 0.18); }\n  .cr-st-left { display: flex; align-items: center; gap: 10px; }\n  .cr-st-code {\n    font-family: monospace;\n    font-size: 11px;\n    font-weight: 700;\n    color: var(--cr-amber);\n    background: rgba(245, 158, 11, 0.15);\n    padding: 2px 6px;\n    border-radius: 4px;\n  }\n  .cr-st-name { font-size: 13px; font-weight: 600; color: #F8FAFC; }\n  .cr-st-badges { display: flex; align-items: center; gap: 6px; }\n  .cr-st-badge-road {\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(37, 99, 235, 0.2);\n    color: #60A5FA;\n    border: 1px solid rgba(37, 99, 235, 0.3);\n  }\n  .cr-st-badge-border {\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 7px;\n    border-radius: 4px;\n    background: rgba(239, 68, 68, 0.2);\n    color: #F87171;\n    border: 1px solid rgba(239, 68, 68, 0.3);\n  }\n\n  /* ВИЗУАЛЬНАЯ СХЕМА МАРШРУТА */\n  .cr-route-scheme-card {\n    background: rgba(15, 23, 42, 0.88);\n    border: 1px solid rgba(245, 158, 11, 0.3);\n    border-radius: 14px;\n    padding: 18px 24px;\n    margin: 20px 0;\n  }\n  .cr-rs-header {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    margin-bottom: 16px;\n    flex-wrap: wrap;\n    gap: 8px;\n  }\n  .cr-rs-badge {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    background: rgba(245, 158, 11, 0.15);\n    color: var(--cr-amber);\n    font-size: 12px;\n    font-weight: 700;\n    padding: 4px 12px;\n    border-radius: 9999px;\n    border: 1px solid rgba(245, 158, 11, 0.3);\n  }\n  .cr-rs-distance { font-size: 13px; color: #94A3B8; font-weight: 600; }\n  .cr-rs-flow {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    gap: 12px;\n    flex-wrap: wrap;\n  }\n  .cr-rs-step { display: flex; align-items: center; gap: 10px; }\n  .cr-rs-dot {\n    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;\n  }\n  .cr-rs-dot.origin { background: #10B981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }\n  .cr-rs-dot.border { background: #F59E0B; box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); }\n  .cr-rs-dot.dest { background: #3B82F6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }\n  .cr-rs-name { font-size: 14px; font-weight: 700; color: #F8FAFC; }\n  .cr-rs-sub { font-size: 12px; color: #94A3B8; }\n  .cr-rs-line {\n    flex: 1; height: 2px;\n    background: rgba(255, 255, 255, 0.15);\n    position: relative;\n    min-width: 60px;\n    text-align: center;\n  }\n  .cr-rs-line-info {\n    position: absolute;\n    top: -18px; left: 50%;\n    transform: translateX(-50%);\n    font-size: 11px;\n    color: var(--cr-amber);\n    font-weight: 600;\n    white-space: nowrap;\n  }\n\n  /* ПЕРЕКЛЮЧАТЕЛЬ ВАЛЮТ */\n  .cr-currency-pills { display: flex; gap: 6px; margin-bottom: 8px; justify-content: flex-end; }\n  .cr-cur-pill {\n    background: rgba(255, 255, 255, 0.08);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    color: #94A3B8;\n    font-size: 11px;\n    font-weight: 700;\n    padding: 4px 10px;\n    border-radius: 6px;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-cur-pill.active {\n    background: var(--cr-amber);\n    color: #070B14;\n    border-color: var(--cr-amber);\n  }\n\n  /* R-ТАРИФ ТАБЛИЦА */\n  .cr-rtariff-table-wrap {\n    margin-top: 20px;\n    background: rgba(11, 19, 37, 0.85);\n    border: 1px solid var(--cr-border);\n    border-radius: 12px;\n    padding: 16px;\n    overflow-x: auto;\n  }\n  .cr-rtariff-table-title {\n    font-size: 13px;\n    font-weight: 700;\n    color: var(--cr-amber);\n    text-transform: uppercase;\n    letter-spacing: 0.6px;\n    margin-bottom: 12px;\n  }\n  .cr-rtariff-table {\n    width: 100%;\n    border-collapse: collapse;\n    font-size: 13px;\n    color: #E2E8F0;\n  }\n  .cr-rtariff-table th {\n    text-align: left;\n    padding: 10px 12px;\n    background: rgba(255, 255, 255, 0.04);\n    color: #94A3B8;\n    font-size: 11px;\n    text-transform: uppercase;\n    letter-spacing: 0.5px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.1);\n  }\n  .cr-rtariff-table td {\n    padding: 12px;\n    border-bottom: 1px solid rgba(255, 255, 255, 0.05);\n  }\n  .cr-rtariff-table tr.total-row td {\n    font-weight: 800;\n    color: var(--cr-amber);\n    border-top: 2px solid rgba(245, 158, 11, 0.4);\n    background: rgba(245, 158, 11, 0.06);\n  }\n  .cr-text-right { text-align: right !important; }\n  .cr-quote-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }\n  .cr-qbadge {\n    background: rgba(255, 255, 255, 0.06);\n    border: 1px solid rgba(255, 255, 255, 0.12);\n    font-size: 12px;\n    padding: 3px 8px;\n    border-radius: 6px;\n    color: #CBD5E1;\n  }\n\n\n  /* Станции следования по ТР-4 (Маршрутный лист) */\n  .cr-inter-badge {\n    display: inline-flex;\n    align-items: center;\n    padding: 3px 8px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 215, 0, 0.18);\n    border-radius: 4px;\n    font-size: 11px;\n    color: #e2e8f0;\n  }\n  .cr-inter-badge.origin {\n    border-color: #10b981;\n    color: #34d399;\n    font-weight: 600;\n  }\n  .cr-inter-badge.border {\n    border-color: #f59e0b;\n    color: #fbbf24;\n    font-weight: 600;\n  }\n  .cr-inter-badge.dest {\n    border-color: #ef4444;\n    color: #f87171;\n    font-weight: 600;\n  }\n  .cr-inter-arrow {\n    color: rgba(255, 255, 255, 0.4);\n    font-size: 9px;\n    margin: 0 2px;\n  }\n\n\n  /* МУЛЬТИМОДАЛЬНЫЙ СУПЕР-КАЛЬКУЛЯТОР: СТИЛИ МОДАЛЬНОСТЕЙ И ЧЕК-ЛИСТА ДОКУМЕНТОВ */\n  .cr-modality-bar {\n    display: flex;\n    gap: 8px;\n    margin: 14px 0 18px;\n    overflow-x: auto;\n    padding-bottom: 6px;\n    scrollbar-width: thin;\n  }\n  .cr-modality-btn {\n    display: flex;\n    align-items: center;\n    gap: 8px;\n    padding: 10px 16px;\n    background: rgba(255, 255, 255, 0.04);\n    border: 1px solid rgba(255, 255, 255, 0.1);\n    border-radius: 8px;\n    color: #94a3b8;\n    font-size: 13px;\n    font-weight: 500;\n    cursor: pointer;\n    white-space: nowrap;\n    transition: all 0.25s ease;\n  }\n  .cr-modality-btn:hover {\n    background: rgba(255, 255, 255, 0.08);\n    color: #f8fafc;\n    border-color: rgba(197, 160, 89, 0.4);\n  }\n  .cr-modality-btn.active {\n    background: linear-gradient(135deg, rgba(197, 160, 89, 0.25), rgba(197, 160, 89, 0.06));\n    border-color: #c5a059;\n    color: #f8fafc;\n    box-shadow: 0 4px 14px rgba(197, 160, 89, 0.18);\n  }\n  .cr-mod-icon {\n    font-size: 16px;\n  }\n\n  /* Панели модальностей */\n  .cr-mod-panel {\n    display: none;\n    animation: crFadeIn 0.3s ease;\n  }\n  .cr-mod-panel.active {\n    display: block;\n  }\n\n  /* ЧЕК-ЛИСТ ДОКУМЕНТОВ */\n  .cr-doc-checklist-card {\n    background: linear-gradient(180deg, rgba(15, 23, 42, 0.8), rgba(7, 11, 20, 0.95));\n    border: 1px solid rgba(197, 160, 89, 0.25);\n    border-radius: 12px;\n    padding: 20px;\n    margin-top: 20px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);\n  }\n  .cr-doc-header {\n    display: flex;\n    justify-content: space-between;\n    align-items: flex-start;\n    flex-wrap: wrap;\n    gap: 12px;\n    margin-bottom: 6px;\n  }\n  .cr-doc-badge {\n    display: inline-block;\n    font-size: 10px;\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.8px;\n    color: #c5a059;\n    background: rgba(197, 160, 89, 0.12);\n    padding: 2px 8px;\n    border-radius: 4px;\n    margin-bottom: 6px;\n  }\n  .cr-doc-title {\n    margin: 0;\n    font-size: 16px;\n    font-weight: 600;\n    color: #f8fafc;\n    display: flex;\n    align-items: center;\n  }\n  .cr-doc-subtitle {\n    margin: 0 0 16px;\n    font-size: 12px;\n    color: #94a3b8;\n    line-height: 1.5;\n  }\n  .cr-doc-actions {\n    display: flex;\n    gap: 8px;\n  }\n  .cr-doc-btn {\n    display: inline-flex;\n    align-items: center;\n    gap: 6px;\n    padding: 6px 12px;\n    background: rgba(255, 255, 255, 0.05);\n    border: 1px solid rgba(255, 255, 255, 0.15);\n    border-radius: 6px;\n    color: #e2e8f0;\n    font-size: 12px;\n    font-weight: 500;\n    cursor: pointer;\n    transition: all 0.2s;\n  }\n  .cr-doc-btn:hover {\n    background: rgba(255, 255, 255, 0.1);\n    color: #fff;\n    border-color: #c5a059;\n  }\n  .cr-doc-btn.whatsapp {\n    background: rgba(37, 211, 102, 0.12);\n    border-color: rgba(37, 211, 102, 0.3);\n    color: #4ade80;\n  }\n  .cr-doc-btn.whatsapp:hover {\n    background: rgba(37, 211, 102, 0.2);\n    border-color: #25d366;\n    color: #fff;\n  }\n  .cr-doc-items-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));\n    gap: 10px;\n  }\n  .cr-doc-item {\n    display: flex;\n    gap: 12px;\n    padding: 12px;\n    background: rgba(255, 255, 255, 0.03);\n    border: 1px solid rgba(255, 255, 255, 0.07);\n    border-radius: 8px;\n    align-items: flex-start;\n  }\n  .cr-doc-icon {\n    width: 28px;\n    height: 28px;\n    border-radius: 6px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 13px;\n    flex-shrink: 0;\n    background: rgba(197, 160, 89, 0.15);\n    color: #c5a059;\n  }\n  .cr-doc-icon.mandatory {\n    background: rgba(16, 185, 129, 0.15);\n    color: #10b981;\n  }\n  .cr-doc-name {\n    font-size: 13px;\n    font-weight: 600;\n    color: #f1f5f9;\n    margin-bottom: 3px;\n  }\n  .cr-doc-desc {\n    font-size: 11px;\n    color: #94a3b8;\n    line-height: 1.4;\n  }\n  .cr-doc-tag {\n    display: inline-block;\n    font-size: 9px;\n    font-weight: 600;\n    padding: 1px 5px;\n    border-radius: 3px;\n    margin-left: 6px;\n    text-transform: uppercase;\n  }\n  .cr-doc-tag.mandatory {\n    background: rgba(16, 185, 129, 0.2);\n    color: #34d399;\n  }\n  .cr-doc-tag.optional {\n    background: rgba(148, 163, 184, 0.15);\n    color: #cbd5e1;\n  }\n\n  /* Специфические поля модальностей */\n  .cr-modality-inputs-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));\n    gap: 16px;\n    margin-top: 16px;\n  }";
+
+  // 1. Динамическое внедрение стилей в <head>
+  function injectStyles() {
+    if (document.getElementById('caravan-widget-styles')) return;
+    var styleEl = document.createElement('style');
+    styleEl.id = 'caravan-widget-styles';
+    styleEl.textContent = WIDGET_CSS;
+    document.head.appendChild(styleEl);
+  }
+
+  // 2. Внедрение разметки виджета в контейнер
+  function mountWidget() {
+    injectStyles();
+
+    var container = document.getElementById('caravan-tracking-root') || 
+                    document.getElementById('caravan-calc-app') ||
+                    document.getElementById('caravan-widget');
+
+    if (!container) {
+      var scriptTag = document.currentScript;
+      if (scriptTag && scriptTag.parentNode) {
+        container = document.createElement('div');
+        container.id = 'caravan-tracking-root';
+        container.className = 'cr-widget';
+        scriptTag.parentNode.insertBefore(container, scriptTag);
+      } else {
+        container = document.createElement('div');
+        container.id = 'caravan-tracking-root';
+        container.className = 'cr-widget';
+        document.body.appendChild(container);
+      }
+    }
+
+    container.innerHTML = WIDGET_HTML;
+
+    // 3. Запуск логики калькулятора и трекинга
+    runAppLogic();
+  }
+
+  function runAppLogic() {
+/**
+ * Caravan Railroad - R-Tariff Railway Calculation Engine
+ * Extracted & ported from R-Tariff (Р-Тариф) database & calculation core
+ * Covers: CIS 1520mm network, KTZh (Казахстан), UTI (Узбекистан), RZD (Россия),
+ * border junction stations, tariff belts, rolling stock provision, and Incoterms 2020.
+ */
+
+/**
+ * Caravan Railroad - Цифровое тарифное ядро "Caravan 1520"
+ * Собственная разработка логистической компании Caravan Railroad.
+ * Реализует поучастковую тарификацию по сети железных дорог колеи 1520 мм
+ * (Казахстан КТЖ, Узбекистан УТИ, Россия РЖД, стыки с Китаем, Афганистаном, Туркменистаном),
+ * расчет нормативного километража, подбор погранпереходов, предоставление парка СПС и Incoterms 2020.
+ */
+
+/**
+ * Caravan Railroad — Цифровое тарифное ядро "Caravan 1520"
+ * Собственная разработка логистической компании Caravan Railroad.
+ * Реализует поучастковую тарификацию по сети железных дорог колеи 1520 мм
+ * (Казахстан КТЖ, Узбекистан УТИ, Россия РЖД, стыки с Китаем, Афганистаном, Туркменистаном),
+ * транзитные коридоры (РЖД -> КТЖ -> УТИ), расчет нормативного километража, подбор погранпереходов, предоставление парка СПС и Incoterms 2020.
+ */
+
+var CaravanRailwayEngine = (function() {
+
+  // 1. БАЗА СТАНЦИЙ СЕТИ 1520 ММ
+  var STATIONS = [
+  {
+    "code": "000251",
+    "name": "Хайратан (эксп.)",
+    "country": "AFG",
+    "road": "АРА",
+    "is_border": true,
+    "road_label": "АРА (Афганистан)",
+    "country_name": "Афганистан"
+  },
+  {
+    "code": "663404",
+    "name": "Актау-Порт (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "707701",
+    "name": "Алтынколь (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "662905",
+    "name": "Бейнеу (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "708507",
+    "name": "Достык (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "666501",
+    "name": "Илецк I (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "693602",
+    "name": "Курык-Порт (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "711105",
+    "name": "Локоть (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "704402",
+    "name": "Луговая (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "664900",
+    "name": "Озинки (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "688708",
+    "name": "Петропавловск (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "704101",
+    "name": "Сарыагаш (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "945404",
+    "name": "Забайкальск (эксп.)",
+    "country": "RUS",
+    "road": "РЖД",
+    "is_border": true,
+    "road_label": "РЖД",
+    "country_name": "Россия"
+  },
+  {
+    "code": "033907",
+    "name": "Санкт-Петербург-Варшавский (эксп.)",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": true,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "038402",
+    "name": "Санкт-Петербург-Финляндский (эксп.)",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": true,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "938805",
+    "name": "Душанбе II (эксп.)",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": true,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "720104",
+    "name": "Келес (эксп.)",
+    "country": "UZB",
+    "road": "УТИ",
+    "is_border": true,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "735203",
+    "name": "Термез (эксп.)",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": true,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "667909",
+    "name": "Актобе",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "689503",
+    "name": "Актобе I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "689607",
+    "name": "Актобе II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "700007",
+    "name": "Алматы I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "700100",
+    "name": "Алматы II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "698004",
+    "name": "Арысь I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "690002",
+    "name": "Астана",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "710507",
+    "name": "Астана-Пассажирская",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "661705",
+    "name": "Атырау",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "671823",
+    "name": "Берказань",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "703908",
+    "name": "Бурундай",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "709302",
+    "name": "Жана-Семей",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "673905",
+    "name": "Караганда",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "673702",
+    "name": "Караганда-Новая",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "673007",
+    "name": "Караганда-Сортировочная",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "674000",
+    "name": "Караганда-Угольная",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "687008",
+    "name": "Кокшетау I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "687103",
+    "name": "Кокшетау II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "684001",
+    "name": "Костанай",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "671707",
+    "name": "Кызылорда",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "663306",
+    "name": "Мангышлак",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "700204",
+    "name": "Медеу",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "698019",
+    "name": "ОП Арысь II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696102",
+    "name": "Павлодар",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696403",
+    "name": "Павлодар-Порт",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696303",
+    "name": "Павлодар-Северный",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696206",
+    "name": "Павлодар-Южный",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "709406",
+    "name": "Семей",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "709508",
+    "name": "Семей-Грузовой",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "690200",
+    "name": "Сороковая",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "706304",
+    "name": "Тараз",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "697800",
+    "name": "Туркестан",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "665602",
+    "name": "Уральск",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "665509",
+    "name": "Уральск-Товарная",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "713702",
+    "name": "Усть-Каменогорск",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "713906",
+    "name": "Усть-Каменогорск (перев.)",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "698606",
+    "name": "Шымкент",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694605",
+    "name": "Экибастуз I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694709",
+    "name": "Экибастуз II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694906",
+    "name": "Экибастуз III",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694802",
+    "name": "Экибастуз-Северный",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "716908",
+    "name": "Аламедин",
+    "country": "KGZ",
+    "road": "Krg",
+    "is_border": false,
+    "road_label": "КРГ",
+    "country_name": "Кыргызстан"
+  },
+  {
+    "code": "716607",
+    "name": "Бишкек I",
+    "country": "KGZ",
+    "road": "Krg",
+    "is_border": false,
+    "road_label": "КРГ",
+    "country_name": "Кыргызстан"
+  },
+  {
+    "code": "716700",
+    "name": "Бишкек II",
+    "country": "KGZ",
+    "road": "Krg",
+    "is_border": false,
+    "road_label": "КРГ",
+    "country_name": "Кыргызстан"
+  },
+  {
+    "code": "180010",
+    "name": "Бекасово I",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "180006",
+    "name": "Бекасово-Сортировочное",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800402",
+    "name": "Дубровка-Челябинская",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "780506",
+    "name": "Екатеринбург-Пассажирский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "780001",
+    "name": "Екатеринбург-Сортировочный",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "780302",
+    "name": "Екатеринбург-Товарный",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "769708",
+    "name": "Заполье-Уральское",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "250302",
+    "name": "Казань",
+    "country": "RUS",
+    "road": "Gor'k",
+    "is_border": false,
+    "road_label": "РЖД (Горьк)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "250406",
+    "name": "Казань (перев.)",
+    "country": "RUS",
+    "road": "Gor'k",
+    "is_border": false,
+    "road_label": "РЖД (Горьк)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "795100",
+    "name": "Каменск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "600909",
+    "name": "Мичуринск-Уральский",
+    "country": "RUS",
+    "road": "Ju-Vost",
+    "is_border": false,
+    "road_label": "Ju-Vost",
+    "country_name": "Россия"
+  },
+  {
+    "code": "060209",
+    "name": "Москва-Товарная",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "198002",
+    "name": "Москва-Товарная-Киевская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "191509",
+    "name": "Москва-Товарная-Курская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "191547",
+    "name": "Москва-Товарная-Курская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "193504",
+    "name": "Москва-Товарная-Павелецкая",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "193523",
+    "name": "Москва-Товарная-Павелецкая",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "194009",
+    "name": "Москва-Товарная-Рязанская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "194013",
+    "name": "Москва-Товарная-Рязанская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "198207",
+    "name": "Москва-Товарная-Смоленская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "195603",
+    "name": "Москва-Товарная-Ярославская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851508",
+    "name": "Новосибирск-Восточный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "850609",
+    "name": "Новосибирск-Главный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851005",
+    "name": "Новосибирск-Главный (перев.)",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851207",
+    "name": "Новосибирск-Западный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851300",
+    "name": "Новосибирск-Западный (перев.)",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "850505",
+    "name": "Новосибирск-Южный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "180031",
+    "name": "ОП Бекасово-Центральное",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "637814",
+    "name": "ОП Новосемейкино",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "834610",
+    "name": "ОП Новоуральский",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "179121",
+    "name": "ОП Самара-Радица",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "525524",
+    "name": "ОП Уральская",
+    "country": "RUS",
+    "road": "S-Kav",
+    "is_border": false,
+    "road_label": "РЖД (С-Кав)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "654025",
+    "name": "ОП Южно-Уральский заповедник",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "781701",
+    "name": "Первоуральск",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "775713",
+    "name": "Покровск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "775802",
+    "name": "Покровск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "510100",
+    "name": "Ростов-Товарный",
+    "country": "RUS",
+    "road": "S-Kav",
+    "is_border": false,
+    "road_label": "РЖД (С-Кав)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "657907",
+    "name": "Самара",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "036002",
+    "name": "Санкт-Петербург-Балтийский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "035300",
+    "name": "Санкт-Петербург-Варшавский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "035315",
+    "name": "Санкт-Петербург-Варшавский (пассажирский багаж экс)",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "033061",
+    "name": "Санкт-Петербург-Витебский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "031812",
+    "name": "Санкт-Петербург-Главный",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "030006",
+    "name": "Санкт-Петербург-Сорт.-Московский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "033502",
+    "name": "Санкт-Петербург-Тов.-Витебский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "031808",
+    "name": "Санкт-Петербург-Тов.-Московский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "038205",
+    "name": "Санкт-Петербург-Финляндский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "000001",
+    "name": "Санкт-Петербургский узел",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "848204",
+    "name": "Семейкино",
+    "country": "RUS",
+    "road": "LUG",
+    "is_border": false,
+    "road_label": "LUG",
+    "country_name": "Россия"
+  },
+  {
+    "code": "849705",
+    "name": "Семейкино-Новое",
+    "country": "RUS",
+    "road": "LUG",
+    "is_border": false,
+    "road_label": "LUG",
+    "country_name": "Россия"
+  },
+  {
+    "code": "637617",
+    "name": "Старосемейкино (пп)",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "788107",
+    "name": "Туринск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "768207",
+    "name": "Углеуральская",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "766428",
+    "name": "Хребет-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800008",
+    "name": "Челябинск-Главный",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800101",
+    "name": "Челябинск-Грузовой",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800605",
+    "name": "Челябинск-Южный",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "804307",
+    "name": "Южноуральск",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "745205",
+    "name": "Душанбе I",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": false,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "745309",
+    "name": "Душанбе II",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": false,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "747802",
+    "name": "Худжанд",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": false,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "758900",
+    "name": "Кенеургенч",
+    "country": "TKM",
+    "road": "Trk",
+    "is_border": false,
+    "road_label": "ТРК",
+    "country_name": "Туркменистан"
+  },
+  {
+    "code": "505102",
+    "name": "Семейкино",
+    "country": "UKR",
+    "road": "DON",
+    "is_border": false,
+    "road_label": "DON",
+    "country_name": "UKR"
+  },
+  {
+    "code": "508505",
+    "name": "Семейкино-Новое",
+    "country": "UKR",
+    "road": "DON",
+    "is_border": false,
+    "road_label": "DON",
+    "country_name": "UKR"
+  },
+  {
+    "code": "722608",
+    "name": "Ангрен",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "743604",
+    "name": "Андижан I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742003",
+    "name": "Андижан II",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "743708",
+    "name": "Андижан-Северный",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "743623",
+    "name": "Андижан-Южный",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "730002",
+    "name": "Бухара I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "730106",
+    "name": "Бухара II",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "726903",
+    "name": "Джизак",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "733104",
+    "name": "Карши",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "740004",
+    "name": "Коканд I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742508",
+    "name": "Маргилан",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "731306",
+    "name": "Навои",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "741100",
+    "name": "Наманган",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "739007",
+    "name": "Нукус",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "727809",
+    "name": "Самарканд",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "723507",
+    "name": "Сергели",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "720918",
+    "name": "Ташкент-Пассажирский",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "722400",
+    "name": "Ташкент-Товарный",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "735109",
+    "name": "Термез",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "736704",
+    "name": "Термез-Порт",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "738305",
+    "name": "Ургенч",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742601",
+    "name": "Фергана I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742809",
+    "name": "Фергана II",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "720000",
+    "name": "Чукурсай",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  }
+];
+
+  // 2. СПРАВОЧНИК НОМЕНКЛАТУРЫ ГРУЗОВ (ЕТСНГ / ГНГ)
+  var CARGO_ITEMS = [
+  {
+    "code_etsng": "110100",
+    "code_gng": "11010011",
+    "name": "Мука пшеничная из твердой пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110311",
+    "code_gng": "11031110",
+    "name": "Крупа,мука грубого помола из пшеницы твердой",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110311",
+    "code_gng": "11031100",
+    "name": "Крупа,мука грубого помола из пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110419",
+    "code_gng": "11041910",
+    "name": "Зерно пшеницы плющеное и в хлопьях",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110100",
+    "code_gng": "11010015",
+    "name": "Мука пшеничная из мягкой пшеницы и спельты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100190",
+    "code_gng": "10019002",
+    "name": "Пшеница, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110100",
+    "code_gng": "11010002",
+    "name": "Мука из пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110300",
+    "code_gng": "11030000",
+    "name": "Крупа из пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190410",
+    "code_gng": "19041003",
+    "name": "Пшеница воздушная обжаренная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190410",
+    "code_gng": "19041004",
+    "name": "Пшеница-суфле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230230",
+    "code_gng": "23023001",
+    "name": "Отходы пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100190",
+    "code_gng": "10019091",
+    "name": "Пшеница мягкая и меслин семенные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100190",
+    "code_gng": "10019099",
+    "name": "Спельта прочая, пшеница мягкая и меслин, прочие, кроме поименованных выше",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110311",
+    "code_gng": "11031190",
+    "name": "Крупа и мука грубого помола из пшеницы мягкой и спельты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032060",
+    "name": "Крупа и мука грубого помола в гранулах из пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042931",
+    "name": "Зерно обрушенное пшеницы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042951",
+    "name": "Зерно пшеницы дробленое без какой-либо иной обработки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042981",
+    "name": "Зерно пшеницы прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110430",
+    "code_gng": "11043010",
+    "name": "Зародыши пшеницы целые, плющеные, в виде хлопьев или молотые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110710",
+    "code_gng": "11071011",
+    "name": "Солод неподжаренный из пшеницы в виде муки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110710",
+    "code_gng": "11071019",
+    "name": "Солод неподжаренный из пшеницы, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190430",
+    "code_gng": "19043000",
+    "name": "Продукты готовые пищевые, полученные из пшеницы bulgur",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100111",
+    "code_gng": "10011100",
+    "name": "Пшеница твердая семенная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100119",
+    "code_gng": "10011900",
+    "name": "Пшеница твердая прочая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100191",
+    "code_gng": "10019100",
+    "name": "Пшеница прочая и меслин, семенные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100191",
+    "code_gng": "10019190",
+    "name": "Пшеница прочая и меслин, семенные, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100199",
+    "code_gng": "10019900",
+    "name": "Пшеница прочая и меслин, кроме семенных",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031930",
+    "name": "Крупа,мука грубого помола из ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042903",
+    "name": "Зерно ячменя шелушенное с переработкой в сечку или дробленое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100300",
+    "code_gng": "10030001",
+    "name": "Ячмень посевной",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029005",
+    "name": "Мука из ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031902",
+    "name": "Крупа из ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110411",
+    "code_gng": "11041101",
+    "name": "Хлопья ячменные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110710",
+    "code_gng": "11071001",
+    "name": "Ячмень пророщенный (пивоваренный)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100300",
+    "code_gng": "10030010",
+    "name": "Ячмень семенной",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100300",
+    "code_gng": "10030090",
+    "name": "Ячмень прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032020",
+    "name": "Крупа и мука грубого помола в гранулах из ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110419",
+    "code_gng": "11041961",
+    "name": "Зерно плющеное из ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110419",
+    "code_gng": "11041969",
+    "name": "Зерно переработанное в хлопья из ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042905",
+    "name": "Зерно ячменя обрушенное",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042907",
+    "name": "Зерно ячменя дробленое без какой-либо иной обработки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042909",
+    "name": "Зерно ячменя прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031920",
+    "name": "Крупа и мука грубого помола из ржи или ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032025",
+    "name": "Крупа и мука грубого помола в гранулах из ржи или ячменя",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100590",
+    "code_gng": "10059000",
+    "name": "Кукуруза",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110313",
+    "code_gng": "11031390",
+    "name": "Крупа,мука грубого помола из кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110419",
+    "code_gng": "11041950",
+    "name": "Зерно кукурузы плющеное и в хлопьях",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151521",
+    "code_gng": "15152190",
+    "name": "Масло кукурузное сырое,к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "070990",
+    "code_gng": "07099003",
+    "name": "Кукуруза сахарная свежая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100500",
+    "code_gng": "10050000",
+    "name": "Кукуруза семенная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051001",
+    "name": "Кукуруза дробленая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100590",
+    "code_gng": "10059001",
+    "name": "Кукуруза, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100590",
+    "code_gng": "10059002",
+    "name": "Початки кукурузы зеленые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110210",
+    "code_gng": "11021001",
+    "name": "Мука из кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110312",
+    "code_gng": "11031201",
+    "name": "Крупа из кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110419",
+    "code_gng": "11041901",
+    "name": "Зерно кукурузы дробленое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151519",
+    "code_gng": "15151901",
+    "name": "Масло кукурузное необработанное",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190410",
+    "code_gng": "19041002",
+    "name": "Кукуруза воздушная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230210",
+    "code_gng": "23021001",
+    "name": "Отходы кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230890",
+    "code_gng": "23089011",
+    "name": "Початки кукурузы обрушенные для кормовых целей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230890",
+    "code_gng": "23089013",
+    "name": "Стебли кукурузы для кормовых целей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "070990",
+    "code_gng": "07099060",
+    "name": "Кукуруза сахарная свежая или охлажденная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "071040",
+    "code_gng": "07104000",
+    "name": "Кукуруза сахарная (сырая или сваренная в воде или на пару), мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "071190",
+    "code_gng": "07119030",
+    "name": "Кукуруза сахарная, консервированная для кратковременного хранения",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "071290",
+    "code_gng": "07129019",
+    "name": "Кукуруза сахарная прочая, сушеная, но не подвергнутая дальнейшей обработке",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051011",
+    "name": "Кукуруза семенная, двойные и топкроссные гибриды",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051013",
+    "name": "Кукуруза семенная, тройные гибриды",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051015",
+    "name": "Кукуруза семенная, простые гибриды",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051019",
+    "name": "Кукуруза семенная, прочие гибриды",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051090",
+    "name": "Кукуруза семенная прочая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110220",
+    "code_gng": "11022010",
+    "name": "Мука кукурузная с содержанием жира до 1,5 мас.%",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110313",
+    "code_gng": "11031300",
+    "name": "Крупа и мука грубого помола из кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110313",
+    "code_gng": "11031310",
+    "name": "Крупа и мука грубого помола из кукурузы с содержанием жира не более 1,5 мас.%",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032040",
+    "name": "Крупа и мука грубого помола в гранулах из кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110423",
+    "code_gng": "11042330",
+    "name": "Зерно кукурузы обрушенное",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110423",
+    "code_gng": "11042390",
+    "name": "Зерно кукурузы дробленое без какой-либо иной обработки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110423",
+    "code_gng": "11042399",
+    "name": "Зерно кукурузы, обработанное прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151521",
+    "code_gng": "15152100",
+    "name": "Масло кукурузное сырое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151529",
+    "code_gng": "15152900",
+    "name": "Масло кукурузное и его фракции, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151529",
+    "code_gng": "15152990",
+    "name": "Масло кукурузное и его фракции, пищевые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230210",
+    "code_gng": "23021000",
+    "name": "Отруби, высевки, месятки и прочие остатки кукурузы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230210",
+    "code_gng": "23021090",
+    "name": "Остатки кукурузы, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100510",
+    "code_gng": "10051018",
+    "name": "Кукуруза семенная, гибриды прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061000",
+    "name": "Рис нешелушенный (рис-сырец)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062000",
+    "name": "Рис неполированный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063000",
+    "name": "Рис полуобрушенный и обрушенный,полированный и неполированный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400829",
+    "code_gng": "40082990",
+    "name": "Профили из непористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400819",
+    "code_gng": "40081900",
+    "name": "Профили фасонные из пористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "842481",
+    "code_gng": "84248110",
+    "name": "Приспособления для полива сельскохозяйственные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "860390",
+    "code_gng": "86039000",
+    "name": "Вагоны моторные,автомотрисы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854449",
+    "code_gng": "85444900",
+    "name": "Проводники электрические на напряжение до 80В,без соединительных приспособлений",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "860310",
+    "code_gng": "86031000",
+    "name": "Вагоны моторные,автомотрисы с питанием от внешнего источника электроэнергии",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "401610",
+    "code_gng": "40161000",
+    "name": "Изделия из пористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400829",
+    "code_gng": "40082900",
+    "name": "Изделия из непористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "281210",
+    "code_gng": "28121011",
+    "name": "Окситрихлорид фосфора (хлористый фосфорил)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "281390",
+    "code_gng": "28139010",
+    "name": "Сульфиды фосфора,трисульфид фосфора технический",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031950",
+    "name": "Крупа,мука грубого помола из риса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100640",
+    "code_gng": "10064000",
+    "name": "Рис дробленый (рис-сечка)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110819",
+    "code_gng": "11081990",
+    "name": "Крахмал,кроме рисового",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220410",
+    "code_gng": "22041099",
+    "name": "Вина игристые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "961000",
+    "code_gng": "96100000",
+    "name": "Доски грифельные для письма и рисования",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "321590",
+    "code_gng": "32159010",
+    "name": "Чернила,тушь для письма или рисования",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "290314",
+    "code_gng": "29031400",
+    "name": "Углерод четыреххлористый",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "292090",
+    "code_gng": "29209020",
+    "name": "Эфир диметиловый фосфористой кислоты (диметилфосфит)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061001",
+    "name": "Рис очищенный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062001",
+    "name": "Рис шлифованный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110313",
+    "code_gng": "11031301",
+    "name": "Крупа из риса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "140490",
+    "code_gng": "14049001",
+    "name": "Бумага рисовая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "170199",
+    "code_gng": "17019902",
+    "name": "Сахар рафинированный в кристаллах",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190410",
+    "code_gng": "19041005",
+    "name": "Рис воздушный обжаренный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190410",
+    "code_gng": "19041006",
+    "name": "Рис-суфле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190490",
+    "code_gng": "19049001",
+    "name": "Рис предварительно отваренный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "210390",
+    "code_gng": "21039003",
+    "name": "Харисса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220400",
+    "code_gng": "22040000",
+    "name": "Вино игристое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220600",
+    "code_gng": "22060001",
+    "name": "Вино рисовое (саке)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230220",
+    "code_gng": "23022001",
+    "name": "Отходы риса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "250900",
+    "code_gng": "25090001",
+    "name": "Карбонат кальция природный и некристаллизированный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "253090",
+    "code_gng": "25309019",
+    "name": "Карбонат кальция природный и кристаллизированный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270300",
+    "code_gng": "27030002",
+    "name": "Присыпка торфяная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270760",
+    "code_gng": "27076004",
+    "name": "Фенол с примесями (точка кристаллизации менее 39 град. С)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "271290",
+    "code_gng": "27129002",
+    "name": "Воск нефтяной микрокристаллический",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "281210",
+    "code_gng": "28121005",
+    "name": "Сера хлористая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "281390",
+    "code_gng": "28139007",
+    "name": "Трисульфид фосфора",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "290290",
+    "code_gng": "29029006",
+    "name": "Нафталин без примесей (точка кристаллизации 79,4 С или более)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "290313",
+    "code_gng": "29031302",
+    "name": "Тетрахлористый углерод без примесей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "290700",
+    "code_gng": "29070001",
+    "name": "Фенол чистый (точка кристаллизации минимум 39 град. С) и его соли",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "291249",
+    "code_gng": "29124903",
+    "name": "Металдегид кристалиновый, порошкообразный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "442190",
+    "code_gng": "44219014",
+    "name": "Приспособления погрузочные деревянные, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "480210",
+    "code_gng": "48021001",
+    "name": "Бумага рисовальная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "480251",
+    "code_gng": "48025101",
+    "name": "Картон бристольский, неокрашенный, без покрытия, удельной массой менее 40 г/кв.м",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "490300",
+    "code_gng": "49030004",
+    "name": "Книги для детей, альбомы для раскрашивания или рисования",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "581010",
+    "code_gng": "58101001",
+    "name": "Изделия вышитые, мерные, в полосах, с рисунком, с вырезанным основанием",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "843149",
+    "code_gng": "84314901",
+    "name": "Детали подъемных приспособлений, транспортных устройств",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854130",
+    "code_gng": "85413001",
+    "name": "Тиристоры (кроме фототиристоров)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854140",
+    "code_gng": "85414002",
+    "name": "Фототиристоры",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854190",
+    "code_gng": "85419001",
+    "name": "Детали смонтированных пьезоэлектрических кристаллов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854441",
+    "code_gng": "85444101",
+    "name": "Кабели телефонные изолированные, с присоединительными элементами",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "901380",
+    "code_gng": "90138001",
+    "name": "Индикация на жидких кристаллах",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960330",
+    "code_gng": "96033003",
+    "name": "Кисточки для рисования",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960990",
+    "code_gng": "96099001",
+    "name": "Мел для письма, рисования",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "961000",
+    "code_gng": "96100002",
+    "name": "Доски для писания, рисования",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "970110",
+    "code_gng": "97011003",
+    "name": "Рисунки (кроме технических или ремесленных) ручной работы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030269",
+    "code_gng": "03026951",
+    "name": "Минтай и серебристая сайда свежие или охлажденные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030379",
+    "code_gng": "03037955",
+    "name": "Минтай и серебристая сайда, мороженые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030760",
+    "code_gng": "03076000",
+    "name": "Улитки, кроме липариса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061010",
+    "name": "Рис нешелушеный (рис-сырец) для посева",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061021",
+    "name": "Рис нешелушеный (рис-сырец) пропаренный, короткозерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061023",
+    "name": "Рис нешелушеный (рис-сырец) пропаренный, среднезерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061092",
+    "name": "Рис нешелушеный (рис-сырец), короткозерный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061094",
+    "name": "Рис нешелушеный (рис-сырец), среднезерный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062011",
+    "name": "Рис шелушеный (неполированный), пропаренный, короткозерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062013",
+    "name": "Рис шелушеный (неполированный) пропаренный, среднезерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062092",
+    "name": "Рис шелушеный (неполированный), короткозерный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062094",
+    "name": "Рис шелушеный (неполированный), среднезерный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063021",
+    "name": "Рис полуобрушенный, пропаренный, короткозерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063023",
+    "name": "Рис полуобрушенный, пропаренный, среднезерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063042",
+    "name": "Рис полуобрушенный, прочий, короткозерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063044",
+    "name": "Рис полуобрушенный прочий, среднезерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063061",
+    "name": "Рис полностью обрушенный пропаренный, короткозерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063063",
+    "name": "Рис полностью обрушенный пропаренный, среднезерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063092",
+    "name": "Рис полностью обрушенный, прочий, короткозерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063094",
+    "name": "Рис полностью обрушенный, прочий, среднезерный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110230",
+    "code_gng": "11023000",
+    "name": "Мука рисовая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032050",
+    "name": "Крупа и мука грубого помола в гранулах из риса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190410",
+    "code_gng": "19041030",
+    "name": "Продукты готовые пищевые, полученные путем вздувания или обжаривания зерна риса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190490",
+    "code_gng": "19049010",
+    "name": "Рис, предварительно отваренный или приготовленный другим способом",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220410",
+    "code_gng": "22041019",
+    "name": "Вина прочие игристые с фактической концентрацией спирта не менее 8,5 об.%",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220600",
+    "code_gng": "22060039",
+    "name": "Напитки игристые прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220600",
+    "code_gng": "22060051",
+    "name": "Сидр и перри неигристые, в сосудах емкостью 2 л или менее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220600",
+    "code_gng": "22060059",
+    "name": "Напитки прочие неигристые, в сосудах емкостью 2 л или менее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220600",
+    "code_gng": "22060081",
+    "name": "Сидр и перри неигристое, в сосудах емкостью более 2 л",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220600",
+    "code_gng": "22060089",
+    "name": "Напитки прочие неигристые, в сосудах емкостью более 2л",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230220",
+    "code_gng": "23022000",
+    "name": "Остатки рисовые:",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230220",
+    "code_gng": "23022090",
+    "name": "Остатки рисовые, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "281300",
+    "code_gng": "28130000",
+    "name": "Сульфиды неметаллов; трисульфид фосфора технический",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "285100",
+    "code_gng": "28510050",
+    "name": "Циан хлористый",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "381129",
+    "code_gng": "38112900",
+    "name": "Присадки к смазочным маслам прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "390760",
+    "code_gng": "39076020",
+    "name": "Полиэтилентерефталат, имеющий характеристическую вязкость 78 мл/г или выше",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392111",
+    "code_gng": "39211100",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из полимеров стирола",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392112",
+    "code_gng": "39211200",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из полимеров винилхлорида",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392113",
+    "code_gng": "39211300",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из полиуретанов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392113",
+    "code_gng": "39211310",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из полиуретанов гибкие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392113",
+    "code_gng": "39211390",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из полиуретанов прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392114",
+    "code_gng": "39211400",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из регенерированной целлюлозы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392119",
+    "code_gng": "39211900",
+    "name": "Плиты, листы, пленка и полосы или ленты пористые из прочих пластмасс",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "392190",
+    "code_gng": "39219060",
+    "name": "Плиты, листы, пленка и полосы или ленты из продуктов полиприсоединения",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400811",
+    "code_gng": "40081100",
+    "name": "Пластины, листы и полосы или ленты из пористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400821",
+    "code_gng": "40082100",
+    "name": "Пластины, листы и полосы или ленты из непористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400821",
+    "code_gng": "40082110",
+    "name": "Покрытия для полов и маты из непористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "400821",
+    "code_gng": "40082190",
+    "name": "Прутки и профили фасонные из непористой резины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "401610",
+    "code_gng": "40161010",
+    "name": "Изделия из пористой резины для технических целей, для гражданской авиации",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "820890",
+    "code_gng": "82089000",
+    "name": "Ножи и режущие лезвия для машин или механических приспособлений прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "842481",
+    "code_gng": "84248130",
+    "name": "Приспособления переносные для сельского хозяйства или садоводства",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "842490",
+    "code_gng": "84249010",
+    "name": "Части приспособлений подсубпозиции 8424 89 20",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "842490",
+    "code_gng": "84249030",
+    "name": "Части приспособлений подсубпозиции 8424 89 30",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845691",
+    "code_gng": "84569100",
+    "name": "Станки для сухого травления рисунка на полупроводниковых материалах",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846610",
+    "code_gng": "84661031",
+    "name": "Приспособления для крепления токарных станков",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846610",
+    "code_gng": "84661090",
+    "name": "Приспособления для крепления самораскрывающихся резьбонарезных головок",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846620",
+    "code_gng": "84662000",
+    "name": "Приспособления для крепления обрабатываемых деталей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846620",
+    "code_gng": "84662091",
+    "name": "Приспособления для крепления обрабатываемых деталей для токарных станков",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846630",
+    "code_gng": "84663000",
+    "name": "Головки делительные и другие специальные приспособления к станкам",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846691",
+    "code_gng": "84669100",
+    "name": "Приспособления к станкам товарной позиции 8464",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846691",
+    "code_gng": "84669115",
+    "name": "Приспособления к станкам подсубпозиции 8464 1010, 8464 2005 или 8464 9010",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846692",
+    "code_gng": "84669200",
+    "name": "Приспособления к станкам товарной позиции 8465",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846693",
+    "code_gng": "84669300",
+    "name": "Приспособления к станкам товарных позиций 8456–8461",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846693",
+    "code_gng": "84669317",
+    "name": "Приспособления к установкам подсубпозиции 8456 9950",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846694",
+    "code_gng": "84669400",
+    "name": "Приспособления к станкам товарной позиции 8462 или 8463",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846694",
+    "code_gng": "84669410",
+    "name": "Приспособления для машин подсубпозиции 8462 2105 или 8462 2905",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "847989",
+    "code_gng": "84798900",
+    "name": "Машины и механические приспособления прочие, кроме поименованных выше",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "847989",
+    "code_gng": "84798965",
+    "name": "Установки для выращивания или вытягивания полупроводниковых монокристаллов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "850440",
+    "code_gng": "85044050",
+    "name": "Выпрямители тока поликристаллические полупроводниковые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "851030",
+    "code_gng": "85103000",
+    "name": "Приспособления для удаления волос",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854130",
+    "code_gng": "85413000",
+    "name": "Тиристоры, динисторы и тринисторы, кроме фоточувствительных приборов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854160",
+    "code_gng": "85416000",
+    "name": "Кристаллы пьезоэлектрические собранные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854221",
+    "code_gng": "85422101",
+    "name": "Пластины полупроводниковые МОП – структуры, еще не разрезанные на кристаллы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854221",
+    "code_gng": "85422105",
+    "name": "Кристаллы МОП – структуры",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854221",
+    "code_gng": "85422173",
+    "name": "Кристаллы прочих схем интегральных монолитных цифровых",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854229",
+    "code_gng": "85422920",
+    "name": "Кристаллы прочих схем интегральных монолитных",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "871610",
+    "code_gng": "87161000",
+    "name": "Прицепы и полуприцепы типа \"дом-автоприцеп\", для проживания или для автотуристов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "901041",
+    "code_gng": "90104100",
+    "name": "Аппаратура для непосредственного нанесения рисунка на полупроводниковые пластины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "901380",
+    "code_gng": "90138020",
+    "name": "Устройства на жидких кристаллах активные матричные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "901380",
+    "code_gng": "90138030",
+    "name": "Устройства на жидких кристаллах, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "901390",
+    "code_gng": "90139010",
+    "name": "Части и принадлежности устройств на жидких кристаллах",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "902110",
+    "code_gng": "90211000",
+    "name": "Приспособления ортопедические или для лечения переломов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "902110",
+    "code_gng": "90211010",
+    "name": "Приспособления ортопедические",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "902110",
+    "code_gng": "90211090",
+    "name": "Шины и прочие приспособления для лечения переломов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "902780",
+    "code_gng": "90278091",
+    "name": "Вискозиметры, приборы для измерения пористости и расширения",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "940130",
+    "code_gng": "94013000",
+    "name": "Мебель для сидения вращающаяся с регулирующими высоту приспособлениями",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "940130",
+    "code_gng": "94013090",
+    "name": "Мебель для сидения вращающаяся с регулирующими высоту приспособлениями прочая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "940421",
+    "code_gng": "94042100",
+    "name": "Матрацы из пористой резины или пластмассы, с покрытием или без покрытия",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960820",
+    "code_gng": "96082000",
+    "name": "Ручки и маркеры с наконечником из фетра и прочих пористых материалов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960990",
+    "code_gng": "96099000",
+    "name": "Пастели, карандаши угольные, мелки для письма или рисования и мелки для портных",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960990",
+    "code_gng": "96099090",
+    "name": "Мелки для письма или рисования и мелки для портных",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030259",
+    "code_gng": "03025930",
+    "name": "Сайда серебристая свежая или охлажденная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030369",
+    "code_gng": "03036950",
+    "name": "Сайда серебристая, мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030760",
+    "code_gng": "03076090",
+    "name": "Улитки прочие, кроме липариса, кроме выделенных отдельно",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061030",
+    "name": "Короткозерный нешелушеный рис (рис-сырец)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061050",
+    "name": "Среднезерный нешелушеный рис (рис-сырец)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100610",
+    "code_gng": "10061090",
+    "name": "Рис нешелушеный (рис-сырец) прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062019",
+    "name": "Рис шелушеный (неполированный), пропаренный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100620",
+    "code_gng": "10062099",
+    "name": "Рис шелушеный, прочий, кроме поименованного отдельно",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063029",
+    "name": "Рис полуобрушенный, пропаренный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063049",
+    "name": "Рис полуобрушенный, прочий, кроме поименованного отдельно",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063069",
+    "name": "Рис полностью обрушенный пропаренный, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100630",
+    "code_gng": "10063099",
+    "name": "Рис полностью обрушенный прочий, кроме поименованного отдельно",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100850",
+    "code_gng": "10085000",
+    "name": "Киноа, или рисовая лебеда (Chenopodium quinoa)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "160558",
+    "code_gng": "16055800",
+    "name": "Улитки, кроме липариса, готовые или консервированные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220410",
+    "code_gng": "22041013",
+    "name": "Вино игристое \"Cava\" (\"Кава\") со знаком подлинности происхождения (PDO)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220410",
+    "code_gng": "22041015",
+    "name": "Вино игристое \"Prosecco\" со знаком подлинности происхождения (PDO)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220410",
+    "code_gng": "22041093",
+    "name": "Вина прочие игристые виноградные со знаком подлинности происхождения (PDO)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "220410",
+    "code_gng": "22041098",
+    "name": "Вина прочие игристые виноградные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "285310",
+    "code_gng": "28531000",
+    "name": "Хлористый циан (хлорциан)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "291910",
+    "code_gng": "29191000",
+    "name": "Трис (2,3-дибромпропил) фосфат",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "382483",
+    "code_gng": "38248300",
+    "name": "Смеси, содержащие трис(2,3-дибромпропил) фосфат",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846693",
+    "code_gng": "84669330",
+    "name": "Приспособления к машинам подсубпозиции 8456 90 20",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "846693",
+    "code_gng": "84669370",
+    "name": "Приспособления прочее к станкам позиций 8456-8461",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "901310",
+    "code_gng": "90131090",
+    "name": "Прицелы телескопические для установки на оружии; перископы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "970121",
+    "code_gng": "97012100",
+    "name": "Картины, рисунки и пастели, возрастом более 100 лет",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "970191",
+    "code_gng": "97019100",
+    "name": "Картины, рисунки и пастели (кроме материалов возрастом более 100 лет)",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151411",
+    "code_gng": "15141100",
+    "name": "Масло рапсовое сырое с низким содержанием эруковой кислоты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120500",
+    "code_gng": "12050001",
+    "name": "Семя рапса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151410",
+    "code_gng": "15141001",
+    "name": "Масло рапсовое необработанное",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151490",
+    "code_gng": "15149001",
+    "name": "Масло рапсовое очищенное, не модифицированное химически",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120510",
+    "code_gng": "12051000",
+    "name": "Семена рапса или кользы, с низким содержанием эруковой кислоты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120510",
+    "code_gng": "12051010",
+    "name": "Семена рапса или кользы, с низким содержанием эруковой кислоты, для посева",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120510",
+    "code_gng": "12051090",
+    "name": "Семена рапса или кользы, с низким содержанием эруковой кислоты, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120590",
+    "code_gng": "12059000",
+    "name": "Семена рапса или кользы, дробленые или недробленые прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151411",
+    "code_gng": "15141190",
+    "name": "Масло рапсовое сырое с низким содержанием эруковой кислоты, прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230649",
+    "code_gng": "23064900",
+    "name": "Жмыхи и другие твердые отходы прочие, из семян рапса или кользы:",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120600",
+    "code_gng": "12060010",
+    "name": "Семена подсолнечника для посева",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120600",
+    "code_gng": "12060091",
+    "name": "Семена подсолнечника,лущеные;в лузге серого цвета и с белыми полосками",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151211",
+    "code_gng": "15121191",
+    "name": "Масло подсолнечное сырое,пищевое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151190",
+    "code_gng": "15119001",
+    "name": "Масло подсолнечное, сафлоровое, хлопковое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151200",
+    "code_gng": "15120000",
+    "name": "Масло подсолнечное необработанное",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151211",
+    "code_gng": "15121102",
+    "name": "Масло подсолнечное очищенное, не модифицированное химически",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120600",
+    "code_gng": "12060099",
+    "name": "Семена подсолнечника, дробленые или недробленые, прочие, кроме лущеных",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151211",
+    "code_gng": "15121100",
+    "name": "Масло подсолнечное или сафлоровое сырое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151219",
+    "code_gng": "15121900",
+    "name": "Масло подсолнечное или сафлоровое и их фракции, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151219",
+    "code_gng": "15121991",
+    "name": "Масло подсолнечное прочее для пищевых продуктов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151219",
+    "code_gng": "15121990",
+    "name": "Масло подсолнечное или сафлоровое и их фракции, прочие для пищевых продуктов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "121410",
+    "code_gng": "12141000",
+    "name": "Мука грубого помола и гранулы из люцерны,кормовые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "440500",
+    "code_gng": "44050000",
+    "name": "Шерсть древесная или тонкая стружка;мука древесная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110100",
+    "code_gng": "11010090",
+    "name": "Мука пшенично-ржаная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031900",
+    "name": "Крупа,мука грубого помола из зерна злаков",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031940",
+    "name": "Крупа,мука грубого помола из овса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031990",
+    "name": "Крупа,мука грубого помола",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029030",
+    "name": "Мука овсяная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110610",
+    "code_gng": "11061000",
+    "name": "Мука из сушеных бобовых овощей позиции 0713",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120810",
+    "code_gng": "12081000",
+    "name": "Мука из соевых бобов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029090",
+    "name": "Мука из зерна злаков",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062000",
+    "name": "Мука из сердцевины саговой пальмы,из корнеплодов или клубнеплодов позиции 0714",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230110",
+    "code_gng": "23011000",
+    "name": "Мука и гранулы из мяса или мясных субпродуктов;шкварки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021090",
+    "code_gng": "02109004",
+    "name": "Мука пищевая из внутренностей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021090",
+    "code_gng": "02109005",
+    "name": "Мука пищевая из мяса, субпродуктов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030510",
+    "code_gng": "03051001",
+    "name": "Мука рыбная пищевая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030619",
+    "code_gng": "03061902",
+    "name": "Мука из ракообразных пищевая, мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "030629",
+    "code_gng": "03062902",
+    "name": "Мука из ракообразных пищевая, немороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "050690",
+    "code_gng": "05069001",
+    "name": "Мука из кости",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "050710",
+    "code_gng": "05071002",
+    "name": "Мука из слоновой кости",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110100",
+    "code_gng": "11010000",
+    "name": "Мука из спельты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110100",
+    "code_gng": "11010001",
+    "name": "Мука из полбы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110230",
+    "code_gng": "11023001",
+    "name": "Мука гречневая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029003",
+    "name": "Мука из овса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029004",
+    "name": "Мука из проса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110510",
+    "code_gng": "11051001",
+    "name": "Мука из картофеля",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110610",
+    "code_gng": "11061001",
+    "name": "Мука из сухих стручковых",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062004",
+    "name": "Мука из крахмалосодержащих пищевых кореньев, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062005",
+    "name": "Мука из маниоки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062006",
+    "name": "Мука из сладкого картофеля",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062007",
+    "name": "Мука из тапиоки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110630",
+    "code_gng": "11063001",
+    "name": "Мука из каштанов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110630",
+    "code_gng": "11063002",
+    "name": "Мука из кокосовых орехов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110630",
+    "code_gng": "11063003",
+    "name": "Мука из фруктов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120890",
+    "code_gng": "12089001",
+    "name": "Мука из масличных семян, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120890",
+    "code_gng": "12089002",
+    "name": "Мука из маслосодержащих плодов, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "121210",
+    "code_gng": "12121001",
+    "name": "Мука из плодов рожкового дерева",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "121410",
+    "code_gng": "12141001",
+    "name": "Мука из люцерны",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "121490",
+    "code_gng": "12149009",
+    "name": "Мука из растений для кормовых целей, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190590",
+    "code_gng": "19059004",
+    "name": "Мука панировочная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230100",
+    "code_gng": "23010000",
+    "name": "Мука из мяса, внутренностей, непищевая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230120",
+    "code_gng": "23012001",
+    "name": "Мука из ракообразных непищевая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230120",
+    "code_gng": "23012002",
+    "name": "Мука из рыбы непищевая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230890",
+    "code_gng": "23089007",
+    "name": "Мука из стручка цареградского для кормовых целей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251200",
+    "code_gng": "25120005",
+    "name": "Мука кремнистая горная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "300290",
+    "code_gng": "30029002",
+    "name": "Мука кровяная животных для фармацевтичеких целей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "411000",
+    "code_gng": "41100003",
+    "name": "Мука кожевенная, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "440420",
+    "code_gng": "44042007",
+    "name": "Шерсть древесная; мука древесная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "440500",
+    "code_gng": "44050001",
+    "name": "Мука древесная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "440500",
+    "code_gng": "44050002",
+    "name": "Мука пиловочная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021099",
+    "code_gng": "02109990",
+    "name": "Мука пищевая из мяса и мясных субпродуктов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110220",
+    "code_gng": "11022090",
+    "name": "Мука ржаная прочая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029000",
+    "name": "Мука из зерна прочих злаков, кроме поименованных выше",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031910",
+    "name": "Крупа и мука грубого помола из ржи",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032000",
+    "name": "Крупа и мука грубого помола в гранулах:",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032010",
+    "name": "Крупа и мука грубого помола в гранулах из ржи",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032030",
+    "name": "Крупа и мука грубого помола в гранулах из овса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110320",
+    "code_gng": "11032090",
+    "name": "Крупа и мука грубого помола в гранулах прочие, кроме поименованных выше",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110510",
+    "code_gng": "11051000",
+    "name": "Мука картофельная тонкого и грубого помола и порошок",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110630",
+    "code_gng": "11063000",
+    "name": "Мука тонкого и грубого помола из фруктов и орехов из продуктов Главы 08",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110630",
+    "code_gng": "11063010",
+    "name": "Мука тонкого и грубого помола из бананов",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110630",
+    "code_gng": "11063090",
+    "name": "Мука тонкого и грубого помола из фруктов и орехов, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "071350",
+    "code_gng": "07135000",
+    "name": "Бобы кормовые,конские,крупносеменные и мелкосеменные,сушеные,лущеные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010290",
+    "code_gng": "01029090",
+    "name": "Скот крупный рогатый живой,к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010210",
+    "code_gng": "01021000",
+    "name": "Скот крупный рогатый живой,племенной",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410441",
+    "code_gng": "41044100",
+    "name": "Краст из шкур крупного рогатого скота или лошадей,нешлифованный лицевой",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150200",
+    "code_gng": "15020090",
+    "name": "Жир крупного рогатого скота,овец и коз,кроме жира позиции 1503,",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010210",
+    "code_gng": "01021002",
+    "name": "Племенные чистопородные животные крупного рогатого скота",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010290",
+    "code_gng": "01029004",
+    "name": "Скот крупный рогатый убойный",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010290",
+    "code_gng": "01029005",
+    "name": "Скот крупный рогатый, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020100",
+    "code_gng": "02010000",
+    "name": "Мясо крупного рогатого скота свежее, туша или полутуша животного",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020200",
+    "code_gng": "02020000",
+    "name": "Мясо крупного рогатого скота мороженое, туша или полутуша животного",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020210",
+    "code_gng": "02021001",
+    "name": "Мясо крупного рогатого скота мороженое, рубленое, с костями",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020610",
+    "code_gng": "02061001",
+    "name": "Печень крупного рогатого скота свежая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020610",
+    "code_gng": "02061002",
+    "name": "Языки крупного рогатого скота свежие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020621",
+    "code_gng": "02062101",
+    "name": "Языки крупного рогатого скота пищевые, мороженые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020621",
+    "code_gng": "02062102",
+    "name": "Печень крупного рогатого скота мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020622",
+    "code_gng": "02062201",
+    "name": "Печень крупного рогатого скота пищевая, мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110290",
+    "code_gng": "11029006",
+    "name": "Крупы, гранулы из зерновых культур",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110311",
+    "code_gng": "11031101",
+    "name": "Крупа из спельты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110311",
+    "code_gng": "11031102",
+    "name": "Крупа из овса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110314",
+    "code_gng": "11031401",
+    "name": "Крупа из зерновых культур, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110319",
+    "code_gng": "11031901",
+    "name": "Крупа из ржи",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110600",
+    "code_gng": "11060000",
+    "name": "Крупа из сухих стручковых",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062001",
+    "name": "Крупа из маниоки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062002",
+    "name": "Крупа из сладкого картофеля",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110620",
+    "code_gng": "11062003",
+    "name": "Крупа из тапиоки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150100",
+    "code_gng": "15010002",
+    "name": "Жир крупного, мелкого рогатого скота",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150200",
+    "code_gng": "15020003",
+    "name": "Жир крупного рогатого скота топленый",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190120",
+    "code_gng": "19012001",
+    "name": "Продукты из муки, крупы, крахмала, молока, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410122",
+    "code_gng": "41012201",
+    "name": "Шкуры крупного рогатого скота необработанные, свежие, мокросоленые, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410129",
+    "code_gng": "41012901",
+    "name": "Шкуры крупного рогатого скота необработанные, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410439",
+    "code_gng": "41043901",
+    "name": "Кожи крупного рогатого скота без волосяного покрова дубленые, выделанные, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "843780",
+    "code_gng": "84378001",
+    "name": "Машины просеивающие для муки зерновых, крупы зерновых",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "860900",
+    "code_gng": "86090002",
+    "name": "Поддоны крупногабаритные, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010290",
+    "code_gng": "01029000",
+    "name": "Скот крупный рогатый живой прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010290",
+    "code_gng": "01029071",
+    "name": "Скот крупный рогатый домашний живой, массой более 300 кг, убойные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010290",
+    "code_gng": "01029079",
+    "name": "Скот крупный рогатый домашний живой, массой более 300 кг, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020130",
+    "code_gng": "02013000",
+    "name": "Мясо крупного рогатого скота, свежее или охлажденное, отруба обваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020220",
+    "code_gng": "02022000",
+    "name": "Мясо крупного рогатого скота, мороженое, отруба прочие необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020220",
+    "code_gng": "02022090",
+    "name": "Мясо крупного рогатого скота, мороженое, прочие отруба, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020610",
+    "code_gng": "02061000",
+    "name": "Субпродукты пищевые крупного рогатого скота, свежие или охлажденные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020610",
+    "code_gng": "02061091",
+    "name": "Печень крупного рогатого скота, свежая или охлажденная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020621",
+    "code_gng": "02062100",
+    "name": "Языки крупного рогатого скота, мороженые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020622",
+    "code_gng": "02062200",
+    "name": "Печень крупного рогатого скота, мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020629",
+    "code_gng": "02062900",
+    "name": "Субпродукты пищевые крупного рогатого скота, прочие, мороженые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020629",
+    "code_gng": "02062991",
+    "name": "Диафрагма толстая и диафрагма тонкая крупного рогатого скота, мороженая",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021020",
+    "code_gng": "02102000",
+    "name": "Мясо крупного рогатого скота соленое, в рассоле, сушеное или копченое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "160250",
+    "code_gng": "16025000",
+    "name": "Продукты готовые и консервированные из мяса крупного рогатого скота:",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410150",
+    "code_gng": "41015000",
+    "name": "Шкуры крупного рогатого скота необработанные, целые, массой более 16 кг",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410150",
+    "code_gng": "41015010",
+    "name": "Шкуры крупного рогатого скота необработанные, целые, массой более 16 кг, парные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "410150",
+    "code_gng": "41015090",
+    "name": "Шкуры крупного рогатого скота необработанные, целые, массой более 16 кг, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "010221",
+    "code_gng": "01022190",
+    "name": "Скот крупный рогатый живой чистопородный, племенной, прочий",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150210",
+    "code_gng": "15021000",
+    "name": "Жир топленый крупного рогатого скота, овец или коз, кроме жира позиции 1503",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150290",
+    "code_gng": "15029000",
+    "name": "Жир прочий крупного рогатого скота, овец или коз, кроме жира позиции 1503",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020230",
+    "code_gng": "02023000",
+    "name": "Говядина мороженая отруба,обваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020319",
+    "code_gng": "02031900",
+    "name": "Свинина свежая,кроме туш,полутуш и отрубов позиции 0203 12",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "190590",
+    "code_gng": "19059008",
+    "name": "Хлеб из муки грубого помола с отрубями",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230230",
+    "code_gng": "23023002",
+    "name": "Отруби зерновых, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020312",
+    "code_gng": "02031200",
+    "name": "Свинина свежая или охлажденная, окорока, лопатки и отруба из них, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020312",
+    "code_gng": "02031290",
+    "name": "Свинина свежая или охлажденная, отруба прочие, необваленные, домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020319",
+    "code_gng": "02031911",
+    "name": "Свинина свежая или охлажденная, края передние и отруба из них домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020319",
+    "code_gng": "02031959",
+    "name": "Свинина свежая или охлажденная, отруба прочие, домашних свиней, кроме обваленной",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020322",
+    "code_gng": "02032200",
+    "name": "Свинина мороженая, окорока, лопатки и отруба из них, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020322",
+    "code_gng": "02032211",
+    "name": "Свинина мороженая, окорока и отруба из них, необваленные, домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020322",
+    "code_gng": "02032219",
+    "name": "Свинина мороженая, лопатки и отруба из них необваленные, домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020322",
+    "code_gng": "02032290",
+    "name": "Свинина мороженая, окорока и отруба из них необваленные, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020329",
+    "code_gng": "02032911",
+    "name": "Свинина мороженая, края передние и отруба из них домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020329",
+    "code_gng": "02032913",
+    "name": "Свинина мороженая, корейки и отруба из них домашних свиней, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020329",
+    "code_gng": "02032915",
+    "name": "Свинина мороженая, грудинки с прослойками и отруба из них, домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020329",
+    "code_gng": "02032955",
+    "name": "Свинина мороженая, отруба прочие, обваленные, домашних свиней",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020422",
+    "code_gng": "02042200",
+    "name": "Баранина прочая, свежая или охлажденная, отруба прочие, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020442",
+    "code_gng": "02044200",
+    "name": "Баранина прочая мороженая, отруба прочие, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020442",
+    "code_gng": "02044290",
+    "name": "Баранина мороженая, отруба прочие, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020450",
+    "code_gng": "02045031",
+    "name": "Козлятина свежая или охлажденная, отруба прочие, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020450",
+    "code_gng": "02045039",
+    "name": "Козлятина свежая или охлажденная, отруба прочие, обваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020450",
+    "code_gng": "02045071",
+    "name": "Козлятина мороженая, отруба прочие, необваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "020450",
+    "code_gng": "02045079",
+    "name": "Козлятина мороженая, отруба обваленные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021011",
+    "code_gng": "02101111",
+    "name": "Окорока и отруба из них домашних свиней, необваленные, соленые или в рассоле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021011",
+    "code_gng": "02101119",
+    "name": "Лопатки и отруба из них домашних свиней, необваленные, соленые или в рассоле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021011",
+    "code_gng": "02101131",
+    "name": "Окорока и отруба из них домашних свиней, необваленные, сушеные или копченые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021011",
+    "code_gng": "02101139",
+    "name": "Лопатки и отруба из них домашних свиней, необваленные, сушеные или копченые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021011",
+    "code_gng": "02101190",
+    "name": "Окорока, лопатки и отруба из них свиные, необваленные, прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021012",
+    "code_gng": "02101211",
+    "name": "Грудинки (с прослойками) и отруба из них домашних свиней соленые или в рассоле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021012",
+    "code_gng": "02101219",
+    "name": "Грудинки (с прослойками) и отруба из них домашних свиней сушеные или копченые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021019",
+    "code_gng": "02101900",
+    "name": "Свинина соленая, в рассоле, сушеная или копченая, отруба прочие",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021019",
+    "code_gng": "02101930",
+    "name": "Свинина - передние края и отруба из них домашних свиней соленые или в рассоле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021019",
+    "code_gng": "02101940",
+    "name": "Свинина - корейки и отруба из них домашних свиней соленые или в рассоле",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021019",
+    "code_gng": "02101960",
+    "name": "Свинина - передние края и отруба из них домашних свиней сушеные или копченые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "021019",
+    "code_gng": "02101970",
+    "name": "Свинина - корейки и отруба из них домашних свиней сушеные или копченые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "160241",
+    "code_gng": "16024100",
+    "name": "Окорока и их отруба из свинины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "160241",
+    "code_gng": "16024110",
+    "name": "Изделия из окорока и их отруба домашней свиньи готовые или консервированные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "160241",
+    "code_gng": "16024190",
+    "name": "Изделия из окорока и их отруба прочих свиней готовые или консервированные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "160242",
+    "code_gng": "16024200",
+    "name": "Лопаточная часть и ее отруба из свинины",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "840211",
+    "code_gng": "84021100",
+    "name": "Котлы водотрубные производительностью более 45 т пара в час",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "840212",
+    "code_gng": "84021200",
+    "name": "Котлы водотрубные производительностью не более 45 т пара в час",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100700",
+    "code_gng": "10070000",
+    "name": "Сорго зерновое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "720441",
+    "code_gng": "72044100",
+    "name": "Отходы из черных металлов токарные,фрезерные и от штамповки",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "843710",
+    "code_gng": "84371000",
+    "name": "Машины для очистки,сортировки и калибровки семян,зерна или сухих бобовых культур",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "843351",
+    "code_gng": "84335100",
+    "name": "Комбайны зерноуборочные",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042959",
+    "name": "Зерно дробленное,к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110411",
+    "code_gng": "11041102",
+    "name": "Зерно овса дробленое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110412",
+    "code_gng": "11041202",
+    "name": "Зерно зерновых культур дробленое, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110421",
+    "code_gng": "11042101",
+    "name": "Зерно овса очищенное, шлифованное, дробленое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110423",
+    "code_gng": "11042301",
+    "name": "Зерно зерновых культур очищенное, шлифованное, дробленое, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "121300",
+    "code_gng": "12130002",
+    "name": "Солома зерновых необработанная",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "140190",
+    "code_gng": "14019004",
+    "name": "Солома зерновых обработанная для плетеных изделий",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "170490",
+    "code_gng": "17049010",
+    "name": "Какао-бобы в зернах или молотые",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "180100",
+    "code_gng": "18010001",
+    "name": "Какао-бобы в зернах",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "760110",
+    "code_gng": "76011002",
+    "name": "Зерна из нелегированного алюминия",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "760120",
+    "code_gng": "76012001",
+    "name": "Зерна из алюминиевых сплавов",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "843629",
+    "code_gng": "84362903",
+    "name": "Аппараты для проращивания зерна",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "843710",
+    "code_gng": "84371001",
+    "name": "Машины просеивающие для зерновых, бобовых культур",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "843710",
+    "code_gng": "84371002",
+    "name": "Машины сортировочные для зерновых, бобовых культур",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845910",
+    "code_gng": "84591003",
+    "name": "Станки фрезерные, металлообрабатывающие, на салазках",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "846490",
+    "code_gng": "84649002",
+    "name": "Станки фрезерные для обработки бетона, стекла, минеральных веществ",
+    "category": "Строительные грузы",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100700",
+    "code_gng": "10070010",
+    "name": "Сорго зерновое, гибриды для посева",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100700",
+    "code_gng": "10070090",
+    "name": "Сорго зерновое, прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110422",
+    "code_gng": "11042230",
+    "name": "Зерно овса шелушенное и переработанное в сечку или дробленое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110422",
+    "code_gng": "11042290",
+    "name": "Зерно овса дробленое без какой-либо иной обработки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "110429",
+    "code_gng": "11042955",
+    "name": "Зерно ржи дробленое без какой-либо иной обработки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845931",
+    "code_gng": "84593100",
+    "name": "Станки расточно-фрезерные с числовым программным управлением",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845951",
+    "code_gng": "84595100",
+    "name": "Станки консольно-фрезерные с числовым программным управлением",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845961",
+    "code_gng": "84596100",
+    "name": "Станки фрезерные прочие с числовым программным управлением",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845961",
+    "code_gng": "84596110",
+    "name": "Станки фрезерные инструментальные с числовым программным управлением",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "845969",
+    "code_gng": "84596900",
+    "name": "Станки фрезерные, кроме станков фрезерных с числовым программным управлением",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100710",
+    "code_gng": "10071000",
+    "name": "Сорго зерновое семенное",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100710",
+    "code_gng": "10071010",
+    "name": "Сорго зерновое семенное, гибриды",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100710",
+    "code_gng": "10071090",
+    "name": "Сорго зерновое семенное, прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "100790",
+    "code_gng": "10079000",
+    "name": "Сорго зерновое прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "852340",
+    "code_gng": "85234059",
+    "name": "Диски для лазерных считывающих систем, кроме выделенных отдельно",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "450190",
+    "code_gng": "45019003",
+    "name": "Шрот пробковый",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230690",
+    "code_gng": "23069000",
+    "name": "Жмыхи и другие остатки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230310",
+    "code_gng": "23031002",
+    "name": "Жмыхи сахарного тростника",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "230670",
+    "code_gng": "23067001",
+    "name": "Жмыхи, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151010",
+    "code_gng": "15101000",
+    "name": "Масло оливковое из жмыха сырое",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270112",
+    "code_gng": "27011210",
+    "name": "Уголь битуминозный коксующийся",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270112",
+    "code_gng": "27011290",
+    "name": "Уголь битуминозный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270820",
+    "code_gng": "27082000",
+    "name": "Кокс пековый,полученный из каменноугольной смолы или минеральных смол",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270600",
+    "code_gng": "27060000",
+    "name": "Смолы каменноугольные,буроугольные,торфяные и прочие минеральные смолы,включая",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251612",
+    "code_gng": "25161200",
+    "name": "Гранит распиленный на прямоугольные блоки и плиты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251622",
+    "code_gng": "25162200",
+    "name": "Песчаник в блоках,плитах прямоугольной формы",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251512",
+    "code_gng": "25151200",
+    "name": "Мрамор,травертин пиленные на прямоугольные блоки",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "760691",
+    "code_gng": "76069100",
+    "name": "Листы,ленты из алюминия нелегированного,толщина от 0,2мм,кроме прямоугольных",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "380290",
+    "code_gng": "38029000",
+    "name": "Продукты минеральные природные активированные;уголь животный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270810",
+    "code_gng": "27081000",
+    "name": "Пек из каменноугольной смолы и минеральных смол",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "250629",
+    "code_gng": "25062901",
+    "name": "Кварцит, разделанный на квадратные или прямоугольные пластины",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251400",
+    "code_gng": "25140003",
+    "name": "Сланец распиленный на квадратные или прямоугольные плиты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251512",
+    "code_gng": "25151201",
+    "name": "Мрамор, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251512",
+    "code_gng": "25151205",
+    "name": "Травертин, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251520",
+    "code_gng": "25152002",
+    "name": "Алебастр, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251612",
+    "code_gng": "25161201",
+    "name": "Гранит, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251622",
+    "code_gng": "25162201",
+    "name": "Песчаник, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251690",
+    "code_gng": "25169002",
+    "name": "Базальт, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251690",
+    "code_gng": "25169007",
+    "name": "Камни строительные, разделанные на квадратные или прямоугольные плиты, к.п.о.",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "251690",
+    "code_gng": "25169010",
+    "name": "Порфир, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "252610",
+    "code_gng": "25261002",
+    "name": "Стеатит природный, разделанный на квадратные или прямоугольные плиты",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "262100",
+    "code_gng": "26210011",
+    "name": "Уголь бартяной",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270112",
+    "code_gng": "27011201",
+    "name": "Уголь коксующийся",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270112",
+    "code_gng": "27011202",
+    "name": "Мелочь угольная",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270119",
+    "code_gng": "27011902",
+    "name": "Уголь каменный порошкообразный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270119",
+    "code_gng": "27011903",
+    "name": "Уголь каменный, к.п.о.",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270120",
+    "code_gng": "27012004",
+    "name": "Уголь каменный агломерированный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270210",
+    "code_gng": "27021001",
+    "name": "Уголь бурый порошкообразный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270220",
+    "code_gng": "27022001",
+    "name": "Уголь бурый агломерированный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040020",
+    "name": "Уголь реторный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040021",
+    "name": "Уголь электродный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040022",
+    "name": "Газ каменноугольный, водяной, низкокалорийный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270500",
+    "code_gng": "27050005",
+    "name": "Газ каменноугольный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "450200",
+    "code_gng": "45020001",
+    "name": "Пробка натуральная в виде прямоугольных или квадратных блоков, плит, листов",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "680710",
+    "code_gng": "68071002",
+    "name": "Изделия из каменноугольного пека в рулонах",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "680790",
+    "code_gng": "68079002",
+    "name": "Изделия из каменноугольного пека, к.п.о.",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854590",
+    "code_gng": "85459003",
+    "name": "Уголь для батарей",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854590",
+    "code_gng": "85459004",
+    "name": "Уголь для ламп",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "854590",
+    "code_gng": "85459005",
+    "name": "Уголь для элементов",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960990",
+    "code_gng": "96099004",
+    "name": "Уголь чертежный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270710",
+    "code_gng": "27071000",
+    "name": "Бензол (продукт высокотем пературной перегонки каменноуголь ной смолы)",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270720",
+    "code_gng": "27072000",
+    "name": "Толуол (продукт высокотем пературной перегонки каменноуголь ной смолы)",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270730",
+    "code_gng": "27073000",
+    "name": "Ксилол (продукт высокотем пературной перегонки каменноуголь ной смолы)",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "271290",
+    "code_gng": "27129011",
+    "name": "Озокерит, воск буроугольный или воск торфяной сырые",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "271290",
+    "code_gng": "27129019",
+    "name": "Озокерит, воск буроугольный или воск торфяной, прочие",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "850680",
+    "code_gng": "85068005",
+    "name": "Батареи сухие угольно-цинковые с напряжением 5,5 В или более, но не более 6,5 В",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "853310",
+    "code_gng": "85331000",
+    "name": "Резисторы постоянные угольные, композитные или пленочные",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "960990",
+    "code_gng": "96099010",
+    "name": "Пастели и угольные карандаши",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "440210",
+    "code_gng": "44021000",
+    "name": "Уголь древесный из бамбука",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "440290",
+    "code_gng": "44029000",
+    "name": "Уголь древесный, прочий (включая уголь, полученный из скорлупы или орехов)",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270119",
+    "code_gng": "27011904",
+    "name": "Брикеты антрацита",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040030",
+    "name": "Кокс и полукокс из лигнита",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040019",
+    "name": "Прочие кокс и полукокс из каменного угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "271311",
+    "code_gng": "27131100",
+    "name": "Кокс нефтяной некальцинированный",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040000",
+    "name": "Отходы кокса бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040001",
+    "name": "Брикеты газового кокса",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040002",
+    "name": "Брикеты кокса бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040003",
+    "name": "Отходы кокса каменного угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040004",
+    "name": "Брикеты кокса каменного угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040005",
+    "name": "Отходы полукокса бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040006",
+    "name": "Отходы полукокса каменного угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040007",
+    "name": "Брикеты полукокса каменного угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040008",
+    "name": "Полукокс бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040009",
+    "name": "Кокс бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040010",
+    "name": "Полукокс каменного угля, к.п.о.",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040012",
+    "name": "Полукокс торфа",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040015",
+    "name": "Пыль кокса бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040016",
+    "name": "Кокс торфяной",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040017",
+    "name": "Пыль кокса каменного угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040018",
+    "name": "Пыль полукокса бурого угля",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "271290",
+    "code_gng": "27129008",
+    "name": "Кокс нефтяной, битум нефтяной; остатки нефти, масел из битуминозных минералов",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270400",
+    "code_gng": "27040090",
+    "name": "Кокс и полукокс из торфа",
+    "category": "Каменный уголь и кокс",
+    "tariff_class": 1,
+    "default_wagon": "gondola",
+    "security_required": false
+  },
+  {
+    "code_etsng": "270820",
+    "code_gng": "27082001",
+    "name": "Нефть, масла из битуминозных минералов, сырые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "272500",
+    "code_gng": "27250000",
+    "name": "Бензин моторный,свинец от 0,013 г/л",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870431",
+    "code_gng": "87043100",
+    "name": "Средства транспортные грузовые с бензиновым ДВС,масса до 5т",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870321",
+    "code_gng": "87032100",
+    "name": "Автомобили легковые с бензиновым ДВС,объем цилиндров до 1000см3",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "871190",
+    "code_gng": "87119000",
+    "name": "Мотоциклы (включая мопеды) и велосипеды с бензиновым ДВС;коляски,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "871120",
+    "code_gng": "87112000",
+    "name": "Мотоциклы,мопеды с бензиновым ДВС,объем цилиндров от 50 до 250см3",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "871110",
+    "code_gng": "87111000",
+    "name": "Мотоциклы,мопеды с бензиновым ДВС,объем цилиндров до 50см3",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "272400",
+    "code_gng": "27240001",
+    "name": "Бензин автомобильный с содержанием свинца более 0, 013 г/л",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271012",
+    "code_gng": "27101231",
+    "name": "Бензины авиационные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271012",
+    "code_gng": "27101270",
+    "name": "Топливо легкое для реактивных двигателей (за исключением авиационного бензина)",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870210",
+    "code_gng": "87021000",
+    "name": "Средства транспортные с дизельным ДВС,на 10 человек и более",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870422",
+    "code_gng": "87042200",
+    "name": "Средства транспортные грузовые с дизельным ДВС,масса от 5т до 20т",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "860290",
+    "code_gng": "86029000",
+    "name": "Локомотивы прочие,кроме локомотивов дизель-электрических;тендеры локомотивные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "860210",
+    "code_gng": "86021000",
+    "name": "Локомотивы дизель-электрические",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "860200",
+    "code_gng": "86020000",
+    "name": "Локомотивы дизельные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870210",
+    "code_gng": "87021001",
+    "name": "Автомобили для перевозки 10 и более человек с дизельным двигателем",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870210",
+    "code_gng": "87021002",
+    "name": "Амфибии с дизельным двигателем",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "870210",
+    "code_gng": "87021003",
+    "name": "Миниавтобусы с дизельным двигателем",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "274400",
+    "code_gng": "27440000",
+    "name": "Мазут тяжелый",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "274300",
+    "code_gng": "27430000",
+    "name": "Мазут легкий,суперлегкий",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "274200",
+    "code_gng": "27420001",
+    "name": "Мазут легкий, суперлегкий",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "272900",
+    "code_gng": "27290000",
+    "name": "Масла легкие из нефти и битуминозных материалов,",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "273900",
+    "code_gng": "27390000",
+    "name": "Масла среднетяжелые из нефти и битуминозных материалов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "274900",
+    "code_gng": "27490000",
+    "name": "Масла тяжелые из нефти,битуминозных материалов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271320",
+    "code_gng": "27132000",
+    "name": "Битум нефтяной",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271490",
+    "code_gng": "27149000",
+    "name": "Битум и асфальт природные;асфальтиты и асфальтовые породы",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "481110",
+    "code_gng": "48111000",
+    "name": "Бумага,картон гудронированные,битуминизированные или асфальтированные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "847432",
+    "code_gng": "84743200",
+    "name": "Машины для смешивания минеральных веществ с битумом",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270900",
+    "code_gng": "27090001",
+    "name": "Масла из битуминозных минералов сырые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271312",
+    "code_gng": "27131201",
+    "name": "Битумы нефтяные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271320",
+    "code_gng": "27132002",
+    "name": "Масса клейкая битумная",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271390",
+    "code_gng": "27139002",
+    "name": "Остатки нефтяные из битуминозных минералов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271410",
+    "code_gng": "27141001",
+    "name": "Сланец битуминозный",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271490",
+    "code_gng": "27149002",
+    "name": "Битум асфальтовый",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271490",
+    "code_gng": "27149003",
+    "name": "Битум бурого угля",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271490",
+    "code_gng": "27149007",
+    "name": "Смеси битуминозные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271500",
+    "code_gng": "27150001",
+    "name": "Битумы наполнительные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271500",
+    "code_gng": "27150002",
+    "name": "Эмульсии битумные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271500",
+    "code_gng": "27150003",
+    "name": "Масса наполнительная для кабелей битуминозная",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271500",
+    "code_gng": "27150007",
+    "name": "Мастика битумная",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "273200",
+    "code_gng": "27320001",
+    "name": "Масла среднетяжелые из нефти, битуминозных минералов, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "680710",
+    "code_gng": "68071001",
+    "name": "Изделия из битума в рулонах",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "680790",
+    "code_gng": "68079001",
+    "name": "Изделия из битума, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "273200",
+    "code_gng": "27320000",
+    "name": "Керосин (отличный от авиационного топлива)",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271019",
+    "code_gng": "27101925",
+    "name": "Керосин осветительный (за исключением топлива для реактивных двигателей)",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "480100",
+    "code_gng": "48010000",
+    "name": "Бумага газетная в рулонах или листах",
+    "category": "Товары народного потребления (ТНП)",
+    "tariff_class": 3,
+    "default_wagon": "boxcar",
+    "security_required": false
+  },
+  {
+    "code_etsng": "730410",
+    "code_gng": "73041000",
+    "name": "Трубы для нефте-,газопроводов бесшовные,из черных металлов,нечугуные",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "731100",
+    "code_gng": "73110010",
+    "name": "Емкости из черных металлов,для сжатого,сжиженного газа,бесшовные",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "731100",
+    "code_gng": "73110099",
+    "name": "Емкости из черных металлов,для сжатого,сжиженного газа,вместимость от 1000л",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "732181",
+    "code_gng": "73218100",
+    "name": "Печи отопительные из черных металлов,газовые",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270500",
+    "code_gng": "27050003",
+    "name": "Газ генераторный",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "490199",
+    "code_gng": "49019901",
+    "name": "Газеты картонированные в переплете (также коллекции)",
+    "category": "Товары народного потребления (ТНП)",
+    "tariff_class": 3,
+    "default_wagon": "boxcar",
+    "security_required": false
+  },
+  {
+    "code_etsng": "730400",
+    "code_gng": "73040000",
+    "name": "Трубы из железа (кроме чугуна), стали, для нефте-или газопроводов, бесшовные",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "732111",
+    "code_gng": "73211101",
+    "name": "Плиты бытовые газовые из железа, стали",
+    "category": "Товары народного потребления (ТНП)",
+    "tariff_class": 3,
+    "default_wagon": "boxcar",
+    "security_required": false
+  },
+  {
+    "code_etsng": "732111",
+    "code_gng": "73211103",
+    "name": "Приборы-гриль бытовые газовые из железа, стали",
+    "category": "Товары народного потребления (ТНП)",
+    "tariff_class": 3,
+    "default_wagon": "boxcar",
+    "security_required": false
+  },
+  {
+    "code_etsng": "761300",
+    "code_gng": "76130000",
+    "name": "Емкости из алюминия для сжатых или сжиженных газов",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "761300",
+    "code_gng": "76130001",
+    "name": "Бутылки из алюминия для сжатых или сжиженных газов",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "843300",
+    "code_gng": "84330000",
+    "name": "Газонокосилки с двигателем и горизонтально вращающимся ножом",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "846820",
+    "code_gng": "84682001",
+    "name": "Аппараты для пайки газовые",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "902620",
+    "code_gng": "90262001",
+    "name": "Приборы для измерения и контроля давления жидкостей или газов, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "280400",
+    "code_gng": "28040000",
+    "name": "Водород, газы инертные и прочие неметаллы",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730439",
+    "code_gng": "73043991",
+    "name": "Трубы газовые, наружным диаметром не более 168,3 мм",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730439",
+    "code_gng": "73043993",
+    "name": "Трубы газовые, наружным диаметром от 168,3 до 406,4 мм",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730439",
+    "code_gng": "73043999",
+    "name": "Трубы газовые, наружным диаметром более 406,4 мм",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730610",
+    "code_gng": "73061000",
+    "name": "Трубы для нефте- и газопроводов из черных металлов",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730610",
+    "code_gng": "73061090",
+    "name": "Трубы для нефте- и газопроводов, сварные спиральношовные, из черных металлов",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "732181",
+    "code_gng": "73218190",
+    "name": "Печи отопительные, из черных металлов, кроме работающих на газовом виде топлива",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "840590",
+    "code_gng": "84059000",
+    "name": "Части газогенераторов",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "841960",
+    "code_gng": "84196000",
+    "name": "Машины для сжижения воздуха или газов",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "842139",
+    "code_gng": "84213900",
+    "name": "Оборудование для фильтрования или очистки газов, прочее",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "842139",
+    "code_gng": "84213910",
+    "name": "Оборудование для фильтрования или очистки газов прочее для гражданской авиации",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "842139",
+    "code_gng": "84213951",
+    "name": "Оборудование для фильтрования или очистки прочих газов с помощью жидкостей",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "842139",
+    "code_gng": "84213998",
+    "name": "Оборудование для фильтрования или очистки прочих газов, прочее",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "843319",
+    "code_gng": "84331990",
+    "name": "Косилки для газонов, парков или спортплощадок прочие без двигателя",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "846729",
+    "code_gng": "84672980",
+    "name": "Машины для подрезки живой изгороди и стрижки газонов",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "846820",
+    "code_gng": "84682000",
+    "name": "Оборудование и аппараты, работающие на газе, прочие",
+    "category": "Машины, оборудование и техника",
+    "tariff_class": 3,
+    "default_wagon": "cont40",
+    "security_required": true
+  },
+  {
+    "code_etsng": "853939",
+    "code_gng": "85393900",
+    "name": "Лампы газоразрядные, за исключением ламп ультрафиолетового излучения, прочие",
+    "category": "Опасные грузы (ADR)",
+    "tariff_class": 3,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "940360",
+    "code_gng": "94036030",
+    "name": "Мебель деревянная магазинная",
+    "category": "Товары народного потребления (ТНП)",
+    "tariff_class": 3,
+    "default_wagon": "boxcar",
+    "security_required": false
+  },
+  {
+    "code_etsng": "285390",
+    "code_gng": "28539030",
+    "name": "Жидкий воздух (с удалением или без удаления инертных газов); сжатый воздух",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "730411",
+    "code_gng": "73041100",
+    "name": "Трубы для нефте- и газопроводов бесшовные, из коррозионностойкой стали",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730439",
+    "code_gng": "73043992",
+    "name": "Трубы газовые, наружным диаметром не более 168.3 мм",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730611",
+    "code_gng": "73061100",
+    "name": "Трубы для нефте- и газопроводов сварные из коррозионностойкой стали",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730611",
+    "code_gng": "73061110",
+    "name": "Трубы для нефте- и газопроводов сварные прямошовные из коррозионностойкой стали",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730619",
+    "code_gng": "73061900",
+    "name": "Трубы для нефте- и газопроводов сварные, из черных металлов, прочие",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "730619",
+    "code_gng": "73061910",
+    "name": "Трубы для нефте- и газопроводов сварные прямошовные, из черных металлов, прочие",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "841470",
+    "code_gng": "84147000",
+    "name": "Газонепроницаемые шкафы биологической безопасности",
+    "category": "Опасные грузы (ADR)",
+    "tariff_class": 3,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "120799",
+    "code_gng": "12079998",
+    "name": "Семена и плоды масличных культур,к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "120799",
+    "code_gng": "12079920",
+    "name": "Семена и плоды масличных культур для посева,к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "070990",
+    "code_gng": "07099039",
+    "name": "Маслины свежие,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "273100",
+    "code_gng": "27310000",
+    "name": "Масло среднетяжелое,топливо авиационное турбинное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "274600",
+    "code_gng": "27460000",
+    "name": "Масла смазочные неотработанные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "274500",
+    "code_gng": "27450000",
+    "name": "Масла смазочные отработанные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "271220",
+    "code_gng": "27122000",
+    "name": "Парафин,масла до 0,75%",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330129",
+    "code_gng": "33012900",
+    "name": "Масла эфирные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330129",
+    "code_gng": "33012991",
+    "name": "Масла эфирные,без терпенов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380690",
+    "code_gng": "38069000",
+    "name": "Спирт канифольный,масла канифольные и переплавленные смолы",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "321000",
+    "code_gng": "32100010",
+    "name": "Краски масляные,лаки,эмали и политуры",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270799",
+    "code_gng": "27079991",
+    "name": "Масла для получения продуктов позиции 2803",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270791",
+    "code_gng": "27079100",
+    "name": "Масла креозотовые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159091",
+    "name": "Масла и их фракции в твердом виде,упаковка до 1кг,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380300",
+    "code_gng": "38030090",
+    "name": "Масло талловое,",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151530",
+    "code_gng": "15153090",
+    "name": "Масло касторовое и его фракции,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "382313",
+    "code_gng": "38231300",
+    "name": "Кислоты жирные таллового масла",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159040",
+    "name": "Масла сырые,технические",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380520",
+    "code_gng": "38052000",
+    "name": "Масло сосновое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "040500",
+    "code_gng": "04050000",
+    "name": "Масло сливочное и жиры и масла,изготовленные из молока;молочные пасты",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "040510",
+    "code_gng": "04051090",
+    "name": "Масло сливочное,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150300",
+    "code_gng": "15030030",
+    "name": "Масло животное,техническое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159000",
+    "name": "Жиры растительные и масла,кроме указанных в позициях 1515 11 - 1515 50",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150810",
+    "code_gng": "15081000",
+    "name": "Масло арахисовое сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151491",
+    "code_gng": "15149190",
+    "name": "Масло горчичное сырое,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151530",
+    "code_gng": "15153000",
+    "name": "Масло касторовое и его фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151311",
+    "code_gng": "15131199",
+    "name": "Масло кокосовое сырое,пищевое,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151550",
+    "code_gng": "15155000",
+    "name": "Масло кунжутное и его фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151511",
+    "code_gng": "15151100",
+    "name": "Масло льняное сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150910",
+    "code_gng": "15091000",
+    "name": "Масло оливковое первого (холодного) прессования",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151110",
+    "code_gng": "15111000",
+    "name": "Масло пальмовое сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151190",
+    "code_gng": "15119000",
+    "name": "Масло пальмовое и его фракции без изменения химического состава,",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151000",
+    "code_gng": "15100090",
+    "name": "Масла оливковые,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151219",
+    "code_gng": "15121999",
+    "name": "Масло сафлоровое,пищевое,к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150710",
+    "code_gng": "15071000",
+    "name": "Масло соевое сырое,нерафинированное или рафинированное гидратацией",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "151540",
+    "code_gng": "15154000",
+    "name": "Масло тунговое и его фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151221",
+    "code_gng": "15122100",
+    "name": "Масло хлопковое сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "152200",
+    "code_gng": "15220031",
+    "name": "Соапстоки с маслом со свойствами оливкового масла",
+    "category": "Черные и цветные металлы",
+    "tariff_class": 2,
+    "default_wagon": "platform",
+    "security_required": true
+  },
+  {
+    "code_etsng": "200570",
+    "code_gng": "20057090",
+    "name": "Маслины,приготовленные без уксуса,немороженые,к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "380590",
+    "code_gng": "38059000",
+    "name": "Дипентен и пара-цимол неочищенные,скипидар сульфитный и масла терпеновые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "291213",
+    "code_gng": "29121300",
+    "name": "Бутаналь (масляный альдегид,нормальный изомер)",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151800",
+    "code_gng": "15180039",
+    "name": "Масла нелетучие растительные жидкие,смешанные,непищевые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "040490",
+    "code_gng": "04049001",
+    "name": "Масло сливочное и прочие молочные жиры",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "040500",
+    "code_gng": "04050002",
+    "name": "Масло сливочное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "120799",
+    "code_gng": "12079901",
+    "name": "Плоды маслосодержащие, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "120799",
+    "code_gng": "12079902",
+    "name": "Семена масляничные, к.п.о.",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150420",
+    "code_gng": "15042001",
+    "name": "Масло из рыб (кроме масла из печени)",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150430",
+    "code_gng": "15043001",
+    "name": "Масло китовое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150430",
+    "code_gng": "15043002",
+    "name": "Масло морских млекопитающих",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150910",
+    "code_gng": "15091001",
+    "name": "Масло оливковое очищенное и необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150990",
+    "code_gng": "15099001",
+    "name": "Масло оливковое, к. п. о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151000",
+    "code_gng": "15100000",
+    "name": "Масло оливковое, не модифицированное химически, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151000",
+    "code_gng": "15100001",
+    "name": "Масло оливковое из выжимок, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151100",
+    "code_gng": "15110000",
+    "name": "Масло пальмовое необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151110",
+    "code_gng": "15111001",
+    "name": "Масло пальмовое очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151211",
+    "code_gng": "15121101",
+    "name": "Масло сафлоровое необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151219",
+    "code_gng": "15121901",
+    "name": "Масло сафлоровое очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151221",
+    "code_gng": "15122101",
+    "name": "Масло хлопковое очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151300",
+    "code_gng": "15130000",
+    "name": "Масло кокосовое необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151311",
+    "code_gng": "15131101",
+    "name": "Масло копровое необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151311",
+    "code_gng": "15131102",
+    "name": "Масло кокосовое очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151319",
+    "code_gng": "15131901",
+    "name": "Масло копровое очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151321",
+    "code_gng": "15132101",
+    "name": "Масло пальмоядровое необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151329",
+    "code_gng": "15132901",
+    "name": "Масло пальмоядровое очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151400",
+    "code_gng": "15140000",
+    "name": "Масло горчичное необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151410",
+    "code_gng": "15141002",
+    "name": "Масло сурепное необработанное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151490",
+    "code_gng": "15149002",
+    "name": "Масло сурепное очищенное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151529",
+    "code_gng": "15152901",
+    "name": "Масло касторовое, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151530",
+    "code_gng": "15153001",
+    "name": "Масло древесное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151540",
+    "code_gng": "15154001",
+    "name": "Масло тунговое, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151540",
+    "code_gng": "15154002",
+    "name": "Масло кунжутное, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159004",
+    "name": "Масла растительные, не модифицированные химически, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159005",
+    "name": "Масло из семян бука, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159006",
+    "name": "Масло маковое, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159007",
+    "name": "Масло миндалевое, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159008",
+    "name": "Масло ореховое, не модифицированное химически",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151800",
+    "code_gng": "15180002",
+    "name": "Масла животные, модифицированные химически, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151800",
+    "code_gng": "15180004",
+    "name": "Масла растительные сиккатированные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151800",
+    "code_gng": "15180005",
+    "name": "Масла растительные, модифицированные химически, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "160413",
+    "code_gng": "16041304",
+    "name": "Сардины в масле",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "180400",
+    "code_gng": "18040001",
+    "name": "Какао-масло",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "180400",
+    "code_gng": "18040002",
+    "name": "Масло жидкое из какао",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270730",
+    "code_gng": "27073003",
+    "name": "Масло нафталиновое, необработанное, рафинированное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270791",
+    "code_gng": "27079101",
+    "name": "Масло креозотовое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270799",
+    "code_gng": "27079901",
+    "name": "Масла минеральных смол, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270799",
+    "code_gng": "27079902",
+    "name": "Масла смоляные, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270799",
+    "code_gng": "27079903",
+    "name": "Масло антраценовое инсектицидное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270900",
+    "code_gng": "27090002",
+    "name": "Масло сланцевое сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "291560",
+    "code_gng": "29156002",
+    "name": "Кислоты изомасляные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "291560",
+    "code_gng": "29156003",
+    "name": "Кислоты масляные и их соли чистые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "291615",
+    "code_gng": "29161502",
+    "name": "Кислота масляная чистая (минимум 85%) и ее соли",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "292141",
+    "code_gng": "29214101",
+    "name": "Масло анилиновое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "292690",
+    "code_gng": "29269008",
+    "name": "Нитрил изомасляной кислоты",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330123",
+    "code_gng": "33012301",
+    "name": "Масло лавендовое эфирное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330126",
+    "code_gng": "33012601",
+    "name": "Масла эфирные, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330190",
+    "code_gng": "33019001",
+    "name": "Концентраты эфирных масел в жирах, в нелетучих маслах, в восках",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "340211",
+    "code_gng": "34021101",
+    "name": "Масла сульфонированные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380400",
+    "code_gng": "38040001",
+    "name": "Сульфонаты лигнина (кроме таллового масла)",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380500",
+    "code_gng": "38050000",
+    "name": "Масло скипидарное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380510",
+    "code_gng": "38051001",
+    "name": "Масло скипидарное сульфатное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380590",
+    "code_gng": "38059001",
+    "name": "Масла, содержащие скипидар и полученные от смолокурения",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380630",
+    "code_gng": "38063001",
+    "name": "Масло смоляное, легкое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380690",
+    "code_gng": "38069001",
+    "name": "Масло смоляное, тяжелое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380700",
+    "code_gng": "38070003",
+    "name": "Масло древесного дегтя",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "380810",
+    "code_gng": "38081001",
+    "name": "Масло антраценовое, являющееся инсектицидом",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "382319",
+    "code_gng": "38231903",
+    "name": "Масла кислые и рафинированные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "382490",
+    "code_gng": "38249014",
+    "name": "Масло сивушное, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "382490",
+    "code_gng": "38249031",
+    "name": "Средства масляные связующие, к.п.о.",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "481140",
+    "code_gng": "48114001",
+    "name": "Бумага упаковочная промасленная",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "040510",
+    "code_gng": "04051030",
+    "name": "Масло сливочное рекомбинированное с содержанием жира не более 85 мас.%",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "040510",
+    "code_gng": "04051050",
+    "name": "Масло сывороточное с содержанием жира не более 85 мас.%",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "071080",
+    "code_gng": "07108010",
+    "name": "Маслины или оливки (сырые или сваренные в воде или на пару), мороженые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "071120",
+    "code_gng": "07112000",
+    "name": "Маслины или оливки, консервированные для кратковременного хранения",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "071120",
+    "code_gng": "07112090",
+    "name": "Маслины или оливки, консервированные для кратковременного хранения, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "120799",
+    "code_gng": "12079900",
+    "name": "Семена и плоды прочих масличных культур, кроме поименованных выше",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150420",
+    "code_gng": "15042000",
+    "name": "Жиры и масла из рыбы и их фракции, кроме жира из печени",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150420",
+    "code_gng": "15042090",
+    "name": "Жиры и масла из рыбы и их фракции (кроме твердых), кроме жира из печени рыб",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150430",
+    "code_gng": "15043010",
+    "name": "Жиры и масла морских млекопитающих и их твердые фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150430",
+    "code_gng": "15043090",
+    "name": "Жиры и масла морских млекопитающих, за исключением твердых фракций",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150710",
+    "code_gng": "15071090",
+    "name": "Масло соевое сырое, нерафинированное или рафинированное гидратацией, прочее",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150790",
+    "code_gng": "15079090",
+    "name": "Масло соевое и его фракции нерафинированные или рафинированные, для прочих целей",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  },
+  {
+    "code_etsng": "150810",
+    "code_gng": "15081090",
+    "name": "Масло сырое арахисовое, прочее",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150910",
+    "code_gng": "15091010",
+    "name": "Масло оливковое очищенное первого (холодного) прессования",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "150910",
+    "code_gng": "15091090",
+    "name": "Масло оливковое первого (холодного) прессования, прочее",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151000",
+    "code_gng": "15100010",
+    "name": "Масла сырые",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151110",
+    "code_gng": "15111090",
+    "name": "Масло пальмовое сырое, прочее",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151190",
+    "code_gng": "15119019",
+    "name": "Фракции твердые масла пальмового в первичных упаковках нетто-массой более 1 кг",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151190",
+    "code_gng": "15119099",
+    "name": "Фракции масла пальмового, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151211",
+    "code_gng": "15121199",
+    "name": "Масло сафлоровое сырое для пищевых продуктов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151221",
+    "code_gng": "15122190",
+    "name": "Масло хлопковое сырое, очищенное от госсипола или неочищенное, прочее",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151229",
+    "code_gng": "15122900",
+    "name": "Масло хлопковое и его фракции прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151229",
+    "code_gng": "15122990",
+    "name": "Масло хлопковое и его фракции прочие для пищевых продуктов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151311",
+    "code_gng": "15131100",
+    "name": "Масло кокосовое (копровое) сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151319",
+    "code_gng": "15131900",
+    "name": "Масло кокосовое (копровое) и его фракции, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151319",
+    "code_gng": "15131919",
+    "name": "Фракции кокосового масла твердые, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151319",
+    "code_gng": "15131999",
+    "name": "Фракции кокосового масла прочие, кроме поименованных выше",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151321",
+    "code_gng": "15132100",
+    "name": "Масло пальмоядровое или масло бабассу сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151321",
+    "code_gng": "15132190",
+    "name": "Масло пальмоядровое или масло бабассу сырое для пищевых продуктов, прочее",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151329",
+    "code_gng": "15132900",
+    "name": "Масло пальмоядровое или масло бабассу и их фракции, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151329",
+    "code_gng": "15132991",
+    "name": "Масло пальмоядровое для пищевых продуктов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151329",
+    "code_gng": "15132999",
+    "name": "Масло бабассу для пищевых продуктов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151491",
+    "code_gng": "15149100",
+    "name": "Масло горчичное сырое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151499",
+    "code_gng": "15149990",
+    "name": "Фракции масла горчичного, для пищевых продуктов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151519",
+    "code_gng": "15151900",
+    "name": "Масло льняное и его фракции, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151519",
+    "code_gng": "15151990",
+    "name": "Масло льняное прочее и его фракции пищевое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151550",
+    "code_gng": "15155019",
+    "name": "Масло кунжутное сырое, пищевое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151550",
+    "code_gng": "15155099",
+    "name": "Фракции масла кунжутного для пищевых продуктов",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159015",
+    "name": "Масло жожоба и ойтиковое; воск из мирта и японский воск; их фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159029",
+    "name": "Масло сырое табачное, прочее",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159039",
+    "name": "Фракции табачного масла, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159059",
+    "name": "Масла сырые, прочие пищевые в твердом виде; в жидком виде",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151590",
+    "code_gng": "15159099",
+    "name": "Масла прочие и их фракции в твердом виде, прочие; в жидком виде",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151610",
+    "code_gng": "15161000",
+    "name": "Жиры и масла животные и их фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151610",
+    "code_gng": "15161090",
+    "name": "Жиры и масла животные и их фракции, прочие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151620",
+    "code_gng": "15162000",
+    "name": "Жиры и масла растительные и их фракции",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151620",
+    "code_gng": "15162010",
+    "name": "Масло гидрогенизированное касторовое, так называемый \"опаловый воск\"",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "151790",
+    "code_gng": "15179091",
+    "name": "Масла нелетучие растительные жидкие, смешанные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "152200",
+    "code_gng": "15220091",
+    "name": "Фуз масличный и жировые остатки; соапстоки",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270799",
+    "code_gng": "27079919",
+    "name": "Масла прочие неочищенные",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "270799",
+    "code_gng": "27079930",
+    "name": "Масла осерненные легкие",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "291560",
+    "code_gng": "29156000",
+    "name": "Кислоты масляные, валериановые кислоты, их соли и сложные эфиры",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "293090",
+    "code_gng": "29309030",
+    "name": "DL-2-гидрокси-4-(метилтио)масляная кислота",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330111",
+    "code_gng": "33011100",
+    "name": "Масло бергамотное",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330111",
+    "code_gng": "33011110",
+    "name": "Масло бергамотное, содержащее терпены",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330111",
+    "code_gng": "33011190",
+    "name": "Масло бергамотное, не содержащее терпены",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330112",
+    "code_gng": "33011200",
+    "name": "Масло апельсиновое",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "330112",
+    "code_gng": "33011210",
+    "name": "Масло апельсиновое, содержащее терпены",
+    "category": "Нефть и нефтепродукты",
+    "tariff_class": 2,
+    "default_wagon": "tank",
+    "security_required": true
+  },
+  {
+    "code_etsng": "999999",
+    "code_gng": "99999900",
+    "name": "Обобщенная позиция для группы грузов разного класса",
+    "category": "Зерновые и с/х культуры",
+    "tariff_class": 2,
+    "default_wagon": "grain",
+    "security_required": false
+  }
+];
+
+  // 3. МЕЖГОСУДАРСТВЕННЫЕ ПОГРАНИЧНЫЕ СТЫКИ
+  var BORDER_CROSSINGS = {
+    'KAZ-UZB': [
+      { code: '704101', name: 'ст. Сарыагаш (эксп.) [КТЖ] / ст. Келес (эксп.) [УТИ]', exitCode: '704101', enterCode: '720104', fee: 85, days: 1, primary: true },
+      { code: '662905', name: 'ст. Бейнеу (эксп.) [КТЖ] / ст. Каракалпакстан [УТИ]', exitCode: '662905', enterCode: '739801', fee: 95, days: 1 }
+    ],
+    'KAZ-CHN': [
+      { code: '708507', name: 'ст. Достык (эксп.) [КТЖ] / Алашанькоу [КНР]', exitCode: '708507', enterCode: '000000', fee: 280, transshipment: true, days: 2, primary: true },
+      { code: '707701', name: 'ст. Алтынколь (эксп.) [КТЖ] / Хоргос [КНР]', exitCode: '707701', enterCode: '000000', fee: 260, transshipment: true, days: 2 }
+    ],
+    'RUS-KAZ': [
+      { code: '666501', name: 'ст. Илецк I (эксп.) [Ю-Ур / КТЖ]', exitCode: '666501', enterCode: '666501', fee: 65, days: 1, primary: true },
+      { code: '664900', name: 'ст. Озинки (эксп.) [Прив / КТЖ]', exitCode: '664900', enterCode: '664900', fee: 65, days: 1 },
+      { code: '816909', name: 'ст. Карталы I (эксп.) [Ю-Ур / КТЖ]', exitCode: '816909', enterCode: '816909', fee: 65, days: 1 },
+      { code: '815502', name: 'ст. Орск (эксп.) [Ю-Ур / КТЖ]', exitCode: '815502', enterCode: '815502', fee: 65, days: 1 },
+      { code: '688708', name: 'ст. Петропавловск (эксп.) [Ю-Ур / КТЖ]', exitCode: '688708', enterCode: '688708', fee: 65, days: 1 },
+      { code: '711105', name: 'ст. Локоть (эксп.) [З-Сиб / КТЖ]', exitCode: '711105', enterCode: '711105', fee: 65, days: 1 },
+      { code: '843905', name: 'ст. Кулунда (эксп.) [З-Сиб / КТЖ]', exitCode: '843905', enterCode: '843905', fee: 65, days: 1 }
+    ],
+    'UZB-AFG': [
+      { code: '734606', name: 'ст. Галаба (эксп.) [УТИ] / ст. Хайратан [АРА]', exitCode: '734606', enterCode: '000251', fee: 140, days: 1, primary: true }
+    ],
+    'UZB-TKM': [
+      { code: '736501', name: 'ст. Ходжадавлет (эксп.) [УТИ] / ст. Фарап [ТРК]', exitCode: '736501', enterCode: '753009', fee: 90, days: 1, primary: true }
+    ],
+    'UZB-TJK': [
+      { code: '736003', name: 'ст. Кудукли (эксп.) [УТИ] / ст. Пахтаабад [ТДЖ]', exitCode: '736003', enterCode: '745100', fee: 85, days: 1, primary: true }
+    ],
+    'KAZ-KGZ': [
+      { code: '704402', name: 'ст. Луговая (эксп.) [КТЖ] / ст. Чалдовар [КРГ]', exitCode: '704402', enterCode: '715106', fee: 75, days: 1, primary: true }
+    ]
+  };
+
+  // 4. КООРДИНАТНАЯ СЕТКА ХАБОВ И УЗЛОВ ДЛЯ РАСЧЕТА ДИСТАНЦИИ (ШИРОТА, ДОЛГОТА)
+  var HUB_COORDS = {
+    'астана': [51.16, 71.43],
+    'алматы': [43.23, 76.92],
+    'караганда': [49.80, 73.08],
+    'кокшетау': [53.28, 69.38],
+    'шымкент': [42.32, 69.60],
+    'актобе': [50.28, 57.16],
+    'атырау': [47.11, 51.88],
+    'актау': [43.65, 51.16],
+    'павлодар': [52.28, 76.96],
+    'костанай': [53.21, 63.63],
+    'семей': [50.41, 80.25],
+    'устькаменогорск': [49.95, 82.60],
+    'тараз': [42.90, 71.37],
+    'кызылорда': [44.84, 65.50],
+    'достык': [45.25, 82.48],
+    'алтынколь': [44.15, 80.35],
+    'сарыагаш': [41.47, 69.17],
+    'бейнеу': [45.32, 55.19],
+    'илецк': [51.16, 54.98],
+    'озинки': [51.20, 49.70],
+    'локоть': [50.98, 81.33],
+    'петропавловск': [54.87, 69.15],
+    'курык': [43.18, 51.65],
+    'луговая': [42.94, 72.76],
+    'ташкент': [41.31, 69.24],
+    'келес': [41.40, 69.20],
+    'сергели': [41.22, 69.22],
+    'чукурсай': [41.36, 69.23],
+    'самарканд': [39.65, 66.97],
+    'бухара': [39.77, 64.42],
+    'навои': [40.08, 65.37],
+    'карши': [38.86, 65.80],
+    'термез': [37.22, 67.27],
+    'галаба': [37.19, 67.43],
+    'хайратан': [37.21, 67.41],
+    'андижан': [40.78, 72.34],
+    'фергана': [40.38, 71.78],
+    'коканд': [40.53, 70.94],
+    'ургенч': [41.55, 60.63],
+    'нукус': [42.46, 59.61],
+    'джизак': [40.11, 67.84],
+    'ангрен': [41.01, 70.14],
+    'ходжадавлет': [39.22, 63.60],
+    'кудукли': [38.45, 68.10],
+    'москва': [55.75, 37.61],
+    'санктпетербург': [59.93, 30.33],
+    'екатеринбург': [56.83, 60.60],
+    'челябинск': [55.16, 61.43],
+    'новосибирск': [55.03, 82.92],
+    'самара': [53.20, 50.15],
+    'омск': [54.98, 73.36],
+    'барнаул': [53.35, 83.76],
+    'уфа': [54.73, 55.95],
+    'казань': [55.79, 49.12],
+    'волгоград': [48.70, 44.51],
+    'ростов': [47.23, 39.72],
+    'краснодар': [45.03, 38.97],
+    'новороссийск': [44.72, 37.76],
+    'забайкальск': [49.65, 117.33],
+    'карталы': [53.05, 60.65],
+    'орск': [51.20, 58.56],
+    'кулунда': [52.56, 78.94],
+    'саратов': [51.54, 46.00],
+    'оренбург': [51.77, 55.10],
+    'курган': [55.44, 65.34],
+    'магнитогорск': [53.41, 58.98],
+    'экибастуз': [51.72, 75.32],
+    'уральск': [51.23, 51.37],
+    'туркестан': [43.30, 68.25],
+    'бишкек': [42.87, 74.59],
+    'аламедин': [42.87, 74.59],
+    'душанбе': [38.56, 68.78],
+    'худжанд': [40.28, 69.62]
+  };
+
+  // 5. БАЗОВАЯ ТАБЛИЦА ТОЧНЫХ МЕЖСТАНЦИОННЫХ РАССТОЯНИЙ (КМ) ПО ТАРИФНОМУ РУКОВОДСТВУ
+  var CANONICAL_DISTANCES = {
+    // КАЗАХСТАНСКИЕ ХАБЫ НА САРЫАГАШ
+    "кокшетау_сарыагаш": 1918,
+    "астана_сарыагаш": 1622,
+    "караганда_сарыагаш": 1386,
+    "павлодар_сарыагаш": 2045,
+    "костанай_сарыагаш": 2135,
+    "семей_сарыагаш": 1850,
+    "устькаменогорск_сарыагаш": 2020,
+    "актобе_сарыагаш": 1960,
+    "атырау_сарыагаш": 2350,
+    "мангышлак_сарыагаш": 2720,
+    "алматы_сарыагаш": 814,
+    "шымкент_сарыагаш": 132,
+    "тараз_сарыагаш": 310,
+    "кызылорда_сарыагаш": 650,
+    "достык_сарыагаш": 1980,
+    "алтынколь_сарыагаш": 1620,
+
+    // ТРАНЗИТ КТЖ: ВХОД РЖД/КТЖ ➔ ВЫХОД КТЖ/УТИ (САРЫАГАШ)
+    "илецк_сарыагаш": 2080,
+    "озинки_сарыагаш": 2350,
+    "карталы_сарыагаш": 1980,
+    "орск_сарыагаш": 1850,
+    "петропавловск_сарыагаш": 2140,
+    "локоть_сарыагаш": 2180,
+    "кулунда_сарыагаш": 2210,
+
+    // ТРАНЗИТ КТЖ: ВХОД РЖД/КТЖ ➔ ВЫХОД КТЖ/УТИ (БЕЙНЕУ)
+    "илецк_бейнеу": 1200,
+    "озинки_бейнеу": 1350,
+    "орск_бейнеу": 1050,
+    "карталы_бейнеу": 1380,
+    "петропавловск_бейнеу": 1950,
+    "локоть_бейнеу": 2650,
+    "кулунда_бейнеу": 2680,
+    "бейнеу_каракалпакстан": 410,
+
+    // РЖД: ОТПРАВЛЕНИЕ ➔ СТЫКИ РЖД/КТЖ
+    "москва_илецк": 1480,
+    "москва_озинки": 1320,
+    "москва_карталы": 1890,
+    "москва_петропавловск": 2280,
+    "санктпетербург_илецк": 2150,
+    "санктпетербург_озинки": 2050,
+    "санктпетербург_карталы": 2420,
+    "самара_илецк": 480,
+    "самара_озинки": 450,
+    "саратов_озинки": 320,
+    "саратов_илецк": 680,
+    "екатеринбург_карталы": 520,
+    "екатеринбург_петропавловск": 680,
+    "челябинск_карталы": 260,
+    "челябинск_петропавловск": 560,
+    "челябинск_орск": 490,
+    "магнитогорск_карталы": 145,
+    "новосибирск_локоть": 560,
+    "новосибирск_кулунда": 470,
+    "барнаул_локоть": 340,
+    "барнаул_кулунда": 360,
+    "омск_петропавловск": 270,
+    "курган_петропавловск": 260,
+    "уфа_илецк": 510,
+    "уфа_карталы": 490,
+    "казань_илецк": 860,
+    "волгоград_озинки": 690,
+    "ростов_озинки": 1050,
+
+    // УТИ: ВХОД КЕЛЕС (САРЫАГАШ) ➔ СТАНЦИИ УЗБЕКИСТАНА
+    "келес_ташкент": 35,
+    "келес_сергели": 45,
+    "келес_чукурсай": 28,
+    "келес_самарканд": 350,
+    "келес_бухара": 610,
+    "келес_навои": 510,
+    "келес_карши": 490,
+    "келес_термез": 710,
+    "келес_галаба": 755,
+    "келес_андижан": 395,
+    "келес_фергана": 410,
+    "келес_коканд": 275,
+    "келес_ургенч": 990,
+    "келес_нукус": 1140,
+    "келес_джизак": 235,
+    "келес_ангрен": 150,
+    "келес_ходжадавлет": 635,
+    "келес_кудукли": 475,
+
+    // УТИ: ВХОД КАРАКАЛПАКСТАН (БЕЙНЕУ) ➔ СТАНЦИИ УЗБЕКИСТАНА
+    "каракалпакстан_нукус": 380,
+    "каракалпакстан_ургенч": 420,
+    "каракалпакстан_бухара": 780,
+    "каракалпакстан_навои": 880,
+    "каракалпакстан_ташкент": 1250,
+    "каракалпакстан_самарканд": 990,
+    "каракалпакстан_чукурсай": 1250,
+    "каракалпакстан_сергели": 1260,
+
+    // ДОПОЛНИТЕЛЬНЫЕ СВЯЗКИ КАЗАХСТАНСКИХ ХАБОВ НА ЧУКУРСАЙ / САРЫАГАШ
+    "семей_чукурсай": 1878,
+    "семей_ташкент": 1885,
+    "кокшетау_чукурсай": 1946,
+    "кокшетау_ташкент": 1953,
+    "астана_чукурсай": 1650,
+    "астана_ташкент": 1657,
+    "караганда_чукурсай": 1414,
+    "караганда_ташкент": 1421,
+    "павлодар_чукурсай": 2073,
+    "костанай_чукурсай": 2163,
+    "устькаменогорск_чукурсай": 2048,
+    "актобе_чукурсай": 1988,
+    "шымкент_чукурсай": 160,
+    "тараз_чукурсай": 338,
+    "экибастуз_сарыагаш": 1890,
+    "экибастуз_чукурсай": 1918,
+    "уральск_сарыагаш": 2210,
+    "туркестан_сарыагаш": 290,
+
+    // РЖД: ПОЛНАЯ МАТРИЦА СТАНЦИЙ ОТПРАВЛЕНИЯ НА ВСЕ 7 СТЫКОВ РЖД/КТЖ
+    "москва_орск": 1750,
+    "москва_локоть": 3500,
+    "москва_кулунда": 3380,
+    "санктпетербург_орск": 2380,
+    "санктпетербург_петропавловск": 2850,
+    "санктпетербург_локоть": 4050,
+    "санктпетербург_кулунда": 3950,
+    "екатеринбург_илецк": 980,
+    "екатеринбург_озинки": 1320,
+    "екатеринбург_орск": 810,
+    "екатеринбург_локоть": 1680,
+    "екатеринбург_кулунда": 1510,
+    "челябинск_илецк": 750,
+    "челябинск_озинки": 1100,
+    "челябинск_локоть": 1490,
+    "челябинск_кулунда": 1320,
+    "самара_карталы": 820,
+    "самара_орск": 730,
+    "самара_петропавловск": 1420,
+    "самара_локоть": 2680,
+    "самара_кулунда": 2520,
+    "казань_озинки": 810,
+    "казань_карталы": 950,
+    "казань_орск": 1120,
+    "казань_петропавловск": 1580,
+    "уфа_орск": 540,
+    "уфа_озинки": 760,
+    "уфа_петропавловск": 1080,
+    "новосибирск_петропавловск": 920,
+    "новосибирск_карталы": 1650,
+    "новосибирск_илецк": 2180,
+    "новосибирск_озинки": 2540
+  };
+
+  // 6. ПАРК ВАГОНОВ И ТАРИФЫ ПРЕДОСТАВЛЕНИЯ CARAVAN
+  var ROLLING_STOCK = {
+    'grain': { name: 'Зерновоз / Хоппер (для зерна, 70 тн, 116 м³)', dailyRateUSD: 38, payloadTons: 70, volumeM3: 116, speedKmPerDay: 350, defaultCargo: '100199' },
+    'boxcar': { name: 'Крытый вагон (грузовой, 68 тн, 138 м³)', dailyRateUSD: 34, payloadTons: 68, volumeM3: 138, speedKmPerDay: 380, defaultCargo: '110100' },
+    'gondola': { name: 'Полувагон (универсальный 4-осный, 70 тн)', dailyRateUSD: 32, payloadTons: 70, volumeM3: 88, speedKmPerDay: 400, defaultCargo: '270112' },
+    'tank': { name: 'Цистерна (наливные грузы / ГСМ, 66 тн)', dailyRateUSD: 42, payloadTons: 66, volumeM3: 85, speedKmPerDay: 360, defaultCargo: '271012' },
+    'platform': { name: 'Фитинговая платформа (тяжеловесы/негабарит)', dailyRateUSD: 30, payloadTons: 72, volumeM3: 0, speedKmPerDay: 420, defaultCargo: '720810' },
+    'cont40': { name: 'Контейнер 40ft High Cube (HQ, 28 тн, 76 м³)', dailyRateUSD: 28, payloadTons: 28, volumeM3: 76, speedKmPerDay: 450, defaultCargo: '990100' },
+    'cont20': { name: 'Контейнер 20ft (универсальный, 24 тн, 33 м³)', dailyRateUSD: 20, payloadTons: 24, volumeM3: 33, speedKmPerDay: 450, defaultCargo: '990100' }
+  };
+
+  // 7. ТАРИФНЫЕ ПОЯСА ИНФРАСТРУКТУРЫ ($ / КМ)
+  var TARIFF_BELTS = [
+    { maxKm: 200,  rateUSD: 0.78 },
+    { maxKm: 500,  rateUSD: 0.65 },
+    { maxKm: 1000, rateUSD: 0.54 },
+    { maxKm: 2000, rateUSD: 0.44 },
+    { maxKm: 3000, rateUSD: 0.38 },
+    { maxKm: 9999, rateUSD: 0.33 }
+  ];
+
+  // 8. КУРСЫ ВАЛЮТ
+  var CURRENCY_RATES = {
+    'USD': { code: 'USD', symbol: '$', rate: 1.0, title: 'Доллар США' },
+    'KZT': { code: 'KZT', symbol: '₸', rate: 485.0, title: 'Казахстанский тенге' },
+    'UZS': { code: 'UZS', symbol: 'сум', rate: 12750.0, title: 'Узбекский сум' },
+    'RUB': { code: 'RUB', symbol: '₽', rate: 92.5, title: 'Российский рубль' }
+  };
+
+  // ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ ПОИСКА
+  function cleanStationName(raw) {
+    if (!raw) return '';
+    var s = ('' + raw).toLowerCase();
+    s = s.replace(/ст\.\s*/gi, '')
+         .replace(/\(.* switch .*?\)/gi, '')
+         .replace(/\(.*?\)/g, '')
+         .replace(/\[.*?\]/g, '')
+         .replace(/\bоп\s+/g, '')
+         .trim();
+
+    if (s.indexOf('жана-семей') !== -1 || s.indexOf('жана семей') !== -1 || s.indexOf('семей') !== -1) return 'семей';
+    if (s.indexOf('санкт-петербург') !== -1 || s.indexOf('санкт петербург') !== -1 || s.indexOf('санктпетербург') !== -1 || s.indexOf('петербург') !== -1) return 'санктпетербург';
+    if (s.indexOf('усть-каменогорск') !== -1 || s.indexOf('усть каменогорск') !== -1 || s.indexOf('устькаменогорск') !== -1) return 'устькаменогорск';
+    if (s.indexOf('каменск') !== -1 || s.indexOf('новоуральский') !== -1 || s.indexOf('заполье') !== -1 || s.indexOf('первоуральск') !== -1) return 'екатеринбург';
+    if (s.indexOf('новосемейкино') !== -1) return 'самара';
+    if (s.indexOf('дубровка-челябинская') !== -1 || s.indexOf('челябинск') !== -1) return 'челябинск';
+    if (s.indexOf('мичуринск') !== -1 || s.indexOf('бекасово') !== -1) return 'москва';
+    if (s.indexOf('берказань') !== -1 || s.indexOf('казань') !== -1) return 'казань';
+    if (s.indexOf('ростов') !== -1) return 'ростов';
+    if (s.indexOf('арысь') !== -1) return 'шымкент';
+    if (s.indexOf('бурундай') !== -1 || s.indexOf('медеу') !== -1) return 'алматы';
+    if (s.indexOf('маргилан') !== -1 || s.indexOf('наманган') !== -1) return 'фергана';
+    if (s.indexOf('чукурсай') !== -1) return 'чукурсай';
+    if (s.indexOf('сергели') !== -1) return 'сергели';
+    if (s.indexOf('ташкент') !== -1) return 'ташкент';
+    if (s.indexOf('илецк') !== -1) return 'илецк';
+    if (s.indexOf('озинки') !== -1) return 'озинки';
+    if (s.indexOf('карталы') !== -1) return 'карталы';
+    if (s.indexOf('орск') !== -1) return 'орск';
+    if (s.indexOf('петропавловск') !== -1) return 'петропавловск';
+    if (s.indexOf('локоть') !== -1) return 'локоть';
+    if (s.indexOf('кулунда') !== -1) return 'кулунда';
+    if (s.indexOf('сарыагаш') !== -1) return 'сарыагаш';
+    if (s.indexOf('келес') !== -1) return 'келес';
+    if (s.indexOf('бейнеу') !== -1) return 'бейнеу';
+    if (s.indexOf('каракалпакстан') !== -1) return 'каракалпакстан';
+    if (s.indexOf('сороковая') !== -1) return 'астана';
+    if (s.indexOf('экибастуз') !== -1) return 'экибастуз';
+    if (s.indexOf('уральск') !== -1) return 'уральск';
+    if (s.indexOf('туркестан') !== -1) return 'туркестан';
+
+    var word = s.split(/[\s\-]/)[0];
+    return word.replace(/[^\u0400-\u04FFa-zA-Z]/g, '').toLowerCase();
+  }
+
+  function findStation(query) {
+    if (!query) return null;
+    query = ('' + query).trim();
+
+    var codeMatch = query.match(/\b\d{6}\b/);
+    if (codeMatch) {
+      var extractedCode = codeMatch[0];
+      for (var i = 0; i < STATIONS.length; i++) {
+        if (STATIONS[i].code === extractedCode) return STATIONS[i];
+      }
+    }
+
+    var clean = query.replace(/\(.*?\)/g, '').replace(/ст\.\s*/gi, '').trim().toLowerCase();
+    if (!clean) return null;
+
+    for (var i = 0; i < STATIONS.length; i++) {
+      if (STATIONS[i].name.toLowerCase().indexOf(clean) !== -1 ||
+          clean.indexOf(STATIONS[i].name.toLowerCase()) !== -1) {
+        return STATIONS[i];
+      }
+    }
+
+    var cName = cleanStationName(query);
+    if (cName) {
+      for (var i = 0; i < STATIONS.length; i++) {
+        var stClean = cleanStationName(STATIONS[i].name);
+        if (stClean && (stClean === cName || stClean.indexOf(cName) !== -1 || cName.indexOf(stClean) !== -1)) {
+          return STATIONS[i];
+        }
+      }
+    }
+
+    return null;
+  }
+
+  function searchStations(query, limit) {
+    limit = limit || 10;
+    if (!query || query.trim().length < 2) return [];
+    var q = query.trim().toLowerCase();
+    var results = [];
+
+    for (var i = 0; i < STATIONS.length; i++) {
+      var st = STATIONS[i];
+      if (st.code.indexOf(q) === 0 || st.name.toLowerCase().indexOf(q) !== -1) {
+        results.push(st);
+        if (results.length >= limit) break;
+      }
+    }
+    return results;
+  }
+
+  function findCargo(query) {
+    if (!query) return CARGO_ITEMS[0];
+    var q = ('' + query).trim().toLowerCase();
+
+    var codeMatch = q.match(/\b\d{6}\b/);
+    if (codeMatch) {
+      var code = codeMatch[0];
+      for (var i = 0; i < CARGO_ITEMS.length; i++) {
+        if (CARGO_ITEMS[i].code_etsng === code) return CARGO_ITEMS[i];
+      }
+    }
+
+    for (var i = 0; i < CARGO_ITEMS.length; i++) {
+      if (CARGO_ITEMS[i].name.toLowerCase().indexOf(q) !== -1 ||
+          q.indexOf(CARGO_ITEMS[i].name.toLowerCase()) !== -1) {
+        return CARGO_ITEMS[i];
+      }
+    }
+
+    var wagonMap = {
+      'grain': '100199',
+      'boxcar': '110100',
+      'gondola': '270112',
+      'tank': '271012',
+      'platform': '720810',
+      'cont40': '990100',
+      'cont20': '990100'
+    };
+    if (wagonMap[q]) {
+      var defCode = wagonMap[q];
+      for (var i = 0; i < CARGO_ITEMS.length; i++) {
+        if (CARGO_ITEMS[i].code_etsng === defCode) return CARGO_ITEMS[i];
+      }
+    }
+
+    return CARGO_ITEMS[0];
+  }
+
+  function searchCargo(query, limit) {
+    limit = limit || 12;
+    if (!query || query.trim().length < 2) return [];
+    var q = query.trim().toLowerCase();
+    var results = [];
+
+    for (var i = 0; i < CARGO_ITEMS.length; i++) {
+      var item = CARGO_ITEMS[i];
+      if (item.code_etsng.indexOf(q) === 0 || 
+          item.code_gng.indexOf(q) === 0 || 
+          item.name.toLowerCase().indexOf(q) !== -1 ||
+          item.category.toLowerCase().indexOf(q) !== -1) {
+        results.push(item);
+        if (results.length >= limit) break;
+      }
+    }
+    return results;
+  }
+
+  function getStationCoords(st) {
+    if (!st || !st.name) return [48.0, 68.0];
+    var norm = cleanStationName(st.name);
+    for (var k in HUB_COORDS) {
+      if (norm.indexOf(k) !== -1) return HUB_COORDS[k];
+    }
+    if (st.country === 'RUS') return [55.75, 37.61];
+    if (st.country === 'UZB') return [41.31, 69.24];
+    return [48.0, 68.0];
+  }
+
+  function calculateGeoRailwayDistance(c1, c2) {
+    var R = 6371;
+    var dLat = (c2[0] - c1[0]) * Math.PI / 180;
+    var dLon = (c2[1] - c1[1]) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(c1[0] * Math.PI / 180) * Math.cos(c2[0] * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.max(35, Math.round(R * c * 1.46));
+  }
+
+  function resolveLegDistance(fromSt, toSt) {
+    var fClean = cleanStationName(fromSt.name);
+    var tClean = cleanStationName(toSt.name);
+
+    var k1 = fClean + '_' + tClean;
+    var k2 = tClean + '_' + fClean;
+    if (CANONICAL_DISTANCES[k1]) return CANONICAL_DISTANCES[k1];
+    if (CANONICAL_DISTANCES[k2]) return CANONICAL_DISTANCES[k2];
+
+    var c1 = getStationCoords(fromSt);
+    var c2 = getStationCoords(toSt);
+    return calculateGeoRailwayDistance(c1, c2);
+  }
+
+  function determineRouteLegs(fromSt, toSt, manualBorderCode, manualBorderCode2) {
+    var legs = [];
+    var border = null;
+    var border1 = null;
+    var border2 = null;
+    var isTransit = false;
+    var messageType = 'Внутригосударственное сообщение';
+
+    var b1Code = manualBorderCode;
+    var b2Code = manualBorderCode2;
+    if (manualBorderCode && typeof manualBorderCode === 'object') {
+      b1Code = manualBorderCode.border1 || manualBorderCode.code;
+      b2Code = manualBorderCode.border2;
+    } else if (manualBorderCode && ('' + manualBorderCode).indexOf('_') !== -1) {
+      var parts = ('' + manualBorderCode).split('_');
+      b1Code = parts[0];
+      b2Code = parts[1];
+    }
+
+    if (fromSt.country === toSt.country) {
+      messageType = 'Внутригосударственное (' + fromSt.country_name + ')';
+      var dist = resolveLegDistance(fromSt, toSt);
+      legs.push({
+        country: fromSt.country,
+        countryName: fromSt.country_name,
+        road: fromSt.road_label,
+        from: fromSt.name,
+        to: toSt.name,
+        distanceKm: dist,
+        type: 'domestic'
+      });
+      return {
+        isTransit: false,
+        messageType: messageType,
+        border: null,
+        legs: legs
+      };
+    }
+
+    // Проверка транзита через Казахстан: Россия ⇄ Узбекистан
+    var isRusUzb = (fromSt.country === 'RUS' && toSt.country === 'UZB');
+    var isUzbRus = (fromSt.country === 'UZB' && toSt.country === 'RUS');
+
+    if (isRusUzb || isUzbRus) {
+      isTransit = true;
+      var availBorders1 = BORDER_CROSSINGS['RUS-KAZ'];
+      var availBorders2 = BORDER_CROSSINGS['KAZ-UZB'];
+
+      // If a border code was passed that belongs to KAZ-UZB (exit) and b2Code is not set, reassign it
+      if (b1Code && availBorders2.some(function(b) { return b.code === b1Code || b.exitCode === b1Code; }) && !b2Code) {
+        b2Code = b1Code;
+        b1Code = null;
+      }
+
+      // Подбор Стыка 1 (РЖД ⇄ КТЖ)
+      if (b1Code) {
+        for (var i = 0; i < availBorders1.length; i++) {
+          if (availBorders1[i].code === b1Code || availBorders1[i].exitCode === b1Code) {
+            border1 = availBorders1[i];
+            break;
+          }
+        }
+      }
+      if (!border1) {
+        var fNorm = cleanStationName(fromSt.name);
+        if (fNorm.indexOf('новосибирск') !== -1 || fNorm.indexOf('барнаул') !== -1 || fNorm.indexOf('красноярск') !== -1 || fNorm.indexOf('локоть') !== -1) {
+          border1 = availBorders1.find(function(b) { return b.code === '711105'; }) || availBorders1[0];
+        } else if (fNorm.indexOf('екатеринбург') !== -1 || fNorm.indexOf('челябинск') !== -1 || fNorm.indexOf('магнитогорск') !== -1 || fNorm.indexOf('карталы') !== -1) {
+          border1 = availBorders1.find(function(b) { return b.code === '816909'; }) || availBorders1[0];
+        } else if (fNorm.indexOf('омск') !== -1 || fNorm.indexOf('курган') !== -1 || fNorm.indexOf('петропавловск') !== -1) {
+          border1 = availBorders1.find(function(b) { return b.code === '688708'; }) || availBorders1[0];
+        } else if (fNorm.indexOf('саратов') !== -1 || fNorm.indexOf('самара') !== -1 || fNorm.indexOf('волгоград') !== -1 || fNorm.indexOf('озинки') !== -1) {
+          border1 = availBorders1.find(function(b) { return b.code === '664900'; }) || availBorders1[0];
+        } else {
+          border1 = availBorders1[0]; // ст. Илецк I (666501)
+        }
+      }
+
+      // Подбор Стыка 2 (КТЖ ⇄ УТИ)
+      if (b2Code) {
+        for (var j = 0; j < availBorders2.length; j++) {
+          if (availBorders2[j].code === b2Code || availBorders2[j].exitCode === b2Code) {
+            border2 = availBorders2[j];
+            break;
+          }
+        }
+      }
+      if (!border2) {
+        var tNorm = cleanStationName(toSt.name);
+        if (tNorm.indexOf('нукус') !== -1 || tNorm.indexOf('ургенч') !== -1 || tNorm.indexOf('кунград') !== -1 || tNorm.indexOf('бейнеу') !== -1) {
+          border2 = availBorders2.find(function(b) { return b.code === '662905'; }) || availBorders2[0];
+        } else {
+          border2 = availBorders2[0]; // ст. Сарыагаш / Келес (704101)
+        }
+      }
+
+      var b1St = { name: border1.name.split('/')[0].trim(), country: 'RUS' };
+      var b1KzSt = { name: border1.name.split('/')[0].trim(), country: 'KAZ' };
+      var b2KzSt = { name: border2.name.split('/')[0].trim(), country: 'KAZ' };
+      var b2UzSt = { name: (border2.name.split('/')[1] || border2.name).trim(), country: 'UZB' };
+
+      if (isRusUzb) {
+        messageType = 'Транзитное сообщение (Россия ➔ Казахстан [Транзит] ➔ Узбекистан)';
+        var d1 = resolveLegDistance(fromSt, b1St);
+        var d2 = resolveLegDistance(b1KzSt, b2KzSt);
+        var d3 = resolveLegDistance(b2UzSt, toSt);
+
+        legs.push({
+          country: 'RUS',
+          countryName: 'Россия',
+          road: 'РЖД',
+          from: fromSt.name,
+          to: border1.name.split('/')[0].trim(),
+          distanceKm: d1,
+          type: 'export_departure'
+        });
+
+        legs.push({
+          country: 'KAZ',
+          countryName: 'Казахстан (Транзит)',
+          road: 'КТЖ (Транзит)',
+          from: border1.name.split('/')[0].trim(),
+          to: border2.name.split('/')[0].trim(),
+          distanceKm: d2,
+          type: 'transit'
+        });
+
+        legs.push({
+          country: 'UZB',
+          countryName: 'Узбекистан',
+          road: 'УТИ',
+          from: (border2.name.split('/')[1] || border2.name).trim(),
+          to: toSt.name,
+          distanceKm: d3,
+          type: 'import_destination'
+        });
+      } else {
+        messageType = 'Транзитное сообщение (Узбекистан ➔ Казахстан [Транзит] ➔ Россия)';
+        var d1 = resolveLegDistance(fromSt, b2UzSt);
+        var d2 = resolveLegDistance(b2KzSt, b1KzSt);
+        var d3 = resolveLegDistance(b1St, toSt);
+
+        legs.push({
+          country: 'UZB',
+          countryName: 'Узбекистан',
+          road: 'УТИ',
+          from: fromSt.name,
+          to: (border2.name.split('/')[1] || border2.name).trim(),
+          distanceKm: d1,
+          type: 'export_departure'
+        });
+
+        legs.push({
+          country: 'KAZ',
+          countryName: 'Казахстан (Транзит)',
+          road: 'КТЖ (Транзит)',
+          from: border2.name.split('/')[0].trim(),
+          to: border1.name.split('/')[0].trim(),
+          distanceKm: d2,
+          type: 'transit'
+        });
+
+        legs.push({
+          country: 'RUS',
+          countryName: 'Россия',
+          road: 'РЖД',
+          from: border1.name.split('/')[0].trim(),
+          to: toSt.name,
+          distanceKm: d3,
+          type: 'import_destination'
+        });
+      }
+
+      return {
+        isTransit: true,
+        messageType: messageType,
+        border1: border1,
+        border2: border2,
+        availBorders1: availBorders1,
+        availBorders2: availBorders2,
+        legs: legs
+      };
+    }
+
+    // Двустороннее сообщение (например KAZ ⇄ UZB, RUS ⇄ KAZ)
+    messageType = 'Международное (' + fromSt.country_name + ' ➔ ' + toSt.country_name + ')';
+    var pairKey = fromSt.country + '-' + toSt.country;
+    var reverseKey = toSt.country + '-' + fromSt.country;
+    var availBorders = BORDER_CROSSINGS[pairKey] || BORDER_CROSSINGS[reverseKey] || BORDER_CROSSINGS['KAZ-UZB'];
+
+    var targetCode = b1Code || b2Code;
+    if (targetCode) {
+      for (var b = 0; b < availBorders.length; b++) {
+        if (availBorders[b].code === targetCode || availBorders[b].exitCode === targetCode) {
+          border = availBorders[b];
+          break;
+        }
+      }
+    }
+    if (!border) border = availBorders[0];
+
+    var borderSt = { name: border.name.split('/')[0].trim(), country: fromSt.country };
+    var borderDestSt = { name: (border.name.split('/')[1] || border.name).trim(), country: toSt.country };
+
+    var dist1 = resolveLegDistance(fromSt, borderSt);
+    var dist2 = resolveLegDistance(borderDestSt, toSt);
+
+    legs.push({
+      country: fromSt.country,
+      countryName: fromSt.country_name,
+      road: fromSt.road_label,
+      from: fromSt.name,
+      to: border.name.split('/')[0].trim(),
+      distanceKm: dist1,
+      type: 'export_departure'
+    });
+
+    legs.push({
+      country: toSt.country,
+      countryName: toSt.country_name,
+      road: toSt.road_label,
+      from: (border.name.split('/')[1] || border.name).trim(),
+      to: toSt.name,
+      distanceKm: dist2,
+      type: 'import_destination'
+    });
+
+    return {
+      isTransit: false,
+      messageType: messageType,
+      border: border,
+      availBorders: availBorders,
+      legs: legs
+    };
+  }
+
+  function getBaseRateForKm(km) {
+    for (var i = 0; i < TARIFF_BELTS.length; i++) {
+      if (km <= TARIFF_BELTS[i].maxKm) {
+        return TARIFF_BELTS[i].rateUSD;
+      }
+    }
+    return 0.33;
+  }
+
+  // ГЛАВНЫЙ МЕТОД РАСЧЕТА ТАРИФОВ
+  function calculateTariff(params) {
+    var fromStation = findStation(params.from) || STATIONS[11]; // Кокшетау
+    var toStation = findStation(params.to) || STATIONS[14];     // Ташкент-Товарный
+    var wagonType = ROLLING_STOCK[params.wagonType] || ROLLING_STOCK['grain'];
+    var cargoItem = findCargo(params.cargoSearch || params.cargoType);
+    var parkType = params.parkType || 'caravan';
+    var incoterms = (params.incoterms || 'DAP').toUpperCase();
+    var hasSecurity = params.security === true || params.security === 'true' || cargoItem.security_required;
+    var hasCustoms = params.customs === true || params.customs === 'true';
+    var clientRole = params.clientRole || 'Грузоотправитель';
+    var discountPercent = parseFloat(params.discount) || 0;
+    var currency = params.currency || 'USD';
+
+    // 1. Построение маршрута и расстояний
+    var b1 = params.manualBorder1 || (params.manualBorderCode && typeof params.manualBorderCode === 'object' ? (params.manualBorderCode.border1 || params.manualBorderCode.code) : params.manualBorderCode);
+    var b2 = params.manualBorder2 || (params.manualBorderCode && typeof params.manualBorderCode === 'object' ? params.manualBorderCode.border2 : null);
+    var routePlan = determineRouteLegs(fromStation, toStation, b1, b2);
+    var totalKm = 0;
+    var detailedLegs = [];
+    var totalInfraUSD = 0;
+    var totalWagonUSD = 0;
+    var totalBorderFeesUSD = 0;
+    var totalSecurityUSD = 0;
+
+    // Класс груза и тарифный коэффициент
+    var cargoFactor = cargoItem.tariff_class === 1 ? 0.75 : (cargoItem.tariff_class === 3 ? 1.25 : 1.0);
+
+    for (var l = 0; l < routePlan.legs.length; l++) {
+      var leg = routePlan.legs[l];
+      totalKm += leg.distanceKm;
+
+      var baseBeltRate = getBaseRateForKm(leg.distanceKm);
+      var countryFactor = (leg.country === 'UZB' ? 1.15 : (leg.country === 'RUS' ? 1.10 : (leg.type === 'transit' ? 1.20 : 1.0)));
+      var legInfra = Math.round(leg.distanceKm * baseBeltRate * countryFactor * cargoFactor);
+
+      var legDays = Math.ceil(leg.distanceKm / wagonType.speedKmPerDay) + 1;
+      var legWagon = (parkType === 'caravan') ? Math.round(legDays * wagonType.dailyRateUSD * 1.35) : Math.round(legInfra * 0.45);
+
+      var legBorderFee = 0;
+      if (leg.type === 'export_departure') {
+        var bObj = routePlan.border1 || routePlan.border;
+        if (bObj) legBorderFee += bObj.fee || 65;
+      } else if (leg.type === 'transit' && routePlan.border2) {
+        legBorderFee += routePlan.border2.fee || 85;
+      }
+
+      var legSec = hasSecurity ? Math.round(leg.distanceKm * 0.08 + 45) : 0;
+      var legTotal = legInfra + legWagon + legBorderFee + legSec;
+
+      totalInfraUSD += legInfra;
+      totalWagonUSD += legWagon;
+      totalBorderFeesUSD += legBorderFee;
+      totalSecurityUSD += legSec;
+
+      detailedLegs.push({
+        country: leg.country,
+        countryName: leg.countryName,
+        road: leg.road,
+        from: leg.from,
+        to: leg.to,
+        distanceKm: leg.distanceKm,
+        infraTariffUSD: legInfra,
+        wagonTariffUSD: legWagon,
+        borderFeeUSD: legBorderFee,
+        securityUSD: legSec,
+        subtotalUSD: legTotal
+      });
+    }
+
+    // Incoterms надбавки
+    var incotermsFeeUSD = 0;
+    if (incoterms === 'DAP') incotermsFeeUSD = 325;
+    else if (incoterms === 'CIP') incotermsFeeUSD = 180;
+    else if (incoterms === 'DDP') incotermsFeeUSD = 550;
+    else if (incoterms === 'CPT') incotermsFeeUSD = 90;
+    else if (incoterms === 'FCA') incotermsFeeUSD = 40;
+
+    if (hasCustoms) incotermsFeeUSD += 120;
+
+    var grandTotalUSD = totalInfraUSD + totalWagonUSD + totalBorderFeesUSD + totalSecurityUSD + incotermsFeeUSD;
+
+    if (discountPercent > 0) {
+      grandTotalUSD = Math.round(grandTotalUSD * (1 - discountPercent / 100));
+    }
+
+    var transitDaysMin = Math.ceil(totalKm / wagonType.speedKmPerDay) + 1;
+    var transitDaysMax = transitDaysMin + 2;
+    var transitStr = transitDaysMin + '-' + transitDaysMax + ' суток';
+
+    var curInfo = CURRENCY_RATES[currency] || CURRENCY_RATES['USD'];
+    var convertedTotal = Math.round(grandTotalUSD * curInfo.rate);
+
+    return {
+      route: {
+        from: fromStation,
+        to: toStation,
+        isTransit: routePlan.isTransit,
+        borderCrossing: routePlan.border,
+        border1: routePlan.border1,
+        border2: routePlan.border2,
+        availBorders: routePlan.availBorders,
+        availBorders1: routePlan.availBorders1,
+        availBorders2: routePlan.availBorders2,
+        messageType: routePlan.messageType,
+        totalDistanceKm: totalKm,
+        legs: detailedLegs
+      },
+      wagon: wagonType,
+      cargo: cargoItem,
+      parkType: parkType === 'caravan' ? 'Собственный СПС Caravan Railroad' : 'Инвентарный парк ж/д',
+      incoterms: incoterms,
+      transitDays: transitStr,
+      totals: {
+        usd: grandTotalUSD,
+        converted: convertedTotal,
+        currencyCode: curInfo.code,
+        currencySymbol: curInfo.symbol,
+        formattedTotal: convertedTotal.toLocaleString('ru-RU') + ' ' + curInfo.symbol
+      },
+      breakdownUSD: {
+        infrastructure: totalInfraUSD,
+        wagonProvision: totalWagonUSD,
+        borderAndHandling: totalBorderFeesUSD + incotermsFeeUSD,
+        security: totalSecurityUSD
+      }
+    };
+  }
+
+  return {
+    STATIONS: STATIONS,
+    CARGO_ITEMS: CARGO_ITEMS,
+    BORDER_CROSSINGS: BORDER_CROSSINGS,
+    ROLLING_STOCK: ROLLING_STOCK,
+    CURRENCY_RATES: CURRENCY_RATES,
+    cleanStationName: cleanStationName,
+    findStation: findStation,
+    searchStations: searchStations,
+    findCargo: findCargo,
+    searchCargo: searchCargo,
+    determineRouteLegs: determineRouteLegs,
+    calculateTariff: calculateTariff
+  };
+
+})();
+
+if (typeof window !== 'undefined') {
+  window.CaravanRailwayEngine = CaravanRailwayEngine;
+}
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = CaravanRailwayEngine;
+}
+
+(function() {
+  var CARAVAN_CONFIG = {
+    apiUrl: "", // Ссылка на ваш Google Apps Script Web App
+    b2bWebhookUrl: "", // URL для Webhook в B2B платформу (когда будет развернута)
+    enableAnimation: true
+  };
+
+  /**
+   * Справочник описаний зон ответственности по Incoterms 2020
+   */
+  var INCOTERMS_DESC = {
+    'DAP': {
+      title: 'Зона ответственности Caravan Railroad: DAP (Delivered at Place — «До двери»)',
+      desc: 'Caravan Railroad берет на себя: подачу подвижного состава ➔ станционные сборы ➔ оплату Ж/Д тарифа всех администраций (КТЖ/УТИ) ➔ прохождение межгосударственного стыка ➔ автодоставку «последней мили» непосредственно на склад грузополучателя (без уплаты импортных пошлин).'
+    },
+    'DDP': {
+      title: 'Зона ответственности Caravan Railroad: DDP («Под ключ» с таможенной очисткой)',
+      desc: 'Полный сервис «Под ключ»: забор со склада производителя ➔ Ж/Д перевозка ➔ прохождение границы ➔ таможенное декларирование и сертификация ➔ уплата импортных сборов ➔ выгрузка на складе получателя. Клиент освобожден от всех логистических и таможенных процедур.'
+    },
+    'CIP': {
+      title: 'Зона ответственности Caravan Railroad: CIP (Carriage and Insurance Paid To)',
+      desc: 'Caravan Railroad оплачивает весь Ж/Д тариф до станции назначения и оформляет полное страхование груза на 110% его стоимости. Риски переходят в момент передачи первому перевозчику, но груз застрахован на всем маршруте.'
+    },
+    'CPT': {
+      title: 'Зона ответственности Caravan Railroad: CPT (Carriage Paid To)',
+      desc: 'Классическая железнодорожная перевозка с оплатой полного провозного тарифа до согласованной станции назначения / терминала. Страхование оформляется клиентом по желанию.'
+    },
+    'FCA': {
+      title: 'Зона ответственности Caravan Railroad: FCA (Free Carrier — Франко-перевозчик)',
+      desc: 'Caravan Railroad принимает груз, прошедший экспортное оформление, на согласованной Ж/Д станции или терминале погрузки. Оплата основного тарифа возлагается на покупателя/получателя.'
+    },
+    'FOB': {
+      title: 'Зона ответственности Caravan Railroad: FOB / CIF (Морской порт / Паромный стык)',
+      desc: 'Интермодальный сервис: доставка железнодорожным транспортом до морского порта (Актау, Батуми, Поти) + перевалка и погрузка на борт судна/парома.'
+    },
+    'EXW': {
+      title: 'Зона ответственности Caravan Railroad: EXW (Ex Works — Самовывоз)',
+      desc: 'Самовывоз со склада завода-изготовителя автотранспортом Caravan Railroad с последующей перегрузкой в вагон на Ж/Д станции погрузки.'
+    }
+  };
+
+  /**
+   * Демо-база данных для моментальной работы
+   */
+  var DEMO_DATABASE = {
+    stats: { wagons: 1480, tonnage: 920000, routes: 48 },
+    routes: [
+      {
+        id: "R-01",
+        from: "ст. Достык (эксп.) / Алашанькоу",
+        to: "ст. Ташкент-Товарный (УТИ)",
+        distance_km: 1850,
+        transport: "Контейнер 40ft HQ",
+        transport_code: "cont40",
+        freight_type: "rail",
+        incoterms: "DAP",
+        price_usd: 2450,
+        transit_days: "6-8 дней",
+        breakdown: { rail: 1650, wagon: 480, incoterms: 200, extra: 120 }
+      },
+      {
+        id: "R-02",
+        from: "ст. Кокшетау (КЗХ)",
+        to: "ст. Самарканд (УТИ)",
+        distance_km: 2150,
+        transport: "Зерновоз / Хоппер (72 тн)",
+        transport_code: "grain",
+        freight_type: "rail",
+        incoterms: "DAP",
+        price_usd: 2780,
+        transit_days: "8-10 дней",
+        breakdown: { rail: 1820, wagon: 520, incoterms: 260, extra: 180 }
+      },
+      {
+        id: "R-03",
+        from: "ст. Алтынколь (эксп.) / Хоргос",
+        to: "ст. Алматы-1 (КЗХ)",
+        distance_km: 340,
+        transport: "Полувагон (универсальный)",
+        transport_code: "gondola",
+        freight_type: "multimodal",
+        incoterms: "DDP",
+        price_usd: 1150,
+        transit_days: "2-3 дня",
+        breakdown: { rail: 420, wagon: 250, incoterms: 380, extra: 100 }
+      },
+      {
+        id: "R-04",
+        from: "ст. Караганда-Сортировочная",
+        to: "ст. Кунград (УТИ) / порт Актау",
+        distance_km: 1980,
+        transport: "Крытый вагон (грузовой)",
+        transport_code: "boxcar",
+        freight_type: "intermodal",
+        incoterms: "FOB",
+        price_usd: 2650,
+        transit_days: "7-9 дней",
+        breakdown: { rail: 1720, wagon: 490, incoterms: 240, extra: 200 }
+      }
+    ],
+    rates: {
+      'gondola': { name: 'Полувагон (универсальный, 70т)', rate: 0.95, base: 350, speed: 380 },
+      'boxcar': { name: 'Крытый вагон (грузовой, 68т)', rate: 1.05, base: 380, speed: 380 },
+      'grain': { name: 'Зерновоз / Хоппер (зерно)', rate: 1.15, base: 400, speed: 360 },
+      'tank': { name: 'Цистерна (наливные грузы)', rate: 1.25, base: 450, speed: 350 },
+      'platform': { name: 'Фитинговая платформа', rate: 1.30, base: 420, speed: 340 },
+      'cont20': { name: 'Контейнер 20ft', rate: 0.85, base: 300, speed: 450 },
+      'cont40': { name: 'Контейнер 40ft HQ', rate: 1.20, base: 400, speed: 450 },
+      'truck_curtain': { name: 'Еврофура 20т (Тент)', rate: 1.35, base: 250, speed: 650 },
+      'truck_ref': { name: 'Рефрижератор 20т', rate: 1.65, base: 350, speed: 650 }
+    },
+    users: [
+      {
+        login: "kaz_trans",
+        pass: "pass2026",
+        company: 'ТОО "КазТрансЛогистик"',
+        contact: "Бахтияр Алиев",
+        phone: "+7 (777) 123-45-67",
+        email: "info@kaztrans.kz",
+        role: "Грузоотправитель",
+        discount: 5,
+        b2b_id: "B2B-CR-9021"
+      }
+    ],
+    proposals: [
+      {
+        order_id: "CR-ORD-8821",
+        date: "04.09.2026",
+        company: 'ТОО "КазТрансЛогистик"',
+        role: "Грузоотправитель",
+        incoterms: "DAP (До склада получателя)",
+        route: "ст. Кокшетау (КЗХ) ➔ ст. Самарканд (УТИ)",
+        transport: "Зерновоз / Хоппер (72 тн)",
+        freight_type: "Прямая Ж/Д перевозка",
+        distance_km: 2150,
+        total_price: "$2,641 USD",
+        status_text: "КП подписано руководством Caravan Railroad",
+        status_class: "cr-pc-badge-signed"
+      },
+      {
+        order_id: "CR-ORD-8714",
+        date: "01.09.2026",
+        company: 'ТОО "КазТрансЛогистик"',
+        role: "Грузоотправитель",
+        incoterms: "DDP («Под ключ» с растаможкой)",
+        route: "ст. Достык (эксп.) ➔ ст. Ташкент-Товарный",
+        transport: "Контейнер 40ft High Cube",
+        freight_type: "Мультимодальная",
+        distance_km: 1850,
+        total_price: "$2,451 USD",
+        status_text: "Счет на оплату / Инвойс сформирован",
+        status_class: "cr-pc-badge-signed"
+      }
+    ],
+    shipments: [
+      {
+        id: "52849102",
+        type: "Полувагон (модель 12-132)",
+        client_login: "kaz_trans",
+        invoice_num: "СМГС-983210",
+        cargo_name: "Пшеница твердых сортов",
+        weight: "68.5 тн",
+        station_from: "ст. Кокшетау (КЗХ)",
+        date_from: "01.09.2026",
+        station_current: "ст. Сарыагаш (эксп.)",
+        railway_current: "Казахстанские ЖД (КТЖ)",
+        last_operation: "Прибытие поезда на межгосударственный стыковой пункт",
+        date_operation: "05.09.2026 14:30",
+        station_to: "ст. Ташкент-Товарный (УТИ)",
+        eta: "08.09.2026",
+        progress: 68,
+        status: "В движении",
+        distance_left: "340 км"
+      },
+      {
+        id: "CR-98421",
+        type: "Контейнер 40ft HQ",
+        client_login: "kaz_trans",
+        invoice_num: "СМГС-441209",
+        cargo_name: "Электрооборудование",
+        weight: "24.0 тн",
+        station_from: "ст. Алтынколь (эксп.)",
+        date_from: "02.09.2026",
+        station_current: "ст. Шу (КЗХ)",
+        railway_current: "Казахстанские ЖД (КТЖ)",
+        last_operation: "Отправление поезда со станции формирования",
+        date_operation: "05.09.2026 11:15",
+        station_to: "ст. Сергели (УТИ)",
+        eta: "07.09.2026",
+        progress: 52,
+        status: "В движении",
+        distance_left: "580 км"
+      },
+      {
+        id: "63910482",
+        type: "Цистерна 4-осная (нефтяная)",
+        client_login: "asia_oil_export",
+        invoice_num: "СМГС-771920",
+        cargo_name: "Нефтепродукты светлые",
+        weight: "62.0 тн",
+        station_from: "ст. Атырау (КЗХ)",
+        date_from: "03.09.2026",
+        station_current: "ст. Кандыагаш (КЗХ)",
+        railway_current: "Казахстанские ЖД (КТЖ)",
+        last_operation: "Технический осмотр состава",
+        date_operation: "05.09.2026 16:20",
+        station_to: "ст. Бухара (УТИ)",
+        eta: "10.09.2026",
+        progress: 38,
+        status: "В движении",
+        distance_left: "860 км"
+      }
+    ]
+  };
+
+  var currentUser = null;
+  var currentCalculatedQuote = null;
+
+  document.addEventListener('DOMContentLoaded', initWidget);
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(initWidget, 100);
+  }
+
+  
+  // =========================================================================
+  // МУЛЬТИМОДАЛЬНЫЙ ДВИЖОК CARAVAN: 6 НАПРАВЛЕНИЙ И ЧЕК-ЛИСТ ДОКУМЕНТОВ
+  // =========================================================================
+  var currentModality = 'rail';
+
+  var DEFAULT_DOCS_BY_MODALITY = {
+    rail: [
+      { name: 'Ж/Д накладная СМГС (SMGS)', code: '0202', mandatory: true, description: 'Основной международный перевозочный документ железнодорожного сообщения колеи 1520 мм.' },
+      { name: 'Коммерческий инвойс (Счёт-фактура)', code: '0301', mandatory: true, description: 'Финансовый документ с реквизитами продавца/покупателя и условиями поставки Incoterms.' },
+      { name: 'Упаковочный лист (Packing List)', code: '0302', mandatory: true, description: 'Поместовая опись веса брутто/нетто, количества грузовых мест и упаковки.' },
+      { name: 'Фитосанитарный / Ветеринарный сертификат', code: '0103', mandatory: true, description: 'Обязателен для растительных, зерновых или кормовых грузов при пересечении границы.' },
+      { name: 'Сертификат происхождения СТ-1', code: '0601', mandatory: true, description: 'Освобождает от уплаты ввозной пошлины в рамках соглашения о свободной торговле СНГ.' }
+    ],
+    fleet: [
+      { name: 'Договор аренды / оперирования подвижного состава', code: '0801', mandatory: true, description: 'Базовый договор закрепления вагонного парка за арендатором на рейс или посуточно.' },
+      { name: 'Заявка формы ГУ-12 на перевозку', code: '0802', mandatory: true, description: 'Официальное согласование курсирования и погрузки вагонов железнодорожной администрацией.' },
+      { name: 'Акт приема-передачи вагонов', code: '0803', mandatory: true, description: 'Фиксирует дату, станцию и техническое состояние при передаче парка.' },
+      { name: 'Справка технического состояния (ВУ-23М / ВУ-36М)', code: '0804', mandatory: true, description: 'Подтверждение исправности колесных пар, тележек и тормозной системы вагонов.' }
+    ],
+    road: [
+      { name: 'Международная автонакладная CMR', code: '0201', mandatory: true, description: 'Договор международной автомобильной перевозки грузов.' },
+      { name: 'Книжка Carnet TIR (МДП)', code: '0204', mandatory: false, description: 'Таможенный документ транзита без досмотра и вскрытия пломб на погранпереходах.' },
+      { name: 'Экспортная декларация (EX-1 / ТД)', code: '0901', mandatory: true, description: 'Подтверждает факт убытия товара и закрытие режима экспорта.' },
+      { name: 'Инвойс и упаковочный лист', code: '0301', mandatory: true, description: 'Коммерческие товаросопроводительные документы для водителя и таможни.' }
+    ],
+    air: [
+      { name: 'Авиагрузовая накладная Air Waybill (AWB)', code: '0203', mandatory: true, description: 'Документ авиакомпании, подтверждающий принятие груза к воздушной перевозке.' },
+      { name: 'Инструкция отправителя (SLI)', code: '0205', mandatory: true, description: 'Поручение агенту на экспедирование, обработку и страхование груза в аэропорту.' },
+      { name: 'Паспорт безопасности MSDS / Декларация IATA DGR', code: '0114', mandatory: false, description: 'Требуется при наличии литиевых аккумуляторов, жидкостей, магнитов или химии.' }
+    ],
+    multimodal: [
+      { name: 'Океанский коносамент (Bill of Lading / B/L)', code: '0206', mandatory: true, description: 'Титульный документ морской перевозки контейнера с правом распоряжения грузом.' },
+      { name: 'Сквозная накладная FIATA FBL', code: '0207', mandatory: true, description: 'Единый сквозной экспедиторский документ на комбинированное плечо (море+ж/д+авто).' },
+      { name: 'Транзитная декларация (ТД) в порту перевалки', code: '0902', mandatory: true, description: 'Оформляется для транзитного следования контейнера от морского порта до сухопутной таможни.' }
+    ],
+    customs: [
+      { name: 'Грузовая таможенная декларация (ГТД / ДТ)', code: '0001', mandatory: true, description: 'Основной документ декларирования для выпуска товара в свободное обращение.' },
+      { name: 'Внешнеторговый контракт + Регистрация ЕЭИСВО', code: '0002', mandatory: true, description: 'Контракт с банком валютного контроля и регистрацией сделки.' },
+      { name: 'Сертификат соответствия / Узстандарт / ЕАС', code: '0101', mandatory: true, description: 'Подтверждение безопасности продукции техническим регламентам.' },
+      { name: 'Платежное поручение по таможенным сборам', code: '0701', mandatory: true, description: 'Подтверждение списания пошлины, сборов и НДС с лицевого счета таможни.' }
+    ]
+  };
+
+  function renderDocumentChecklist(docs) {
+    var grid = document.getElementById('cr-doc-items-grid');
+    if (!grid) return;
+    if (!docs || docs.length === 0) {
+      docs = DEFAULT_DOCS_BY_MODALITY[currentModality] || DEFAULT_DOCS_BY_MODALITY['rail'];
+    }
+
+    var html = '';
+    docs.forEach(function(d) {
+      var isMan = d.mandatory !== false;
+      var tagCls = isMan ? 'mandatory' : 'optional';
+      var tagText = isMan ? 'Обязательный' : 'По запросу';
+      var iconCls = isMan ? 'mandatory' : '';
+      var iconSymbol = isMan ? '<i class="fas fa-check"></i>' : '<i class="fas fa-info"></i>';
+
+      html += '<div class="cr-doc-item">' +
+        '<div class="cr-doc-icon ' + iconCls + '">' + iconSymbol + '</div>' +
+        '<div class="cr-doc-content">' +
+          '<div class="cr-doc-name">' + escapeHtml(d.name) +
+            '<span class="cr-doc-tag ' + tagCls + '">' + tagText + '</span>' +
+          '</div>' +
+          '<div class="cr-doc-desc">' + escapeHtml(d.description || '') + '</div>' +
+        '</div>' +
+      '</div>';
+    });
+    grid.innerHTML = html;
+  }
+
+  function setupModalityTabs() {
+    var bar = document.getElementById('cr-modality-bar');
+    if (!bar) return;
+
+    var btns = bar.querySelectorAll('.cr-modality-btn');
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        btns.forEach(function(b) { b.classList.remove('active'); });
+        this.classList.add('active');
+        currentModality = this.getAttribute('data-modality') || 'rail';
+
+        // Переключаем панели
+        var panels = document.querySelectorAll('.cr-mod-panel');
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        var activePanel = document.getElementById('cr-mod-panel-' + currentModality);
+        if (activePanel) activePanel.classList.add('active');
+
+        // Скрываем/показываем блоки специфичные для Ж/Д
+        var schemeBox = document.getElementById('cr-route-scheme-box');
+        var roleBox = document.querySelector('.cr-role-selection-box');
+        if (currentModality === 'rail') {
+          if (schemeBox) schemeBox.style.display = 'block';
+          if (roleBox) roleBox.style.display = 'block';
+        } else {
+          if (schemeBox) schemeBox.style.display = 'none';
+        }
+
+        // Обновляем чек-лист документов
+        renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY[currentModality]);
+
+        // Запускаем перерасчет для выбранной модальности
+        triggerCustomCalculation();
+      });
+    });
+
+    // Настройка кнопок копирования документов
+    var copyBtn = document.getElementById('cr-btn-copy-docs');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function() {
+        var docs = DEFAULT_DOCS_BY_MODALITY[currentModality] || [];
+        var text = 'Перечень документов Caravan Railroad (' + currentModality.toUpperCase() + '):\n';
+        docs.forEach(function(d, i) {
+          text += (i + 1) + '. ' + d.name + (d.mandatory ? ' [Обязательно]' : '') + ' — ' + d.description + '\n';
+        });
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(function() {
+            alert('Чек-лист документов скопирован в буфер обмена!');
+          });
+        }
+      });
+    }
+
+    var waBtn = document.getElementById('cr-btn-wa-docs');
+    if (waBtn) {
+      waBtn.addEventListener('click', function() {
+        var docs = DEFAULT_DOCS_BY_MODALITY[currentModality] || [];
+        var text = 'Здравствуйте! Отправляю перечень документов для перевозки (' + currentModality.toUpperCase() + '):\n';
+        docs.forEach(function(d, i) {
+          text += (i + 1) + '. ' + d.name + '\n';
+        });
+        window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+      });
+    }
+
+    // Настройка автокомплита ТН ВЭД (Таможня)
+    setupTnvedAutocomplete();
+  }
+
+  function setupTnvedAutocomplete() {
+    var input = document.getElementById('cr-customs-tnved');
+    var dropdown = document.getElementById('cr-customs-tnved-dropdown');
+    if (!input || !dropdown) return;
+
+    input.addEventListener('input', function() {
+      var val = this.value.trim();
+      if (val.length < 2) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      var apiUrl = getCaravanApiUrl();
+      if (apiUrl) {
+        fetch(apiUrl + '/api/customs/tnved?q=' + encodeURIComponent(val) + '&limit=12')
+          .then(function(r) { return r.json(); })
+          .then(function(items) {
+            if (!Array.isArray(items) || items.length === 0) {
+              dropdown.style.display = 'none';
+              return;
+            }
+            var html = '';
+            items.forEach(function(it) {
+              html += '<div class="cr-station-item" data-code="' + it.code + '" data-name="' + escapeHtml(it.name) + '">' +
+                '<div class="cr-st-left">' +
+                  '<span class="cr-st-code" style="color: #c5a059;">' + it.code + '</span>' +
+                  '<span class="cr-st-name">' + escapeHtml(it.name) + '</span>' +
+                '</div>' +
+                '<div class="cr-st-badges">' +
+                  '<span class="cr-st-badge-road">Пошлина: ' + it.duty_pct + '%</span>' +
+                '</div>' +
+              '</div>';
+            });
+            dropdown.innerHTML = html;
+            dropdown.style.display = 'block';
+
+            dropdown.querySelectorAll('.cr-station-item').forEach(function(item) {
+              item.addEventListener('click', function() {
+                input.value = this.getAttribute('data-code') + ' — ' + this.getAttribute('data-name');
+                dropdown.style.display = 'none';
+                triggerCustomCalculation();
+              });
+            });
+          })
+          .catch(function() {});
+      }
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+
+
+  function initWidget() {
+    setupTabs();
+    setupTrackSearch();
+    setupCalculator();
+    setupLogin();
+    setupRegister();
+    loadStats();
+    updateTrackTabAuthState();
+  }
+
+  function setupTabs() {
+    var tabBtns = document.querySelectorAll('#caravan-tracking-root .cr-tab-btn');
+    var tabContents = document.querySelectorAll('#caravan-tracking-root .cr-tab-content');
+
+    tabBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetTab = this.getAttribute('data-tab');
+        tabBtns.forEach(function(b) { b.classList.remove('active'); });
+        tabContents.forEach(function(c) { c.classList.remove('active'); });
+        this.classList.add('active');
+        var activeContent = document.getElementById('cr-tab-' + targetTab);
+        if (activeContent) activeContent.classList.add('active');
+      });
+    });
+
+    function checkInitialHash() {
+      var hash = window.location.hash;
+      if (hash === '#calc' || hash === '#tariffs') {
+        var calcBtn = document.querySelector('#caravan-tracking-root [data-tab="calc"]');
+        if (calcBtn) calcBtn.click();
+      } else if (hash === '#cabinet') {
+        var cabBtn = document.querySelector('#caravan-tracking-root [data-tab="login"]');
+        if (cabBtn) cabBtn.click();
+      } else if (hash === '#register') {
+        var regBtn = document.querySelector('#caravan-tracking-root [data-tab="register"]');
+        if (regBtn) regBtn.click();
+      }
+    }
+    checkInitialHash();
+    window.addEventListener('hashchange', checkInitialHash);
+  }
+
+  function updateTrackTabAuthState() {
+    var lockCard = document.getElementById('cr-track-auth-lock');
+    var authedPanel = document.getElementById('cr-track-authed-panel');
+    var resultBox = document.getElementById('cr-dislocation-result');
+    var input = document.getElementById('cr-track-input');
+    if (resultBox) {
+      resultBox.style.display = 'none';
+      resultBox.innerHTML = '';
+    }
+    if (input) input.value = '';
+
+    if (!currentUser) {
+      if (lockCard) lockCard.style.display = 'block';
+      if (authedPanel) authedPanel.style.display = 'none';
+    } else {
+      if (lockCard) lockCard.style.display = 'none';
+      if (authedPanel) authedPanel.style.display = 'block';
+
+      var compEl = document.getElementById('cr-track-user-company');
+      var b2bEl = document.getElementById('cr-track-user-b2b');
+      if (compEl) compEl.textContent = currentUser.company || currentUser.contact || 'Клиент';
+      if (b2bEl) b2bEl.textContent = currentUser.b2b_id || currentUser.b2b_client_id || 'B2B-CR-9021';
+
+      renderUserTrackingChips();
+    }
+  }
+
+  function renderUserTrackingChips() {
+    var container = document.getElementById('cr-track-user-chips');
+    if (!container) return;
+
+    if (!currentUser) {
+      container.innerHTML = '';
+      return;
+    }
+
+    // Собираем только грузы текущего авторизованного пользователя
+    var userItems = [];
+    if (currentUser.shipments && currentUser.shipments.length) {
+      userItems = currentUser.shipments;
+    } else {
+      for (var i = 0; i < DEMO_DATABASE.shipments.length; i++) {
+        if (DEMO_DATABASE.shipments[i].client_login === currentUser.login) {
+          userItems.push(DEMO_DATABASE.shipments[i]);
+        }
+      }
+    }
+
+    if (!userItems.length) {
+      container.innerHTML = '<span class="cr-chips-title" style="color:#94A3B8;">За вами пока не закреплен подвижной состав. Оформите расчет во вкладке «Расчет тарифов».</span>';
+      return;
+    }
+
+    var html = '<span class="cr-chips-title">Ваш прикрепленный подвижной состав:</span>';
+    userItems.forEach(function(item) {
+      var label = (item.type.indexOf('Контейнер') !== -1 ? 'Контейнер ' : 'Вагон ') + item.id;
+      html += '<button type="button" class="cr-chip" data-fill="' + escapeHtml(item.id) + '">' + escapeHtml(label) + '</button>';
+    });
+    container.innerHTML = html;
+
+    // Вешаем обработчик клика на каждый чип
+    var chips = container.querySelectorAll('.cr-chip');
+    var input = document.getElementById('cr-track-input');
+    chips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        var val = this.getAttribute('data-fill');
+        if (input) {
+          input.value = val;
+          var clearBtn = document.getElementById('cr-track-clear');
+          if (clearBtn) clearBtn.style.display = 'block';
+          doTrack(val);
+        }
+      });
+    });
+  }
+
+  function setupTrackSearch() {
+    var form = document.getElementById('cr-track-form');
+    var input = document.getElementById('cr-track-input');
+    var clearBtn = document.getElementById('cr-track-clear');
+
+    var lockLoginBtn = document.getElementById('cr-lock-btn-login');
+    var lockRegBtn = document.getElementById('cr-lock-btn-register');
+    var goCabinetBtn = document.getElementById('cr-track-go-cabinet');
+    var logoutBtn = document.getElementById('cr-track-logout-btn');
+
+    if (lockLoginBtn) {
+      lockLoginBtn.addEventListener('click', function() {
+        var btn = document.querySelector('#caravan-tracking-root [data-tab="login"]');
+        if (btn) btn.click();
+      });
+    }
+
+    if (lockRegBtn) {
+      lockRegBtn.addEventListener('click', function() {
+        var btn = document.querySelector('#caravan-tracking-root [data-tab="register"]');
+        if (btn) btn.click();
+      });
+    }
+
+    if (goCabinetBtn) {
+      goCabinetBtn.addEventListener('click', function() {
+        var btn = document.querySelector('#caravan-tracking-root [data-tab="login"]');
+        if (btn) btn.click();
+      });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', function() {
+        var btn = document.getElementById('cr-btn-logout');
+        if (btn) {
+          btn.click();
+        } else {
+          currentUser = null;
+          updateTrackTabAuthState();
+        }
+      });
+    }
+
+    if (input && clearBtn) {
+      input.addEventListener('input', function() {
+        clearBtn.style.display = this.value.length > 0 ? 'block' : 'none';
+      });
+      clearBtn.addEventListener('click', function() {
+        input.value = '';
+        clearBtn.style.display = 'none';
+        input.focus();
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var query = (input.value || '').trim();
+        if (query) doTrack(query);
+      });
+    }
+  }
+
+  function doTrack(query) {
+    if (!currentUser) {
+      updateTrackTabAuthState();
+      return;
+    }
+
+    var loader = document.getElementById('cr-track-loader');
+    var resultBox = document.getElementById('cr-dislocation-result');
+    resultBox.style.display = 'none';
+    resultBox.innerHTML = '';
+    loader.style.display = 'flex';
+
+    if (CARAVAN_CONFIG.apiUrl) {
+      var url = CARAVAN_CONFIG.apiUrl + (CARAVAN_CONFIG.apiUrl.indexOf('?') === -1 ? '?' : '&') +
+                'action=track&id=' + encodeURIComponent(query) +
+                '&login=' + encodeURIComponent(currentUser.login || '');
+      fetch(url)
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          loader.style.display = 'none';
+          if (data && data.success && data.data) {
+            renderDislocationCard(data.data, resultBox);
+          } else if (data && data.access_denied) {
+            renderAccessDeniedCard(query, currentUser, data.message);
+          } else if (data && data.require_auth) {
+            currentUser = null;
+            updateTrackTabAuthState();
+          } else {
+            renderError(data.message || ('Груз с номером "' + query + '" не найден в дислокации'), resultBox);
+          }
+        })
+        .catch(function() {
+          loader.style.display = 'none';
+          renderError('Ошибка связи с ЖД шлюзом Caravan Railroad.', resultBox);
+        });
+    } else {
+      setTimeout(function() {
+        loader.style.display = 'none';
+        var cleanQ = query.toLowerCase().replace(/[\s\-_]/g, '');
+        var matchedItem = null;
+
+        for (var i = 0; i < DEMO_DATABASE.shipments.length; i++) {
+          var item = DEMO_DATABASE.shipments[i];
+          if (item.id.toLowerCase().replace(/[\s\-_]/g, '') === cleanQ ||
+              item.invoice_num.toLowerCase().replace(/[\s\-_]/g, '') === cleanQ) {
+            matchedItem = item;
+            break;
+          }
+        }
+
+        if (matchedItem) {
+          // ПРОВЕРКА ПРИНАДЛЕЖНОСТИ ТРАНСПОРТА:
+          // Доступ разрешен только если client_login совпадает с логином авторизованного контрагента
+          if (matchedItem.client_login === currentUser.login) {
+            renderDislocationCard(matchedItem, resultBox);
+          } else {
+            // Чужой транспорт — блокируем доступ
+            renderAccessDeniedCard(query, currentUser, null);
+          }
+        } else {
+          // Транспорт не найден вовсе
+          renderError('Подвижной состав или накладная с номером "' + query + '" не найдены в дислокации Caravan Railroad. Проверьте правильность введенного номера.', resultBox);
+        }
+      }, 400);
+    }
+  }
+
+  function renderAccessDeniedCard(query, user, customMsg) {
+    var resultBox = document.getElementById('cr-dislocation-result');
+    var companyName = user ? (user.company || 'вашей организацией') : 'вашей организацией';
+    var defaultMsg = 'Подвижной состав / контейнер <strong>№ ' + escapeHtml(query) + '</strong> не прикреплен к договору организации <strong>' + escapeHtml(companyName) + '</strong>.<br />' +
+      'В целях безопасности и защиты коммерческой тайны, каждый контрагент имеет доступ к мониторингу только того подвижного состава, по которому является грузоотправителем, грузополучателем или экспедитором по действующему контракту.';
+
+    var html = '' +
+      '<div class="cr-access-denied-box">' +
+        '<div class="cr-ad-icon">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' +
+            '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>' +
+            '<line x1="12" y1="8" x2="12" y2="12"></line>' +
+            '<line x1="12" y1="16" x2="12.01" y2="16"></line>' +
+          '</svg>' +
+        '</div>' +
+        '<h4>Доступ ограничен: подвижной состав не числится за вашим аккаунтом</h4>' +
+        '<p>' + (customMsg ? escapeHtml(customMsg) : defaultMsg) + '</p>' +
+        '<div class="cr-ad-footer">' +
+          'Если этот подвижной состав должен быть прикреплен к вашему кабинету, свяжитесь с диспетчерской службой Caravan Railroad: <strong>+7 (777) 123-45-67</strong> или напишите на <strong>support@caravanrr.com</strong>' +
+        '</div>' +
+      '</div>';
+    resultBox.innerHTML = html;
+    resultBox.style.display = 'block';
+  }
+
+  function renderDislocationCard(data, container) {
+    var progress = data.progress || 50;
+    var html = '' +
+      '<div class="cr-disloc-header">' +
+        '<div class="cr-disloc-title">' +
+          '<h4>' + escapeHtml(data.id) + '</h4>' +
+          '<span class="cr-type-badge">' + escapeHtml(data.type) + '</span>' +
+        '</div>' +
+        '<div class="cr-status-pill cr-status-in-transit">' +
+          '<span class="cr-pulse-dot" style="background: currentColor;"></span>' +
+          '<span>' + escapeHtml(data.status) + '</span>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="cr-route-timeline">' +
+        '<div class="cr-route-track"><div class="cr-route-progress-fill" style="width: ' + progress + '%;"></div></div>' +
+        '<div class="cr-route-nodes">' +
+          '<div class="cr-route-node">' +
+            '<div class="cr-node-point completed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>' +
+            '<div class="cr-node-tag">Отправление</div>' +
+            '<div class="cr-node-station">' + escapeHtml(data.station_from) + '</div>' +
+            '<div class="cr-node-date">' + escapeHtml(data.date_from) + '</div>' +
+          '</div>' +
+
+          '<div class="cr-route-node">' +
+            '<div class="cr-node-point current"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg></div>' +
+            '<div class="cr-node-tag">Дислокация (' + progress + '%)</div>' +
+            '<div class="cr-node-station">' + escapeHtml(data.station_current) + '</div>' +
+            '<div class="cr-node-date">' + escapeHtml(data.date_operation) + '</div>' +
+          '</div>' +
+
+          '<div class="cr-route-node">' +
+            '<div class="cr-node-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"></path></svg></div>' +
+            '<div class="cr-node-tag">Назначение</div>' +
+            '<div class="cr-node-station">' + escapeHtml(data.station_to) + '</div>' +
+            '<div class="cr-node-date">Расчет: ' + escapeHtml(data.eta) + '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="cr-operation-banner">' +
+        '<strong>Последняя операция:</strong> ' + escapeHtml(data.last_operation) + ' • <em>' + escapeHtml(data.railway_current) + '</em>' +
+      '</div>' +
+
+      '<div class="cr-details-grid">' +
+        '<div class="cr-detail-item"><span class="cr-detail-k">Накладная:</span><span class="cr-detail-v">' + escapeHtml(data.invoice_num) + '</span></div>' +
+        '<div class="cr-detail-item"><span class="cr-detail-k">Груз:</span><span class="cr-detail-v">' + escapeHtml(data.cargo_name) + '</span></div>' +
+        '<div class="cr-detail-item"><span class="cr-detail-k">Вес:</span><span class="cr-detail-v">' + escapeHtml(data.weight) + '</span></div>' +
+        '<div class="cr-detail-item"><span class="cr-detail-k">Осталось пути:</span><span class="cr-detail-v">' + escapeHtml(data.distance_left) + '</span></div>' +
+      '</div>';
+
+    container.innerHTML = html;
+    container.style.display = 'block';
+  }
+
+  function renderError(msg, container) {
+    container.innerHTML = '<div class="cr-error-msg">' + escapeHtml(msg) + '</div>';
+    container.style.display = 'block';
+  }
+
+  /**
+   * КАЛЬКУЛЯТОР ТАРИФОВ И INCOTERMS 2020
+   */
+  function setupCalculator() {
+    var modePresetBtn = document.getElementById('cr-btn-mode-preset');
+    var modeCustomBtn = document.getElementById('cr-btn-mode-custom');
+    var presetView = document.getElementById('cr-calc-preset-view');
+    var customView = document.getElementById('cr-calc-custom-view');
+
+    if (modePresetBtn && modeCustomBtn) {
+      modePresetBtn.addEventListener('click', function() {
+        modePresetBtn.classList.add('active');
+        modeCustomBtn.classList.remove('active');
+        presetView.style.display = 'block';
+        customView.style.display = 'none';
+      });
+
+      modeCustomBtn.addEventListener('click', function() {
+        modeCustomBtn.classList.add('active');
+        modePresetBtn.classList.remove('active');
+        customView.style.display = 'block';
+        presetView.style.display = 'none';
+        triggerCustomCalculation();
+      });
+    }
+
+    renderPresetRoutes(DEMO_DATABASE.routes);
+
+    // Роли в договоре
+    var rolePills = document.querySelectorAll('#caravan-tracking-root .cr-role-pill');
+    rolePills.forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        rolePills.forEach(function(p) { p.classList.remove('active'); });
+        this.classList.add('active');
+        var radio = this.querySelector('input[type="radio"]');
+        if (radio) radio.checked = true;
+        triggerCustomCalculation();
+      });
+    });
+
+    // Автодополнение станций
+    setupStationAutocomplete('cr-calc-from', 'cr-calc-from-dropdown');
+    setupStationAutocomplete('cr-calc-to', 'cr-calc-to-dropdown');
+    setupModalityTabs();
+
+    // Автодополнение номенклатуры грузов ЕТСНГ / ГНГ
+    setupCargoAutocomplete('cr-calc-cargo-search', 'cr-calc-cargo-dropdown');
+
+    // Кнопка принудительного расчета маршрута и тарифа
+    var executeCalcBtn = document.getElementById('cr-btn-execute-calc');
+    if (executeCalcBtn) {
+      executeCalcBtn.addEventListener('click', function() {
+        triggerCustomCalculation();
+        var resBox = document.getElementById('cr-calc-result-box');
+        if (resBox) {
+          resBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    // Переключатель валют
+    var curPills = document.querySelectorAll('#caravan-tracking-root .cr-cur-pill');
+    curPills.forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        curPills.forEach(function(p) { p.classList.remove('active'); });
+        this.classList.add('active');
+        selectedCurrency = this.getAttribute('data-cur') || 'USD';
+        triggerCustomCalculation();
+      });
+    });
+
+    // Слушатели полей расчета
+    var calcInputs = [
+      'cr-calc-from', 'cr-calc-to', 'cr-calc-border', 'cr-calc-border-1', 'cr-calc-border-2', 'cr-calc-km', 
+      'cr-calc-transport', 'cr-calc-park', 'cr-calc-cargo', 'cr-calc-weight',
+      'cr-calc-freight-type', 'cr-calc-incoterms', 'cr-opt-security', 'cr-opt-customs'
+    ];
+    calcInputs.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', triggerCustomCalculation);
+        el.addEventListener('change', triggerCustomCalculation);
+      }
+    });
+
+    var kmChips = document.querySelectorAll('#caravan-tracking-root .cr-km-chip');
+    kmChips.forEach(function(chip) {
+      chip.addEventListener('click', function() {
+        var km = this.getAttribute('data-km');
+        var kmInput = document.getElementById('cr-calc-km');
+        if (kmInput) {
+          kmInput.value = km;
+          triggerCustomCalculation();
+        }
+      });
+    });
+
+    // Кнопка печати
+    var printBtn = document.getElementById('cr-btn-print-quote');
+    if (printBtn) {
+      printBtn.addEventListener('click', function() {
+        window.print();
+      });
+    }
+
+    setupBookingModal();
+    // Первоначальный расчет
+    setTimeout(triggerCustomCalculation, 150);
+  }
+
+  var selectedCurrency = 'USD';
+
+  
+    function setupCargoAutocomplete(inputId, dropdownId) {
+    var input = document.getElementById(inputId);
+    var dropdown = document.getElementById(dropdownId);
+    if (!input || !dropdown) return;
+
+    input.addEventListener('input', function() {
+      var val = this.value.trim();
+      if (val.length < 2) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      var matches = CaravanRailwayEngine.searchCargo(val, 12);
+      if (!matches || matches.length === 0) {
+        dropdown.style.display = 'none';
+        return;
+      }
+
+      var html = '<div class="cr-cargo-table-header">' +
+        '<span class="cr-col-etsng">ЕТСНГ</span>' +
+        '<span class="cr-col-gng">ГНГ</span>' +
+        '<span class="cr-col-name">Наименование груза</span>' +
+        '<span class="cr-col-class">Класс</span>' +
+        '<span class="cr-col-cat">Категория</span>' +
+      '</div>';
+
+      matches.forEach(function(c) {
+        html += '<div class="cr-cargo-item-row" data-etsng="' + c.code_etsng + '" data-gng="' + c.code_gng + '" data-name="' + escapeHtml(c.name) + '" data-class="' + c.tariff_class + '" data-wagon="' + (c.default_wagon || 'grain') + '">' +
+          '<span class="cr-col-etsng">' + c.code_etsng + '</span>' +
+          '<span class="cr-col-gng">' + c.code_gng + '</span>' +
+          '<span class="cr-col-name">' + escapeHtml(c.name) + '</span>' +
+          '<span class="cr-col-class"><span class="cr-cargo-class">' + c.tariff_class + ' кл.</span></span>' +
+          '<span class="cr-col-cat">' + escapeHtml(c.category) + '</span>' +
+        '</div>';
+      });
+
+      dropdown.innerHTML = html;
+      dropdown.style.display = 'block';
+
+      var items = dropdown.querySelectorAll('.cr-cargo-item-row');
+      items.forEach(function(item) {
+        item.addEventListener('click', function() {
+          var cName = this.getAttribute('data-name');
+          var cEtsng = this.getAttribute('data-etsng');
+          var cGng = this.getAttribute('data-gng');
+          var cWagon = this.getAttribute('data-wagon');
+
+          input.value = cName + ' (ЕТСНГ: ' + cEtsng + ', ГНГ: ' + cGng + ')';
+          dropdown.style.display = 'none';
+
+          var transportSel = document.getElementById('cr-calc-transport');
+          if (transportSel && cWagon) {
+            transportSel.value = cWagon;
+          }
+
+          triggerCustomCalculation();
+        });
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+
+  
+  // Caravan Rail Engine API Helper
+  function getCaravanApiUrl() {
+    if (window.CARAVAN_API_URL) return window.CARAVAN_API_URL.replace(/\/$/, '');
+    if (typeof location !== 'undefined' && (location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+      return 'http://localhost:8090';
+    }
+    return null;
+  }
+
+  function renderIntermediateStations(stations) {
+    var wrap = document.getElementById('cr-intermediate-stations-wrap');
+    var badgesEl = document.getElementById('cr-intermediate-badges');
+    var countEl = document.getElementById('cr-intermediate-count');
+    if (!wrap || !badgesEl) return;
+
+    if (!stations || stations.length === 0) {
+      wrap.style.display = 'none';
+      return;
+    }
+
+    var html = '';
+    for (var i = 0; i < stations.length; i++) {
+      var stName = stations[i];
+      var cls = 'cr-inter-badge';
+      if (i === 0) cls += ' origin';
+      else if (i === stations.length - 1) cls += ' dest';
+      else if (stName.indexOf('стык') !== -1 || stName.indexOf('эксп') !== -1 || stName.indexOf('Сарыагаш') !== -1 || stName.indexOf('Илецк') !== -1 || stName.indexOf('Келес') !== -1) {
+        cls += ' border';
+      }
+
+      html += '<span class="' + cls + '">' + escapeHtml(stName) + '</span>';
+      if (i < stations.length - 1) {
+        html += '<span class="cr-inter-arrow">➔</span>';
+      }
+    }
+
+    badgesEl.innerHTML = html;
+    if (countEl) countEl.textContent = 'Узлов: ' + stations.length;
+    wrap.style.display = 'block';
+  }
+
+  function setupStationAutocomplete(inputId, dropdownId) {
+    var input = document.getElementById(inputId);
+    var dropdown = document.getElementById(dropdownId);
+    if (!input || !dropdown) return;
+
+    input.addEventListener('input', function() {
+      var val = this.value.trim();
+      if (val.length < 2) {
+        dropdown.style.display = 'none';
+        return;
+      }
+      function renderStationDropdown(matches) {
+        if (!matches || matches.length === 0) {
+          dropdown.style.display = 'none';
+          return;
+        }
+        var html = '';
+        matches.forEach(function(st) {
+          var borderBadge = st.is_border ? '<span class="cr-st-badge-border">СТЫК</span>' : '';
+          var rLabel = st.road_label || st.road || st.admin || '';
+          html += '<div class="cr-station-item" data-code="' + st.code + '" data-name="' + escapeHtml(st.name) + '" data-road="' + escapeHtml(rLabel) + '" data-land="' + escapeHtml(st.country_name || st.country || '') + '">' +
+            '<div class="cr-st-left">' +
+              '<span class="cr-st-code">' + st.code + '</span>' +
+              '<span class="cr-st-name">' + escapeHtml(st.name) + '</span>' +
+            '</div>' +
+            '<div class="cr-st-badges">' +
+              '<span class="cr-st-badge-road">' + escapeHtml(rLabel) + '</span>' +
+              borderBadge +
+            '</div>' +
+          '</div>';
+        });
+        dropdown.innerHTML = html;
+        dropdown.style.display = 'block';
+
+        var items = dropdown.querySelectorAll('.cr-station-item');
+        items.forEach(function(item) {
+          item.addEventListener('click', function() {
+            var sName = this.getAttribute('data-name');
+            var sCode = this.getAttribute('data-code');
+            var sRoad = this.getAttribute('data-road');
+            input.value = sName + ' (' + sCode + (sRoad ? ', ' + sRoad : '') + ')';
+            dropdown.style.display = 'none';
+            triggerCustomCalculation();
+          });
+        });
+      }
+
+      // 1. Быстрый локальный поиск (0 мс)
+      var localMatches = CaravanRailwayEngine.searchStations(val, 10);
+      renderStationDropdown(localMatches);
+
+      // 2. Асинхронный поиск по всей базе 13 694 станций (API)
+      var apiUrl = getCaravanApiUrl();
+      if (apiUrl) {
+        fetch(apiUrl + '/api/stations?q=' + encodeURIComponent(val) + '&limit=15')
+          .then(function(r) { return r.json(); })
+          .then(function(serverData) {
+            if (Array.isArray(serverData) && serverData.length > 0) {
+              renderStationDropdown(serverData);
+            }
+          })
+          .catch(function() {});
+      }
+      return;
+    });
+
+    document.addEventListener('click', function(e) {
+      if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = 'none';
+      }
+    });
+  }
+
+  function renderPresetRoutes(routes) {
+    var container = document.getElementById('cr-preset-routes-container');
+    if (!container) return;
+
+    var html = '';
+    routes.forEach(function(r, idx) {
+      var selectedClass = idx === 0 ? 'selected' : '';
+      html += '' +
+        '<div class="cr-preset-route-card ' + selectedClass + '" data-route-id="' + r.id + '">' +
+          '<div class="cr-pr-top">' +
+            '<span>' + escapeHtml(r.from) + '</span>' +
+            '<span class="cr-pr-arrow">➔</span>' +
+            '<span>' + escapeHtml(r.to) + '</span>' +
+          '</div>' +
+          '<div class="cr-pr-info">' +
+            'ПС: <strong>' + escapeHtml(r.transport) + '</strong> • Базис: <strong>' + escapeHtml(r.incoterms) + '</strong>' +
+          '</div>' +
+          '<div class="cr-pr-bottom">' +
+            '<div class="cr-pr-price">$' + r.price_usd.toLocaleString('ru-RU') + ' USD</div>' +
+            '<div class="cr-pr-days">Срок: ' + escapeHtml(r.transit_days) + '</div>' +
+          '</div>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+
+    if (routes.length > 0) selectPresetRoute(routes[0]);
+
+    var cards = container.querySelectorAll('.cr-preset-route-card');
+    cards.forEach(function(card, index) {
+      card.addEventListener('click', function() {
+        cards.forEach(function(c) { c.classList.remove('selected'); });
+        this.classList.add('selected');
+        selectPresetRoute(routes[index]);
+      });
+    });
+  }
+
+  function selectPresetRoute(r) {
+    var discount = currentUser ? (currentUser.discount || 0) : 0;
+    var price = r.price_usd;
+    if (discount > 0) price = Math.round(price * (1 - discount / 100));
+
+    currentCalculatedQuote = {
+      from: r.from,
+      to: r.to,
+      transport: r.transport,
+      distance_km: r.distance_km,
+      incoterms: r.incoterms,
+      client_role: currentUser ? currentUser.role : 'Грузоотправитель',
+      total_price_usd: price,
+      transit_days: r.transit_days,
+      breakdown: r.breakdown || {
+        rail: Math.round(price * 0.65),
+        wagon: Math.round(price * 0.2),
+        incoterms: Math.round(price * 0.1),
+        extra: Math.round(price * 0.05)
+      }
+    };
+
+    updateQuoteDisplay(currentCalculatedQuote, discount);
+  }
+
+  /* (syncBorderDropdowns deduplicated) */
+
+  function renderRouteScheme(route) {
+    var flowEl = document.getElementById('cr-rs-flow');
+    if (!flowEl) return;
+
+    var rsBadge = document.getElementById('cr-rs-badge');
+    if (rsBadge) rsBadge.textContent = route.messageType;
+
+    var rsDist = document.getElementById('cr-rs-distance');
+    if (rsDist) rsDist.textContent = 'Общий путь: ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км';
+
+    var html = '';
+
+    if (route.isTransit && route.legs && route.legs.length >= 3) {
+      var leg1 = route.legs[0];
+      var leg2 = route.legs[1];
+      var leg3 = route.legs[2];
+      var b1Name = route.border1 ? route.border1.name.split('/')[0].trim() : leg1.to;
+      var b2Name = route.border2 ? (route.border2.name.split('/')[0].trim()) : leg2.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg1.countryName) + ' (' + escapeHtml(leg1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg1.road) + ': ' + leg1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b1Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 1 (РЖД / КТЖ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg2.road) + ': ' + leg2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b2Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 2 (КТЖ / УТИ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg3.road) + ': ' + leg3.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg3.countryName) + ' (' + escapeHtml(leg3.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else if (route.legs && route.legs.length >= 2) {
+      var l1 = route.legs[0];
+      var l2 = route.legs[1];
+      var bName = route.borderCrossing ? route.borderCrossing.name.split('/')[0].trim() : l1.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l1.countryName) + ' (' + escapeHtml(l1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l1.road) + ': ' + l1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(bName) + '</div>' +
+          '<div class="cr-rs-sub">Межгосударственный стыковой пункт</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l2.road) + ': ' + l2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l2.countryName) + ' (' + escapeHtml(l2.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else {
+      var domLeg = (route.legs && route.legs[0]) ? route.legs[0] : null;
+      var domRoad = domLeg ? domLeg.road : (route.from.road_label || 'Ж/Д');
+      var domCountry = domLeg ? domLeg.countryName : (route.from.country_name || '');
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(domRoad) + ': ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    flowEl.innerHTML = html;
+  }
+
+  var lastSyncedRouteKey = '';
+
+  function syncBorderDropdowns(route) {
+    var singleWrap = document.getElementById('cr-border-single-wrap');
+    var dualWrap = document.getElementById('cr-border-dual-wrap');
+    var singleSelect = document.getElementById('cr-calc-border');
+    var b1Select = document.getElementById('cr-calc-border-1');
+    var b2Select = document.getElementById('cr-calc-border-2');
+
+    if (!singleWrap || !dualWrap) return;
+
+    var routeKey = (route.from.country || '') + '-' + (route.to.country || '') + (route.isTransit ? '-transit' : '');
+
+    if (route.isTransit && route.availBorders1 && route.availBorders2) {
+      singleWrap.style.display = 'none';
+      dualWrap.style.display = 'grid';
+
+      if (lastSyncedRouteKey !== routeKey) {
+        if (b1Select) {
+          var b1Current = b1Select.value;
+          var b1Html = '<option value="auto">Определять автоматически (Оптимальный)</option>';
+          route.availBorders1.forEach(function(b) {
+            b1Html += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          b1Select.innerHTML = b1Html;
+          if (b1Current && b1Current !== 'auto' && route.availBorders1.some(function(b) { return b.code === b1Current; })) {
+            b1Select.value = b1Current;
+          } else {
+            b1Select.value = (route.border1 && route.border1.code) ? route.border1.code : 'auto';
+          }
+        }
+        if (b2Select) {
+          var b2Current = b2Select.value;
+          var b2Html = '<option value="auto">Определять автоматически (Оптимальный)</option>';
+          route.availBorders2.forEach(function(b) {
+            b2Html += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          b2Select.innerHTML = b2Html;
+          if (b2Current && b2Current !== 'auto' && route.availBorders2.some(function(b) { return b.code === b2Current; })) {
+            b2Select.value = b2Current;
+          } else {
+            b2Select.value = (route.border2 && route.border2.code) ? route.border2.code : 'auto';
+          }
+        }
+        lastSyncedRouteKey = routeKey;
+      }
+    } else if (route.availBorders && route.availBorders.length > 0) {
+      dualWrap.style.display = 'none';
+      singleWrap.style.display = 'block';
+
+      if (lastSyncedRouteKey !== routeKey) {
+        if (singleSelect) {
+          var sCurrent = singleSelect.value;
+          var sHtml = '<option value="auto">Определять автоматически по плану формирования</option>';
+          route.availBorders.forEach(function(b) {
+            sHtml += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          singleSelect.innerHTML = sHtml;
+          if (sCurrent && sCurrent !== 'auto' && route.availBorders.some(function(b) { return b.code === sCurrent; })) {
+            singleSelect.value = sCurrent;
+          } else {
+            singleSelect.value = (route.border && route.border.code) ? route.border.code : 'auto';
+          }
+        }
+        lastSyncedRouteKey = routeKey;
+      }
+    } else {
+      dualWrap.style.display = 'none';
+      singleWrap.style.display = 'none';
+      lastSyncedRouteKey = routeKey;
+    }
+  }
+
+  function formatBorderSchemeName(name) {
+    if (!name) return '';
+    return name.split('/')[0].replace(/\[.*?\]/g, '').trim();
+  }
+
+  function renderRouteScheme(route) {
+    var flowEl = document.getElementById('cr-rs-flow');
+    if (!flowEl) return;
+
+    var rsBadge = document.getElementById('cr-rs-badge');
+    if (rsBadge) rsBadge.textContent = route.messageType;
+
+    var rsDist = document.getElementById('cr-rs-distance');
+    if (rsDist) rsDist.textContent = 'Общий путь: ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км';
+
+    var html = '';
+
+    if (route.isTransit && route.legs && route.legs.length >= 3) {
+      var leg1 = route.legs[0];
+      var leg2 = route.legs[1];
+      var leg3 = route.legs[2];
+      var b1Name = route.border1 ? formatBorderSchemeName(route.border1.name) : leg1.to;
+      var b2Name = route.border2 ? formatBorderSchemeName(route.border2.name) : leg2.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg1.countryName) + ' (' + escapeHtml(leg1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg1.road) + ': ' + leg1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b1Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 1 (РЖД / КТЖ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg2.road) + ': ' + leg2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b2Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 2 (КТЖ / УТИ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg3.road) + ': ' + leg3.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg3.countryName) + ' (' + escapeHtml(leg3.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else if (route.legs && route.legs.length >= 2) {
+      var l1 = route.legs[0];
+      var l2 = route.legs[1];
+      var bName = route.borderCrossing ? formatBorderSchemeName(route.borderCrossing.name) : l1.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l1.countryName) + ' (' + escapeHtml(l1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l1.road) + ': ' + l1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(bName) + '</div>' +
+          '<div class="cr-rs-sub">Межгосударственный стыковой пункт</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l2.road) + ': ' + l2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l2.countryName) + ' (' + escapeHtml(l2.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else {
+      var domLeg = (route.legs && route.legs[0]) ? route.legs[0] : null;
+      var domRoad = domLeg ? domLeg.road : (route.from.road_label || 'Ж/Д');
+      var domCountry = domLeg ? domLeg.countryName : (route.from.country_name || '');
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(domRoad) + ': ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    flowEl.innerHTML = html;
+  }
+
+  var lastSyncedRouteKey = '';
+
+  function syncBorderDropdowns(route) {
+    var singleWrap = document.getElementById('cr-border-single-wrap');
+    var dualWrap = document.getElementById('cr-border-dual-wrap');
+    var singleSelect = document.getElementById('cr-calc-border');
+    var b1Select = document.getElementById('cr-calc-border-1');
+    var b2Select = document.getElementById('cr-calc-border-2');
+
+    if (!singleWrap || !dualWrap) return;
+
+    var routeKey = (route.from.country || '') + '-' + (route.to.country || '') + (route.isTransit ? '-transit' : '');
+
+    if (route.isTransit && route.availBorders1 && route.availBorders2) {
+      singleWrap.style.display = 'none';
+      dualWrap.style.display = 'grid';
+
+      if (lastSyncedRouteKey !== routeKey) {
+        if (b1Select) {
+          var b1Current = b1Select.value;
+          var b1Html = '<option value="auto">Определять автоматически (Оптимальный)</option>';
+          route.availBorders1.forEach(function(b) {
+            b1Html += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          b1Select.innerHTML = b1Html;
+          if (b1Current && b1Current !== 'auto' && route.availBorders1.some(function(b) { return b.code === b1Current; })) {
+            b1Select.value = b1Current;
+          }
+        }
+        if (b2Select) {
+          var b2Current = b2Select.value;
+          var b2Html = '<option value="auto">Определять автоматически (Оптимальный)</option>';
+          route.availBorders2.forEach(function(b) {
+            b2Html += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          b2Select.innerHTML = b2Html;
+          if (b2Current && b2Current !== 'auto' && route.availBorders2.some(function(b) { return b.code === b2Current; })) {
+            b2Select.value = b2Current;
+          }
+        }
+        lastSyncedRouteKey = routeKey;
+      }
+    } else if (route.availBorders && route.availBorders.length > 0) {
+      dualWrap.style.display = 'none';
+      singleWrap.style.display = 'block';
+
+      if (lastSyncedRouteKey !== routeKey) {
+        if (singleSelect) {
+          var sCurrent = singleSelect.value;
+          var sHtml = '<option value="auto">Определять автоматически по плану формирования</option>';
+          route.availBorders.forEach(function(b) {
+            sHtml += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          singleSelect.innerHTML = sHtml;
+          if (sCurrent && sCurrent !== 'auto' && route.availBorders.some(function(b) { return b.code === sCurrent; })) {
+            singleSelect.value = sCurrent;
+          }
+        }
+        lastSyncedRouteKey = routeKey;
+      }
+    } else {
+      dualWrap.style.display = 'none';
+      singleWrap.style.display = 'none';
+      lastSyncedRouteKey = routeKey;
+    }
+  }
+
+  function formatBorderSchemeName(name) {
+    if (!name) return '';
+    return name.split('/')[0].replace(/\[.*?\]/g, '').trim();
+  }
+
+  function renderRouteScheme(route) {
+    var flowEl = document.getElementById('cr-rs-flow');
+    if (!flowEl) return;
+
+    var rsBadge = document.getElementById('cr-rs-badge');
+    if (rsBadge) rsBadge.textContent = route.messageType;
+
+    var rsDist = document.getElementById('cr-rs-distance');
+    if (rsDist) rsDist.textContent = 'Общий путь: ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км';
+
+    var html = '';
+
+    if (route.isTransit && route.legs && route.legs.length >= 3) {
+      var leg1 = route.legs[0];
+      var leg2 = route.legs[1];
+      var leg3 = route.legs[2];
+      var b1Name = route.border1 ? formatBorderSchemeName(route.border1.name) : leg1.to;
+      var b2Name = route.border2 ? formatBorderSchemeName(route.border2.name) : leg2.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg1.countryName) + ' (' + escapeHtml(leg1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg1.road) + ': ' + leg1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b1Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 1 (РЖД / КТЖ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg2.road) + ': ' + leg2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b2Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 2 (КТЖ / УТИ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg3.road) + ': ' + leg3.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg3.countryName) + ' (' + escapeHtml(leg3.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else if (route.legs && route.legs.length >= 2) {
+      var l1 = route.legs[0];
+      var l2 = route.legs[1];
+      var bName = route.borderCrossing ? formatBorderSchemeName(route.borderCrossing.name) : l1.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l1.countryName) + ' (' + escapeHtml(l1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l1.road) + ': ' + l1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(bName) + '</div>' +
+          '<div class="cr-rs-sub">Межгосударственный стыковой пункт</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l2.road) + ': ' + l2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l2.countryName) + ' (' + escapeHtml(l2.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else {
+      var domLeg = (route.legs && route.legs[0]) ? route.legs[0] : null;
+      var domRoad = domLeg ? domLeg.road : (route.from.road_label || 'Ж/Д');
+      var domCountry = domLeg ? domLeg.countryName : (route.from.country_name || '');
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(domRoad) + ': ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    flowEl.innerHTML = html;
+  }
+
+  
+  function handleNonRailCalculation(modality) {
+    var apiUrl = getCaravanApiUrl();
+    var tableBody = document.getElementById('cr-calc-table-body');
+    var totalEl = document.getElementById('cr-calc-total');
+    if (!tableBody) return;
+
+    if (modality === 'fleet') {
+      var wType = (document.getElementById('cr-fleet-type') ? document.getElementById('cr-fleet-type').value : 'grain');
+      var wCount = parseInt(document.getElementById('cr-fleet-count') ? document.getElementById('cr-fleet-count').value : 10) || 10;
+      var wDays = parseInt(document.getElementById('cr-fleet-days') ? document.getElementById('cr-fleet-days').value : 30) || 30;
+      var rType = (document.getElementById('cr-fleet-rent-type') ? document.getElementById('cr-fleet-rent-type').value : 'daily');
+      var routeText = (document.getElementById('cr-fleet-route') ? document.getElementById('cr-fleet-route').value : 'Акмола ➔ Ташкент');
+
+      var rateMap = { grain: 42, covered: 38, gondola: 32, platform: 29, tank: 45 };
+      var dailyRate = rateMap[wType] || 40;
+      var totalUsd = dailyRate * wDays * wCount;
+
+      tableBody.innerHTML = '<tr><td>Суточная аренда парка Caravan (' + wCount + ' ваг. x ' + wDays + ' сут.)</td><td>' + wDays + ' сут.</td><td>$' + dailyRate + '/сут.</td><td>$' + totalUsd.toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Обеспечение дислокации и подсыла под погрузку</td><td>' + escapeHtml(routeText) + '</td><td>Включено</td><td>$0</td></tr>';
+      if (totalEl) totalEl.textContent = '$' + totalUsd.toLocaleString('ru-RU');
+      renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['fleet']);
+
+      if (apiUrl) {
+        fetch(apiUrl + '/api/calculate/fleet', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ wagon_type: wType, count: wCount, rent_days: wDays, rent_type: rType })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
+        }).catch(function() {});
+      }
+    } else if (modality === 'road') {
+      var rFrom = (document.getElementById('cr-road-from') ? document.getElementById('cr-road-from').value : 'Москва');
+      var rTo = (document.getElementById('cr-road-to') ? document.getElementById('cr-road-to').value : 'Ташкент');
+      var rType = (document.getElementById('cr-road-type') ? document.getElementById('cr-road-type').value : 'tent');
+      var rWeight = parseFloat(document.getElementById('cr-road-weight') ? document.getElementById('cr-road-weight').value : 20) || 20;
+
+      var baseCost = (rType === 'reefer' ? 6200 : (rType === 'mega' ? 5600 : 4900));
+      tableBody.innerHTML = '<tr><td>Международный автофрахт FTL (' + escapeHtml(rFrom) + ' ➔ ' + escapeHtml(rTo) + ')</td><td>~3 400 км</td><td>$' + baseCost.toLocaleString('ru-RU') + '</td><td>$' + baseCost.toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Транзитные погранпереходы и таможенное сопровождение</td><td>РФ / КЗХ / УЗБ</td><td>Включено</td><td>$250</td></tr>';
+      var totalRoad = baseCost + 250;
+      if (totalEl) totalEl.textContent = '$' + totalRoad.toLocaleString('ru-RU');
+      renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['road']);
+
+      if (apiUrl) {
+        fetch(apiUrl + '/api/calculate/road', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ from: rFrom, to: rTo, truck_type: rType, weight: rWeight })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
+        }).catch(function() {});
+      }
+    } else if (modality === 'air') {
+      var aFrom = (document.getElementById('cr-air-from') ? document.getElementById('cr-air-from').value : 'CAN');
+      var aWeight = parseFloat(document.getElementById('cr-air-weight') ? document.getElementById('cr-air-weight').value : 350) || 350;
+      var aVol = parseFloat(document.getElementById('cr-air-volume') ? document.getElementById('cr-air-volume').value : 2.5) || 2.5;
+      var chWeight = Math.max(aWeight, aVol * 167);
+      var airCost = Math.round(chWeight * 3.85 + 120);
+
+      tableBody.innerHTML = '<tr><td>Авиафрахт карго (' + aFrom + ' ➔ TAS) Оплачиваемый вес: ' + Math.round(chWeight) + ' кг</td><td>3-5 дней</td><td>$3.85/кг</td><td>$' + Math.round(chWeight * 3.85).toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Терминальный сбор аэропорта TAS и обработка</td><td>СВХ Карго</td><td>Включено</td><td>$120</td></tr>';
+      if (totalEl) totalEl.textContent = '$' + airCost.toLocaleString('ru-RU');
+      renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['air']);
+
+      if (apiUrl) {
+        fetch(apiUrl + '/api/calculate/air', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ from: aFrom, to: 'TAS', weight: aWeight, volume: aVol })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
+        }).catch(function() {});
+      }
+    } else if (modality === 'multimodal') {
+      var mCorridor = (document.getElementById('cr-multi-corridor') ? document.getElementById('cr-multi-corridor').value : 'china_uzb');
+      var mCount = parseInt(document.getElementById('cr-multi-count') ? document.getElementById('cr-multi-count').value : 1) || 1;
+      var mTotal = 5400 * mCount;
+
+      tableBody.innerHTML = '<tr><td>Морской фрахт + Терминальная обработка THC в порту</td><td>Контейнер 40HC x ' + mCount + '</td><td>$1 450/ед</td><td>$' + (1450 * mCount).toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Ускоренный контейнерный поезд (Ж/Д платформа до Ташкента)</td><td>16-20 дней</td><td>$3 600/ед</td><td>$' + (3600 * mCount).toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Автодоставка последней мили на склад грузополучателя</td><td>Door-to-Door</td><td>$350/ед</td><td>$' + (350 * mCount).toLocaleString('ru-RU') + '</td></tr>';
+      if (totalEl) totalEl.textContent = '$' + mTotal.toLocaleString('ru-RU');
+      renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['multimodal']);
+
+      if (apiUrl) {
+        fetch(apiUrl + '/api/calculate/multimodal', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ corridor: mCorridor, count: mCount })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
+        }).catch(function() {});
+      }
+    } else if (modality === 'customs') {
+      var cVal = parseFloat(document.getElementById('cr-customs-value') ? document.getElementById('cr-customs-value').value : 25000) || 25000;
+      var cFreight = parseFloat(document.getElementById('cr-customs-freight') ? document.getElementById('cr-customs-freight').value : 2500) || 2500;
+      var cTotalBase = cVal + cFreight;
+      var cDuty = Math.round(cTotalBase * 0.05);
+      var cVat = Math.round((cTotalBase + cDuty) * 0.12);
+      var cFee = 65;
+      var cTotalFiscal = cDuty + cVat + cFee;
+
+      tableBody.innerHTML = '<tr><td>Ввозная таможенная пошлина (базовая ставка 5%)</td><td>База: $' + cTotalBase.toLocaleString('ru-RU') + '</td><td>5%</td><td>$' + cDuty.toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Налог на добавленную стоимость (НДС 12% Узбекистан)</td><td>База: $' + (cTotalBase + cDuty).toLocaleString('ru-RU') + '</td><td>12%</td><td>$' + cVat.toLocaleString('ru-RU') + '</td></tr>' +
+                            '<tr><td>Сбор за таможенное оформление (БРВ)</td><td>Декларация</td><td>Фикс</td><td>$' + cFee + '</td></tr>';
+      if (totalEl) totalEl.textContent = '$' + cTotalFiscal.toLocaleString('ru-RU') + ' (~' + Math.round(cTotalFiscal * 12850).toLocaleString('ru-RU') + ' сум)';
+      renderDocumentChecklist(DEFAULT_DOCS_BY_MODALITY['customs']);
+
+      if (apiUrl) {
+        var tnvedVal = document.getElementById('cr-customs-tnved') ? document.getElementById('cr-customs-tnved').value : '1001990000';
+        fetch(apiUrl + '/api/calculate/customs', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ tnved: tnvedVal, value: cVal, freight: cFreight })
+        }).then(function(r) { return r.json(); }).then(function(d) {
+          if (d && d.documents_required) renderDocumentChecklist(d.documents_required);
+        }).catch(function() {});
+      }
+    }
+  }
+
+  var lastSyncedRouteKey = '';
+
+  function syncBorderDropdowns(route) {
+    var singleWrap = document.getElementById('cr-border-single-wrap');
+    var dualWrap = document.getElementById('cr-border-dual-wrap');
+    var singleSelect = document.getElementById('cr-calc-border');
+    var b1Select = document.getElementById('cr-calc-border-1');
+    var b2Select = document.getElementById('cr-calc-border-2');
+
+    if (!singleWrap || !dualWrap) return;
+
+    var routeKey = (route.from.country || '') + '-' + (route.to.country || '') + (route.isTransit ? '-transit' : '');
+
+    if (route.isTransit && route.availBorders1 && route.availBorders2) {
+      singleWrap.style.display = 'none';
+      dualWrap.style.display = 'grid';
+
+      if (lastSyncedRouteKey !== routeKey) {
+        if (b1Select) {
+          var b1Current = b1Select.value;
+          var b1Html = '<option value="auto">Определять автоматически (Оптимальный)</option>';
+          route.availBorders1.forEach(function(b) {
+            b1Html += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          b1Select.innerHTML = b1Html;
+          if (b1Current && b1Current !== 'auto' && route.availBorders1.some(function(b) { return b.code === b1Current; })) {
+            b1Select.value = b1Current;
+          }
+        }
+        if (b2Select) {
+          var b2Current = b2Select.value;
+          var b2Html = '<option value="auto">Определять автоматически (Оптимальный)</option>';
+          route.availBorders2.forEach(function(b) {
+            b2Html += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          b2Select.innerHTML = b2Html;
+          if (b2Current && b2Current !== 'auto' && route.availBorders2.some(function(b) { return b.code === b2Current; })) {
+            b2Select.value = b2Current;
+          }
+        }
+        lastSyncedRouteKey = routeKey;
+      }
+    } else if (route.availBorders && route.availBorders.length > 0) {
+      dualWrap.style.display = 'none';
+      singleWrap.style.display = 'block';
+
+      if (lastSyncedRouteKey !== routeKey) {
+        if (singleSelect) {
+          var sCurrent = singleSelect.value;
+          var sHtml = '<option value="auto">Определять автоматически по плану формирования</option>';
+          route.availBorders.forEach(function(b) {
+            sHtml += '<option value="' + b.code + '">' + escapeHtml(b.name) + '</option>';
+          });
+          singleSelect.innerHTML = sHtml;
+          if (sCurrent && sCurrent !== 'auto' && route.availBorders.some(function(b) { return b.code === sCurrent; })) {
+            singleSelect.value = sCurrent;
+          }
+        }
+        lastSyncedRouteKey = routeKey;
+      }
+    } else {
+      dualWrap.style.display = 'none';
+      singleWrap.style.display = 'none';
+      lastSyncedRouteKey = routeKey;
+    }
+  }
+
+  function formatBorderSchemeName(name) {
+    if (!name) return '';
+    return name.split('/')[0].replace(/\[.*?\]/g, '').trim();
+  }
+
+  function renderRouteScheme(route) {
+    var flowEl = document.getElementById('cr-rs-flow');
+    if (!flowEl) return;
+
+    var rsBadge = document.getElementById('cr-rs-badge');
+    if (rsBadge) rsBadge.textContent = route.messageType;
+
+    var rsDist = document.getElementById('cr-rs-distance');
+    if (rsDist) rsDist.textContent = 'Общий путь: ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км';
+
+    var html = '';
+
+    if (route.isTransit && route.legs && route.legs.length >= 3) {
+      var leg1 = route.legs[0];
+      var leg2 = route.legs[1];
+      var leg3 = route.legs[2];
+      var b1Name = route.border1 ? formatBorderSchemeName(route.border1.name) : leg1.to;
+      var b2Name = route.border2 ? formatBorderSchemeName(route.border2.name) : leg2.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg1.countryName) + ' (' + escapeHtml(leg1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg1.road) + ': ' + leg1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b1Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 1 (РЖД / КТЖ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg2.road) + ': ' + leg2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(b2Name) + '</div>' +
+          '<div class="cr-rs-sub">Стык 2 (КТЖ / УТИ)</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(leg3.road) + ': ' + leg3.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(leg3.countryName) + ' (' + escapeHtml(leg3.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else if (route.legs && route.legs.length >= 2) {
+      var l1 = route.legs[0];
+      var l2 = route.legs[1];
+      var bName = route.borderCrossing ? formatBorderSchemeName(route.borderCrossing.name) : l1.to;
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l1.countryName) + ' (' + escapeHtml(l1.road) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l1.road) + ': ' + l1.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot border"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">' + escapeHtml(bName) + '</div>' +
+          '<div class="cr-rs-sub">Межгосударственный стыковой пункт</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(l2.road) + ': ' + l2.distanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(l2.countryName) + ' (' + escapeHtml(l2.road) + ')</div>' +
+        '</div>' +
+      '</div>';
+    } else {
+      var domLeg = (route.legs && route.legs[0]) ? route.legs[0] : null;
+      var domRoad = domLeg ? domLeg.road : (route.from.road_label || 'Ж/Д');
+      var domCountry = domLeg ? domLeg.countryName : (route.from.country_name || '');
+
+      html += '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot origin"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.from.name) + ' (' + escapeHtml(route.from.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="cr-rs-line">' +
+        '<span class="cr-rs-line-info">' + escapeHtml(domRoad) + ': ' + route.totalDistanceKm.toLocaleString('ru-RU') + ' км</span>' +
+      '</div>' +
+      '<div class="cr-rs-step">' +
+        '<span class="cr-rs-dot dest"></span>' +
+        '<div>' +
+          '<div class="cr-rs-name">ст. ' + escapeHtml(route.to.name) + ' (' + escapeHtml(route.to.code) + ')</div>' +
+          '<div class="cr-rs-sub">' + escapeHtml(domCountry) + ' (' + escapeHtml(domRoad) + ')</div>' +
+        '</div>' +
+      '</div>';
+    }
+
+    flowEl.innerHTML = html;
+  }
+
+  function triggerCustomCalculation() {
+    var fromVal = (document.getElementById('cr-calc-from') ? document.getElementById('cr-calc-from').value : '') || 'Кокшетау';
+    var toVal = (document.getElementById('cr-calc-to') ? document.getElementById('cr-calc-to').value : '') || 'Ташкент-Товарный';
+    
+    var borderSelect = document.getElementById('cr-calc-border');
+    var b1Select = document.getElementById('cr-calc-border-1');
+    var b2Select = document.getElementById('cr-calc-border-2');
+
+    var manualBorderCode = (borderSelect && borderSelect.value !== 'auto') ? borderSelect.value : null;
+    var manualBorder1 = (b1Select && b1Select.value !== 'auto') ? b1Select.value : null;
+    var manualBorder2 = (b2Select && b2Select.value !== 'auto') ? b2Select.value : null;
+
+    var transportCode = document.getElementById('cr-calc-transport') ? document.getElementById('cr-calc-transport').value : 'grain';
+    var parkType = document.getElementById('cr-calc-park') ? document.getElementById('cr-calc-park').value : 'caravan';
+    var cargoSearchEl = document.getElementById('cr-calc-cargo-search');
+    var cargoSearchVal = cargoSearchEl ? cargoSearchEl.value : '';
+    var cargoCode = document.getElementById('cr-calc-cargo') ? document.getElementById('cr-calc-cargo').value : 'grain';
+    var weightVal = parseInt(document.getElementById('cr-calc-weight') ? document.getElementById('cr-calc-weight').value : 68) || 68;
+    var incoterms = document.getElementById('cr-calc-incoterms') ? document.getElementById('cr-calc-incoterms').value : 'DAP';
+    var freightType = document.getElementById('cr-calc-freight-type') ? document.getElementById('cr-calc-freight-type').value : 'rail';
+    var hasSec = document.getElementById('cr-opt-security') ? document.getElementById('cr-opt-security').checked : true;
+    var hasCust = document.getElementById('cr-opt-customs') ? document.getElementById('cr-opt-customs').checked : false;
+
+    var roleInput = document.querySelector('input[name="cr_client_role"]:checked');
+    var clientRoleVal = roleInput ? roleInput.value : 'shipper';
+    var roleLabel = clientRoleVal === 'shipper' ? 'Грузоотправитель' : 
+                   (clientRoleVal === 'consignee' ? 'Грузополучатель' : 'Экспедитор / Агент');
+
+    var discount = currentUser ? (currentUser.discount || 0) : 0;
+
+    // Вызываем расчетное ядро Caravan 1520
+    var calcResult = CaravanRailwayEngine.calculateTariff({
+      from: fromVal,
+      to: toVal,
+      manualBorderCode: manualBorderCode,
+      manualBorder1: manualBorder1,
+      manualBorder2: manualBorder2,
+      wagonType: transportCode,
+      parkType: parkType,
+      cargoType: cargoCode,
+      cargoSearch: cargoSearchVal,
+      weightTons: weightVal,
+      incoterms: incoterms,
+      freightType: freightType,
+      security: hasSec,
+      customs: hasCust,
+      clientRole: roleLabel,
+      discount: discount,
+      currency: selectedCurrency
+    });
+
+    // Синхронизируем селекторы погранпереходов
+    syncBorderDropdowns(calcResult.route);
+
+    // Обновляем отображение расстояния в инпуте
+    var kmInput = document.getElementById('cr-calc-km');
+    if (kmInput) {
+      kmInput.value = calcResult.route.totalDistanceKm;
+    }
+
+    // Обновляем визуальную схему маршрута
+    renderRouteScheme(calcResult.route);
+
+    // Обновляем баннер Incoterms
+    var descObj = INCOTERMS_DESC[incoterms] || INCOTERMS_DESC['DAP'];
+    var ibTitle = document.getElementById('cr-ib-title');
+    var ibDesc = document.getElementById('cr-ib-desc');
+    if (ibTitle) ibTitle.textContent = descObj.title;
+    if (ibDesc) ibDesc.textContent = descObj.desc;
+
+    // Рендерим таблицу тарифов
+    renderRTariffTable(calcResult);
+
+    // Запоминаем текущую квоту для бронирования
+    currentCalculatedQuote = {
+      from: 'ст. ' + calcResult.route.from.name + ' (' + calcResult.route.from.code + ')',
+      to: 'ст. ' + calcResult.route.to.name + ' (' + calcResult.route.to.code + ')',
+      transport: calcResult.wagon.name,
+      park_type: calcResult.parkType,
+      cargo_name: calcResult.cargo.name,
+      incoterms: incoterms,
+      client_role: roleLabel,
+      distance_km: calcResult.route.totalDistanceKm,
+      total_price_usd: calcResult.totals.usd,
+      converted_total: calcResult.totals.formattedTotal,
+      currency: calcResult.totals.currencyCode,
+      transit_days: calcResult.transitDays,
+      breakdown: calcResult.breakdownUSD,
+      legs: calcResult.route.legs
+    };
+
+    updateQuoteDisplay(currentCalculatedQuote, discount);
+  }
+
+  function renderRTariffTable(res) {
+    var tbody = document.getElementById('cr-rtariff-tbody');
+    if (!tbody) return;
+
+    var cur = CaravanRailwayEngine.CURRENCY_RATES[selectedCurrency] || CaravanRailwayEngine.CURRENCY_RATES['USD'];
+    var rate = cur.rate;
+    var sym = cur.symbol;
+
+    function fmt(usdVal) {
+      var converted = Math.round(usdVal * rate);
+      return converted.toLocaleString('ru-RU') + ' ' + sym;
+    }
+
+    var rowsHtml = '';
+    var totalInfra = 0;
+    var totalWagon = 0;
+    var totalBorder = 0;
+    var totalSec = 0;
+    var totalSum = 0;
+
+    res.route.legs.forEach(function(leg) {
+      totalInfra += leg.infraTariffUSD;
+      totalWagon += leg.wagonTariffUSD;
+      totalBorder += leg.borderFeeUSD;
+      totalSec += leg.securityUSD;
+      totalSum += leg.subtotalUSD;
+
+      rowsHtml += '<tr>' +
+        '<td><strong>' + escapeHtml(leg.countryName) + '</strong> (' + escapeHtml(leg.road) + ')</td>' +
+        '<td>' + escapeHtml(leg.from) + ' ➔ ' + escapeHtml(leg.to) + '</td>' +
+        '<td class="cr-text-right">' + leg.distanceKm.toLocaleString('ru-RU') + '</td>' +
+        '<td class="cr-text-right">' + fmt(leg.infraTariffUSD) + '</td>' +
+        '<td class="cr-text-right">' + fmt(leg.wagonTariffUSD) + '</td>' +
+        '<td class="cr-text-right">' + fmt(leg.borderFeeUSD) + '</td>' +
+        '<td class="cr-text-right">' + fmt(leg.securityUSD) + '</td>' +
+        '<td class="cr-text-right"><strong>' + fmt(leg.subtotalUSD) + '</strong></td>' +
+      '</tr>';
+    });
+
+    // Строка доп. услуг по Incoterms и оформлению СМГС
+    var extraUSD = (res.breakdownUSD.documentationAndIncoterms || 0) + (res.breakdownUSD.customsService || 0);
+    if (extraUSD > 0) {
+      totalSum += extraUSD;
+      rowsHtml += '<tr>' +
+        '<td><strong>Сервис Caravan</strong></td>' +
+        '<td>Оформление СМГС/ГУ-27 + доставка по Incoterms (' + res.incoterms + ')</td>' +
+        '<td class="cr-text-right">—</td>' +
+        '<td class="cr-text-right">—</td>' +
+        '<td class="cr-text-right">—</td>' +
+        '<td class="cr-text-right">' + fmt(extraUSD) + '</td>' +
+        '<td class="cr-text-right">—</td>' +
+        '<td class="cr-text-right"><strong>' + fmt(extraUSD) + '</strong></td>' +
+      '</tr>';
+    }
+
+    // ИТОГОВАЯ СТРОКА
+    rowsHtml += '<tr class="total-row">' +
+      '<td><strong>ИТОГО (ВСЕГО)</strong></td>' +
+      '<td>' + res.route.totalDistanceKm.toLocaleString('ru-RU') + ' км (' + res.transitDays + ')</td>' +
+      '<td class="cr-text-right">' + res.route.totalDistanceKm.toLocaleString('ru-RU') + '</td>' +
+      '<td class="cr-text-right">' + fmt(totalInfra) + '</td>' +
+      '<td class="cr-text-right">' + fmt(totalWagon) + '</td>' +
+      '<td class="cr-text-right">' + fmt(totalBorder + extraUSD) + '</td>' +
+      '<td class="cr-text-right">' + fmt(totalSec) + '</td>' +
+      '<td class="cr-text-right" style="font-size: 15px; color: #F59E0B;">' + fmt(res.totals.usd) + '</td>' +
+    '</tr>';
+
+    tbody.innerHTML = rowsHtml;
+  }
+
+  function updateQuoteDisplay(q, discount) {
+    var routeEl = document.getElementById('cr-quote-route-title');
+    if (routeEl) routeEl.textContent = q.from + ' ➔ ' + q.to;
+
+    var badgeTrans = document.getElementById('cr-qb-transport');
+    if (badgeTrans) badgeTrans.textContent = q.transport;
+    var badgePark = document.getElementById('cr-qb-park');
+    if (badgePark) badgePark.textContent = q.park_type || 'Собственный парк СПС (Caravan)';
+    var badgeCargo = document.getElementById('cr-qb-cargo');
+    if (badgeCargo) badgeCargo.textContent = q.cargo_name || 'Груз 2 класс';
+    var badgeInco = document.getElementById('cr-qb-incoterms');
+    if (badgeInco) badgeInco.textContent = q.incoterms + ' (' + q.client_role + ')';
+
+    var totalEl = document.getElementById('cr-quote-total-price');
+    if (totalEl) totalEl.textContent = q.converted_total || ('$' + q.total_price_usd.toLocaleString('ru-RU') + ' USD');
+
+    var transitEl = document.getElementById('cr-quote-transit-days');
+    if (transitEl) transitEl.textContent = 'Нормативный срок доставки: ' + q.transit_days;
+
+    var discountPill = document.getElementById('cr-client-discount-pill');
+    if (discountPill) {
+      if (discount > 0) {
+        var discVal = document.getElementById('cr-client-discount-val');
+        if (discVal) discVal.textContent = discount + '%';
+        discountPill.style.display = 'block';
+      } else {
+        discountPill.style.display = 'none';
+      }
+    }
+  }
+
+  function setupBookingModal() {
+    var openBtn = document.getElementById('cr-btn-open-booking');
+    var modal = document.getElementById('cr-booking-modal');
+    var closeBtn = document.getElementById('cr-bm-close');
+    var form = document.getElementById('cr-booking-form');
+
+    if (openBtn && modal) {
+      openBtn.addEventListener('click', function() {
+        if (!currentCalculatedQuote) return;
+
+        document.getElementById('cr-bm-summary-text').innerHTML = 
+          'Маршрут: <strong>' + escapeHtml(currentCalculatedQuote.from) + ' ➔ ' + escapeHtml(currentCalculatedQuote.to) + '</strong><br />' +
+          'Условия Incoterms: <strong>' + escapeHtml(currentCalculatedQuote.incoterms) + '</strong> • Сторона: ' + escapeHtml(currentCalculatedQuote.client_role) + '<br />' +
+          'Подвижной состав: ' + escapeHtml(currentCalculatedQuote.transport) + '<br />' +
+          'Ставка: <strong style="color:#F59E0B; font-size: 16px;">$' + currentCalculatedQuote.total_price_usd.toLocaleString('ru-RU') + ' USD</strong>';
+
+        if (currentUser) {
+          document.getElementById('cr-book-name').value = currentUser.contact || '';
+          document.getElementById('cr-book-phone').value = currentUser.phone || '';
+          document.getElementById('cr-book-company').value = currentUser.company || '';
+        }
+
+        document.getElementById('cr-booking-form').style.display = 'block';
+        document.getElementById('cr-booking-success').style.display = 'none';
+        modal.style.display = 'flex';
+      });
+    }
+
+    if (closeBtn && modal) {
+      closeBtn.addEventListener('click', function() { modal.style.display = 'none'; });
+      modal.addEventListener('click', function(e) { if (e.target === modal) modal.style.display = 'none'; });
+    }
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var data = {
+          action: 'order',
+          client_login: currentUser ? currentUser.login : 'Гость',
+          contact_name: document.getElementById('cr-book-name').value,
+          phone: document.getElementById('cr-book-phone').value,
+          company: document.getElementById('cr-book-company').value,
+          client_role: currentCalculatedQuote.client_role,
+          incoterms: currentCalculatedQuote.incoterms,
+          route_from: currentCalculatedQuote.from,
+          route_to: currentCalculatedQuote.to,
+          transport_type: currentCalculatedQuote.transport,
+          freight_type: currentCalculatedQuote.freight_type_name,
+          distance_km: currentCalculatedQuote.distance_km,
+          total_price_usd: '$' + currentCalculatedQuote.total_price_usd
+        };
+
+        var submitBtn = document.getElementById('cr-btn-submit-booking');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Передача в B2B платформу...';
+
+        // Добавляем новое КП в список пользователя для немедленного просмотра
+        var newOrderNum = 'CR-ORD-' + Math.floor(1000 + Math.random() * 9000);
+        DEMO_DATABASE.proposals.unshift({
+          order_id: newOrderNum,
+          date: new Date().toLocaleDateString('ru-RU'),
+          company: data.company || (currentUser ? currentUser.company : 'Заказчик'),
+          role: data.client_role,
+          incoterms: data.incoterms,
+          route: data.route_from + ' ➔ ' + data.route_to,
+          transport: data.transport_type,
+          freight_type: data.freight_type,
+          distance_km: data.distance_km,
+          total_price: data.total_price_usd,
+          status_text: "КП формируется в B2B платформе",
+          status_class: "cr-pc-badge-signed"
+        });
+
+        if (CARAVAN_CONFIG.apiUrl) {
+          fetch(CARAVAN_CONFIG.apiUrl, { method: 'POST', body: JSON.stringify(data) })
+            .then(function() { showBookingSuccess(newOrderNum); })
+            .catch(function() { showBookingSuccess(newOrderNum); });
+        } else {
+          setTimeout(function() { showBookingSuccess(newOrderNum); }, 400);
+        }
+      });
+    }
+  }
+
+  function showBookingSuccess(orderId) {
+    var submitBtn = document.getElementById('cr-btn-submit-booking');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = 'Отправить заявку в B2B платформу';
+    }
+    document.getElementById('cr-booking-form').style.display = 'none';
+    document.getElementById('cr-book-success-title').textContent = 'Заявка №' + orderId + ' передана в B2B платформу!';
+    document.getElementById('cr-booking-success').style.display = 'flex';
+  }
+
+  /**
+   * АВТОРИЗАЦИЯ И ЛИЧНЫЙ КАБИНЕТ (B2B СВЯЗКА)
+   */
+  function setupLogin() {
+    var form = document.getElementById('cr-login-form');
+    var btnLogout = document.getElementById('cr-btn-logout');
+    var btnCabCalc = document.getElementById('cr-btn-cab-calc');
+    var tabDislocBtn = document.getElementById('cr-cab-tab-disloc-btn');
+    var tabKpBtn = document.getElementById('cr-cab-tab-kp-btn');
+    var viewDisloc = document.getElementById('cr-cab-view-dislocation');
+    var viewProposals = document.getElementById('cr-cab-view-proposals');
+
+    // Переключение подвкладок внутри Личного кабинета
+    if (tabDislocBtn && tabKpBtn) {
+      tabDislocBtn.addEventListener('click', function() {
+        tabDislocBtn.classList.add('active');
+        tabKpBtn.classList.remove('active');
+        viewDisloc.style.display = 'block';
+        viewProposals.style.display = 'none';
+      });
+
+      tabKpBtn.addEventListener('click', function() {
+        tabKpBtn.classList.add('active');
+        tabDislocBtn.classList.remove('active');
+        viewProposals.style.display = 'block';
+        viewDisloc.style.display = 'none';
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var login = (document.getElementById('cr-login-input').value || '').trim();
+        var pass = (document.getElementById('cr-password-input').value || '').trim();
+
+        if (CARAVAN_CONFIG.apiUrl) {
+          var url = CARAVAN_CONFIG.apiUrl + (CARAVAN_CONFIG.apiUrl.indexOf('?') === -1 ? '?' : '&') +
+                    'action=login&login=' + encodeURIComponent(login) + '&password=' + encodeURIComponent(pass);
+          fetch(url)
+            .then(function(res) { return res.json(); })
+            .then(function(res) {
+              if (res && res.success) {
+                showCabinet(res.user, res.shipments || [], res.proposals || []);
+              } else {
+                alert(res.message || 'Неверный логин или пароль');
+              }
+            })
+            .catch(function() { alert('Ошибка связи с сервером'); });
+        } else {
+          if (login.toLowerCase() === 'kaz_trans' && pass === 'pass2026') {
+            showCabinet(DEMO_DATABASE.users[0], DEMO_DATABASE.shipments, DEMO_DATABASE.proposals);
+          } else {
+            alert('Неверный логин или пароль. Тестовый доступ: kaz_trans / pass2026');
+          }
+        }
+      });
+    }
+
+    if (btnLogout) {
+      btnLogout.addEventListener('click', function() {
+        currentUser = null;
+        document.getElementById('cr-cabinet-section').style.display = 'none';
+        document.getElementById('cr-login-section').style.display = 'block';
+        document.getElementById('cr-login-input').value = '';
+        document.getElementById('cr-password-input').value = '';
+        updateTrackTabAuthState();
+        triggerCustomCalculation();
+      });
+    }
+
+    if (btnCabCalc) {
+      btnCabCalc.addEventListener('click', function() {
+        var calcTabBtn = document.querySelector('#caravan-tracking-root [data-tab="calc"]');
+        if (calcTabBtn) calcTabBtn.click();
+      });
+    }
+
+    // Модалка КП
+    var kpClose = document.getElementById('cr-kp-close');
+    var kpModal = document.getElementById('cr-kp-modal');
+    if (kpClose && kpModal) {
+      kpClose.addEventListener('click', function() { kpModal.style.display = 'none'; });
+      kpModal.addEventListener('click', function(e) { if (e.target === kpModal) kpModal.style.display = 'none'; });
+    }
+  }
+
+  function showCabinet(user, shipments, proposals) {
+    currentUser = user;
+    if (shipments) currentUser.shipments = shipments;
+    document.getElementById('cr-login-section').style.display = 'none';
+    var cabinetSection = document.getElementById('cr-cabinet-section');
+    cabinetSection.style.display = 'block';
+
+    document.getElementById('cr-client-company').textContent = user.company;
+    document.getElementById('cr-client-person').innerHTML = 
+      escapeHtml(user.contact) + ' • <span class="cr-badge-active">Активен (Скидка ' + (user.discount || 0) + '%)</span> • ID: <code>' + (user.b2b_id || 'B2B-CR-9021') + '</code>';
+    
+    document.getElementById('cr-client-avatar').textContent = (user.company || 'CR').substring(0, 2).toUpperCase();
+    document.getElementById('cr-client-wagons-count').textContent = shipments.length;
+    document.getElementById('cr-client-wagons-count-label').textContent = shipments.length;
+    document.getElementById('cr-client-kp-count').textContent = (proposals || DEMO_DATABASE.proposals).length;
+
+    renderShipmentsList(shipments);
+    renderProposalsList(proposals || DEMO_DATABASE.proposals);
+    triggerCustomCalculation();
+    updateTrackTabAuthState();
+
+    var filterInput = document.getElementById('cr-cabinet-filter');
+    if (filterInput) {
+      filterInput.addEventListener('input', function() {
+        var val = this.value.toLowerCase().trim();
+        var filtered = shipments.filter(function(s) {
+          return s.id.toLowerCase().indexOf(val) !== -1 ||
+                 s.station_current.toLowerCase().indexOf(val) !== -1;
+        });
+        renderShipmentsList(filtered);
+      });
+    }
+  }
+
+  function renderShipmentsList(items) {
+    var container = document.getElementById('cr-client-shipments-list');
+    if (!items || items.length === 0) {
+      container.innerHTML = '<div style="text-align:center; padding: 24px; color: #94A3B8;">Активных грузов в пути не обнаружено.</div>';
+      return;
+    }
+    var html = '';
+    items.forEach(function(item) {
+      html += '' +
+        '<div class="cr-shipment-card" onclick="window.crSelectShipment(\'' + item.id + '\')">' +
+          '<div class="cr-sc-top">' +
+            '<div class="cr-sc-id">№ ' + escapeHtml(item.id) + ' <span class="cr-type-badge">' + escapeHtml(item.type) + '</span></div>' +
+            '<span class="cr-status-pill cr-status-in-transit">' + escapeHtml(item.status) + '</span>' +
+          '</div>' +
+          '<div class="cr-sc-route">' +
+            '<span>' + escapeHtml(item.station_from) + '</span><span class="arrow">➔</span>' +
+            '<strong style="color: #F59E0B;">' + escapeHtml(item.station_current) + '</strong><span class="arrow">➔</span>' +
+            '<span>' + escapeHtml(item.station_to) + '</span>' +
+          '</div>' +
+          '<div style="font-size: 12px; color: #94A3B8; margin-top: 6px;">' +
+            'Операция: ' + escapeHtml(item.last_operation) + ' (' + escapeHtml(item.date_operation) + ')' +
+          '</div>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  function renderProposalsList(proposals) {
+    var container = document.getElementById('cr-client-proposals-list');
+    if (!container) return;
+
+    if (!proposals || proposals.length === 0) {
+      container.innerHTML = '<div style="text-align:center; padding: 24px; color: #94A3B8;">У вас пока нет оформленных заявок и КП.</div>';
+      return;
+    }
+
+    var html = '';
+    proposals.forEach(function(p, idx) {
+      html += '' +
+        '<div class="cr-proposal-card">' +
+          '<div class="cr-pc-header">' +
+            '<div class="cr-pc-id">Заявка № ' + escapeHtml(p.order_id) + ' от ' + escapeHtml(p.date) + '</div>' +
+            '<span class="' + (p.status_class || 'cr-pc-badge-signed') + '">' + escapeHtml(p.status_text || p.kp_status) + '</span>' +
+          '</div>' +
+          '<div class="cr-pc-route">Маршрут: <strong>' + escapeHtml(p.route) + '</strong></div>' +
+          '<div class="cr-pc-details">' +
+            '<span>ПС: <strong>' + escapeHtml(p.transport) + '</strong></span>' +
+            '<span>Incoterms: <strong>' + escapeHtml(p.incoterms) + '</strong></span>' +
+            '<span>Ставка: <strong style="color:#F59E0B;">' + escapeHtml(p.total_price) + '</strong></span>' +
+          '</div>' +
+          '<div class="cr-pc-actions">' +
+            '<button type="button" class="cr-btn-pc" onclick="window.crOpenKpModal(' + idx + ')">Просмотреть подписанное КП</button>' +
+            '<button type="button" class="cr-btn-pc" onclick="window.crDownloadKpPdf(' + idx + ')">Скачать PDF</button>' +
+            '<button type="button" class="cr-btn-pc" style="border-color: #34D399; color: #34D399;" onclick="alert(\'Инвойс сформирован и отправлен на ваш Email: info@kaztrans.kz\')">Инвойс на оплату</button>' +
+          '</div>' +
+        '</div>';
+    });
+    container.innerHTML = html;
+  }
+
+  window.crOpenKpModal = function(idx) {
+    var p = DEMO_DATABASE.proposals[idx];
+    if (!p) return;
+
+    var content = '' +
+      '<div style="border-bottom: 2px solid #0F172A; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between;">' +
+        '<div><h3 style="margin:0; color:#0F172A;">CARAVAN RAILROAD LOGISTICS</h3><p style="margin:2px 0 0 0; font-size:12px; color:#64748B;">Международные ж/д перевозки и экспедирование</p></div>' +
+        '<div style="text-align:right; font-size:12px; color:#64748B;">КП № ' + escapeHtml(p.order_id) + '<br />Дата: ' + escapeHtml(p.date) + '</div>' +
+      '</div>' +
+      '<p style="font-size:14px; margin-bottom:12px;"><strong>Заказчик:</strong> ' + escapeHtml(p.company) + ' (' + escapeHtml(p.role) + ')</p>' +
+      '<table style="width:100%; border-collapse: collapse; font-size:13px; margin-bottom: 16px;">' +
+        '<tr style="background:#F1F5F9; border-bottom:1px solid #CBD5E1;"><th style="padding:8px; text-align:left;">Параметр</th><th style="padding:8px; text-align:left;">Условия перевозки</th></tr>' +
+        '<tr style="border-bottom:1px solid #E2E8F0;"><td style="padding:8px; color:#64748B;">Маршрут</td><td style="padding:8px; font-weight:600;">' + escapeHtml(p.route) + '</td></tr>' +
+        '<tr style="border-bottom:1px solid #E2E8F0;"><td style="padding:8px; color:#64748B;">Подвижной состав</td><td style="padding:8px;">' + escapeHtml(p.transport) + '</td></tr>' +
+        '<tr style="border-bottom:1px solid #E2E8F0;"><td style="padding:8px; color:#64748B;">Базис поставки</td><td style="padding:8px; font-weight:700; color:#2563EB;">' + escapeHtml(p.incoterms) + '</td></tr>' +
+        '<tr style="border-bottom:1px solid #E2E8F0;"><td style="padding:8px; color:#64748B;">Итоговая ставка</td><td style="padding:8px; font-weight:800; font-size:16px; color:#0F172A;">' + escapeHtml(p.total_price) + '</td></tr>' +
+      '</table>' +
+      '<div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:10px; font-size:12px; color:#475569; margin-bottom:16px;">' +
+        'В ставку включены: полный провозной железнодорожный тариф, предоставление подвижного состава, диспетчеризация 24/7, охрана по маршруту и услуги в соответствии с базисом ' + escapeHtml(p.incoterms) + '.' +
+      '</div>' +
+      '<div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #E2E8F0; padding-top:14px;">' +
+        '<div style="font-size:12px; color:#64748B;">Генеральный диспетчер Caravan Railroad:<br /><strong>Алимов Р.К.</strong></div>' +
+        '<div style="border: 2px solid #10B981; color:#10B981; font-weight:800; font-size:12px; padding:6px 12px; border-radius:6px; text-transform:uppercase;">Подписано ЭЦП B2B</div>' +
+      '</div>';
+
+    document.getElementById('cr-kp-sheet-content').innerHTML = content;
+    document.getElementById('cr-kp-modal').style.display = 'flex';
+  };
+
+  window.crDownloadKpPdf = function(idx) {
+    window.crOpenKpModal(idx);
+    setTimeout(function() { window.print(); }, 300);
+  };
+
+  window.crSelectShipment = function(id) {
+    var trackTabBtn = document.querySelector('#caravan-tracking-root [data-tab="track"]');
+    if (trackTabBtn) trackTabBtn.click();
+    var input = document.getElementById('cr-track-input');
+    if (input) {
+      input.value = id;
+      doTrack(id);
+    }
+  };
+
+  /**
+   * РЕГИСТРАЦИЯ
+   */
+  function setupRegister() {
+    var form = document.getElementById('cr-register-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var data = {
+        action: 'register',
+        company: document.getElementById('cr-reg-company').value,
+        contact: document.getElementById('cr-reg-name').value,
+        role: document.getElementById('cr-reg-role').value,
+        phone: document.getElementById('cr-reg-phone').value,
+        email: document.getElementById('cr-reg-email').value,
+        login: document.getElementById('cr-reg-login').value,
+        password: document.getElementById('cr-reg-pass').value
+      };
+
+      var btn = document.getElementById('cr-reg-submit');
+      var oldText = btn.innerHTML;
+      btn.innerHTML = 'Синхронизация с B2B платформой...';
+      btn.disabled = true;
+
+      var newUser = {
+        login: data.login,
+        pass: data.password,
+        company: data.company,
+        contact: data.contact,
+        phone: data.phone,
+        email: data.email,
+        role: data.role || 'Грузоотправитель',
+        discount: 5,
+        b2b_id: 'B2B-CR-' + Math.floor(1000 + Math.random() * 9000)
+      };
+
+      var welcomeWagon = {
+        id: "58" + Math.floor(100000 + Math.random() * 900000),
+        type: "Крытый вагон (грузовой, 68т)",
+        client_login: data.login,
+        invoice_num: "СМГС-" + Math.floor(100000 + Math.random() * 900000),
+        cargo_name: "Груз по контракту " + data.company,
+        weight: "62.0 тн",
+        station_from: "ст. Астана (КЗХ)",
+        date_from: "04.09.2026",
+        station_current: "ст. Караганда-Сортировочная (КЗХ)",
+        railway_current: "Казахстанские ЖД (КТЖ)",
+        last_operation: "В пути следования / Технический осмотр состава",
+        date_operation: "05.09.2026 14:10",
+        station_to: "ст. Ташкент-Товарный (УТИ)",
+        eta: "09.09.2026",
+        progress: 45,
+        status: "В движении",
+        distance_left: "640 км"
+      };
+
+      if (CARAVAN_CONFIG.apiUrl) {
+        fetch(CARAVAN_CONFIG.apiUrl, { method: 'POST', body: JSON.stringify(data) })
+          .then(function(res) { return res.json(); })
+          .then(function(res) {
+            btn.innerHTML = oldText; btn.disabled = false;
+            DEMO_DATABASE.users.push(newUser);
+            DEMO_DATABASE.shipments.push(welcomeWagon);
+            showRegSuccess(res.message || 'Учетная запись успешно создана!', newUser, welcomeWagon);
+          })
+          .catch(function() {
+            btn.innerHTML = oldText; btn.disabled = false;
+            DEMO_DATABASE.users.push(newUser);
+            DEMO_DATABASE.shipments.push(welcomeWagon);
+            showRegSuccess('Учетная запись создана и передана в B2B платформу!', newUser, welcomeWagon);
+          });
+      } else {
+        setTimeout(function() {
+          btn.innerHTML = oldText; btn.disabled = false;
+          DEMO_DATABASE.users.push(newUser);
+          DEMO_DATABASE.shipments.push(welcomeWagon);
+          showRegSuccess('Учетная запись ' + data.login + ' создана! За вашей организацией закреплен тестовый вагон № ' + welcomeWagon.id + '.', newUser, welcomeWagon);
+        }, 500);
+      }
+    });
+  }
+
+  function showRegSuccess(msg, newUser, welcomeWagon) {
+    document.getElementById('cr-register-form').style.display = 'none';
+    var successBlock = document.getElementById('cr-reg-success');
+    if (msg) document.getElementById('cr-reg-success-msg').textContent = msg;
+
+    var extraActions = document.getElementById('cr-reg-success-actions');
+    if (!extraActions) {
+      extraActions = document.createElement('div');
+      extraActions.id = 'cr-reg-success-actions';
+      extraActions.style.marginTop = '16px';
+      successBlock.appendChild(extraActions);
+    }
+
+    if (newUser) {
+      extraActions.innerHTML = '' +
+        '<button type="button" class="cr-btn-primary" id="cr-btn-reg-autologin">' +
+          '<span>Войти в кабинет и отследить вагон № ' + (welcomeWagon ? welcomeWagon.id : '') + '</span>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+        '</button>';
+
+      var autologinBtn = document.getElementById('cr-btn-reg-autologin');
+      if (autologinBtn) {
+        autologinBtn.addEventListener('click', function() {
+          showCabinet(newUser, welcomeWagon ? [welcomeWagon] : [], []);
+          var trackTabBtn = document.querySelector('#caravan-tracking-root [data-tab="track"]');
+          if (trackTabBtn) trackTabBtn.click();
+          if (welcomeWagon) {
+            var input = document.getElementById('cr-track-input');
+            if (input) {
+              input.value = welcomeWagon.id;
+              var clearBtn = document.getElementById('cr-track-clear');
+              if (clearBtn) clearBtn.style.display = 'block';
+              doTrack(welcomeWagon.id);
+            }
+          }
+        });
+      }
+    }
+
+    successBlock.style.display = 'flex';
+  }
+
+  /**
+   * СЧЕТЧИКИ
+   */
+  function loadStats() {
+    if (CARAVAN_CONFIG.apiUrl) {
+      var url = CARAVAN_CONFIG.apiUrl + (CARAVAN_CONFIG.apiUrl.indexOf('?') === -1 ? '?' : '&') + 'action=stats';
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          if (res && res.success && res.data) {
+            animateNumber('cr-stat-wagons', res.data.wagons, '+');
+            animateNumber('cr-stat-tonnage', res.data.tonnage, '+ т');
+            animateNumber('cr-stat-routes', res.data.routes, '');
+            if (res.data.updated_at) {
+              document.getElementById('cr-live-status-text').textContent = 'Обновлено в ' + res.data.updated_at;
+            }
+          }
+        })
+        .catch(function() { runDefaultStatsAnimation(); });
+    } else {
+      runDefaultStatsAnimation();
+    }
+  }
+
+  function runDefaultStatsAnimation() {
+    animateNumber('cr-stat-wagons', 1480, '+');
+    animateNumber('cr-stat-tonnage', 920000, '+ т');
+    animateNumber('cr-stat-routes', 48, '');
+  }
+
+  function animateNumber(elementId, finalVal, suffix) {
+    var el = document.getElementById(elementId);
+    if (!el) return;
+    var duration = 1600;
+    var startTime = null;
+    var startVal = 0;
+
+    function step(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var progress = Math.min((timestamp - startTime) / duration, 1);
+      var easeOut = 1 - Math.pow(1 - progress, 3);
+      var current = Math.floor(startVal + (finalVal - startVal) * easeOut);
+      el.textContent = current.toLocaleString('ru-RU') + (suffix || '');
+      if (progress < 1) window.requestAnimationFrame(step);
+      else el.textContent = finalVal.toLocaleString('ru-RU') + (suffix || '');
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+
+})();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountWidget);
+  } else {
+    mountWidget();
+  }
+})();

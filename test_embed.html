@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Тест внедрения виджета Caravan Railroad через 2 строки кода</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background-color: #070B14;
+      font-family: 'Inter', sans-serif;
+    }
+    .test-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .test-banner {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid #F59E0B;
+      padding: 16px;
+      border-radius: 8px;
+      color: #F59E0B;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-container">
+    <div class="test-banner">
+      ⚡ <b>Демонстрация внедрения в Тильду:</b> На этой странице нет ни одной строчки стилей калькулятора или логики расчетов. Вся система (калькулятор, трекинг, Incoterms, автокомплит станций) загружается ровно через один тег &lt;script src="caravan-widget.js"&gt;.
+    </div>
+
+    <!-- ТОЧНО ТАКОЙ ЖЕ КОД ВСТАВЛЯЕТСЯ В T123 ТИЛЬДЫ: -->
+    <div id="caravan-tracking-root"></div>
+    <script src="caravan-widget.js?v=241" defer></script>
+  </div>
+</body>
+</html>

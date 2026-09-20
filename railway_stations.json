@@ -1,0 +1,1352 @@
+[
+  {
+    "code": "000251",
+    "name": "Хайратан (эксп.)",
+    "country": "AFG",
+    "road": "АРА",
+    "is_border": true,
+    "road_label": "АРА (Афганистан)",
+    "country_name": "Афганистан"
+  },
+  {
+    "code": "663404",
+    "name": "Актау-Порт (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "707701",
+    "name": "Алтынколь (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "662905",
+    "name": "Бейнеу (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "708507",
+    "name": "Достык (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "666501",
+    "name": "Илецк I (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "693602",
+    "name": "Курык-Порт (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "711105",
+    "name": "Локоть (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "704402",
+    "name": "Луговая (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "664900",
+    "name": "Озинки (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "688708",
+    "name": "Петропавловск (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "704101",
+    "name": "Сарыагаш (эксп.)",
+    "country": "KAZ",
+    "road": "КТЖ",
+    "is_border": true,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "945404",
+    "name": "Забайкальск (эксп.)",
+    "country": "RUS",
+    "road": "РЖД",
+    "is_border": true,
+    "road_label": "РЖД",
+    "country_name": "Россия"
+  },
+  {
+    "code": "033907",
+    "name": "Санкт-Петербург-Варшавский (эксп.)",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": true,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "038402",
+    "name": "Санкт-Петербург-Финляндский (эксп.)",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": true,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "938805",
+    "name": "Душанбе II (эксп.)",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": true,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "720104",
+    "name": "Келес (эксп.)",
+    "country": "UZB",
+    "road": "УТИ",
+    "is_border": true,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "735203",
+    "name": "Термез (эксп.)",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": true,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "667909",
+    "name": "Актобе",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "689503",
+    "name": "Актобе I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "689607",
+    "name": "Актобе II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "700007",
+    "name": "Алматы I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "700100",
+    "name": "Алматы II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "698004",
+    "name": "Арысь I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "690002",
+    "name": "Астана",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "710507",
+    "name": "Астана-Пассажирская",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "661705",
+    "name": "Атырау",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "671823",
+    "name": "Берказань",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "703908",
+    "name": "Бурундай",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "709302",
+    "name": "Жана-Семей",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "673905",
+    "name": "Караганда",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "673702",
+    "name": "Караганда-Новая",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "673007",
+    "name": "Караганда-Сортировочная",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "674000",
+    "name": "Караганда-Угольная",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "687008",
+    "name": "Кокшетау I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "687103",
+    "name": "Кокшетау II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "684001",
+    "name": "Костанай",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "671707",
+    "name": "Кызылорда",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "663306",
+    "name": "Мангышлак",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "700204",
+    "name": "Медеу",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "698019",
+    "name": "ОП Арысь II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696102",
+    "name": "Павлодар",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696403",
+    "name": "Павлодар-Порт",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696303",
+    "name": "Павлодар-Северный",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "696206",
+    "name": "Павлодар-Южный",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "709406",
+    "name": "Семей",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "709508",
+    "name": "Семей-Грузовой",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "690200",
+    "name": "Сороковая",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "706304",
+    "name": "Тараз",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "697800",
+    "name": "Туркестан",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "665602",
+    "name": "Уральск",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "665509",
+    "name": "Уральск-Товарная",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "713702",
+    "name": "Усть-Каменогорск",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "713906",
+    "name": "Усть-Каменогорск (перев.)",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "698606",
+    "name": "Шымкент",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694605",
+    "name": "Экибастуз I",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694709",
+    "name": "Экибастуз II",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694906",
+    "name": "Экибастуз III",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "694802",
+    "name": "Экибастуз-Северный",
+    "country": "KAZ",
+    "road": "Kzh",
+    "is_border": false,
+    "road_label": "КТЖ",
+    "country_name": "Казахстан"
+  },
+  {
+    "code": "716908",
+    "name": "Аламедин",
+    "country": "KGZ",
+    "road": "Krg",
+    "is_border": false,
+    "road_label": "КРГ",
+    "country_name": "Кыргызстан"
+  },
+  {
+    "code": "716607",
+    "name": "Бишкек I",
+    "country": "KGZ",
+    "road": "Krg",
+    "is_border": false,
+    "road_label": "КРГ",
+    "country_name": "Кыргызстан"
+  },
+  {
+    "code": "716700",
+    "name": "Бишкек II",
+    "country": "KGZ",
+    "road": "Krg",
+    "is_border": false,
+    "road_label": "КРГ",
+    "country_name": "Кыргызстан"
+  },
+  {
+    "code": "180010",
+    "name": "Бекасово I",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "180006",
+    "name": "Бекасово-Сортировочное",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800402",
+    "name": "Дубровка-Челябинская",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "780506",
+    "name": "Екатеринбург-Пассажирский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "780001",
+    "name": "Екатеринбург-Сортировочный",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "780302",
+    "name": "Екатеринбург-Товарный",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "769708",
+    "name": "Заполье-Уральское",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "250302",
+    "name": "Казань",
+    "country": "RUS",
+    "road": "Gor'k",
+    "is_border": false,
+    "road_label": "РЖД (Горьк)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "250406",
+    "name": "Казань (перев.)",
+    "country": "RUS",
+    "road": "Gor'k",
+    "is_border": false,
+    "road_label": "РЖД (Горьк)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "795100",
+    "name": "Каменск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "600909",
+    "name": "Мичуринск-Уральский",
+    "country": "RUS",
+    "road": "Ju-Vost",
+    "is_border": false,
+    "road_label": "Ju-Vost",
+    "country_name": "Россия"
+  },
+  {
+    "code": "060209",
+    "name": "Москва-Товарная",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "198002",
+    "name": "Москва-Товарная-Киевская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "191509",
+    "name": "Москва-Товарная-Курская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "191547",
+    "name": "Москва-Товарная-Курская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "193504",
+    "name": "Москва-Товарная-Павелецкая",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "193523",
+    "name": "Москва-Товарная-Павелецкая",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "194009",
+    "name": "Москва-Товарная-Рязанская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "194013",
+    "name": "Москва-Товарная-Рязанская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "198207",
+    "name": "Москва-Товарная-Смоленская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "195603",
+    "name": "Москва-Товарная-Ярославская",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851508",
+    "name": "Новосибирск-Восточный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "850609",
+    "name": "Новосибирск-Главный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851005",
+    "name": "Новосибирск-Главный (перев.)",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851207",
+    "name": "Новосибирск-Западный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "851300",
+    "name": "Новосибирск-Западный (перев.)",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "850505",
+    "name": "Новосибирск-Южный",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "180031",
+    "name": "ОП Бекасово-Центральное",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "637814",
+    "name": "ОП Новосемейкино",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "834610",
+    "name": "ОП Новоуральский",
+    "country": "RUS",
+    "road": "Z-Sib",
+    "is_border": false,
+    "road_label": "РЖД (З-Сиб)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "179121",
+    "name": "ОП Самара-Радица",
+    "country": "RUS",
+    "road": "Mosk",
+    "is_border": false,
+    "road_label": "РЖД (Моск)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "525524",
+    "name": "ОП Уральская",
+    "country": "RUS",
+    "road": "S-Kav",
+    "is_border": false,
+    "road_label": "РЖД (С-Кав)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "654025",
+    "name": "ОП Южно-Уральский заповедник",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "781701",
+    "name": "Первоуральск",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "775713",
+    "name": "Покровск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "775802",
+    "name": "Покровск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "510100",
+    "name": "Ростов-Товарный",
+    "country": "RUS",
+    "road": "S-Kav",
+    "is_border": false,
+    "road_label": "РЖД (С-Кав)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "657907",
+    "name": "Самара",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "036002",
+    "name": "Санкт-Петербург-Балтийский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "035300",
+    "name": "Санкт-Петербург-Варшавский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "035315",
+    "name": "Санкт-Петербург-Варшавский (пассажирский багаж экс)",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "033061",
+    "name": "Санкт-Петербург-Витебский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "031812",
+    "name": "Санкт-Петербург-Главный",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "030006",
+    "name": "Санкт-Петербург-Сорт.-Московский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "033502",
+    "name": "Санкт-Петербург-Тов.-Витебский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "031808",
+    "name": "Санкт-Петербург-Тов.-Московский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "038205",
+    "name": "Санкт-Петербург-Финляндский",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "000001",
+    "name": "Санкт-Петербургский узел",
+    "country": "RUS",
+    "road": "Okt",
+    "is_border": false,
+    "road_label": "РЖД (Окт)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "848204",
+    "name": "Семейкино",
+    "country": "RUS",
+    "road": "LUG",
+    "is_border": false,
+    "road_label": "LUG",
+    "country_name": "Россия"
+  },
+  {
+    "code": "849705",
+    "name": "Семейкино-Новое",
+    "country": "RUS",
+    "road": "LUG",
+    "is_border": false,
+    "road_label": "LUG",
+    "country_name": "Россия"
+  },
+  {
+    "code": "637617",
+    "name": "Старосемейкино (пп)",
+    "country": "RUS",
+    "road": "Kbsh",
+    "is_border": false,
+    "road_label": "РЖД (Кбш)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "788107",
+    "name": "Туринск-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "768207",
+    "name": "Углеуральская",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "766428",
+    "name": "Хребет-Уральский",
+    "country": "RUS",
+    "road": "Sverd",
+    "is_border": false,
+    "road_label": "РЖД (Сверд)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800008",
+    "name": "Челябинск-Главный",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800101",
+    "name": "Челябинск-Грузовой",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "800605",
+    "name": "Челябинск-Южный",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "804307",
+    "name": "Южноуральск",
+    "country": "RUS",
+    "road": "Ju-Ur",
+    "is_border": false,
+    "road_label": "РЖД (Ю-Ур)",
+    "country_name": "Россия"
+  },
+  {
+    "code": "745205",
+    "name": "Душанбе I",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": false,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "745309",
+    "name": "Душанбе II",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": false,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "747802",
+    "name": "Худжанд",
+    "country": "TJK",
+    "road": "Tdzh",
+    "is_border": false,
+    "road_label": "Tdzh",
+    "country_name": "Таджикистан"
+  },
+  {
+    "code": "758900",
+    "name": "Кенеургенч",
+    "country": "TKM",
+    "road": "Trk",
+    "is_border": false,
+    "road_label": "ТРК",
+    "country_name": "Туркменистан"
+  },
+  {
+    "code": "505102",
+    "name": "Семейкино",
+    "country": "UKR",
+    "road": "DON",
+    "is_border": false,
+    "road_label": "DON",
+    "country_name": "UKR"
+  },
+  {
+    "code": "508505",
+    "name": "Семейкино-Новое",
+    "country": "UKR",
+    "road": "DON",
+    "is_border": false,
+    "road_label": "DON",
+    "country_name": "UKR"
+  },
+  {
+    "code": "722608",
+    "name": "Ангрен",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "743604",
+    "name": "Андижан I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742003",
+    "name": "Андижан II",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "743708",
+    "name": "Андижан-Северный",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "743623",
+    "name": "Андижан-Южный",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "730002",
+    "name": "Бухара I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "730106",
+    "name": "Бухара II",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "726903",
+    "name": "Джизак",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "733104",
+    "name": "Карши",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "740004",
+    "name": "Коканд I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742508",
+    "name": "Маргилан",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "731306",
+    "name": "Навои",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "741100",
+    "name": "Наманган",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "739007",
+    "name": "Нукус",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "727809",
+    "name": "Самарканд",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "723507",
+    "name": "Сергели",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "720918",
+    "name": "Ташкент-Пассажирский",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "722400",
+    "name": "Ташкент-Товарный",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "735109",
+    "name": "Термез",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "736704",
+    "name": "Термез-Порт",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "738305",
+    "name": "Ургенч",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742601",
+    "name": "Фергана I",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "742809",
+    "name": "Фергана II",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  },
+  {
+    "code": "720000",
+    "name": "Чукурсай",
+    "country": "UZB",
+    "road": "Uzb",
+    "is_border": false,
+    "road_label": "УТИ",
+    "country_name": "Узбекистан"
+  }
+]
