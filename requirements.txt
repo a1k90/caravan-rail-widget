@@ -1,0 +1,3 @@
+# Caravan Multi-Modal Logistics & Customs Engine
+# The server runs on standard Python 3 libraries (http.server, sqlite3, json, math, os, sys)
+# No external pip packages required.
