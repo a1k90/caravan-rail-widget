@@ -345,17 +345,17 @@ UNIVERSAL_ROUTING_AND_ITINERARY_JS = """  // БАЗА ДАННЫХ СТАНЦИ�
       { name: "Жарма", code: "708901", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 68 },
       { name: "Ушбиик", code: "708808", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 90 },
       { name: "Аягоз", code: "708704", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 75 },
-      { name: "Актогай", code: "708009", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 141 },
-      { name: "Лепсы", code: "702604", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
+      { name: "Актогай", code: "708009", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 164 },
+      { name: "Лепсы", code: "702604", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 126 },
       { name: "Матай", code: "702500", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 69 },
       { name: "Уштобе", code: "702106", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 78 },
       { name: "Коксу", code: "701508", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 46 },
       { name: "Сарыозек", code: "701207", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
       { name: "Капчагай", code: "700702", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 83 },
-      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 73 },
+      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 97 },
       { name: "Чемолган", code: "703700", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 41 },
       { name: "Отар", code: "703306", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 115 },
-      { name: "Шу (Чу)", code: "704600", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 120 },
+      { name: "Шу (Чу)", code: "704600", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 149 },
       { name: "Турксиб (Луговая)", code: "704506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 113 },
       { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 98 },
       { name: "Боранды", code: "706501", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
@@ -363,7 +363,7 @@ UNIVERSAL_ROUTING_AND_ITINERARY_JS = """  // БАЗА ДАННЫХ СТАНЦИ�
       { name: "Манкент", code: "706906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 55 },
       { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 23 },
       { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 18 },
-      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58 },
+      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 39 },
       { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 131, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
     ],
     "kokshetau_saryagash": [
@@ -928,6 +928,15 @@ def update_railway_calc_engine():
         if rld_end != -1:
             src = src[:rld_start] + RESOLVE_LEG_DISTANCE_JS + "\n\n  " + src[rld_end:]
             print("Updated resolveLegDistance in railway_calc_engine.js")
+
+    # 2.5 Update CANONICAL_DISTANCES to exact TR-4 numbers
+    src = src.replace('"семей_сарыагаш": 1850', '"семей_сарыагаш": 1949')
+    src = src.replace('"жанасемей_сарыагаш": 1850', '"жанасемей_сарыагаш": 1949')
+    src = src.replace('"семей_чукурсай": 1867', '"семей_чукурсай": 1974')
+    src = src.replace('"жанасемей_чукурсай": 1867', '"жанасемей_чукурсай": 1974')
+    src = src.replace('"сарыагаш_чукурсай": 17', '"сарыагаш_чукурсай": 25')
+    src = src.replace('"келес_чукурсай": 17', '"келес_чукурсай": 25')
+    src = src.replace('"келес_чукурсай": 12', '"келес_чукурсай": 25')
 
     # 3. Update CORRIDOR_STATION_CHAINS and buildRouteItinerary
     cor_start = src.find("// БАЗА ДАННЫХ СТАНЦИЙ СЛЕДОВАНИЯ ПО ТР-4")

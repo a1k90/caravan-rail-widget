@@ -16030,10 +16030,10 @@ var CaravanRailwayEngine = (function() {
       // 4. ТАБЛИЦА ТОЧНЫХ РАССТОЯНИЙ (КМ) ПО ТАРИФНОМУ РУКОВОДСТВУ № 4 (Р-ТАРИФ)
   var CANONICAL_DISTANCES = {
     // КТЖ: Отправление ➔ Сарыагаш (стык с Узбекистаном)
-    "семей_сарыагаш": 1850,
-    "жанасемей_сарыагаш": 1850,
-    "семей_чукурсай": 1867,
-    "жанасемей_чукурсай": 1867,
+    "семей_сарыагаш": 1949,
+    "жанасемей_сарыагаш": 1949,
+    "семей_чукурсай": 1974,
+    "жанасемей_чукурсай": 1974,
     "кокшетау_сарыагаш": 1777,
     "астана_сарыагаш": 1481,
     "караганда_сарыагаш": 1262,
@@ -16068,8 +16068,8 @@ var CaravanRailwayEngine = (function() {
     "бейнеу_каракалпакстан": 410,
 
     // УТИ: Вход Сарыагаш / Келес ➔ Станции назначения Узбекистана
-    "сарыагаш_чукурсай": 17,
-    "келес_чукурсай": 17,
+    "сарыагаш_чукурсай": 25,
+    "келес_чукурсай": 25,
     "сарыагаш_ташкент": 28,
     "келес_ташкент": 28,
     "сарыагаш_сергели": 38,
@@ -16309,6 +16309,8 @@ var CaravanRailwayEngine = (function() {
     // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
     // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
     // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
+    // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
+    // 1. УНИВЕРСАЛЬНАЯ ОЧИСТКА И НОРМАЛИЗАЦИЯ НАЗВАНИЙ СТАНЦИЙ СЕТИ 1520 ММ
   function cleanStationName(name) {
     if (!name) return '';
     var s = (typeof name === 'object' && name !== null) ? (name.name || '') : name.toString();
@@ -16535,7 +16537,7 @@ var CaravanRailwayEngine = (function() {
     return (dist[targetNode] !== Infinity) ? dist[targetNode] : null;
   }
 
-        function resolveLegDistance(fromSt, toSt) {
+            function resolveLegDistance(fromSt, toSt) {
     var fClean = cleanStationName(fromSt.name || fromSt);
     var tClean = cleanStationName(toSt.name || toSt);
     var fRoot = getStationRootKey(fromSt.name || fromSt);
@@ -16822,7 +16824,7 @@ var CaravanRailwayEngine = (function() {
 
   // ГЛАВНЫЙ МЕТОД РАСЧЕТА ТАРИФОВ
   
-              // БАЗА ДАННЫХ СТАНЦИЙ СЛЕДОВАНИЯ ПО ТР-4 (МАРШРУТНЫЕ ЛИСТЫ ПОЕЗДА)
+                  // БАЗА ДАННЫХ СТАНЦИЙ СЛЕДОВАНИЯ ПО ТР-4 (МАРШРУТНЫЕ ЛИСТЫ ПОЕЗДА)
   var CORRIDOR_STATION_CHAINS = {
     "spb_moscow": [
       { name: "Санкт-Петербург-Тов.-Московский", code: "031808", road: "Октябрьская ж. д.", country: "RUS", countryName: "Россия", dist: 0 },
@@ -16955,17 +16957,17 @@ var CaravanRailwayEngine = (function() {
       { name: "Жарма", code: "708901", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 68 },
       { name: "Ушбиик", code: "708808", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 90 },
       { name: "Аягоз", code: "708704", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 75 },
-      { name: "Актогай", code: "708009", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 141 },
-      { name: "Лепсы", code: "702604", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 130 },
+      { name: "Актогай", code: "708009", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 164 },
+      { name: "Лепсы", code: "702604", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 126 },
       { name: "Матай", code: "702500", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 69 },
       { name: "Уштобе", code: "702106", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 78 },
       { name: "Коксу", code: "701508", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 46 },
       { name: "Сарыозек", code: "701207", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 74 },
       { name: "Капчагай", code: "700702", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 83 },
-      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 73 },
+      { name: "Алматы I", code: "700007", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 97 },
       { name: "Чемолган", code: "703700", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 41 },
       { name: "Отар", code: "703306", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 115 },
-      { name: "Шу (Чу)", code: "704600", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 120 },
+      { name: "Шу (Чу)", code: "704600", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 149 },
       { name: "Турксиб (Луговая)", code: "704506", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 113 },
       { name: "Тараз", code: "706304", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 98 },
       { name: "Боранды", code: "706501", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 60 },
@@ -16973,7 +16975,7 @@ var CaravanRailwayEngine = (function() {
       { name: "Манкент", code: "706906", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 55 },
       { name: "Шымкент", code: "698606", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 23 },
       { name: "Бадам", code: "698409", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 18 },
-      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 58 },
+      { name: "Арысь I", code: "698605", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 39 },
       { name: "Сарыагаш (эксп.)", code: "704101", road: "Казахстанская ж. д. (КТЖ)", country: "KAZ", countryName: "Казахстан", dist: 131, isBorder: true, borderLabel: "КТЖ ➔ УТИ" }
     ],
     "kokshetau_saryagash": [
