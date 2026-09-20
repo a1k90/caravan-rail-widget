@@ -118,13 +118,31 @@ def geo_dist(lat1, lon1, lat2, lon2):
     c = 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
     return int(R * c * 1.46)
 
+def find_station(cur, identifier):
+    if not identifier:
+        return None
+    ident = str(identifier).strip()
+    # 1. Exact code
+    r = cur.execute("SELECT * FROM stations WHERE code = ?", (ident,)).fetchone()
+    if r: return dict(r)
+    # 2. Code prefix (e.g. 5 digits vs 6 digits)
+    r = cur.execute("SELECT * FROM stations WHERE code LIKE ?", (f"{ident}%",)).fetchone()
+    if r: return dict(r)
+    # 3. Exact name lower
+    r = cur.execute("SELECT * FROM stations WHERE name_lower = ?", (ident.lower(),)).fetchone()
+    if r: return dict(r)
+    # 4. Partial name
+    r = cur.execute("SELECT * FROM stations WHERE name_lower LIKE ? LIMIT 1", (f"%{ident.lower()}%",)).fetchone()
+    if r: return dict(r)
+    return None
+
 # 1. Rail Freight Calculation
 def calculate_rail(from_code, to_code, border_pref=None, weight_tons=60, cargo_code="110100", wagon_type="covered"):
     conn = get_db()
     cur = conn.cursor()
 
-    orig = cur.execute("SELECT * FROM stations WHERE code = ?", (from_code,)).fetchone()
-    dest = cur.execute("SELECT * FROM stations WHERE code = ?", (to_code,)).fetchone()
+    orig = find_station(cur, from_code)
+    dest = find_station(cur, to_code)
 
     if not orig or not dest:
         conn.close()
@@ -744,14 +762,14 @@ class RailEngineHandler(BaseHTTPRequestHandler):
             data = {}
 
         if parsed.path == "/api/calculate" or parsed.path == "/api/calculate/rail":
-            res = calculate_rail(
-                data.get("from", ""),
-                data.get("to", ""),
-                data.get("border", "iletsk"),
-                float(data.get("weight", 60)),
-                data.get("cargo", "110100"),
-                data.get("wagon", "covered")
-            )
+            from_st = data.get("from") or data.get("origin_station") or data.get("origin") or ""
+            to_st = data.get("to") or data.get("dest_station") or data.get("destination") or ""
+            border_st = data.get("border") or data.get("border_station") or "iletsk"
+            weight_val = float(data.get("weight") or data.get("weight_tonnes") or 60)
+            cargo_val = str(data.get("cargo") or data.get("cargo_code") or "110100")
+            wagon_val = str(data.get("wagon") or data.get("wagon_type") or "covered")
+
+            res = calculate_rail(from_st, to_st, border_st, weight_val, cargo_val, wagon_val)
             self._send_json(res)
             return
 
