@@ -16,3 +16,4 @@ __pycache__/
 rt_docs/
 atlas_unpacked/
 rt_unpacked_nsi/
+*.db
