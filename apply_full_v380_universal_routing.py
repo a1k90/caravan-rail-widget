@@ -188,6 +188,12 @@ RESOLVE_LEG_DISTANCE_JS = """  function resolveLegDistance(fromSt, toSt) {
     if ((fRoot === 'сарыагаш' || fRoot === 'келес') && tRoot === 'ташкент') return 28;
     if ((tRoot === 'сарыагаш' || tRoot === 'келес') && fRoot === 'ташкент') return 28;
 
+    // 1.5. ДИНАМИЧЕСКИЙ ТОПОЛОГИЧЕСКИЙ РАСЧЕТ ПО КОРИДОРАМ ТР-4 (ДЛЯ ЛЮБЫХ СТАНЦИЙ СЕТИ 1520)
+    if (typeof calculateDistanceAcrossCorridors === 'function') {
+      var corrDist = calculateDistanceAcrossCorridors(fromSt, toSt);
+      if (corrDist && corrDist > 0) return corrDist;
+    }
+
     // 2. Кратчайший путь Дейкстры по железнодорожному графу
     if (RAILWAY_GRAPH[fRoot] && RAILWAY_GRAPH[tRoot]) {
       var graphDist = dijkstraShortestPath(fRoot, tRoot);
@@ -688,6 +694,95 @@ UNIVERSAL_ROUTING_AND_ITINERARY_JS = """  // БАЗА ДАННЫХ СТАНЦИ�
       }
     }
     return result;
+  }
+
+  function calculateDistanceAcrossCorridors(fromSt, toSt) {
+    if (!fromSt || !toSt) return 0;
+    var fObj = (typeof fromSt === 'object' && fromSt !== null) ? fromSt : (findStation(fromSt) || { name: fromSt });
+    var tObj = (typeof toSt === 'object' && toSt !== null) ? toSt : (findStation(toSt) || { name: toSt });
+
+    var fClean = cleanStationName(fObj.name || fObj);
+    var tClean = cleanStationName(tObj.name || tObj);
+    var fRoot = getStationRootKey(fObj.name || fObj);
+    var tRoot = getStationRootKey(tObj.name || tObj);
+    if (fClean === tClean || (fRoot && tRoot && fRoot === tRoot)) return 0;
+
+    var fMatches = findStationInCorridors(fObj);
+    var tMatches = findStationInCorridors(tObj);
+
+    var extraDist = 0;
+    if (fMatches.length === 0) {
+      var jf = resolveJunctionStation(fObj);
+      fMatches = findStationInCorridors(jf);
+      extraDist += 30;
+    }
+    if (tMatches.length === 0) {
+      var jt = resolveJunctionStation(tObj);
+      tMatches = findStationInCorridors(jt);
+      extraDist += 30;
+    }
+    if (fMatches.length === 0 || tMatches.length === 0) return 0;
+
+    var fCorrs = [];
+    fMatches.forEach(function(m) { if (fCorrs.indexOf(m.key) === -1) fCorrs.push(m.key); });
+    var tCorrs = [];
+    tMatches.forEach(function(m) { if (tCorrs.indexOf(m.key) === -1) tCorrs.push(m.key); });
+
+    var path = findCorridorPath(fCorrs, tCorrs);
+    if (!path || path.length === 0) return 0;
+
+    var total = 0;
+    if (path.length === 1) {
+      var cKey = path[0];
+      var sIdx = -1, eIdx = -1;
+      for (var i = 0; i < fMatches.length; i++) { if (fMatches[i].key === cKey) { sIdx = fMatches[i].index; break; } }
+      for (var j = 0; j < tMatches.length; j++) { if (tMatches[j].key === cKey) { eIdx = tMatches[j].index; break; } }
+      if (sIdx !== -1 && eIdx !== -1) {
+        var sl = sliceCorridor(cKey, sIdx, eIdx);
+        for (var k = 1; k < sl.length; k++) total += (sl[k].dist || 0);
+      }
+    } else {
+      for (var p = 0; p < path.length; p++) {
+        var curr = path[p];
+        var sIdx = -1, eIdx = -1;
+        if (p === 0) {
+          for (var i = 0; i < fMatches.length; i++) { if (fMatches[i].key === curr) { sIdx = fMatches[i].index; break; } }
+          var next = path[p + 1];
+          var shared = findSharedStation(curr, next);
+          if (shared) {
+            var ch = CORRIDOR_STATION_CHAINS[curr];
+            for (var c = 0; c < ch.length; c++) {
+              if (cleanStationName(ch[c].name) === cleanStationName(shared.name)) { eIdx = c; break; }
+            }
+          }
+        } else if (p === path.length - 1) {
+          var prev = path[p - 1];
+          var sharedPrev = findSharedStation(prev, curr);
+          if (sharedPrev) {
+            var ch = CORRIDOR_STATION_CHAINS[curr];
+            for (var c = 0; c < ch.length; c++) {
+              if (cleanStationName(ch[c].name) === cleanStationName(sharedPrev.name)) { sIdx = c; break; }
+            }
+          }
+          for (var j = 0; j < tMatches.length; j++) { if (tMatches[j].key === curr) { eIdx = tMatches[j].index; break; } }
+        } else {
+          var prev = path[p - 1];
+          var next = path[p + 1];
+          var sp = findSharedStation(prev, curr);
+          var sn = findSharedStation(curr, next);
+          var ch = CORRIDOR_STATION_CHAINS[curr];
+          for (var c = 0; c < ch.length; c++) {
+            if (cleanStationName(ch[c].name) === cleanStationName(sp.name)) sIdx = c;
+            if (cleanStationName(ch[c].name) === cleanStationName(sn.name)) eIdx = c;
+          }
+        }
+        if (sIdx !== -1 && eIdx !== -1) {
+          var sl = sliceCorridor(curr, sIdx, eIdx);
+          for (var k = 1; k < sl.length; k++) total += (sl[k].dist || 0);
+        }
+      }
+    }
+    return total > 0 ? (total + extraDist) : 0;
   }
 
   // УНИВЕРСАЛЬНЫЙ ТОПОЛОГИЧЕСКИЙ МНОГОКОРИДОРНЫЙ ГЕНЕРАТОР МАРШРУТНОГО ЛИСТА
