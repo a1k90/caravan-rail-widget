@@ -1482,21 +1482,21 @@
   {
     "code": "402207",
     "name": "Ильичевск-Паромная (эксп. на Батуми)",
-    "country": "UKR",
-    "country_name": "Украина",
-    "admin": "УЗ",
-    "road": "40",
-    "road_label": "Одесская ж. д. (УЗ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
     "code": "404005",
     "name": "Ильичевск-Паромная (эксп. на Поти)",
-    "country": "UKR",
-    "country_name": "Украина",
-    "admin": "УЗ",
-    "road": "40",
-    "road_label": "Одесская ж. д. (УЗ)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -1542,11 +1542,11 @@
   {
     "code": "528208",
     "name": "Кавказ (паром эксп. на Поти)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "РЖД",
-    "road": "52",
-    "road_label": "Северо-Кавказская ж. д. (РЖД)",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -1682,11 +1682,11 @@
   {
     "code": "479707",
     "name": "Керчь-Порт-Паром (эксп. на Поти)",
-    "country": "RUS",
-    "country_name": "Россия",
-    "admin": "КЖД",
-    "road": "47",
-    "road_label": "Крымская ж. д.",
+    "country": "GEO",
+    "country_name": "Грузия",
+    "admin": "ГРЗ",
+    "road": "57",
+    "road_label": "Грузинская ж. д. (ГРЗ)",
     "is_border": true
   },
   {
@@ -5920,5 +5920,25 @@
     "road": "58",
     "road_label": "Южно-Кавказская ж. д. (ЮКЖД)",
     "is_border": false
+  },
+  {
+    "code": "723511",
+    "name": "Тукимачи",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": false
+  },
+  {
+    "code": "735805",
+    "name": "Галаба (эксп.)",
+    "country": "UZB",
+    "country_name": "Узбекистан",
+    "admin": "УТИ",
+    "road": "73",
+    "road_label": "Узбекская ж. д. (УТИ)",
+    "is_border": true
   }
 ]
