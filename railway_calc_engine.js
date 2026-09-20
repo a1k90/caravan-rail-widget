@@ -15028,6 +15028,41 @@ var CaravanRailwayEngine = (function() {
       currency: cur.code,
       currencyRate: cur.rate,
       totalCostLocal: convertedTotal,
+      formattedTotal: convertedTotal.toLocaleString('ru-RU') + ' ' + cur.symbol,
+      route: {
+        from: fromStation,
+        to: toStation,
+        isTransit: routePlan.isTransit,
+        messageType: routePlan.messageType,
+        totalDistanceKm: totalKm,
+        legs: detailedLegs,
+        border: routePlan.border,
+        borderCrossing: routePlan.border,
+        border1: routePlan.border1,
+        border2: routePlan.border2,
+        availBorders: routePlan.availBorders || [],
+        availBorders1: routePlan.availBorders1 || [],
+        availBorders2: routePlan.availBorders2 || [],
+        itinerary: fullItinerary,
+        totalStationsCount: (fullItinerary ? fullItinerary.length : 0)
+      },
+      wagon: wagonType,
+      cargo: cargoItem,
+      parkType: parkType === 'caravan' ? 'Собственный парк (СПС Caravan)' : 'Инвентарный парк (КТЖ/УТИ/РЖД)',
+      transitDays: transitStr,
+      breakdownUSD: {
+        infra: totalInfraUSD,
+        wagon: totalWagonUSD,
+        borders: totalBorderFeesUSD,
+        security: totalSecurityUSD,
+        incoterms: incotermsFeeUSD
+      },
+      totals: {
+        usd: grandTotalUSD,
+        convertedTotal: convertedTotal,
+        formattedTotal: convertedTotal.toLocaleString('ru-RU') + ' ' + cur.symbol,
+        currencyCode: cur.code
+      },
       isDomestic: (fromStation.country === toStation.country),
       isTransit: routePlan.isTransit
     };
