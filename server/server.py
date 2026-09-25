@@ -744,6 +744,80 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                 self._send_json({"status": "error", "error": str(e)}, status=500)
             return
 
+        elif path == "/api/bot/admin_chats":
+            try:
+                from telegram_bot.database import get_all_admin_chats
+                from telegram_bot.config import ADMIN_CHAT_IDS
+                chats = get_all_admin_chats()
+                self._send_json({
+                    "status": "success",
+                    "admin_chat_ids_config": ADMIN_CHAT_IDS,
+                    "registered_chats_count": len(chats),
+                    "registered_chats": chats
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
+            return
+
+        elif path == "/api/bot/register_chat":
+            try:
+                from telegram_bot.database import register_admin_chat
+                chat_id_val = query.get("chat_id", [None])[0]
+                if not chat_id_val:
+                    self._send_json({"status": "error", "error": "chat_id parameter required"}, status=400)
+                    return
+                cid = int(chat_id_val)
+                title = query.get("title", ["Группа менеджеров"])[0]
+                ctype = query.get("type", ["group"])[0]
+                register_admin_chat(cid, title, ctype)
+                self._send_json({
+                    "status": "success",
+                    "registered": {"chat_id": cid, "title": title, "chat_type": ctype}
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
+            return
+
+        elif path == "/api/bot/test_group_notify":
+            try:
+                from telegram_bot.bot import get_bot
+                from telegram_bot.database import get_all_admin_chats
+                from telegram_bot.config import ADMIN_CHAT_IDS
+                
+                targets = set(ADMIN_CHAT_IDS or [])
+                db_chats = get_all_admin_chats()
+                for c in db_chats:
+                    targets.add(c["chat_id"])
+                    
+                if not targets:
+                    self._send_json({
+                        "status": "warning",
+                        "message": "No admin groups or chat IDs registered yet. Send /start or /id in the group https://t.me/+4ASucV2lSfM5MDEy to connect it."
+                    })
+                    return
+                    
+                bot = get_bot()
+                results = []
+                test_msg = (
+                    "🔔 **Тестовое оповещение Caravan Railroad**\n\n"
+                    "✅ Канал уведомлений менеджеров успешно настроен и подключен!\n"
+                    "Сюда будут автоматически поступать все новые заявки клиентов на расчет ж/д тарифов и логистики."
+                )
+                for tid in targets:
+                    try:
+                        bot.send_message(tid, test_msg, parse_mode="Markdown")
+                        results.append({"chat_id": tid, "status": "sent"})
+                    except Exception as send_err:
+                        results.append({"chat_id": tid, "status": "error", "error": str(send_err)})
+                        
+                self._send_json({
+                    "status": "completed",
+                    "results": results
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
+            return
+
         elif path == "/api/bot/setup_webhook":
             try:
                 from telegram_bot import config
@@ -971,6 +1045,7 @@ class RailEngineHandler(BaseHTTPRequestHandler):
         elif parsed.path == "/api/bot/webhook":
             try:
                 from telegram_bot.bot import get_bot
+                from telegram_bot.database import register_admin_chat
                 import telebot
                 
                 update_json = data
@@ -978,6 +1053,25 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                     log_bot_event("Warning: Webhook received empty data")
                     self._send_json({"ok": True, "note": "empty payload"})
                     return
+
+                # Auto-register group chat if detected anywhere in update JSON
+                try:
+                    chat_obj = None
+                    if "message" in update_json and "chat" in update_json["message"]:
+                        chat_obj = update_json["message"]["chat"]
+                    elif "my_chat_member" in update_json and "chat" in update_json["my_chat_member"]:
+                        chat_obj = update_json["my_chat_member"]["chat"]
+                    elif "channel_post" in update_json and "chat" in update_json["channel_post"]:
+                        chat_obj = update_json["channel_post"]["chat"]
+                    
+                    if chat_obj and chat_obj.get("type") in ("group", "supergroup"):
+                        cid = chat_obj.get("id")
+                        ctitle = chat_obj.get("title", "Telegram Group")
+                        ctype = chat_obj.get("type", "group")
+                        register_admin_chat(cid, ctitle, ctype)
+                        log_bot_event(f"Group chat auto-registered in webhook: id={cid}, title='{ctitle}'")
+                except Exception as reg_err:
+                    log_bot_event(f"Error auto-registering chat in webhook: {reg_err}")
                 
                 bot = get_bot()
                 update = telebot.types.Update.de_json(update_json)

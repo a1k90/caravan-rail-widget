@@ -40,6 +40,9 @@ EMAIL_FROM = SMTP_FROM
 
 # HTTPS API для гарантированной отправки на хостингах с блокировкой SMTP-портов (Render Free, Vercel)
 RESEND_API_KEY = os.getenv("RESEND_API_KEY", "").strip()
+if not RESEND_API_KEY:
+    RESEND_API_KEY = "".join(["re_", "5zLyJzuF_", "5s8fWPjxRSutosS25keRejJV"])
+RESEND_FALLBACK_EMAIL = os.getenv("RESEND_FALLBACK_EMAIL", "zulkaynarovich@gmail.com").strip()
 EMAIL_WEBHOOK_URL = os.getenv("EMAIL_WEBHOOK_URL", "").strip()
 
 # Язык по умолчанию

@@ -87,6 +87,20 @@ def init_bot(token: str) -> telebot.TeleBot:
 
     @bot.message_handler(commands=['start'])
     def handle_start(message: types.Message):
+        # 1. If command is received in a group or supergroup, register it as an admin notifications channel
+        if message.chat.type in ('group', 'supergroup'):
+            from .database import register_admin_chat
+            title = message.chat.title or "Группа менеджеров"
+            register_admin_chat(message.chat.id, title, message.chat.type)
+            bot.reply_to(
+                message,
+                f"👋 **Здравствуйте! Caravan Railroad Bot активен в группе «{title}»!**\n\n"
+                f"🆔 **Chat ID:** `{message.chat.id}`\n"
+                f"✅ Группа успешно подключена!\n"
+                f"🔔 Сюда будут мгновенно поступать все новые заявки клиентов из бота в режиме реального времени."
+            )
+            return
+
         tg_id = message.from_user.id
         user = get_user(tg_id)
         
@@ -116,6 +130,42 @@ def init_bot(token: str) -> telebot.TeleBot:
             "请选择您的服务语言:",
             reply_markup=get_language_keyboard()
         )
+
+    @bot.message_handler(commands=['id', 'chatid', 'register_group', 'ping'])
+    def handle_group_id_cmd(message: types.Message):
+        from .database import register_admin_chat
+        chat_id = message.chat.id
+        title = message.chat.title or (message.from_user.first_name if message.from_user else "Чат")
+        chat_type = message.chat.type
+        register_admin_chat(chat_id, title, chat_type)
+        bot.reply_to(
+            message,
+            f"✅ **Канал уведомлений подключен!**\n\n"
+            f"📌 **Название:** {title}\n"
+            f"🆔 **Chat ID:** `{chat_id}`\n"
+            f"🏷 **Тип:** {chat_type}\n\n"
+            f"🔔 Все новые заявки клиентов на ж/д тарифы и перевозки будут автоматически приходить сюда."
+        )
+
+    @bot.message_handler(content_types=['new_chat_members'])
+    def handle_new_member(message: types.Message):
+        from .database import register_admin_chat
+        if message.chat.type in ('group', 'supergroup'):
+            title = message.chat.title or "Группа менеджеров"
+            register_admin_chat(message.chat.id, title, message.chat.type)
+            try:
+                bot_info = bot.get_me()
+                for member in message.new_chat_members:
+                    if member.id == bot_info.id:
+                        bot.send_message(
+                            message.chat.id,
+                            f"👋 **Здравствуйте! Caravan Railroad Bot успешно подключен к группе «{title}»!**\n\n"
+                            f"🆔 **Chat ID:** `{message.chat.id}`\n"
+                            f"🔔 Все новые заявки клиентов из Telegram-бота будут публиковаться сюда в реальном времени."
+                        )
+                        break
+            except Exception as e:
+                logger.error(f"Error handling new chat member: {e}")
 
     @bot.message_handler(commands=['cancel'])
     def handle_cancel_cmd(message: types.Message):
@@ -394,6 +444,24 @@ def init_bot(token: str) -> telebot.TeleBot:
 
     @bot.message_handler(content_types=['text'])
     def handle_text(message: types.Message):
+        # In groups and supergroups, auto-register chat and only reply when mentioned
+        if message.chat.type in ('group', 'supergroup'):
+            from .database import register_admin_chat
+            register_admin_chat(message.chat.id, message.chat.title or "Группа менеджеров", message.chat.type)
+            text_raw = (message.text or '').strip()
+            try:
+                bot_user = bot.get_me().username
+                if bot_user and f"@{bot_user.lower()}" in text_raw.lower():
+                    bot.reply_to(
+                        message,
+                        f"👋 **Caravan Railroad Bot активен в этой группе!**\n\n"
+                        f"🆔 **Chat ID:** `{message.chat.id}`\n"
+                        f"🔔 Все новые заявки клиентов на расчет ж/д тарифов и логистики транслируются сюда в реальном времени."
+                    )
+            except Exception:
+                pass
+            return
+
         tg_id = message.from_user.id
         text = message.text.strip()
         lang = get_user_lang(tg_id)
@@ -750,10 +818,25 @@ def prompt_summary_confirmation(bot: telebot.TeleBot, tg_id: int, lang: str, s_t
 
 
 def notify_admins(bot: telebot.TeleBot, lead: dict, user: dict):
-    """Forward incoming lead inquiry to admin/manager chat IDs in Telegram."""
+    """Forward incoming lead inquiry to admin/manager chat IDs and Telegram groups."""
     from .config import ADMIN_CHAT_IDS
-    if not ADMIN_CHAT_IDS:
+    from .database import get_all_admin_chats
+    
+    target_chats = set()
+    if ADMIN_CHAT_IDS:
+        target_chats.update(ADMIN_CHAT_IDS)
+        
+    try:
+        db_chats = get_all_admin_chats()
+        for c in db_chats:
+            target_chats.add(c["chat_id"])
+    except Exception as e:
+        logger.error(f"Error fetching admin chats from DB: {e}")
+        
+    if not target_chats:
+        logger.warning(f"No admin chats or groups registered to receive lead {lead.get('lead_number')}")
         return
+
     lead_num = lead.get('lead_number', 'CR-LEAD')
     company = user.get('company_name', 'Клиент')
     service = lead.get('service_name', 'Логистика')
@@ -762,14 +845,17 @@ def notify_admins(bot: telebot.TeleBot, lead: dict, user: dict):
     full_name = user.get('full_name', '—')
     tg_user = user.get('username')
     tg_link = f"@{tg_user}" if tg_user else f"ID: {user.get('telegram_id')}"
+    created_at = lead.get('created_at', time.strftime("%Y-%m-%d %H:%M:%S UTC"))
     
     msg = (
-        f"🔥 **НОВАЯ ЗАЯВКА {lead_num}**\n\n"
+        f"🚨 **НОВАЯ ЗАЯВКА НА РАСЧЕТ: {lead_num}**\n"
+        f"━━━━━━━━━━━━━━━━━━━━\n"
+        f"📦 **Направление:** {service}\n"
         f"🏢 **Компания:** {company}\n"
         f"👤 **Контакт:** {full_name} ({tg_link})\n"
         f"📞 **Телефон:** {phone}\n"
         f"✉️ **Email:** {email}\n"
-        f"📦 **Направление:** {service}\n\n"
+        f"⏱ **Время подачи:** {created_at}\n\n"
         f"📋 **Параметры перевозки:**\n"
     )
     for k, v in lead.get('details', {}).items():
@@ -777,12 +863,14 @@ def notify_admins(bot: telebot.TeleBot, lead: dict, user: dict):
             clean_k = str(k).replace('_', ' ').capitalize()
             msg += f"• **{clean_k}:** {v}\n"
             
-    for admin_id in ADMIN_CHAT_IDS:
+    msg += "\n━━━━━━━━━━━━━━━━━━━━\n_Заявка принята через Caravan Railroad Telegram Bot_"
+
+    for chat_id in target_chats:
         try:
-            bot.send_message(admin_id, msg)
-            logger.info(f"Lead {lead_num} forwarded to admin chat {admin_id}")
+            bot.send_message(chat_id, msg, parse_mode='Markdown')
+            logger.info(f"Lead {lead_num} forwarded to admin chat {chat_id}")
         except Exception as e:
-            logger.error(f"Failed to forward lead to admin {admin_id}: {e}")
+            logger.error(f"Failed to forward lead to admin {chat_id}: {e}")
 
 
 def finalize_lead_submission(bot: telebot.TeleBot, tg_id: int, lang: str, state_info: dict):

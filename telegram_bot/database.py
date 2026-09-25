@@ -58,8 +58,39 @@ def init_db():
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_leads_tg_id ON leads(telegram_id)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_leads_status ON leads(status)")
         cursor.execute("CREATE INDEX IF NOT EXISTS idx_leads_number ON leads(lead_number)")
+
+        # Таблица групп и чатов менеджеров для уведомлений о заявках
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS admin_chats (
+                chat_id INTEGER PRIMARY KEY,
+                title TEXT,
+                chat_type TEXT,
+                added_at TEXT
+            )
+        """)
         
         conn.commit()
+
+
+def register_admin_chat(chat_id: int, title: str = "", chat_type: str = "group"):
+    """Зарегистрировать группу или чат менеджеров для получения заявок."""
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT OR REPLACE INTO admin_chats (chat_id, title, chat_type, added_at)
+            VALUES (?, ?, ?, ?)
+        """, (chat_id, title or "", chat_type or "group", now))
+        conn.commit()
+
+
+def get_all_admin_chats() -> list:
+    """Получить список всех зарегистрированных групп и администраторов."""
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT chat_id, title, chat_type FROM admin_chats")
+        return [dict(r) for r in cursor.fetchall()]
+
 
 
 def get_user(telegram_id: int):

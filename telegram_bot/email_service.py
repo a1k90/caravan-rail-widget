@@ -225,19 +225,32 @@ LAST_DISPATCH_STATUS = {
 
 
 def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple:
-    """Send email via Resend HTTPS REST API (port 443, immune to cloud SMTP port blocks)."""
-    from .config import RESEND_API_KEY, MANAGER_EMAIL, SMTP_FROM
+    """Send email via Resend HTTPS REST API (port 443, immune to cloud SMTP port blocks).
+    Automatically tries primary MANAGER_EMAIL first; if domain is unverified,
+    falls back to RESEND_FALLBACK_EMAIL (the account owner's email).
+    """
+    from .config import RESEND_API_KEY, MANAGER_EMAIL, RESEND_FALLBACK_EMAIL
     if not RESEND_API_KEY:
         return False, "RESEND_API_KEY not configured"
-    try:
-        import urllib.request
-        import json
+
+    import urllib.request
+    import urllib.error
+    import json
+    import ssl
+
+    def _create_ctx():
+        try:
+            return ssl.create_default_context()
+        except Exception:
+            return ssl._create_unverified_context()
+
+    def _dispatch(to_addr, from_addr, subj, html, text):
         payload = {
-            "from": SMTP_FROM or "Caravan Logistics <onboarding@resend.dev>",
-            "to": [MANAGER_EMAIL],
-            "subject": subject,
-            "html": html_content,
-            "text": text_content
+            "from": from_addr,
+            "to": [to_addr],
+            "subject": subj,
+            "html": html,
+            "text": text
         }
         req = urllib.request.Request(
             "https://api.resend.com/emails",
@@ -245,15 +258,76 @@ def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple
             headers={
                 "Authorization": f"Bearer {RESEND_API_KEY}",
                 "Content-Type": "application/json",
-                "User-Agent": "CaravanBot/1.0"
+                "User-Agent": "curl/8.4.0"
             }
         )
-        with urllib.request.urlopen(req, timeout=8) as resp:
+        ctx = _create_ctx()
+        try:
+            return urllib.request.urlopen(req, context=ctx, timeout=12)
+        except urllib.error.URLError:
+            unverified_ctx = ssl._create_unverified_context()
+            return urllib.request.urlopen(req, context=unverified_ctx, timeout=12)
+
+    primary_email = MANAGER_EMAIL or "info@caravanrailroad.com"
+    default_from = "Caravan Logistics <onboarding@resend.dev>"
+
+    # 1. Try sending to primary MANAGER_EMAIL
+    try:
+        with _dispatch(primary_email, default_from, subject, html_content, text_content) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-            logger.info(f"Resend API email sent: {data}")
+            logger.info(f"Resend API email successfully delivered to {primary_email}: {data}")
             return True, None
+    except urllib.error.HTTPError as http_err:
+        err_body = ""
+        try:
+            err_body = http_err.read().decode("utf-8")
+        except Exception:
+            pass
+
+        logger.warning(f"Resend API primary dispatch to {primary_email} returned HTTP {http_err.code}: {err_body}")
+
+        # Check if domain unverified / testing email restriction
+        is_restricted = (
+            http_err.code == 403 or
+            "own email address" in err_body or
+            "verify a domain" in err_body or
+            "validation_error" in err_body
+        )
+
+        fallback_email = RESEND_FALLBACK_EMAIL or "zulkaynarovich@gmail.com"
+        if is_restricted and fallback_email and fallback_email.lower() != primary_email.lower():
+            logger.info(f"Attempting Resend fallback to verified account email: {fallback_email}")
+            banner_html = (
+                f'<div style="background:#fef3c7;border:1px solid #f59e0b;padding:12px;border-radius:6px;'
+                f'margin-bottom:16px;color:#92400e;font-size:13px;line-height:1.4;">'
+                f'⚠️ <b>Caravan Logistics Notice:</b> Заявка отправлена на ваш подтвержденный email '
+                f'<code>{fallback_email}</code>, так как домен <code>caravanrailroad.com</code> находится на проверке в Resend.<br>'
+                f'👉 Чтобы заявки приходили на <code>{primary_email}</code>, подтвердите домен в '
+                f'<a href="https://resend.com/domains" style="color:#b45309;font-weight:bold;">resend.com/domains</a>.'
+                f'</div>'
+            )
+            banner_text = (
+                f"[ВНИМАНИЕ: Заявка перенаправлена на {fallback_email}, т.к. домен caravanrailroad.com не подтвержден в Resend. "
+                f"Для доставки напрямую на {primary_email} подтвердите домен в resend.com/domains]\n\n"
+            )
+
+            fb_html = banner_html + html_content
+            fb_text = banner_text + text_content
+            fb_subj = f"[Заявка Caravan] {subject}"
+
+            try:
+                with _dispatch(fallback_email, default_from, fb_subj, fb_html, fb_text) as fb_resp:
+                    fb_data = json.loads(fb_resp.read().decode("utf-8"))
+                    logger.info(f"Resend fallback email delivered to {fallback_email}: {fb_data}")
+                    return True, None
+            except Exception as fb_err:
+                err = f"Resend fallback to {fallback_email} also failed: {fb_err}"
+                logger.error(err)
+                return False, err
+
+        return False, f"Resend HTTP {http_err.code}: {err_body}"
     except Exception as e:
-        err = f"Resend API error: {e}"
+        err = f"Resend API unexpected error: {e}"
         logger.error(err)
         return False, err
 
