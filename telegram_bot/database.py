@@ -68,6 +68,33 @@ def init_db():
                 added_at TEXT
             )
         """)
+
+        # Таблица пользователей WhatsApp
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS wa_users (
+                phone TEXT PRIMARY KEY,
+                full_name TEXT,
+                company_name TEXT,
+                email TEXT,
+                language TEXT DEFAULT 'ru',
+                is_registered INTEGER DEFAULT 0,
+                created_at TEXT,
+                updated_at TEXT
+            )
+        """)
+
+        # Миграция колонок для leads: wa_phone и channel
+        try:
+            cursor.execute("ALTER TABLE leads ADD COLUMN wa_phone TEXT")
+        except Exception:
+            pass
+        try:
+            cursor.execute("ALTER TABLE leads ADD COLUMN channel TEXT DEFAULT 'telegram'")
+        except Exception:
+            pass
+
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_leads_wa_phone ON leads(wa_phone)")
+        cursor.execute("CREATE INDEX IF NOT EXISTS idx_leads_channel ON leads(channel)")
         
         conn.commit()
 
@@ -196,31 +223,37 @@ def generate_lead_number():
 
 
 def create_lead(
-    telegram_id: int,
-    service_type: str,
+    telegram_id: int = None,
+    service_type: str = "general",
     service_subtype: str = None,
     data_dict: dict = None,
     service_name: str = None,
-    details: dict = None
+    details: dict = None,
+    wa_phone: str = None,
+    channel: str = "telegram"
 ) -> dict:
-    """Создать заявку в базе данных и вернуть словарь заявки."""
+    """Создать заявку в базе данных (Telegram или WhatsApp) и вернуть словарь заявки."""
     lead_number = generate_lead_number()
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
     sub = service_name or service_subtype or service_type
     payload = details if details is not None else (data_dict or {})
     data_json = json.dumps(payload, ensure_ascii=False)
     
+    tg_id_val = telegram_id if telegram_id is not None else 0
+    
     with get_connection() as conn:
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO leads (lead_number, telegram_id, service_type, service_subtype, data_json, status, created_at)
-            VALUES (?, ?, ?, ?, ?, 'NEW', ?)
-        """, (lead_number, telegram_id, service_type, sub, data_json, now))
+            INSERT INTO leads (lead_number, telegram_id, service_type, service_subtype, data_json, status, created_at, wa_phone, channel)
+            VALUES (?, ?, ?, ?, ?, 'NEW', ?, ?, ?)
+        """, (lead_number, tg_id_val, service_type, sub, data_json, now, wa_phone, channel))
         conn.commit()
         
     return {
         'lead_number': lead_number,
-        'telegram_id': telegram_id,
+        'telegram_id': tg_id_val,
+        'wa_phone': wa_phone,
+        'channel': channel,
         'service_type': service_type,
         'service_name': sub,
         'service_subtype': sub,
@@ -229,6 +262,91 @@ def create_lead(
         'status': 'NEW',
         'created_at': now
     }
+
+
+def get_wa_user(phone: str):
+    """Получить данные пользователя WhatsApp по номеру телефона."""
+    if not phone:
+        return None
+    clean_p = str(phone).strip().lstrip("+")
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM wa_users WHERE phone = ?", (clean_p,))
+        row = cursor.fetchone()
+        return dict(row) if row else None
+
+
+def save_or_update_wa_user(
+    phone: str,
+    full_name: str = None,
+    company_name: str = None,
+    email: str = None,
+    language: str = None,
+    is_registered: int = None
+):
+    """Создать или обновить профиль пользователя WhatsApp."""
+    if not phone:
+        return None
+    clean_p = str(phone).strip().lstrip("+")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    existing = get_wa_user(clean_p)
+    
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        if existing:
+            fn = full_name if full_name is not None else existing.get('full_name')
+            cn = company_name if company_name is not None else existing.get('company_name')
+            em = email if email is not None else existing.get('email')
+            lg = language if language is not None else existing.get('language', 'ru')
+            reg = is_registered if is_registered is not None else existing.get('is_registered', 0)
+            
+            cursor.execute("""
+                UPDATE wa_users
+                SET full_name = ?, company_name = ?, email = ?, language = ?, is_registered = ?, updated_at = ?
+                WHERE phone = ?
+            """, (fn, cn, em, lg, reg, now, clean_p))
+        else:
+            cursor.execute("""
+                INSERT INTO wa_users (phone, full_name, company_name, email, language, is_registered, created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (clean_p, full_name or "", company_name or "", email or "", language or "ru", is_registered or 0, now, now))
+        conn.commit()
+    return get_wa_user(clean_p)
+
+
+def register_wa_user(phone: str, full_name: str, company_name: str, email: str, language: str = 'ru'):
+    """Регистрация нового клиента из WhatsApp."""
+    return save_or_update_wa_user(
+        phone=phone,
+        full_name=full_name,
+        company_name=company_name,
+        email=email,
+        language=language,
+        is_registered=1
+    )
+
+
+def get_wa_user_leads(phone: str, limit: int = 10):
+    """Получить список заявок конкретного пользователя WhatsApp."""
+    clean_p = str(phone).strip().lstrip("+")
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT * FROM leads
+            WHERE wa_phone = ? OR data_json LIKE ?
+            ORDER BY id DESC
+            LIMIT ?
+        """, (clean_p, f"%{clean_p}%", limit))
+        rows = cursor.fetchall()
+        result = []
+        for r in rows:
+            d = dict(r)
+            try:
+                d['data'] = json.loads(d['data_json'])
+            except Exception:
+                d['data'] = {}
+            result.append(d)
+        return result
 
 
 def get_user_leads(telegram_id: int, limit: int = 10):

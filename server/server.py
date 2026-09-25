@@ -818,6 +818,54 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                 self._send_json({"status": "error", "error": str(e)}, status=500)
             return
 
+        elif path == "/api/whatsapp/webhook":
+            # Meta WhatsApp Cloud API verification challenge
+            from whatsapp_bot.config import WHATSAPP_VERIFY_TOKEN
+            hub_mode = query.get("hub.mode", [""])[0]
+            hub_token = query.get("hub.verify_token", [""])[0]
+            hub_challenge = query.get("hub.challenge", [""])[0]
+
+            if hub_mode == "subscribe" and hub_token == WHATSAPP_VERIFY_TOKEN:
+                self.send_response(200)
+                self.send_header("Content-Type", "text/plain")
+                self.end_headers()
+                self.wfile.write(hub_challenge.encode("utf-8"))
+                return
+            else:
+                self._send_json({"error": "Verification token mismatch or invalid mode"}, status=403)
+                return
+
+        elif path == "/api/whatsapp/status":
+            try:
+                from whatsapp_bot.config import (
+                    WHATSAPP_PROVIDER, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_VERIFY_TOKEN,
+                    GREEN_API_INSTANCE_ID, TWILIO_ACCOUNT_SID
+                )
+                from whatsapp_bot.api_client import LAST_WA_DISPATCH
+                render_url = os.getenv("RENDER_EXTERNAL_URL", "https://caravan-rail-widget.onrender.com").rstrip("/")
+                wh_url = f"{render_url}/api/whatsapp/webhook"
+                
+                active_gateway = "simulation"
+                if WHATSAPP_PROVIDER == "cloud_api" or WHATSAPP_PHONE_NUMBER_ID:
+                    active_gateway = "meta_cloud_api"
+                elif WHATSAPP_PROVIDER == "green_api" or GREEN_API_INSTANCE_ID:
+                    active_gateway = "green_api"
+                elif WHATSAPP_PROVIDER == "twilio" or TWILIO_ACCOUNT_SID:
+                    active_gateway = "twilio"
+
+                self._send_json({
+                    "service": "Caravan WhatsApp Assistant Bot",
+                    "status": "online",
+                    "active_gateway": active_gateway,
+                    "webhook_url": wh_url,
+                    "meta_verify_token": WHATSAPP_VERIFY_TOKEN,
+                    "last_dispatch": LAST_WA_DISPATCH,
+                    "supported_providers": ["cloud_api (Meta Official)", "green_api (QR-code)", "twilio", "simulation"]
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
+            return
+
         elif path == "/api/bot/setup_webhook":
             try:
                 from telegram_bot import config
@@ -1089,6 +1137,81 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                 log_bot_event(f"Webhook processing error: {e}")
                 print(tb)
                 self._send_json({"ok": False, "error": str(e)}, status=500)
+            return
+
+        elif parsed.path == "/api/whatsapp/webhook":
+            try:
+                from whatsapp_bot.bot import process_incoming_whatsapp_message
+                update_json = data or {}
+                processed_any = False
+                
+                # 1. Meta WhatsApp Cloud API format
+                if "entry" in update_json:
+                    for entry in update_json.get("entry", []):
+                        for change in entry.get("changes", []):
+                            val = change.get("value", {})
+                            messages = val.get("messages", [])
+                            for msg in messages:
+                                sender = msg.get("from")
+                                msg_type = msg.get("type")
+                                text = ""
+                                if msg_type == "text":
+                                    text = msg.get("text", {}).get("body", "")
+                                elif msg_type == "interactive":
+                                    interactive = msg.get("interactive", {})
+                                    if "button_reply" in interactive:
+                                        text = interactive["button_reply"].get("id") or interactive["button_reply"].get("title", "")
+                                    elif "list_reply" in interactive:
+                                        text = interactive["list_reply"].get("id") or interactive["list_reply"].get("title", "")
+                                if sender and text:
+                                    process_incoming_whatsapp_message(sender, text, msg.get("id"))
+                                    processed_any = True
+
+                # 2. Green-API format
+                elif "messageData" in update_json and "senderData" in update_json:
+                    sender_data = update_json.get("senderData", {})
+                    chat_id = sender_data.get("chatId", "")
+                    sender_phone = chat_id.split("@")[0] if "@" in chat_id else chat_id
+                    msg_data = update_json.get("messageData", {})
+                    text = ""
+                    if "textMessageData" in msg_data:
+                        text = msg_data["textMessageData"].get("textMessage", "")
+                    elif "extendedTextMessageData" in msg_data:
+                        text = msg_data["extendedTextMessageData"].get("text", "")
+                    if sender_phone and text:
+                        process_incoming_whatsapp_message(sender_phone, text)
+                        processed_any = True
+
+                # 3. Direct JSON / Twilio format
+                elif "from" in update_json or "From" in update_json:
+                    sender = update_json.get("from") or update_json.get("From", "")
+                    text = update_json.get("message") or update_json.get("text") or update_json.get("Body", "")
+                    if sender and text:
+                        process_incoming_whatsapp_message(sender, text)
+                        processed_any = True
+
+                self._send_json({"status": "received", "ok": True, "processed": processed_any})
+            except Exception as e:
+                import traceback
+                print(f"[WhatsApp Webhook Error] {e}\n{traceback.format_exc()}")
+                self._send_json({"ok": False, "error": str(e)}, status=500)
+            return
+
+        elif parsed.path == "/api/whatsapp/test_message":
+            try:
+                from whatsapp_bot.bot import process_incoming_whatsapp_message
+                from whatsapp_bot.api_client import LAST_WA_DISPATCH
+                sender = data.get("from", "+77011234567")
+                msg = data.get("message", "1")
+                process_incoming_whatsapp_message(sender, msg)
+                self._send_json({
+                    "status": "processed",
+                    "from": sender,
+                    "input_message": msg,
+                    "last_dispatch": LAST_WA_DISPATCH
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
             return
 
         else:
