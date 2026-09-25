@@ -1,3 +1,4 @@
-# Caravan Multi-Modal Logistics & Customs Engine
-# The server runs on standard Python 3 libraries (http.server, sqlite3, json, math, os, sys)
-# No external pip packages required.
+# Caravan Multi-Modal Logistics & Customs Engine + Telegram Assistant Bot
+pyTelegramBotAPI>=4.20.0
+python-dotenv>=1.0.0
+requests>=2.31.0

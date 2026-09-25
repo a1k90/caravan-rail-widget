@@ -16,7 +16,9 @@ import os
 import sys
 import json
 import math
+import time
 import sqlite3
+import threading
 from urllib.parse import urlparse, parse_qs
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
@@ -647,9 +649,19 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                 "stations_count": st_c,
                 "cargo_count": cg_c,
                 "tnved_count": tn_c,
-                "modalities": ["rail", "fleet", "road", "air", "multimodal", "customs"]
+                "modalities": ["rail", "fleet", "road", "air", "multimodal", "customs"],
+                "telegram_bot": "enabled"
             }
             self._send_json(resp)
+            return
+
+        elif path == "/api/bot/status":
+            self._send_json({
+                "status": "online",
+                "service": "Caravan Telegram Assistant Bot",
+                "bot_active": True,
+                "timestamp": int(time.time())
+            })
             return
 
         elif path == "/api/stations":
@@ -840,6 +852,24 @@ class RailEngineHandler(BaseHTTPRequestHandler):
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
 
+def start_telegram_bot_daemon():
+    """Starts the Caravan Railroad Telegram bot in a background thread."""
+    def _worker():
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            root_dir = os.path.dirname(current_dir)
+            if root_dir not in sys.path:
+                sys.path.insert(0, root_dir)
+
+            from telegram_bot.bot import run as run_bot
+            print("[Telegram Bot] Starting Caravan Railroad Telegram Bot daemon thread...")
+            run_bot()
+        except Exception as e:
+            print(f"[Telegram Bot] Background worker error: {e}")
+
+    thread = threading.Thread(target=_worker, daemon=True, name="CaravanTelegramBotWorker")
+    thread.start()
+
 def run():
     server_address = ("", PORT)
     httpd = HTTPServer(server_address, RailEngineHandler)
@@ -848,7 +878,15 @@ def run():
     print(f" Port: {PORT}")
     print(f" Health check: http://localhost:{PORT}/api/health")
     print(f" Search TN VED: http://localhost:{PORT}/api/customs/tnved?q=пшеница")
+    print(f" Bot status:  http://localhost:{PORT}/api/bot/status")
     print(f"======================================================")
+
+    # Automatically start Telegram Bot daemon alongside web server
+    try:
+        start_telegram_bot_daemon()
+    except Exception as e:
+        print(f"[Telegram Bot] Warning: Could not initialize bot daemon: {e}")
+
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:
