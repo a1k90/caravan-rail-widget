@@ -921,21 +921,27 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                 from telegram_bot.bot import get_bot
                 import telebot
                 
-                content_len = int(self.headers.get("Content-Length", 0))
-                body = self.rfile.read(content_len) if content_len > 0 else b'{}'
-                update_json = json.loads(body.decode("utf-8"))
+                update_json = data
+                if not update_json:
+                    log_bot_event("Warning: Webhook received empty data")
+                    self._send_json({"ok": True, "note": "empty payload"})
+                    return
                 
                 bot = get_bot()
                 update = telebot.types.Update.de_json(update_json)
-                bot.process_new_updates([update])
-                
-                BOT_STATUS["updates_processed"] = BOT_STATUS.get("updates_processed", 0) + 1
-                BOT_STATUS["last_update_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                if update:
+                    bot.process_new_updates([update])
+                    BOT_STATUS["updates_processed"] = BOT_STATUS.get("updates_processed", 0) + 1
+                    BOT_STATUS["last_update_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                    upd_id = getattr(update, 'update_id', 'unknown')
+                    log_bot_event(f"Successfully processed Telegram update id={upd_id}")
                 
                 self._send_json({"ok": True})
             except Exception as e:
+                import traceback
                 tb = traceback.format_exc()
                 log_bot_event(f"Webhook processing error: {e}")
+                print(tb)
                 self._send_json({"ok": False, "error": str(e)}, status=500)
             return
 
