@@ -749,8 +749,44 @@ def prompt_summary_confirmation(bot: telebot.TeleBot, tg_id: int, lang: str, s_t
     )
 
 
+def notify_admins(bot: telebot.TeleBot, lead: dict, user: dict):
+    """Forward incoming lead inquiry to admin/manager chat IDs in Telegram."""
+    from .config import ADMIN_CHAT_IDS
+    if not ADMIN_CHAT_IDS:
+        return
+    lead_num = lead.get('lead_number', 'CR-LEAD')
+    company = user.get('company_name', 'Клиент')
+    service = lead.get('service_name', 'Логистика')
+    phone = user.get('phone', '—')
+    email = user.get('email', '—')
+    full_name = user.get('full_name', '—')
+    tg_user = user.get('username')
+    tg_link = f"@{tg_user}" if tg_user else f"ID: {user.get('telegram_id')}"
+    
+    msg = (
+        f"🔥 **НОВАЯ ЗАЯВКА {lead_num}**\n\n"
+        f"🏢 **Компания:** {company}\n"
+        f"👤 **Контакт:** {full_name} ({tg_link})\n"
+        f"📞 **Телефон:** {phone}\n"
+        f"✉️ **Email:** {email}\n"
+        f"📦 **Направление:** {service}\n\n"
+        f"📋 **Параметры перевозки:**\n"
+    )
+    for k, v in lead.get('details', {}).items():
+        if v:
+            clean_k = str(k).replace('_', ' ').capitalize()
+            msg += f"• **{clean_k}:** {v}\n"
+            
+    for admin_id in ADMIN_CHAT_IDS:
+        try:
+            bot.send_message(admin_id, msg)
+            logger.info(f"Lead {lead_num} forwarded to admin chat {admin_id}")
+        except Exception as e:
+            logger.error(f"Failed to forward lead to admin {admin_id}: {e}")
+
+
 def finalize_lead_submission(bot: telebot.TeleBot, tg_id: int, lang: str, state_info: dict):
-    """Persist lead to SQLite, send email to info@caravanrailroad.com, and confirm to user."""
+    """Persist lead to SQLite, send email to info@caravanrailroad.com, notify admins, and confirm to user."""
     data = state_info.get('data', {})
     service_type = data.get('service_type', 'general')
     service_name = data.get('service_name', service_type)
@@ -771,7 +807,10 @@ def finalize_lead_submission(bot: telebot.TeleBot, tg_id: int, lang: str, state_
     # 2. Dispatch email to info@caravanrailroad.com
     send_lead_email(lead, user)
     
-    # 3. Notify user with confirmation
+    # 3. Notify admins / managers in Telegram
+    notify_admins(bot, lead, user)
+    
+    # 4. Notify user with confirmation
     phone = user.get('phone', 'указанному номеру')
     conf_msg = t(
         lang,

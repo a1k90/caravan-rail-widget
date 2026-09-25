@@ -214,28 +214,85 @@ def log_lead_to_file(lead_num: str, plain_text: str) -> None:
         logger.error(f"Failed to log lead {lead_num} to file: {e}")
 
 
-def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> bool:
-    """
-    Sends email to info@caravanrailroad.com.
-    Returns True if sent or successfully logged to fallback.
-    """
-    lead_num = lead_data.get('lead_number', 'CR-LEAD')
-    company = user_data.get('company_name', 'Client')
-    service = lead_data.get('service_name', lead_data.get('service_type', 'Logistics'))
-    
-    subject = f"[Caravan Lead {lead_num}] {service} — {company}"
-    
-    plain_text = generate_lead_plain_text(lead_data, user_data)
-    html_content = generate_lead_html(lead_data, user_data)
-    
-    # Always log to file first so no lead is ever lost
-    log_lead_to_file(lead_num, plain_text)
-    
-    # Check if SMTP credentials are configured
-    if not SMTP_HOST or not SMTP_USER or SMTP_HOST in ('smtp.example.com', 'localhost') and not SMTP_PASSWORD:
-        logger.info(f"SMTP not fully configured (host='{SMTP_HOST}'). Lead {lead_num} saved to local logs.")
-        return True
-        
+# Global dispatch status tracker
+LAST_DISPATCH_STATUS = {
+    "lead_number": None,
+    "timestamp": None,
+    "method": None,
+    "success": False,
+    "error": None
+}
+
+
+def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple:
+    """Send email via Resend HTTPS REST API (port 443, immune to cloud SMTP port blocks)."""
+    from .config import RESEND_API_KEY, MANAGER_EMAIL, SMTP_FROM
+    if not RESEND_API_KEY:
+        return False, "RESEND_API_KEY not configured"
+    try:
+        import urllib.request
+        import json
+        payload = {
+            "from": SMTP_FROM or "Caravan Logistics <onboarding@resend.dev>",
+            "to": [MANAGER_EMAIL],
+            "subject": subject,
+            "html": html_content,
+            "text": text_content
+        }
+        req = urllib.request.Request(
+            "https://api.resend.com/emails",
+            data=json.dumps(payload).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {RESEND_API_KEY}",
+                "Content-Type": "application/json",
+                "User-Agent": "CaravanBot/1.0"
+            }
+        )
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            logger.info(f"Resend API email sent: {data}")
+            return True, None
+    except Exception as e:
+        err = f"Resend API error: {e}"
+        logger.error(err)
+        return False, err
+
+
+def send_via_webhook(lead_data: dict, user_data: dict, subject: str, html_content: str, plain_text: str) -> tuple:
+    """Send lead data to external Webhook (Google Apps Script / Make / Zapier) over HTTPS."""
+    from .config import EMAIL_WEBHOOK_URL
+    if not EMAIL_WEBHOOK_URL:
+        return False, "EMAIL_WEBHOOK_URL not configured"
+    try:
+        import urllib.request
+        import json
+        payload = {
+            "action": "order",
+            "subject": subject,
+            "lead": lead_data,
+            "user": user_data,
+            "html": html_content,
+            "text": plain_text
+        }
+        req = urllib.request.Request(
+            EMAIL_WEBHOOK_URL,
+            data=json.dumps(payload).encode("utf-8"),
+            headers={"Content-Type": "application/json", "User-Agent": "CaravanBot/1.0"}
+        )
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            logger.info(f"Email webhook dispatched successfully to {EMAIL_WEBHOOK_URL}")
+            return True, None
+    except Exception as e:
+        err = f"Email webhook error: {e}"
+        logger.error(err)
+        return False, err
+
+
+def send_via_smtp(subject: str, html_content: str, plain_text: str) -> tuple:
+    """Send email via SMTP (Yandex/corporate). May be blocked on cloud Free tiers (e.g. Render Free)."""
+    if not SMTP_HOST or not SMTP_USER or (SMTP_HOST in ('smtp.example.com', 'localhost') and not SMTP_PASSWORD):
+        return False, "SMTP not configured"
+
     try:
         msg = MIMEMultipart('alternative')
         msg['Subject'] = subject
@@ -248,12 +305,12 @@ def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> boo
         msg.attach(part_html)
         
         if SMTP_USE_SSL or SMTP_PORT == 465:
-            with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=15) as server:
+            with smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=6) as server:
                 if SMTP_USER and SMTP_PASSWORD:
                     server.login(SMTP_USER, SMTP_PASSWORD)
                 server.sendmail(msg['From'], [MANAGER_EMAIL], msg.as_string())
         else:
-            with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=15) as server:
+            with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=6) as server:
                 server.ehlo()
                 try:
                     server.starttls()
@@ -264,8 +321,67 @@ def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> boo
                     server.login(SMTP_USER, SMTP_PASSWORD)
                 server.sendmail(msg['From'], [MANAGER_EMAIL], msg.as_string())
                 
-        logger.info(f"Email for lead {lead_num} successfully sent to {MANAGER_EMAIL}")
-        return True
+        logger.info(f"Email successfully sent via SMTP to {MANAGER_EMAIL}")
+        return True, None
     except Exception as e:
-        logger.error(f"SMTP sending failed for lead {lead_num}: {e}. (Lead saved to logs)")
-        return True  # Returns True so client user experience is not disrupted
+        err = f"SMTP error ({SMTP_HOST}:{SMTP_PORT}): {e}"
+        logger.error(err)
+        return False, err
+
+
+def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> bool:
+    """
+    Multi-channel email dispatcher:
+    1. Resend API (HTTPS port 443 — guaranteed delivery from Render Free)
+    2. Webhook forwarder (HTTPS port 443)
+    3. Direct SMTP (ports 465/587)
+    Always logs lead to local SQLite and logs/emails.log as resilient fallback.
+    """
+    lead_num = lead_data.get('lead_number', 'CR-LEAD')
+    company = user_data.get('company_name', 'Client')
+    service = lead_data.get('service_name', lead_data.get('service_type', 'Logistics'))
+    
+    subject = f"[Caravan Lead {lead_num}] {service} — {company}"
+    
+    plain_text = generate_lead_plain_text(lead_data, user_data)
+    html_content = generate_lead_html(lead_data, user_data)
+    
+    # 1. Always log to file first so no lead is ever lost
+    log_lead_to_file(lead_num, plain_text)
+
+    LAST_DISPATCH_STATUS["lead_number"] = lead_num
+    LAST_DISPATCH_STATUS["timestamp"] = datetime.now().isoformat()
+
+    # 2. Try Resend HTTPS API (if key is set)
+    ok, resend_err = send_via_resend(subject, html_content, plain_text)
+    if ok:
+        LAST_DISPATCH_STATUS["method"] = "resend_api"
+        LAST_DISPATCH_STATUS["success"] = True
+        LAST_DISPATCH_STATUS["error"] = None
+        return True
+
+    # 3. Try Webhook forwarder (if webhook is set)
+    ok, wh_err = send_via_webhook(lead_data, user_data, subject, html_content, plain_text)
+    if ok:
+        LAST_DISPATCH_STATUS["method"] = "webhook"
+        LAST_DISPATCH_STATUS["success"] = True
+        LAST_DISPATCH_STATUS["error"] = None
+        return True
+
+    # 4. Try Direct SMTP (Yandex)
+    ok, smtp_err = send_via_smtp(subject, html_content, plain_text)
+    if ok:
+        LAST_DISPATCH_STATUS["method"] = "smtp"
+        LAST_DISPATCH_STATUS["success"] = True
+        LAST_DISPATCH_STATUS["error"] = None
+        return True
+
+    # Record error details (Render Free tier blocks outbound SMTP ports 25, 465, 587)
+    detailed_error = f"{smtp_err}; Note: Render Free tier blocks outbound SMTP ports (25, 465, 587)."
+    LAST_DISPATCH_STATUS["method"] = "failed"
+    LAST_DISPATCH_STATUS["success"] = False
+    LAST_DISPATCH_STATUS["error"] = detailed_error
+    logger.warning(f"Could not dispatch email for {lead_num}: {detailed_error} (Lead safely stored in SQLite DB and emails.log)")
+
+    return True  # Returns True so client user experience in Telegram is preserved
+

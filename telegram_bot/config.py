@@ -38,6 +38,10 @@ SMTP_USE_SSL = os.getenv("SMTP_USE_SSL", "true").lower() in ("true", "1", "yes")
 SMTP_FROM = os.getenv("SMTP_FROM", os.getenv("EMAIL_FROM", "Caravan Railroad Bot <bot@caravanrailroad.com>")).strip()
 EMAIL_FROM = SMTP_FROM
 
+# HTTPS API для гарантированной отправки на хостингах с блокировкой SMTP-портов (Render Free, Vercel)
+RESEND_API_KEY = os.getenv("RESEND_API_KEY", "").strip()
+EMAIL_WEBHOOK_URL = os.getenv("EMAIL_WEBHOOK_URL", "").strip()
+
 # Язык по умолчанию
 DEFAULT_LANGUAGE = os.getenv("DEFAULT_LANGUAGE", "ru").strip()
 

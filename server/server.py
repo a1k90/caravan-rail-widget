@@ -674,6 +674,13 @@ class RailEngineHandler(BaseHTTPRequestHandler):
             except Exception:
                 pass
 
+            email_info = None
+            try:
+                from telegram_bot.email_service import LAST_DISPATCH_STATUS
+                email_info = LAST_DISPATCH_STATUS
+            except Exception:
+                pass
+
             self._send_json({
                 "service": "Caravan Telegram Assistant Bot",
                 "timestamp": int(time.time()),
@@ -686,10 +693,55 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                 "webhook_info": BOT_STATUS.get("webhook_info"),
                 "updates_processed": BOT_STATUS.get("updates_processed", 0),
                 "last_update_time": BOT_STATUS.get("last_update_time"),
+                "last_email_dispatch": email_info,
                 "last_error": BOT_STATUS.get("last_error"),
                 "last_error_traceback": BOT_STATUS.get("last_error_traceback"),
                 "recent_events": BOT_STATUS.get("events", [])[-15:]
             })
+            return
+
+        elif path == "/api/bot/leads":
+            try:
+                from telegram_bot.database import get_recent_leads
+                limit = int(query.get("limit", [50])[0])
+                leads = get_recent_leads(limit)
+                self._send_json({
+                    "status": "success",
+                    "count": len(leads),
+                    "leads": leads
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
+            return
+
+        elif path == "/api/bot/test_email":
+            try:
+                from telegram_bot.email_service import send_lead_email, LAST_DISPATCH_STATUS
+                test_lead = {
+                    "lead_number": f"TEST-{int(time.time())}",
+                    "service_name": "Тестовая проверка почтового шлюза Caravan",
+                    "created_at": time.strftime("%Y-%m-%d %H:%M:%S UTC"),
+                    "details": {
+                        "маршрут": "Алматы ➔ Ташкент",
+                        "объем": "1 вагон (68 тонн)",
+                        "примечание": "Проверка почтового шлюза Caravan Railroad"
+                    }
+                }
+                test_user = {
+                    "company_name": "ТОО 'Caravan Railroad Test'",
+                    "full_name": "Тестовый Менеджер",
+                    "phone": "+99895 157 8888",
+                    "email": "info@caravanrailroad.com",
+                    "username": "caravan_admin",
+                    "telegram_id": 99999
+                }
+                send_lead_email(test_lead, test_user)
+                self._send_json({
+                    "status": "completed",
+                    "dispatch_status": LAST_DISPATCH_STATUS
+                })
+            except Exception as e:
+                self._send_json({"status": "error", "error": str(e)}, status=500)
             return
 
         elif path == "/api/bot/setup_webhook":
