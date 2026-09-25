@@ -23,9 +23,9 @@ BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8919607192:AAHDODBt7PjRmgT7M4WRaAiv
 # Корпоративная почта для приема заявок клиентов
 MANAGER_EMAIL = os.getenv("MANAGER_EMAIL", "info@caravanrailroad.com").strip()
 
-# Telegram Chat ID администраторов / менеджеров (через запятую)
+# Telegram Chat ID администраторов / менеджеров и групп (через запятую)
 ADMIN_CHAT_IDS = [
-    int(x.strip()) for x in os.getenv("ADMIN_CHAT_IDS", "").split(",") if x.strip().isdigit()
+    int(x.strip()) for x in os.getenv("ADMIN_CHAT_IDS", "-5521386609").split(",") if x.strip().lstrip("-").isdigit()
 ]
 
 # Настройки SMTP для отправки писем

@@ -269,13 +269,14 @@ def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple
             return urllib.request.urlopen(req, context=unverified_ctx, timeout=12)
 
     primary_email = MANAGER_EMAIL or "info@caravanrailroad.com"
-    default_from = "Caravan Logistics <onboarding@resend.dev>"
+    corporate_from = "Caravan Railroad Bot <bot@caravanrailroad.com>"
+    dev_from = "Caravan Logistics <onboarding@resend.dev>"
 
-    # 1. Try sending to primary MANAGER_EMAIL
+    # 1. Try sending directly from bot@caravanrailroad.com to info@caravanrailroad.com
     try:
-        with _dispatch(primary_email, default_from, subject, html_content, text_content) as resp:
+        with _dispatch(primary_email, corporate_from, subject, html_content, text_content) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-            logger.info(f"Resend API email successfully delivered to {primary_email}: {data}")
+            logger.info(f"Resend API email successfully delivered to {primary_email} from {corporate_from}: {data}")
             return True, None
     except urllib.error.HTTPError as http_err:
         err_body = ""
@@ -284,7 +285,7 @@ def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple
         except Exception:
             pass
 
-        logger.warning(f"Resend API primary dispatch to {primary_email} returned HTTP {http_err.code}: {err_body}")
+        logger.warning(f"Resend API primary dispatch to {primary_email} from {corporate_from} returned HTTP {http_err.code}: {err_body}")
 
         # Check if domain unverified / testing email restriction
         is_restricted = (
@@ -295,20 +296,20 @@ def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple
         )
 
         fallback_email = RESEND_FALLBACK_EMAIL or "zulkaynarovich@gmail.com"
-        if is_restricted and fallback_email and fallback_email.lower() != primary_email.lower():
-            logger.info(f"Attempting Resend fallback to verified account email: {fallback_email}")
+        if is_restricted and fallback_email:
+            logger.info(f"Attempting Resend fallback to verified account email: {fallback_email} using {dev_from}")
             banner_html = (
                 f'<div style="background:#fef3c7;border:1px solid #f59e0b;padding:12px;border-radius:6px;'
                 f'margin-bottom:16px;color:#92400e;font-size:13px;line-height:1.4;">'
                 f'⚠️ <b>Caravan Logistics Notice:</b> Заявка отправлена на ваш подтвержденный email '
-                f'<code>{fallback_email}</code>, так как домен <code>caravanrailroad.com</code> находится на проверке в Resend.<br>'
-                f'👉 Чтобы заявки приходили на <code>{primary_email}</code>, подтвердите домен в '
-                f'<a href="https://resend.com/domains" style="color:#b45309;font-weight:bold;">resend.com/domains</a>.'
+                f'<code>{fallback_email}</code>, так как домен <code>caravanrailroad.com</code> еще не подтвержден в панели Resend.<br>'
+                f'👉 Чтобы заявки отправлялись строго с <b><code>bot@caravanrailroad.com</code></b> на <b><code>{primary_email}</code></b>, '
+                f'подтвердите домен в <a href="https://resend.com/domains" style="color:#b45309;font-weight:bold;">resend.com/domains</a>.'
                 f'</div>'
             )
             banner_text = (
-                f"[ВНИМАНИЕ: Заявка перенаправлена на {fallback_email}, т.к. домен caravanrailroad.com не подтвержден в Resend. "
-                f"Для доставки напрямую на {primary_email} подтвердите домен в resend.com/domains]\n\n"
+                f"[ВНИМАНИЕ: Заявка перенаправлена на {fallback_email}, т.к. домен caravanrailroad.com еще не подтвержден в Resend. "
+                f"Для доставки с bot@caravanrailroad.com на {primary_email} подтвердите домен в resend.com/domains]\n\n"
             )
 
             fb_html = banner_html + html_content
@@ -316,7 +317,7 @@ def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple
             fb_subj = f"[Заявка Caravan] {subject}"
 
             try:
-                with _dispatch(fallback_email, default_from, fb_subj, fb_html, fb_text) as fb_resp:
+                with _dispatch(fallback_email, dev_from, fb_subj, fb_html, fb_text) as fb_resp:
                     fb_data = json.loads(fb_resp.read().decode("utf-8"))
                     logger.info(f"Resend fallback email delivered to {fallback_email}: {fb_data}")
                     return True, None

@@ -444,22 +444,46 @@ def init_bot(token: str) -> telebot.TeleBot:
 
     @bot.message_handler(content_types=['text'])
     def handle_text(message: types.Message):
-        # In groups and supergroups, auto-register chat and only reply when mentioned
+        # In groups and supergroups, auto-register chat and reply to triggers or mentions
         if message.chat.type in ('group', 'supergroup'):
             from .database import register_admin_chat
-            register_admin_chat(message.chat.id, message.chat.title or "Группа менеджеров", message.chat.type)
-            text_raw = (message.text or '').strip()
+            title = message.chat.title or "Группа менеджеров"
+            register_admin_chat(message.chat.id, title, message.chat.type)
+            text_clean = (message.text or '').strip().lower()
+            
+            # Words/commands that should trigger an instant status reply in the group
+            triggers = [
+                'старт', 'start', '/start',
+                'айди', 'id', '/id', 'chatid', '/chatid',
+                'пинг', 'ping', '/ping',
+                'тест', 'test', '/test',
+                'бот', 'bot', 'статус', 'status',
+                'помощь', 'help', '/help', 'инфо', 'info'
+            ]
+            bot_user = ""
             try:
-                bot_user = bot.get_me().username
-                if bot_user and f"@{bot_user.lower()}" in text_raw.lower():
-                    bot.reply_to(
-                        message,
-                        f"👋 **Caravan Railroad Bot активен в этой группе!**\n\n"
-                        f"🆔 **Chat ID:** `{message.chat.id}`\n"
-                        f"🔔 Все новые заявки клиентов на расчет ж/д тарифов и логистики транслируются сюда в реальном времени."
-                    )
+                bot_user = (bot.get_me().username or '').lower()
             except Exception:
                 pass
+
+            is_trigger = any(
+                text_clean == t or text_clean.startswith(t + ' ') or text_clean.startswith(t + '@') or (' ' + t + ' ') in (' ' + text_clean + ' ')
+                for t in triggers
+            )
+            is_mention = bool(bot_user and (f"@{bot_user}" in text_clean))
+
+            if is_trigger or is_mention:
+                try:
+                    bot.reply_to(
+                        message,
+                        f"👋 **Caravan Railroad Bot на связи в группе «{title}»!**\n\n"
+                        f"🆔 **Chat ID:** `{message.chat.id}`\n"
+                        f"📌 **Статус:** `Онлайн / Канал уведомлений подключен`\n\n"
+                        f"🔔 Все новые заявки клиентов на расчет ж/д тарифов и мультимодальной логистики "
+                        f"будут автоматически публиковаться сюда в режиме реального времени."
+                    )
+                except Exception as e:
+                    logger.error(f"Failed to reply to group trigger: {e}")
             return
 
         tg_id = message.from_user.id
