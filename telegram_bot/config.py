@@ -47,8 +47,8 @@ LOGS_DIR = str(BASE_DIR / "logs")
 os.makedirs(LOGS_DIR, exist_ok=True)
 
 # Контакты компании для инфо-раздела
-COMPANY_PHONE = "+7 (727) 345-00-00"
+COMPANY_PHONE = "+99895 157 8888"
 COMPANY_EMAIL = "info@caravanrailroad.com"
-COMPANY_WEBSITE = "https://caravan-rail.com"
+COMPANY_WEBSITE = "https://caravanrailroad.com"
 COMPANY_TELEGRAM_SUPPORT = "@caravan_rail_support"
 

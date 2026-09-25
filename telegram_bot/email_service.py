@@ -146,8 +146,8 @@ def generate_lead_html(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> 
     <!-- Footer -->
     <tr>
       <td style="background: #0b2545; padding: 18px 32px; text-align: center; color: #94a3b8; font-size: 12px;">
-        ТОО "Caravan Railroad & Multimodal Logistics" &bull; Казахстан, г. Алматы<br>
-        Email: <a href="mailto:info@caravanrailroad.com" style="color: #38bdf8; text-decoration: none;">info@caravanrailroad.com</a> &bull; Веб-сайт: <a href="https://caravan-rail.com" style="color: #38bdf8; text-decoration: none;">caravan-rail.com</a>
+        ТОО "Caravan Railroad & Multimodal Logistics"<br>
+        Тел: +99895 157 8888 &bull; Email: <a href="mailto:info@caravanrailroad.com" style="color: #38bdf8; text-decoration: none;">info@caravanrailroad.com</a> &bull; Сайт: <a href="https://caravanrailroad.com" style="color: #38bdf8; text-decoration: none;">caravanrailroad.com</a>
       </td>
     </tr>
   </table>

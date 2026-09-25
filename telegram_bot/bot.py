@@ -857,9 +857,21 @@ def is_button_match(text: str, key: str) -> bool:
     return False
 
 
-# ------------------ MAIN RUNNER ------------------ #
+# ------------------ MAIN RUNNER & INSTANCE ACCESS ------------------ #
 
-def run():
+_bot_instance: Optional[telebot.TeleBot] = None
+
+def get_bot(token: str = None) -> telebot.TeleBot:
+    """Return singleton instance of initialized TeleBot."""
+    global _bot_instance
+    if _bot_instance is None:
+        init_db()
+        tok = (token or BOT_TOKEN).strip()
+        _bot_instance = init_bot(tok)
+    return _bot_instance
+
+
+def run(mode: str = "polling"):
     """Main execution loop for Caravan Railroad bot."""
     init_db()
     
@@ -868,19 +880,20 @@ def run():
             "CRITICAL: BOT_TOKEN is not configured! "
             "Please create a bot via @BotFather in Telegram and set TELEGRAM_BOT_TOKEN in .env"
         )
-        print("\n" + "="*60)
-        print("CARAVAN RAILROAD TELEGRAM BOT — SETUP REQUIRED")
-        print("="*60)
-        print("1. Open Telegram and message @BotFather to create your bot.")
-        print("2. Copy the API Token provided by BotFather.")
-        print("3. Add the token to: /Users/asilbek/Documents/CaravanRailRoad/telegram_bot/.env")
-        print("   TELEGRAM_BOT_TOKEN=123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ")
-        print("4. Restart the bot: python3 -m telegram_bot.bot")
-        print("="*60 + "\n")
         return
 
+    bot = get_bot(BOT_TOKEN)
+
+    if mode == "webhook":
+        logger.info("Bot instance ready for Webhook mode (no polling needed).")
+        return bot
+
     logger.info("Starting Caravan Railroad Telegram Bot polling...")
-    bot = init_bot(BOT_TOKEN)
+    try:
+        bot.remove_webhook()
+        time.sleep(1)
+    except Exception as e:
+        logger.warning(f"Could not remove webhook before polling: {e}")
     
     while True:
         try:
@@ -892,3 +905,4 @@ def run():
 
 if __name__ == '__main__':
     run()
+

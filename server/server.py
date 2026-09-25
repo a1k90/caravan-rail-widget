@@ -19,6 +19,11 @@ import math
 import time
 import sqlite3
 import threading
+import subprocess
+import traceback
+import urllib.request
+import urllib.parse
+import urllib.error
 from urllib.parse import urlparse, parse_qs
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
@@ -656,12 +661,74 @@ class RailEngineHandler(BaseHTTPRequestHandler):
             return
 
         elif path == "/api/bot/status":
+            thread = BOT_STATUS.get("thread")
+            is_alive = bool(thread and thread.is_alive())
+            
+            # Query Telegram API if not done or refresh info
+            try:
+                from telegram_bot import config
+                tok = getattr(config, 'BOT_TOKEN', '')
+                if tok and not BOT_STATUS.get("telegram_api", {}).get("reachable"):
+                    check_telegram_api(tok)
+                    get_telegram_webhook_info(tok)
+            except Exception:
+                pass
+
             self._send_json({
-                "status": "online",
                 "service": "Caravan Telegram Assistant Bot",
-                "bot_active": True,
-                "timestamp": int(time.time())
+                "timestamp": int(time.time()),
+                "status": "online" if (BOT_STATUS.get("initialized") or is_alive) else "error",
+                "mode": BOT_STATUS.get("mode"),
+                "thread_alive": is_alive,
+                "initialized": BOT_STATUS.get("initialized"),
+                "webhook_url": BOT_STATUS.get("webhook_url"),
+                "telegram_api": BOT_STATUS.get("telegram_api"),
+                "webhook_info": BOT_STATUS.get("webhook_info"),
+                "updates_processed": BOT_STATUS.get("updates_processed", 0),
+                "last_update_time": BOT_STATUS.get("last_update_time"),
+                "last_error": BOT_STATUS.get("last_error"),
+                "last_error_traceback": BOT_STATUS.get("last_error_traceback"),
+                "recent_events": BOT_STATUS.get("events", [])[-15:]
             })
+            return
+
+        elif path == "/api/bot/setup_webhook":
+            try:
+                from telegram_bot import config
+                token = config.BOT_TOKEN
+                render_url = os.getenv("RENDER_EXTERNAL_URL", "https://caravan-rail-widget.onrender.com").rstrip("/")
+                target_wh = f"{render_url}/api/bot/webhook"
+                url = f"https://api.telegram.org/bot{token}/setWebhook?url={urllib.parse.quote(target_wh)}&drop_pending_updates=False"
+                req = urllib.request.Request(url, headers={"User-Agent": "CaravanBot/1.0"})
+                with urllib.request.urlopen(req, timeout=10) as r:
+                    res = json.loads(r.read().decode("utf-8"))
+                BOT_STATUS["mode"] = "webhook"
+                BOT_STATUS["webhook_url"] = target_wh
+                BOT_STATUS["initialized"] = True
+                get_telegram_webhook_info(token)
+                log_bot_event(f"Manual setup_webhook OK: {target_wh}")
+                self._send_json({"status": "success", "result": res, "webhook_url": target_wh})
+            except Exception as e:
+                log_bot_event(f"Manual setup_webhook FAILED: {e}")
+                self._send_json({"status": "error", "error": str(e)}, status=500)
+            return
+
+        elif path == "/api/bot/delete_webhook":
+            try:
+                from telegram_bot import config
+                token = config.BOT_TOKEN
+                url = f"https://api.telegram.org/bot{token}/deleteWebhook"
+                req = urllib.request.Request(url, headers={"User-Agent": "CaravanBot/1.0"})
+                with urllib.request.urlopen(req, timeout=10) as r:
+                    res = json.loads(r.read().decode("utf-8"))
+                BOT_STATUS["mode"] = "none"
+                BOT_STATUS["webhook_url"] = None
+                get_telegram_webhook_info(token)
+                log_bot_event(f"Manual delete_webhook OK: {res}")
+                self._send_json({"status": "success", "result": res})
+            except Exception as e:
+                log_bot_event(f"Manual delete_webhook FAILED: {e}")
+                self._send_json({"status": "error", "error": str(e)}, status=500)
             return
 
         elif path == "/api/stations":
@@ -849,8 +916,130 @@ class RailEngineHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "success", "documents": docs})
             return
 
+        elif parsed.path == "/api/bot/webhook":
+            try:
+                from telegram_bot.bot import get_bot
+                import telebot
+                
+                content_len = int(self.headers.get("Content-Length", 0))
+                body = self.rfile.read(content_len) if content_len > 0 else b'{}'
+                update_json = json.loads(body.decode("utf-8"))
+                
+                bot = get_bot()
+                update = telebot.types.Update.de_json(update_json)
+                bot.process_new_updates([update])
+                
+                BOT_STATUS["updates_processed"] = BOT_STATUS.get("updates_processed", 0) + 1
+                BOT_STATUS["last_update_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
+                
+                self._send_json({"ok": True})
+            except Exception as e:
+                tb = traceback.format_exc()
+                log_bot_event(f"Webhook processing error: {e}")
+                self._send_json({"ok": False, "error": str(e)}, status=500)
+            return
+
         else:
             self._send_json({"error": "Endpoint not found"}, status=404)
+
+# ------------------ TELEGRAM BOT SYSTEM STATE & DAEMON ------------------ #
+
+BOT_STATUS = {
+    "initialized": False,
+    "mode": "unknown",
+    "thread": None,
+    "webhook_url": None,
+    "last_error": None,
+    "last_error_traceback": None,
+    "telegram_api": {
+        "reachable": False,
+        "bot_id": None,
+        "bot_username": None,
+        "bot_first_name": None,
+        "error": None
+    },
+    "webhook_info": None,
+    "updates_processed": 0,
+    "last_update_time": None,
+    "events": []
+}
+
+def log_bot_event(msg: str):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    entry = f"[{timestamp}] {msg}"
+    print(f"[Telegram Bot] {entry}")
+    BOT_STATUS["events"].append(entry)
+    if len(BOT_STATUS["events"]) > 30:
+        BOT_STATUS["events"].pop(0)
+
+def ensure_dependencies():
+    """Ensure pyTelegramBotAPI, python-dotenv, and requests are available."""
+    try:
+        import telebot
+        import dotenv
+        return True
+    except ImportError as e:
+        log_bot_event(f"Missing dependency: {e}. Auto-installing via pip...")
+        try:
+            subprocess.check_call([
+                sys.executable, "-m", "pip", "install",
+                "pyTelegramBotAPI>=4.20.0", "python-dotenv>=1.0.0", "requests>=2.31.0"
+            ])
+            log_bot_event("Auto-install completed successfully!")
+            return True
+        except Exception as pe:
+            log_bot_event(f"Auto-install failed: {pe}")
+            BOT_STATUS["last_error"] = f"Dependency installation failed: {pe}"
+            return False
+
+def check_telegram_api(token: str):
+    """Directly verify connectivity to Telegram Bot API."""
+    if not token or token == "YOUR_TELEGRAM_BOT_TOKEN_HERE":
+        BOT_STATUS["telegram_api"] = {"reachable": False, "error": "Token not configured"}
+        return False, "Token not configured"
+    try:
+        url = f"https://api.telegram.org/bot{token}/getMe"
+        req = urllib.request.Request(url, headers={"User-Agent": "CaravanBot/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            if data.get("ok"):
+                res = data.get("result", {})
+                BOT_STATUS["telegram_api"] = {
+                    "reachable": True,
+                    "bot_id": res.get("id"),
+                    "bot_username": res.get("username"),
+                    "bot_first_name": res.get("first_name"),
+                    "can_join_groups": res.get("can_join_groups"),
+                    "error": None
+                }
+                log_bot_event(f"Telegram API OK: @{res.get('username')} (id={res.get('id')})")
+                return True, res
+            else:
+                err = f"API error: {data.get('description')}"
+                BOT_STATUS["telegram_api"] = {"reachable": False, "error": err}
+                log_bot_event(err)
+                return False, err
+    except Exception as e:
+        err = f"Network/HTTP error: {e}"
+        BOT_STATUS["telegram_api"] = {"reachable": False, "error": err}
+        log_bot_event(err)
+        return False, err
+
+def get_telegram_webhook_info(token: str):
+    """Query Telegram for current webhook settings."""
+    if not token:
+        return None
+    try:
+        url = f"https://api.telegram.org/bot{token}/getWebhookInfo"
+        req = urllib.request.Request(url, headers={"User-Agent": "CaravanBot/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            if data.get("ok"):
+                BOT_STATUS["webhook_info"] = data.get("result")
+                return data.get("result")
+    except Exception as e:
+        BOT_STATUS["webhook_info"] = {"error": str(e)}
+    return None
 
 def start_telegram_bot_daemon():
     """Starts the Caravan Railroad Telegram bot in a background thread."""
@@ -861,13 +1050,61 @@ def start_telegram_bot_daemon():
             if root_dir not in sys.path:
                 sys.path.insert(0, root_dir)
 
-            from telegram_bot.bot import run as run_bot
-            print("[Telegram Bot] Starting Caravan Railroad Telegram Bot daemon thread...")
-            run_bot()
+            if not ensure_dependencies():
+                return
+
+            from telegram_bot import config
+            from telegram_bot.bot import get_bot, run as run_bot
+            
+            token = config.BOT_TOKEN
+            if not token:
+                log_bot_event("ERROR: TELEGRAM_BOT_TOKEN is not configured!")
+                BOT_STATUS["last_error"] = "TELEGRAM_BOT_TOKEN is empty"
+                return
+
+            log_bot_event(f"Checking Telegram API with token {token[:6]}...{token[-4:]}...")
+            ok, res = check_telegram_api(token)
+            wh_info = get_telegram_webhook_info(token)
+
+            # Determine public URL
+            render_url = os.getenv("RENDER_EXTERNAL_URL", "https://caravan-rail-widget.onrender.com").rstrip("/")
+            use_webhook = os.getenv("BOT_USE_WEBHOOK", "true").lower() in ("true", "1", "yes")
+
+            if use_webhook and render_url.startswith("https://"):
+                target_wh = f"{render_url}/api/bot/webhook"
+                log_bot_event(f"Configuring Telegram Webhook -> {target_wh}")
+                try:
+                    set_wh_url = f"https://api.telegram.org/bot{token}/setWebhook?url={urllib.parse.quote(target_wh)}&drop_pending_updates=False"
+                    req = urllib.request.Request(set_wh_url, headers={"User-Agent": "CaravanBot/1.0"})
+                    with urllib.request.urlopen(req, timeout=10) as r:
+                        wh_res = json.loads(r.read().decode("utf-8"))
+                        log_bot_event(f"setWebhook result: {wh_res}")
+                    BOT_STATUS["mode"] = "webhook"
+                    BOT_STATUS["webhook_url"] = target_wh
+                    BOT_STATUS["initialized"] = True
+                    get_telegram_webhook_info(token)
+                    # Initialize bot instance for webhook processing
+                    get_bot(token)
+                    log_bot_event("Webhook mode ACTIVE! Listening on POST /api/bot/webhook")
+                    return
+                except Exception as whe:
+                    log_bot_event(f"Failed to set webhook: {whe}. Falling back to polling mode...")
+
+            # Polling mode fallback
+            BOT_STATUS["mode"] = "polling"
+            BOT_STATUS["initialized"] = True
+            log_bot_event("Starting background polling loop...")
+            run_bot(mode="polling")
+
         except Exception as e:
-            print(f"[Telegram Bot] Background worker error: {e}")
+            tb = traceback.format_exc()
+            BOT_STATUS["last_error"] = str(e)
+            BOT_STATUS["last_error_traceback"] = tb
+            log_bot_event(f"Fatal worker error: {e}")
+            print(tb)
 
     thread = threading.Thread(target=_worker, daemon=True, name="CaravanTelegramBotWorker")
+    BOT_STATUS["thread"] = thread
     thread.start()
 
 def run():

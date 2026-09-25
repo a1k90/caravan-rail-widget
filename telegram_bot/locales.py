@@ -148,14 +148,13 @@ LOCALES = {
         # О компании
         'about_title': 'ℹ️ **О компании Caravan Railroad & Multimodal Logistics**',
         'about_text': (
-            '🚂 **Caravan Railroad** — международный мультимодальный и железнодорожный логистический оператор на пространстве 1520 & 1435 мм.\n\n'
+            '🚂 **Caravan Railroad** — международный мультимодальный и железнодорожный логистический оператор.\n\n'
             '🔹 **Собственный и арендованный парк:** 1 480+ вагонов (крытые, полувагоны, цистерны, фитинговые платформы)\n'
-            '🔹 **География:** Казахстан, Узбекистан, страны Центральной Азии, Китай, Европа, Турция, Кавказ\n'
-            '🔹 **Сервисы:** ж/д тарифы, экспедирование, контейнерные поезда, автодоставка, таможенный брокер\n\n'
-            '📞 **Телефон:** +7 (727) 345-00-00\n'
+            '🔹 **География:** Казахстан, Узбекистан, страны Центральной Азии, Китай, Россия.\n'
+            '🔹 **Сервисы:** ж/д тарифы, авиаперевозки, экспедирование, контейнерные поезда, автодоставка, таможенный брокер\n\n'
+            '📞 **Телефон:** +99895 157 8888\n'
             '✉️ **Email:** info@caravanrailroad.com\n'
-            '🌐 **Сайт:** https://caravan-rail.com\n'
-            '💬 **Поддержка:** @caravan_rail_support'
+            '🌐 **Сайт:** https://caravanrailroad.com'
         )
     },
     
@@ -291,14 +290,13 @@ LOCALES = {
         
         'about_title': 'ℹ️ **About Caravan Railroad & Multimodal Logistics**',
         'about_text': (
-            '🚂 **Caravan Railroad** — international multimodal and railway logistics carrier across 1520 & 1435 mm networks.\n\n'
+            '🚂 **Caravan Railroad** — international multimodal and railway logistics operator.\n\n'
             '🔹 **Fleet:** 1,480+ rolling stock units (boxcars, gondolas, tanks, fitting platforms)\n'
-            '🔹 **Network:** Kazakhstan, Uzbekistan, Central Asia, China, Europe, Turkey, Caucasus\n'
-            '🔹 **Services:** rail freight tariff calculations, forwarding codes, container trains, road trucking, customs brokerage\n\n'
-            '📞 **Phone:** +7 (727) 345-00-00\n'
+            '🔹 **Geography:** Kazakhstan, Uzbekistan, Central Asian countries, China, Russia.\n'
+            '🔹 **Services:** rail freight tariffs, air cargo, forwarding, container trains, road trucking, customs brokerage\n\n'
+            '📞 **Phone:** +99895 157 8888\n'
             '✉️ **Email:** info@caravanrailroad.com\n'
-            '🌐 **Website:** https://caravan-rail.com\n'
-            '💬 **Telegram Support:** @caravan_rail_support'
+            '🌐 **Website:** https://caravanrailroad.com'
         )
     },
     
@@ -431,16 +429,15 @@ LOCALES = {
         'my_leads_title': '📋 **历史询价记录：**\n',
         'my_leads_empty': '您当前暂无已提交的询价单。请在主菜单选择物流类别发起首次测算。',
         
-        'about_title': 'ℹ️ **关于 Caravan Railroad 国际铁路与物流集团**',
+        'about_title': 'ℹ️ **关于 Caravan Railroad 国际铁路与多式联运物流集团**',
         'about_text': (
-            '🚂 **Caravan Railroad** — 扎根欧亚大陆桥 1520 与 1435 毫米轨距网的专业铁路与多式联运大承运商。\n\n'
-            '🔹 **自备及管控车队：** 1,480+ 辆铁路车皮（棚车、敞车、罐车、专用集装箱平板车板）\n'
-            '🔹 **经贸辐射网络：** 哈萨克斯坦、乌兹别克斯坦、中亚全境、中国全境、欧洲多国、土耳其、高加索\n'
-            '🔹 **主力核心业务：** 铁路大宗发运、全程提单清关、班列拼箱整箱、国际汽运卡航、海关保税代理\n\n'
-            '📞 **全球调度电话：** +7 (727) 345-00-00\n'
-            '✉️ **业务受理邮箱：** info@caravanrailroad.com\n'
-            '🌐 **官方门户网站：** https://caravan-rail.com\n'
-            '💬 **Telegram 在线支持：** @caravan_rail_support'
+            '🚂 **Caravan Railroad** — 国际多式联运及铁路物流综合运营商。\n\n'
+            '🔹 **自备及管控车队：** 1,480+ 辆铁路车皮（棚车、敞车、罐车、集装箱平板车板）\n'
+            '🔹 **经贸辐射网络：** 哈萨克斯坦、乌兹别克斯坦、中亚各国、中国、俄罗斯。\n'
+            '🔹 **主力核心业务：** 铁路运价、航空货运、货运代理、集装箱班列、公路汽运、海关报关行\n\n'
+            '📞 **电话：** +99895 157 8888\n'
+            '✉️ **邮箱：** info@caravanrailroad.com\n'
+            '🌐 **网站：** https://caravanrailroad.com'
         )
     }
 }
