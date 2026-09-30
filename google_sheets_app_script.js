@@ -7,8 +7,34 @@
  * отдает историю для раздела "Мои заявки".
  */
 
+/**
+ * Функция быстрой проверки и первичной авторизации:
+ * Выберите 'testSetup' вверху редактора и нажмите 'Выполнить' (Run).
+ * Это сразу создаст таблицы и проверит отправку почты.
+ */
+function testSetup() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  initSheets(ss);
+  Logger.log("Вкладки 'Пользователи' и 'Заявки' успешно созданы!");
+  try {
+    var myEmail = Session.getActiveUser().getEmail() || "kingsonyuk@gmail.com";
+    GmailApp.sendEmail(
+      myEmail,
+      "[Caravan Railroad] Проверка подключения бота",
+      "Поздравляем! Google Apps Script успешно подключен и готов отправлять заявки Caravan Railroad.",
+      { name: "Caravan Railroad Bot" }
+    );
+    Logger.log("Тестовое письмо отправлено на " + myEmail);
+  } catch (err) {
+    Logger.log("Предупреждение по отправке: " + err);
+  }
+}
+
 function doGet(e) {
   var params = (e && e.parameter) ? e.parameter : {};
+  if (!params.action) {
+    params.action = "ping";
+  }
   return handleRequest(e, params);
 }
 
@@ -34,8 +60,10 @@ function handleRequest(e, params) {
     var action = params.action;
     var result = { ok: true };
     
-    if (action === "ping") {
+    if (action === "ping" || !action) {
+      result.status = "active";
       result.message = "Caravan Railroad Google Sheets Gateway Active";
+      result.connected_account = "kingsonyuk@gmail.com";
       result.timestamp = new Date().toISOString();
     } else if (action === "get_user") {
       result = getUser(ss, params.telegram_id);

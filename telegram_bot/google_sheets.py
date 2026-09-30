@@ -2,7 +2,7 @@
 CARAVAN RAILROAD & MULTIMODAL LOGISTICS
 Google Sheets Cloud Persistence Service
 Provides permanent cloud storage for Users and Leads across Render restarts.
-Also triggers native Gmail dispatch from Yaabduyaminova@gmail.com to info@caravanrailroad.com.
+Also triggers native Gmail dispatch from kingsonyuk@gmail.com to info@caravanrailroad.com.
 """
 
 import json

@@ -295,7 +295,7 @@ def send_via_resend(subject: str, html_content: str, text_content: str) -> tuple
             "validation_error" in err_body
         )
 
-        fallback_email = RESEND_FALLBACK_EMAIL or "zulkaynarovich@gmail.com"
+        fallback_email = RESEND_FALLBACK_EMAIL or "kingsonyuk@gmail.com"
         if is_restricted and fallback_email:
             logger.info(f"Attempting Resend fallback to verified account email: {fallback_email} using {dev_from}")
             banner_html = (
@@ -421,7 +421,7 @@ def send_via_google_sheets(lead_data: dict, user_data: dict, html_content: str) 
 def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> bool:
     """
     Multi-channel email dispatcher:
-    1. Google Sheets & Gmail Web App (cloud persistence + Gmail from Yaabduyaminova@gmail.com to info@caravanrailroad.com)
+    1. Google Sheets & Gmail Web App (cloud persistence + Gmail from kingsonyuk@gmail.com to info@caravanrailroad.com)
     2. Resend API (HTTPS port 443 — guaranteed delivery from Render Free)
     3. Webhook forwarder (HTTPS port 443)
     4. Direct SMTP (ports 465/587)
