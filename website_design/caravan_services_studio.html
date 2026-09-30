@@ -1,0 +1,2993 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caravan Railroad — Студия карточек услуг (Профессиональные иконки & Настройка фона)</title>
+  
+  <!-- Расширенные шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&family=Oswald:wght@500;600;700&family=Outfit:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Библиотеки для экспорта в изображение (Retina PNG) и векторный PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- База данных услуг и профессиональных векторных иконок -->
+  <script src="caravan_services_data.js"></script>
+
+  <style>
+    :root {
+      --bg-space: #070B14;
+      --bg-card: rgba(15, 26, 48, 0.85);
+      --bg-card-hover: rgba(23, 38, 70, 0.95);
+      --bg-input: #070D1A;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: #6C7A89;
+      --accent-gold: #F59E0B;
+      --accent-slate: #6C7A89;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+      --text-dim: #64748B;
+      --card-radius: 16px;
+      --transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-space);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(2, 132, 199, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+        linear-gradient(180deg, #070B14 0%, #0B1325 100%);
+      background-attachment: fixed;
+    }
+
+    /* Верхняя навигационная панель студии */
+    .studio-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 11, 20, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-block {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-badge {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #1E293B, #0F172A);
+      border: 1px solid var(--accent-gold);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+    }
+
+    .brand-logo-badge svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent-gold);
+    }
+
+    .brand-text h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-text h1 span { color: var(--accent-gold); }
+
+    .brand-text p {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .mode-nav {
+      display: flex;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      gap: 4px;
+    }
+
+    .nav-btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .nav-btn:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.05); }
+
+    .nav-btn.active {
+      background: var(--accent-gold);
+      color: #070B14;
+      font-weight: 700;
+      box-shadow: 0 2px 12px rgba(245, 158, 11, 0.35);
+    }
+
+    .lang-switcher-top {
+      display: flex;
+      align-items: center;
+      background: #0D1629;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .lang-btn.active {
+      background: #6C7A89;
+      color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(108, 122, 137, 0.4);
+    }
+
+    .main-container {
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 28px 24px 60px 24px;
+    }
+
+    /* ========================================================
+       ВИД 1: ИНТЕРАКТИВНЫЙ БЛОК ПЛИТОК
+       ======================================================== */
+    #view-tiles {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .showcase-header {
+      text-align: center;
+      max-width: 820px;
+      margin: 0 auto 36px auto;
+    }
+
+    .eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(108, 122, 137, 0.15);
+      border: 1px solid rgba(108, 122, 137, 0.35);
+      color: #CBD5E1;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .eyebrow-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 8px var(--accent-gold);
+    }
+
+    .showcase-header h2 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .showcase-header h2 span {
+      background: linear-gradient(135deg, #FFFFFF 30%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .showcase-header p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .tiles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    @media (max-width: 1080px) {
+      .tiles-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 680px) {
+      .tiles-grid { grid-template-columns: 1fr; }
+    }
+
+    .service-tile-card {
+      background: linear-gradient(160deg, rgba(21, 34, 56, 0.75) 0%, rgba(11, 19, 37, 0.9) 100%);
+      border: 1px solid rgba(108, 122, 137, 0.25);
+      border-radius: var(--card-radius);
+      padding: 30px 26px 24px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+
+    .service-tile-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .service-tile-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(160deg, rgba(28, 45, 74, 0.9) 0%, rgba(15, 26, 48, 0.98) 100%);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 0 0 25px rgba(245, 158, 11, 0.15);
+    }
+
+    .service-tile-card:hover::before { opacity: 1; }
+
+    .tile-top { margin-bottom: 20px; }
+
+    .tile-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .tile-icon-wrap {
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(108, 122, 137, 0.12);
+      border: 1px solid rgba(108, 122, 137, 0.3);
+      border-radius: 14px;
+      transition: var(--transition);
+      padding: 8px;
+    }
+
+    .service-tile-card:hover .tile-icon-wrap {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: scale(1.05);
+    }
+
+    .tile-icon-wrap svg { width: 100%; height: 100%; }
+
+    .tile-number {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent-slate);
+      opacity: 0.7;
+    }
+
+    .tile-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+      line-height: 1.35;
+      transition: color 0.2s ease;
+    }
+
+    .service-tile-card:hover .tile-title { color: var(--accent-gold); }
+
+    .tile-description {
+      font-size: 14px;
+      color: #CBD5E1;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tile-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tile-action-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-gold);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s ease;
+    }
+
+    .service-tile-card:hover .tile-action-label { gap: 10px; }
+
+    .tile-action-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 13px;
+      transition: var(--transition);
+    }
+
+    .service-tile-card:hover .tile-action-circle {
+      background: var(--accent-gold);
+      color: #070B14;
+      border-color: var(--accent-gold);
+      transform: translateX(3px);
+    }
+
+    .showcase-banner-info {
+      background: rgba(15, 26, 48, 0.65);
+      border: 1px dashed rgba(108, 122, 137, 0.4);
+      border-radius: 14px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .showcase-banner-info-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-gold-action {
+      background: var(--accent-gold);
+      color: #070B14;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+
+    .btn-gold-action:hover {
+      background: #FBBF24;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ========================================================
+       ВИД 2: СТУДИЯ РЕДАКТИРОВАНИЯ (EDITOR STUDIO)
+       ======================================================== */
+    #view-studio {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .studio-layout {
+      display: grid;
+      grid-template-columns: 500px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .studio-layout { grid-template-columns: 1fr; }
+    }
+
+    .editor-panel {
+      background: #0B1325;
+      border: 1px solid rgba(108, 122, 137, 0.3);
+      border-radius: var(--card-radius);
+      padding: 22px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+      max-height: calc(100vh - 110px);
+      overflow-y: auto;
+      position: sticky;
+      top: 80px;
+    }
+
+    .editor-panel::-webkit-scrollbar { width: 6px; }
+    .editor-panel::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    .editor-tabs-bar {
+      display: flex;
+      background: rgba(15, 26, 48, 0.8);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 3px;
+      margin-bottom: 18px;
+      gap: 4px;
+    }
+
+    .editor-tab-btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .editor-tab-btn.active {
+      background: #1E293B;
+      color: var(--accent-gold);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .panel-section-title {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin: 18px 0 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel-divider {
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 16px 0;
+    }
+
+    .form-group { margin-bottom: 12px; }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #070D1A;
+      border: 1px solid rgba(108, 122, 137, 0.3);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #F8FAFC;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    textarea.form-control {
+      min-height: 65px;
+      resize: vertical;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .service-select-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .service-chip-btn {
+      background: #070D1A;
+      border: 1px solid rgba(108, 122, 137, 0.25);
+      border-radius: 8px;
+      padding: 8px 6px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .service-chip-btn:hover { border-color: var(--accent-slate); color: #FFFFFF; }
+
+    .service-chip-btn.active {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+
+    .service-chip-btn span.chip-num {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 9px;
+      opacity: 0.7;
+    }
+
+    .color-picker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .color-picker-item {
+      background: #070D1A;
+      border: 1px solid rgba(108, 122, 137, 0.25);
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .color-picker-item label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .color-picker-item input[type="color"] {
+      -webkit-appearance: none;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    .color-picker-item input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-picker-item input[type="color"]::-webkit-color-swatch {
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+    }
+
+    .theme-presets-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .preset-theme-btn {
+      padding: 8px 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: #070D1A;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .preset-theme-btn:hover { border-color: var(--accent-gold); color: #FFFFFF; }
+
+    .export-actions-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn-export {
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-export-png {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #070B14;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-export-png:hover {
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-export-pdf {
+      background: #1E293B;
+      color: #F8FAFC;
+      border: 1px solid rgba(108, 122, 137, 0.5);
+    }
+
+    .btn-export-pdf:hover {
+      background: #334155;
+      border-color: #94A3B8;
+      transform: translateY(-1px);
+    }
+
+    .btn-batch-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-sub-action {
+      flex: 1;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: #070D1A;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .btn-sub-action:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #FFFFFF;
+      border-color: #6C7A89;
+    }
+
+    /* Правая панель: живой холст */
+    .preview-canvas-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .canvas-toolbar {
+      width: 100%;
+      max-width: 860px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding: 8px 16px;
+      background: rgba(15, 26, 48, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+    }
+
+    .canvas-status {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .canvas-status .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 8px #10B981;
+    }
+
+    .inline-hint-badge {
+      font-size: 11px;
+      color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+
+    /* ========================================================
+       ЕДИНЫЙ ШАБЛОН ПРЕЗЕНТАЦИОННОЙ КАРТОЧКИ
+       (THE MASTER PRESENTATION CARD)
+       ======================================================== */
+    .presentation-card {
+      width: 100%;
+      max-width: 860px;
+      background: #080D1A;
+      border: 1px solid rgba(108, 122, 137, 0.35);
+      border-radius: 20px;
+      padding: 36px 40px;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(245, 158, 11, 0.05);
+      overflow: hidden;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+      color: #F8FAFC;
+    }
+
+    /* Фоновый слой изображения (если выбрано фоновое фото) */
+    .card-bg-image-layer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-size: cover;
+      background-position: center;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Фоновый паттерн (координатная микро-сетка) */
+    .card-bg-pattern-layer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* Затемняющий оверлей поверх фото */
+    .card-bg-overlay-layer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #080D1A;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.85;
+      transition: opacity 0.3s ease, background 0.3s ease;
+    }
+
+    /* Профессиональные векторные иконки интерфейса */
+    .ui-ico-svg {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .ui-ico-svg svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+    }
+
+    .card-sec-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      margin-right: 7px;
+      vertical-align: middle;
+      color: currentColor;
+      flex-shrink: 0;
+    }
+    .card-sec-ico svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+    }
+
+    .corridor-banner-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      color: var(--accent-gold);
+      flex-shrink: 0;
+    }
+    .corridor-banner-ico svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+    }
+
+    .footer-contact-ico {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      margin-right: 6px;
+      color: var(--accent-gold);
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+    .footer-contact-ico svg {
+      width: 100%;
+      height: 100%;
+      stroke: currentColor;
+    }
+
+    /* Сетка и миниатюры готовых фонов */
+    .bg-presets-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .bg-preset-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+      background: #0B1325;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+    .bg-preset-chip:hover {
+      border-color: var(--accent-gold);
+      color: #FFFFFF;
+      background: #0F1A30;
+    }
+    .bg-preset-chip.active {
+      border-color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.15);
+      color: #FFFFFF;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+    }
+    .bg-chip-preview {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background-position: center;
+      background-size: cover;
+    }
+
+    .card-content-inner {
+      position: relative;
+      z-index: 3;
+    }
+
+    /* ВЕРХНЯЯ СТРОКА КАРТОЧКИ: БЕЙДЖ КАТЕГОРИИ И НОМЕР НАПРАВЛЕНИЯ
+       (БЕЗ ЛОГОТИПА И БЕЗ CARAVAN RAILROAD ВНУТРИ КАРТОЧКИ) */
+    .card-top-category-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .service-pill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: var(--accent-gold);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      outline: none;
+    }
+
+    .service-hero-num {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accent-slate);
+      opacity: 0.7;
+      line-height: 1;
+      outline: none;
+    }
+
+    /* Герой-секция: Векторная иконка + Заголовок + Описание */
+    .card-hero-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .card-large-icon {
+      width: 76px;
+      height: 76px;
+      flex-shrink: 0;
+      background: rgba(108, 122, 137, 0.12);
+      border: 1px solid rgba(108, 122, 137, 0.35);
+      border-radius: 18px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-large-icon svg { width: 100%; height: 100%; }
+
+    .card-hero-text { flex: 1; }
+
+    .card-main-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      outline: none;
+    }
+
+    .card-main-sub {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      outline: none;
+    }
+
+    .card-main-desc {
+      font-size: 14px;
+      color: #CBD5E1;
+      line-height: 1.65;
+      outline: none;
+    }
+
+    /* Метрики / KPI плашки */
+    .card-metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .card-metric-box {
+      background: rgba(15, 26, 48, 0.6);
+      border: 1px solid rgba(108, 122, 137, 0.2);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .metric-val {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      line-height: 1.2;
+      margin-bottom: 4px;
+      outline: none;
+    }
+
+    .metric-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.2;
+      outline: none;
+    }
+
+    /* Заголовки разделов */
+    .card-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-slate);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      outline: none;
+    }
+
+    /* 4 Ключевых преимущества с векторными SVG-иконками */
+    .card-advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .card-advantage-item {
+      background: rgba(15, 26, 48, 0.65);
+      border: 1px solid rgba(108, 122, 137, 0.2);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .adv-icon-badge {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold);
+    }
+
+    .adv-icon-badge svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .adv-content h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+      line-height: 1.3;
+      outline: none;
+    }
+
+    .adv-content p {
+      font-size: 12px;
+      color: #94A3B8;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    /* Спецификации / Подвижной состав */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .spec-chip {
+      background: rgba(10, 18, 33, 0.7);
+      border: 1px solid rgba(108, 122, 137, 0.25);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .spec-chip .spec-name { font-weight: 600; color: #E2E8F0; outline: none; }
+    .spec-chip .spec-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-gold);
+      background: rgba(245, 158, 11, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    /* Географические коридоры */
+    .corridor-banner {
+      background: rgba(10, 18, 33, 0.7);
+      border: 1px solid rgba(108, 122, 137, 0.25);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #CBD5E1;
+      margin-bottom: 18px;
+      outline: none;
+    }
+
+    /* 4 Этапа взаимодействия */
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .step-box {
+      background: rgba(15, 26, 48, 0.5);
+      border: 1px solid rgba(108, 122, 137, 0.2);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-gold);
+      margin-bottom: 4px;
+      outline: none;
+    }
+
+    .step-box h5 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+      line-height: 1.3;
+      outline: none;
+    }
+
+    .step-box p {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      outline: none;
+    }
+
+    /* Подвал карточки (Контакты) */
+    .card-footer-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-contacts {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 12px;
+      flex-wrap: wrap;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .footer-contact-item strong { color: #FFFFFF; outline: none; }
+
+    .footer-trust-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .footer-trust-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+
+    /* Модальное окно */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(7, 11, 20, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-dialog {
+      position: relative;
+      max-width: 900px;
+      width: 100%;
+      margin: auto;
+    }
+
+    .modal-header-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .modal-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #1E293B;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    .modal-close-btn:hover {
+      background: #EF4444;
+      border-color: #EF4444;
+      transform: rotate(90deg);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media print {
+      body { background: #FFFFFF !important; color: #000000 !important; margin: 0 !important; }
+      .studio-topbar, .editor-panel, .canvas-toolbar, .modal-header-actions, #view-tiles { display: none !important; }
+      #view-studio { display: block !important; }
+      .studio-layout { display: block !important; }
+      .presentation-card {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 15mm !important;
+        page-break-after: avoid;
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ВЕРХНЯЯ ПАНЕЛЬ СТУДИИ -->
+  <header class="studio-topbar">
+    <div class="brand-block">
+      <div class="brand-logo-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+          <line x1="4" y1="22" x2="4" y2="15"></line>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>Caravan <span>Logistics</span></h1>
+        <p>Студия карточек услуг (Шрифты, Цвета, Фон & SVG-иконки)</p>
+      </div>
+    </div>
+
+    <!-- Режим: Витрина плиток vs Студия -->
+    <div class="mode-nav">
+      <button class="nav-btn active" id="nav-btn-tiles" onclick="switchView('tiles')">
+        <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>
+        <span id="lbl-nav-tiles">Плитки услуг</span>
+      </button>
+      <button class="nav-btn" id="nav-btn-studio" onclick="switchView('studio')">
+        <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
+        <span id="lbl-nav-studio">Студия шаблонов</span>
+      </button>
+    </div>
+
+    <!-- Язык RU / EN / ZH -->
+    <div class="lang-switcher-top">
+      <button class="lang-btn active" id="lang-btn-ru" onclick="setLanguage('ru')">RU</button>
+      <button class="lang-btn" id="lang-btn-en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" id="lang-btn-zh" onclick="setLanguage('zh')">中文</button>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- ==========================================================
+         ВИД 1: ИНТЕРАКТИВНЫЙ БЛОК ПЛИТОК
+         ========================================================== -->
+    <section id="view-tiles">
+      <div class="showcase-header">
+        <div class="eyebrow-pill">
+          <span class="dot"></span>
+          <span>Caravan Logistics Global Services</span>
+        </div>
+        <h2>Направления <span>логистических услуг</span></h2>
+        <p>
+          Нажмите на любую плитку, чтобы открыть полноразмерную презентационную карточку с подробным описанием, типами подвижного состава, маршрутами и контактами.
+        </p>
+      </div>
+
+      <div class="tiles-grid" id="services-tiles-grid"></div>
+
+      <div class="showcase-banner-info">
+        <div class="showcase-banner-info-left">
+          <span class="ui-ico-svg" style="width: 28px; height: 28px; color: var(--accent-gold);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg>
+          </span>
+          <div>
+            <h4 style="font-size: 14px; font-weight: 600; color: #FFFFFF;">Нужно настроить тексты, шрифты, цвета или изменить фон?</h4>
+            <p style="font-size: 12px; color: var(--text-muted);">Используйте встроенную Студию шаблонов для полного редактирования каждого пункта и сохранения в HD PNG / PDF.</p>
+          </div>
+        </div>
+        <button class="btn-gold-action" onclick="switchView('studio')">
+          <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+          <span>Открыть редактор шаблона</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         ВИД 2: СТУДИЯ РЕДАКТИРОВАНИЯ (EDITOR STUDIO)
+         ========================================================== -->
+    <section id="view-studio">
+      <div class="studio-layout">
+        
+        <!-- ЛЕВАЯ ПАНЕЛЬ -->
+        <div class="editor-panel">
+          
+          <div class="editor-tabs-bar">
+            <button class="editor-tab-btn active" id="tab-btn-content" onclick="switchEditorTab('content')">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></span>
+              <span>Тексты и Контент</span>
+            </button>
+            <button class="editor-tab-btn" id="tab-btn-styling" onclick="switchEditorTab('styling')">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg></span>
+              <span>Шрифты, Цвета & Фон</span>
+            </button>
+          </div>
+
+          <!-- ================= ВКЛАДКА 1: ТЕКСТЫ И КОНТЕНТ ================= -->
+          <div class="tab-content active" id="editor-tab-content">
+            
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+              <span>Выберите услугу</span>
+            </div>
+            <div class="service-select-grid" id="service-selector-chips"></div>
+
+            <div class="panel-divider"></div>
+
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+              <span>Язык контента</span>
+            </div>
+            <div class="theme-presets-grid" style="grid-template-columns: repeat(3, 1fr);">
+              <button class="preset-theme-btn active" id="edit-lang-ru" onclick="setLanguage('ru')">RU Русский</button>
+              <button class="preset-theme-btn" id="edit-lang-en" onclick="setLanguage('en')">EN English</button>
+              <button class="preset-theme-btn" id="edit-lang-zh" onclick="setLanguage('zh')">ZH 简体中文</button>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- КОНТАКТЫ (ОТОБРАЖАЮТСЯ В ПОДВАЛЕ КАРТОЧКИ) -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+              <span>Контактные данные в подвале</span>
+            </div>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label>Телефон</label>
+                <input type="text" class="form-control" id="input-phone" oninput="updateGlobalSetting('phone', this.value)">
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" id="input-email" oninput="updateGlobalSetting('email', this.value)">
+              </div>
+              <div class="form-group">
+                <label>Сайт</label>
+                <input type="text" class="form-control" id="input-website" oninput="updateGlobalSetting('website', this.value)">
+              </div>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- ОСНОВНАЯ ИНФОРМАЦИЯ ОБ УСЛУГЕ -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span>
+              <span>Основное описание услуги</span>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Номер направления</label>
+                <input type="text" class="form-control" id="input-number" oninput="updateCurrentField('number', this.value)">
+              </div>
+              <div class="form-group">
+                <label>Бейдж / Категория</label>
+                <input type="text" class="form-control" id="input-badge" oninput="updateCurrentField('badge', this.value)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Название услуги (Заголовок)</label>
+              <input type="text" class="form-control" id="input-title" oninput="updateCurrentField('title', this.value)">
+            </div>
+
+            <div class="form-group">
+              <label>Слоган / Подзаголовок</label>
+              <input type="text" class="form-control" id="input-subtitle" oninput="updateCurrentField('subtitle', this.value)">
+            </div>
+
+            <div class="form-group">
+              <label>Основной текст описания</label>
+              <textarea class="form-control" id="input-description" rows="3" oninput="updateCurrentField('description', this.value)"></textarea>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- НАЗВАНИЯ РАЗДЕЛОВ (ЗАГОЛОВКИ БЛОКОВ) -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></span>
+              <span>Названия разделов карточки</span>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Заголовок: Преимущества</label>
+                <input type="text" class="form-control" id="input-sectitle-adv" oninput="updateSectionTitle('advantages', this.value)">
+              </div>
+              <div class="form-group">
+                <label>Заголовок: Спецификации</label>
+                <input type="text" class="form-control" id="input-sectitle-specs" oninput="updateSectionTitle('specs', this.value)">
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label>Заголовок: Маршруты</label>
+                <input type="text" class="form-control" id="input-sectitle-corridors" oninput="updateSectionTitle('corridors', this.value)">
+              </div>
+              <div class="form-group">
+                <label>Заголовок: Этапы</label>
+                <input type="text" class="form-control" id="input-sectitle-steps" oninput="updateSectionTitle('steps', this.value)">
+              </div>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- 4 МЕТРИКИ / KPI -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+              <span>4 Показателя / KPI сервиса</span>
+            </div>
+            <div id="metrics-editor-fields"></div>
+
+            <div class="panel-divider"></div>
+
+            <!-- 4 ПРЕИМУЩЕСТВА С ВЕКТОРНЫМИ SVG ИКОНКАМИ -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M2 9h20"></path><path d="M10 3l-4 6 6 12 6-12-4-6"></path></svg></span>
+              <span>4 Преимущества (Векторные значки)</span>
+            </div>
+            <div id="advantages-editor-fields"></div>
+
+            <div class="panel-divider"></div>
+
+            <!-- ПОДВИЖНОЙ СОСТАВ / СПЕЦИФИКАЦИИ -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"></rect><path d="M4 11h16"></path><path d="M12 3v8"></path><circle cx="8" cy="15" r="1.5"></circle><circle cx="16" cy="15" r="1.5"></circle><path d="M7 19l-3 3"></path><path d="M17 19l3 3"></path></svg></span>
+              <span>Спецификации / Подвижной состав</span>
+            </div>
+            <div id="specs-editor-fields"></div>
+
+            <div class="panel-divider"></div>
+
+            <!-- ГЕОГРАФИЯ -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"></circle><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path></svg></span>
+              <span>География и транзитные коридоры</span>
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="input-corridors" oninput="updateCurrentField('corridors', this.value)">
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- 4 ЭТАПА ВЫПОЛНЕНИЯ -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
+              <span>4 Этапа взаимодействия</span>
+            </div>
+            <div id="steps-editor-fields"></div>
+
+          </div>
+
+          <!-- ================= ВКЛАДКА 2: ШРИФТЫ, ЦВЕТА И ФОН ================= -->
+          <div class="tab-content" id="editor-tab-styling">
+            
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"></path></svg></span>
+              <span>Готовые стили & палитры</span>
+            </div>
+            <div class="theme-presets-grid">
+              <button class="preset-theme-btn" onclick="applyColorPreset('midnight')">Dark Gold</button>
+              <button class="preset-theme-btn" onclick="applyColorPreset('ocean')">Deep Ocean</button>
+              <button class="preset-theme-btn" onclick="applyColorPreset('cleanLight')">Clean Light</button>
+              <button class="preset-theme-btn" onclick="applyColorPreset('steel')">Steel Slate</button>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- НАСТРОЙКА ФОНА КАРТОЧКИ (ИНТЕРАКТИВНЫЕ ПРЕСЕТЫ, ФОТО, ЦВЕТА) -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></span>
+              <span>Фон карточки (Цвет / Градиент / Фото)</span>
+            </div>
+
+            <!-- Готовые миниатюры фона для мгновенного выбора -->
+            <div class="bg-presets-grid">
+              <button type="button" class="bg-preset-chip" id="bg-chip-midnight" onclick="applyBgPreset('midnight')">
+                <span class="bg-chip-preview" style="background: #080D1A;"></span>
+                <span>Midnight Navy</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-carbon" onclick="applyBgPreset('carbon')">
+                <span class="bg-chip-preview" style="background: linear-gradient(135deg, #0F172A, #060B16);"></span>
+                <span>Carbon Slate</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-ocean" onclick="applyBgPreset('ocean')">
+                <span class="bg-chip-preview" style="background: linear-gradient(135deg, #07162C, #030B18);"></span>
+                <span>Deep Ocean</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-cleanLight" onclick="applyBgPreset('cleanLight')">
+                <span class="bg-chip-preview" style="background: #FFFFFF; border: 1px solid #CBD5E1;"></span>
+                <span>White Minimal</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-train" onclick="applyBgPreset('train')">
+                <span class="bg-chip-preview" style="background-image: url('background_transport_with_train.jpg'); background-size: cover;"></span>
+                <span>Ж/Д Поезд</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-transport" onclick="applyBgPreset('transport')">
+                <span class="bg-chip-preview" style="background-image: url('background_transport_final.jpg'); background-size: cover;"></span>
+                <span>Магистраль</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-silkroad" onclick="applyBgPreset('silkroad')">
+                <span class="bg-chip-preview" style="background-image: url('desert_caravan_silkroad.jpg'); background-size: cover;"></span>
+                <span>Шелковый путь</span>
+              </button>
+              <button type="button" class="bg-preset-chip" id="bg-chip-paper" onclick="applyBgPreset('paper')">
+                <span class="bg-chip-preview" style="background: #F8FAFC; border: 1px solid #CBD5E1;"></span>
+                <span>Technical Gray</span>
+              </button>
+            </div>
+
+            <div class="form-group">
+              <label>Фоновое изображение / Текстура</label>
+              <select class="form-control" id="select-bg-preset" onchange="handleBgPresetChange(this.value)">
+                <option value="none">Без фото (Сплошной цвет / Градиент)</option>
+                <option value="background_transport_with_train.jpg">Поезд на путях (Highway Rail)</option>
+                <option value="background_transport_final.jpg">Транспортная магистраль & логистика</option>
+                <option value="desert_caravan_silkroad.jpg">Великий Шелковый путь (Caravan)</option>
+                <option value="custom">Пользовательское загруженное фото</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <input type="file" id="bg-file-input" accept="image/*" style="display: none;" onchange="handleBgFileUpload(event)">
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-sub-action" onclick="document.getElementById('bg-file-input').click()">
+                  <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></span>
+                  <span>Загрузить фото с ПК</span>
+                </button>
+                <button type="button" class="btn-sub-action" onclick="clearBackgroundImage()">
+                  <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></span>
+                  <span>Убрать фото</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                  <label style="margin: 0;">Затемнение (Overlay)</label>
+                  <span id="lbl-overlay-val" style="font-size: 11px; color: var(--accent-gold); font-weight: 700;">85%</span>
+                </div>
+                <input type="range" min="0" max="100" value="85" class="form-control" id="slider-bg-overlay" style="padding: 0;" oninput="updateBgOverlay(this.value)">
+              </div>
+              <div class="form-group">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                  <label style="margin: 0;">Размытие (Blur)</label>
+                  <span id="lbl-blur-val" style="font-size: 11px; color: var(--accent-gold); font-weight: 700;">0px</span>
+                </div>
+                <input type="range" min="0" max="20" value="0" class="form-control" id="slider-bg-blur" style="padding: 0;" oninput="updateBgBlur(this.value)">
+              </div>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+              <input type="checkbox" id="toggle-bg-pattern" onchange="toggleBgPattern(this.checked)" style="width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent-gold);">
+              <label for="toggle-bg-pattern" style="margin: 0; cursor: pointer; font-size: 12px; color: var(--text-main);">Включить микро-сетку фона (Technical Coordinate Grid)</label>
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- ШРИФТЫ -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg></span>
+              <span>Настройка шрифтов</span>
+            </div>
+
+            <div class="form-group">
+              <label>Шрифт заголовков (Heading Font)</label>
+              <select class="form-control" id="select-heading-font" onchange="updateStyleProperty('headingFont', this.value)">
+                <option value="'Unbounded', sans-serif">Unbounded (Премиум геометрический)</option>
+                <option value="'Outfit', sans-serif">Outfit (Современный гротеск)</option>
+                <option value="'Montserrat', sans-serif">Montserrat (Четкий европейский)</option>
+                <option value="'Inter', sans-serif">Inter (Универсальный технологичный)</option>
+                <option value="'Oswald', sans-serif">Oswald (Узкий акцентный)</option>
+                <option value="'JetBrains Mono', monospace">JetBrains Mono (Инженерный)</option>
+                <option value="'Noto Sans SC', sans-serif">Noto Sans SC (Китайские иероглифы)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Основной шрифт текста (Body Font)</label>
+              <select class="form-control" id="select-body-font" onchange="updateStyleProperty('fontFamily', this.value)">
+                <option value="'Inter', 'Noto Sans SC', sans-serif">Inter</option>
+                <option value="'Outfit', 'Noto Sans SC', sans-serif">Outfit</option>
+                <option value="'Roboto', 'Noto Sans SC', sans-serif">Roboto</option>
+                <option value="'Montserrat', 'Noto Sans SC', sans-serif">Montserrat</option>
+                <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                <label style="margin: 0;">Масштаб шрифтов</label>
+                <span id="lbl-font-scale" style="font-size: 11px; color: var(--accent-gold); font-weight: 700;">100%</span>
+              </div>
+              <input type="range" min="80" max="130" value="100" class="form-control" id="slider-font-scale" style="padding: 0;" oninput="updateFontScale(this.value)">
+            </div>
+
+            <div class="panel-divider"></div>
+
+            <!-- ЦВЕТА -->
+            <div class="panel-section-title">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+              <span>Настройка цветов элементов</span>
+            </div>
+
+            <div class="color-picker-grid">
+              <div class="color-picker-item">
+                <label>Цвет акцента (золото/чипы)</label>
+                <input type="color" id="picker-accent" onchange="updateStyleProperty('accentColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет названий пунктов/секций</label>
+                <input type="color" id="picker-section-title" onchange="updateStyleProperty('sectionTitleColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет главного заголовка</label>
+                <input type="color" id="picker-heading" onchange="updateStyleProperty('headingColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет основного текста</label>
+                <input type="color" id="picker-text" onchange="updateStyleProperty('textColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет второстепенного текста</label>
+                <input type="color" id="picker-muted" onchange="updateStyleProperty('mutedColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет фона карточки</label>
+                <input type="color" id="picker-bg" onchange="updateStyleProperty('cardBgColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет рамок карточки</label>
+                <input type="color" id="picker-border" onchange="updateStyleProperty('borderColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Фон плашек преимуществ</label>
+                <input type="color" id="picker-box-bg" onchange="updateStyleProperty('boxBgColor', this.value)">
+              </div>
+
+              <div class="color-picker-item">
+                <label>Цвет оверлея затемнения</label>
+                <input type="color" id="picker-bg-overlay-color" onchange="updateBgOverlayColor(this.value)">
+              </div>
+            </div>
+
+          </div>
+
+          <div class="panel-divider"></div>
+
+          <!-- ЭКСПОРТ -->
+          <div class="panel-section-title">
+            <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
+            <span>Экспорт и Сохранение</span>
+          </div>
+
+          <div class="export-actions-grid">
+            <button class="btn-export btn-export-png" onclick="exportCardToImage()">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></span>
+              <span>Скачать PNG</span>
+            </button>
+            <button class="btn-export btn-export-pdf" onclick="exportCardToPdf()">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span>
+              <span>Скачать PDF</span>
+            </button>
+          </div>
+
+          <div class="btn-batch-row">
+            <button class="btn-sub-action" onclick="exportAllCardsBatch()">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></span>
+              <span>Скачать все 6 (Batch)</span>
+            </button>
+            <button class="btn-sub-action" onclick="resetToDefaults()">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></span>
+              <span>Сброс к оригиналу</span>
+            </button>
+          </div>
+
+          <div class="btn-batch-row">
+            <button class="btn-sub-action" onclick="exportDataJson()">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></span>
+              <span>Экспорт JSON</span>
+            </button>
+            <button class="btn-sub-action" onclick="importDataJsonPrompt()">
+              <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg></span>
+              <span>Импорт JSON</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ: ЖИВОЙ ХОЛСТ КАРТОЧКИ -->
+        <div class="preview-canvas-wrapper">
+          
+          <div class="canvas-toolbar">
+            <div class="canvas-status">
+              <span class="status-dot"></span>
+              <span>100% WYSIWYG Realtime Preview</span>
+            </div>
+            <div class="inline-hint-badge">
+              <span class="ui-ico-svg" style="width: 13px; height: 13px; margin-right: 4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></span>
+              <span>Можно кликать и редактировать любой текст прямо на карточке!</span>
+            </div>
+          </div>
+
+          <!-- КАРТОЧКА БЕЗ ВЕРХНЕГО ЛОГОТИПА И БЕЗ БРЕНДОВОГО ЗАГОЛОВКА CARAVAN RAILROAD -->
+          <div class="presentation-card" id="master-presentation-card">
+            
+            <!-- Слой фонового изображения -->
+            <div class="card-bg-image-layer" id="card-elem-bg-image"></div>
+            <!-- Слой микро-сетки -->
+            <div class="card-bg-pattern-layer" id="card-elem-bg-pattern"></div>
+            <!-- Затемняющий оверлей -->
+            <div class="card-bg-overlay-layer" id="card-elem-bg-overlay"></div>
+
+            <div class="card-content-inner">
+              
+              <!-- ВЕРХНЯЯ СТРОКА: КАТЕГОРИЯ И НОМЕР НАПРАВЛЕНИЯ -->
+              <div class="card-top-category-row">
+                <span class="service-pill-tag" id="card-elem-badge" contenteditable="true" onblur="syncInlineEdit('badge', this.textContent)">Ж/Д ЛОГИСТИКА 1520 & 1435 ММ</span>
+                <span class="service-hero-num" id="card-elem-number" contenteditable="true" onblur="syncInlineEdit('number', this.textContent)">01</span>
+              </div>
+
+              <!-- ГЕРОЙ: ВЕКТОРНАЯ ИКОНКА + ЗАГОЛОВОК + ОПИСАНИЕ -->
+              <div class="card-hero-row">
+                <div class="card-large-icon" id="card-elem-icon"></div>
+                <div class="card-hero-text">
+                  <h2 class="card-main-title" id="card-elem-title" contenteditable="true" onblur="syncInlineEdit('title', this.textContent)">Железнодорожные перевозки</h2>
+                  <div class="card-main-sub" id="card-elem-subtitle" contenteditable="true" onblur="syncInlineEdit('subtitle', this.textContent)">Организация повагонных, контейнерных и маршрутных отправок</div>
+                  <p class="card-main-desc" id="card-elem-description" contenteditable="true" onblur="syncInlineEdit('description', this.textContent)">
+                    Организация повагонных, контейнерных и маршрутных отправок. Работа с крытыми вагонами, полувагонами, цистернами и специализированным подвижным составом. Разработка оптимальных схем крепежа и негабаритных маршрутов.
+                  </p>
+                </div>
+              </div>
+
+              <!-- 4 МЕТРИКИ / KPI -->
+              <div class="card-metrics-grid" id="card-elem-metrics"></div>
+
+              <!-- 4 ПРЕИМУЩЕСТВА С ПРОФЕССИОНАЛЬНЫМИ ВЕКТОРНЫМИ SVG ИКОНКАМИ -->
+              <div class="card-section-label" id="card-label-adv" contenteditable="true" onblur="syncSectionTitle('advantages', this.textContent)">
+                <span class="card-sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12l4 6-10 12L2 9z"></path><path d="M2 9h20"></path><path d="M10 3l-4 6 6 12 6-12-4-6"></path></svg></span>
+                <span>Ключевые преимущества и возможности</span>
+              </div>
+              <div class="card-advantages-grid" id="card-elem-advantages"></div>
+
+              <!-- ПОДВИЖНОЙ СОСТАВ / СПЕЦИФИКАЦИИ -->
+              <div class="card-section-label" id="card-label-specs" contenteditable="true" onblur="syncSectionTitle('specs', this.textContent)">
+                <span class="card-sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"></rect><path d="M4 11h16"></path><path d="M12 3v8"></path><circle cx="8" cy="15" r="1.5"></circle><circle cx="16" cy="15" r="1.5"></circle><path d="M7 19l-3 3"></path><path d="M17 19l3 3"></path></svg></span>
+                <span>Подвижной состав & Технические параметры</span>
+              </div>
+              <div class="specs-grid" id="card-elem-specs"></div>
+
+              <!-- МАРШРУТЫ И КОРИДОРЫ -->
+              <div class="card-section-label" id="card-label-corridors" contenteditable="true" onblur="syncSectionTitle('corridors', this.textContent)">
+                <span class="card-sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="3"></circle><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path></svg></span>
+                <span>География перевозок & Транзитные коридоры</span>
+              </div>
+              <div class="corridor-banner">
+                <span class="corridor-banner-ico" id="card-elem-corridor-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span id="card-elem-corridors" contenteditable="true" onblur="syncInlineEdit('corridors', this.textContent)">Китай (Сиань, Чэнду) ➔ Достык / Алтынколь ➔ Казахстан ➔ Ташкент / СНГ ➔ Европа</span>
+              </div>
+
+              <!-- 4 ЭТАПА ВЗАИМОДЕЙСТВИЯ -->
+              <div class="card-section-label" id="card-label-steps" contenteditable="true" onblur="syncSectionTitle('steps', this.textContent)">
+                <span class="card-sec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></span>
+                <span>Процесс организации отправки</span>
+              </div>
+              <div class="steps-row" id="card-elem-steps"></div>
+
+              <!-- ПОДВАЛ КАРТОЧКИ (ТОЛЬКО КОНТАКТЫ И СТАТУС, БЕЗ КНОПКИ CTA) -->
+              <div class="card-footer-bar">
+                <div class="footer-contacts">
+                  <div class="footer-contact-item">
+                    <span class="footer-contact-ico" id="card-elem-phone-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+                    <strong id="card-elem-phone" contenteditable="true" onblur="syncInlineEdit('phone', this.textContent, false, true)">+7 (727) 345-00-00</strong>
+                  </div>
+                  <div class="footer-contact-item">
+                    <span class="footer-contact-ico" id="card-elem-email-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span>
+                    <strong id="card-elem-email" contenteditable="true" onblur="syncInlineEdit('email', this.textContent, false, true)">info@caravan-rail.com</strong>
+                  </div>
+                  <div class="footer-contact-item">
+                    <span class="footer-contact-ico" id="card-elem-web-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                    <strong id="card-elem-website" contenteditable="true" onblur="syncInlineEdit('website', this.textContent, false, true)">caravan-rail.com</strong>
+                  </div>
+                </div>
+
+                <div class="footer-trust-badge">
+                  <span class="dot"></span>
+                  <span id="card-elem-trust">Verified Logistics Carrier 24/7</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- МОДАЛЬНОЕ ОКНО ПРОСМОТРА КАРТОЧКИ С ВИТРИНЫ -->
+  <div class="modal-overlay" id="service-modal-overlay" onclick="closeModalOnBackdrop(event)">
+    <div class="modal-dialog">
+      <div class="modal-header-actions">
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-export btn-export-png" onclick="exportModalCardToImage()">
+            <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></span>
+            <span>Скачать PNG</span>
+          </button>
+          <button class="btn-export btn-export-pdf" onclick="exportModalCardToPdf()">
+            <span class="ui-ico-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></span>
+            <span>Скачать PDF</span>
+          </button>
+        </div>
+        <button class="modal-close-btn" onclick="closeServiceModal()" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div id="modal-card-container"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = 'ru';
+    let currentServiceId = 'railway';
+    let servicesData = null;
+    let globalSettings = null;
+
+    // Список доступных профессиональных иконок для селектора
+    const ADV_ICON_OPTIONS = [
+      { key: 'train', label: 'Ж/Д Локомотив' },
+      { key: 'truck', label: 'Автотягач / Грузовик' },
+      { key: 'ship', label: 'Морское судно / Контейнеровоз' },
+      { key: 'plane', label: 'Грузовой самолет' },
+      { key: 'container', label: 'Интермодальный контейнер' },
+      { key: 'shield', label: 'Щит безопасности / Страхование' },
+      { key: 'gauge', label: 'Чертежи / Негабарит / Расчет' },
+      { key: 'clock', label: 'Часы / Сроки доставки' },
+      { key: 'speed', label: 'Молния / Экспресс-доставка' },
+      { key: 'satellite', label: 'Спутник / GPS трекинг 24/7' },
+      { key: 'globe', label: 'Глобус / Международная сеть' },
+      { key: 'door', label: 'Дверь / Door-to-Door' },
+      { key: 'temperature', label: 'Термометр / Рефрижератор' },
+      { key: 'tariff', label: 'Тарифы / Прямые расчеты' },
+      { key: 'hub', label: 'Транзитный хаб / Сухой порт' },
+      { key: 'document', label: 'ВЭД документ / Декларация' },
+      { key: 'customs_check', label: 'Таможенная очистка / Выпуск' },
+      { key: 'certificate', label: 'Сертификат соответствия / EAC' },
+      { key: 'surveyor', label: 'Сюрвейер / Осмотр и пломбировка' },
+      { key: 'accounting', label: 'Онлайн-бухгалтерия & ЭДО' },
+      { key: 'charter', label: 'Чартерный авиарейс' },
+      { key: 'digital', label: 'Электронная накладная / e-AWB' }
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      renderShowcaseTiles();
+      renderServiceSelectorChips();
+      loadServiceIntoEditor(currentServiceId);
+      applyGlobalStyles();
+    });
+
+    function loadData() {
+      const savedServices = localStorage.getItem('CARAVAN_SERVICES_DATA');
+      if (savedServices) {
+        try { servicesData = JSON.parse(savedServices); }
+        catch (e) { servicesData = JSON.parse(JSON.stringify(window.CARAVAN_SERVICES_DEFAULT_DATA)); }
+      } else {
+        servicesData = JSON.parse(JSON.stringify(window.CARAVAN_SERVICES_DEFAULT_DATA));
+      }
+
+      const savedSettings = localStorage.getItem('CARAVAN_GLOBAL_SETTINGS');
+      if (savedSettings) {
+        try { globalSettings = JSON.parse(savedSettings); }
+        catch (e) { globalSettings = JSON.parse(JSON.stringify(window.CARAVAN_GLOBAL_SETTINGS)); }
+      } else {
+        globalSettings = JSON.parse(JSON.stringify(window.CARAVAN_GLOBAL_SETTINGS));
+      }
+    }
+
+    function saveData() {
+      localStorage.setItem('CARAVAN_SERVICES_DATA', JSON.stringify(servicesData));
+      localStorage.setItem('CARAVAN_GLOBAL_SETTINGS', JSON.stringify(globalSettings));
+    }
+
+    function resetToDefaults() {
+      if (confirm('Сбросить все тексты, настройки цветов, фонов и шрифтов к исходным?')) {
+        servicesData = JSON.parse(JSON.stringify(window.CARAVAN_SERVICES_DEFAULT_DATA));
+        globalSettings = JSON.parse(JSON.stringify(window.CARAVAN_GLOBAL_SETTINGS));
+        saveData();
+        renderShowcaseTiles();
+        renderServiceSelectorChips();
+        loadServiceIntoEditor(currentServiceId);
+        applyGlobalStyles();
+        alert('Данные и оформление сброшены к оригиналу!');
+      }
+    }
+
+    function switchView(viewName) {
+      const tilesView = document.getElementById('view-tiles');
+      const studioView = document.getElementById('view-studio');
+      const btnTiles = document.getElementById('nav-btn-tiles');
+      const btnStudio = document.getElementById('nav-btn-studio');
+
+      if (viewName === 'tiles') {
+        tilesView.style.display = 'block';
+        studioView.style.display = 'none';
+        btnTiles.classList.add('active');
+        btnStudio.classList.remove('active');
+        renderShowcaseTiles();
+      } else {
+        tilesView.style.display = 'none';
+        studioView.style.display = 'block';
+        btnTiles.classList.remove('active');
+        btnStudio.classList.add('active');
+        loadServiceIntoEditor(currentServiceId);
+      }
+    }
+
+    function switchEditorTab(tabName) {
+      document.querySelectorAll('.editor-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      if (tabName === 'content') {
+        document.getElementById('tab-btn-content').classList.add('active');
+        document.getElementById('editor-tab-content').classList.add('active');
+      } else {
+        document.getElementById('tab-btn-styling').classList.add('active');
+        document.getElementById('editor-tab-styling').classList.add('active');
+      }
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      
+      ['ru', 'en', 'zh'].forEach(l => {
+        const topBtn = document.getElementById(`lang-btn-${l}`);
+        if (topBtn) {
+          if (l === lang) topBtn.classList.add('active');
+          else topBtn.classList.remove('active');
+        }
+        const editBtn = document.getElementById(`edit-lang-${l}`);
+        if (editBtn) {
+          if (l === lang) editBtn.classList.add('active');
+          else editBtn.classList.remove('active');
+        }
+      });
+
+      renderShowcaseTiles();
+      renderServiceSelectorChips();
+      loadServiceIntoEditor(currentServiceId);
+    }
+
+    function renderShowcaseTiles() {
+      const grid = document.getElementById('services-tiles-grid');
+      if (!grid || !servicesData) return;
+      grid.innerHTML = '';
+
+      const actionText = currentLang === 'zh' ? '查看详情' : (currentLang === 'en' ? 'Learn more' : 'Подробнее');
+
+      Object.keys(servicesData).forEach(key => {
+        const item = servicesData[key];
+        const title = item.title[currentLang] || item.title.ru;
+        const desc = item.description[currentLang] || item.description.ru;
+        const iconSvg = window.CARAVAN_ICONS[item.iconKey] || window.CARAVAN_ICONS.railway;
+
+        const tileEl = document.createElement('div');
+        tileEl.className = 'service-tile-card';
+        tileEl.onclick = () => openServiceModal(key);
+        tileEl.innerHTML = `
+          <div class="tile-top">
+            <div class="tile-header-row">
+              <div class="tile-icon-wrap">${iconSvg}</div>
+              <span class="tile-number">${item.number}</span>
+            </div>
+            <h3 class="tile-title">${title}</h3>
+            <p class="tile-description">${desc}</p>
+          </div>
+          <div class="tile-footer">
+            <span class="tile-action-label">${actionText}</span>
+            <div class="tile-action-circle">➔</div>
+          </div>
+        `;
+        grid.appendChild(tileEl);
+      });
+    }
+
+    function renderServiceSelectorChips() {
+      const container = document.getElementById('service-selector-chips');
+      if (!container || !servicesData) return;
+      container.innerHTML = '';
+
+      Object.keys(servicesData).forEach(key => {
+        const item = servicesData[key];
+        const title = item.title[currentLang] || item.title.ru;
+        const btn = document.createElement('button');
+        btn.className = `service-chip-btn ${key === currentServiceId ? 'active' : ''}`;
+        btn.onclick = () => {
+          currentServiceId = key;
+          renderServiceSelectorChips();
+          loadServiceIntoEditor(key);
+        };
+        btn.innerHTML = `<span class="chip-num">${item.number}</span><span>${title}</span>`;
+        container.appendChild(btn);
+      });
+    }
+
+    function loadServiceIntoEditor(serviceId) {
+      currentServiceId = serviceId;
+      const data = servicesData[serviceId];
+      if (!data) return;
+
+      document.getElementById('input-phone').value = globalSettings.phone;
+      document.getElementById('input-email').value = globalSettings.email;
+      document.getElementById('input-website').value = globalSettings.website;
+
+      const secTitles = globalSettings.sectionTitles;
+      document.getElementById('input-sectitle-adv').value = secTitles.advantages[currentLang] || secTitles.advantages.ru;
+      document.getElementById('input-sectitle-specs').value = secTitles.specs[currentLang] || secTitles.specs.ru;
+      document.getElementById('input-sectitle-corridors').value = secTitles.corridors[currentLang] || secTitles.corridors.ru;
+      document.getElementById('input-sectitle-steps').value = secTitles.steps[currentLang] || secTitles.steps.ru;
+
+      document.getElementById('input-number').value = data.number || '01';
+      document.getElementById('input-badge').value = data.badge[currentLang] || data.badge.ru || '';
+      document.getElementById('input-title').value = data.title[currentLang] || data.title.ru || '';
+      document.getElementById('input-subtitle').value = data.subtitle[currentLang] || data.subtitle.ru || '';
+      document.getElementById('input-description').value = data.description[currentLang] || data.description.ru || '';
+      document.getElementById('input-corridors').value = data.corridors[currentLang] || data.corridors.ru || '';
+
+      renderMetricsEditorFields(data);
+      renderAdvantagesEditorFields(data);
+      renderSpecsEditorFields(data);
+      renderStepsEditorFields(data);
+      syncStyleInputsFromData();
+
+      renderPresentationCard('master-presentation-card', serviceId);
+    }
+
+    function renderMetricsEditorFields(data) {
+      const container = document.getElementById('metrics-editor-fields');
+      if (!container || !data.metrics) return;
+      container.innerHTML = data.metrics.map((m, idx) => `
+        <div class="form-row-2" style="margin-bottom: 8px;">
+          <div>
+            <label style="font-size: 10px;">Показатель #${idx + 1} Название</label>
+            <input type="text" class="form-control" value="${m.label[currentLang] || m.label.ru}" oninput="updateMetricField(${idx}, 'label', this.value)">
+          </div>
+          <div>
+            <label style="font-size: 10px;">Значение #${idx + 1}</label>
+            <input type="text" class="form-control" value="${m.val}" oninput="updateMetricField(${idx}, 'val', this.value)">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Рендеринг формы преимуществ с селектором профессиональных векторных иконок
+    function renderAdvantagesEditorFields(data) {
+      const container = document.getElementById('advantages-editor-fields');
+      if (!container || !data.advantages) return;
+
+      container.innerHTML = data.advantages.map((a, idx) => {
+        const iconKey = a.icon || 'train';
+        const optionsHtml = ADV_ICON_OPTIONS.map(opt => `
+          <option value="${opt.key}" ${opt.key === iconKey ? 'selected' : ''}>${opt.label}</option>
+        `).join('');
+
+        return `
+          <div style="background: rgba(7, 13, 26, 0.7); border: 1px solid rgba(108,122,137,0.25); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+            <div class="form-row-2" style="margin-bottom: 6px;">
+              <div>
+                <label style="font-size: 10px;">Векторный значок</label>
+                <select class="form-control" onchange="updateAdvField(${idx}, 'icon', this.value)">
+                  ${optionsHtml}
+                </select>
+              </div>
+              <div>
+                <label style="font-size: 10px;">Заголовок #${idx + 1}</label>
+                <input type="text" class="form-control" value="${a.title[currentLang] || a.title.ru}" oninput="updateAdvField(${idx}, 'title', this.value)">
+              </div>
+            </div>
+            <div>
+              <label style="font-size: 10px;">Описание</label>
+              <textarea class="form-control" rows="2" oninput="updateAdvField(${idx}, 'desc', this.value)">${a.desc[currentLang] || a.desc.ru}</textarea>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSpecsEditorFields(data) {
+      const container = document.getElementById('specs-editor-fields');
+      if (!container || !data.fleetSpecs) return;
+      container.innerHTML = data.fleetSpecs.map((s, idx) => `
+        <div class="form-row-2" style="margin-bottom: 8px;">
+          <div>
+            <label style="font-size: 10px;">Пункт #${idx + 1}</label>
+            <input type="text" class="form-control" value="${s.name[currentLang] || s.name.ru}" oninput="updateSpecField(${idx}, 'name', this.value)">
+          </div>
+          <div>
+            <label style="font-size: 10px;">Спецификация</label>
+            <input type="text" class="form-control" value="${s.spec}" oninput="updateSpecField(${idx}, 'spec', this.value)">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderStepsEditorFields(data) {
+      const container = document.getElementById('steps-editor-fields');
+      if (!container || !data.steps) return;
+      container.innerHTML = data.steps.map((st, idx) => `
+        <div style="background: rgba(7, 13, 26, 0.7); border: 1px solid rgba(108,122,137,0.25); border-radius: 8px; padding: 10px; margin-bottom: 10px;">
+          <div class="form-row-2" style="margin-bottom: 6px;">
+            <div style="max-width: 60px;">
+              <label style="font-size: 10px;">Номер</label>
+              <input type="text" class="form-control" value="${st.num}" oninput="updateStepField(${idx}, 'num', this.value)">
+            </div>
+            <div>
+              <label style="font-size: 10px;">Название этапа #${idx + 1}</label>
+              <input type="text" class="form-control" value="${st.title[currentLang] || st.title.ru}" oninput="updateStepField(${idx}, 'title', this.value)">
+            </div>
+          </div>
+          <div>
+            <label style="font-size: 10px;">Описание</label>
+            <input type="text" class="form-control" value="${st.desc[currentLang] || st.desc.ru}" oninput="updateStepField(${idx}, 'desc', this.value)">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateCurrentField(fieldKey, value) {
+      if (!servicesData[currentServiceId]) return;
+      if (fieldKey === 'number') {
+        servicesData[currentServiceId].number = value;
+      } else {
+        if (!servicesData[currentServiceId][fieldKey]) servicesData[currentServiceId][fieldKey] = {};
+        servicesData[currentServiceId][fieldKey][currentLang] = value;
+      }
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+      renderShowcaseTiles();
+    }
+
+    function updateGlobalSetting(key, val) {
+      globalSettings[key] = val;
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+    }
+
+    function updateSectionTitle(secKey, val) {
+      if (!globalSettings.sectionTitles[secKey]) globalSettings.sectionTitles[secKey] = {};
+      globalSettings.sectionTitles[secKey][currentLang] = val;
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+    }
+
+    function updateMetricField(idx, prop, val) {
+      const metric = servicesData[currentServiceId].metrics[idx];
+      if (!metric) return;
+      if (prop === 'val') metric.val = val;
+      else {
+        if (!metric.label) metric.label = {};
+        metric.label[currentLang] = val;
+      }
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+    }
+
+    function updateAdvField(idx, prop, val) {
+      const adv = servicesData[currentServiceId].advantages[idx];
+      if (!adv) return;
+      if (prop === 'icon') adv.icon = val;
+      else {
+        if (!adv[prop]) adv[prop] = {};
+        adv[prop][currentLang] = val;
+      }
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+    }
+
+    function updateSpecField(idx, prop, val) {
+      const spec = servicesData[currentServiceId].fleetSpecs[idx];
+      if (!spec) return;
+      if (prop === 'spec') spec.spec = val;
+      else {
+        if (!spec.name) spec.name = {};
+        spec.name[currentLang] = val;
+      }
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+    }
+
+    function updateStepField(idx, prop, val) {
+      const step = servicesData[currentServiceId].steps[idx];
+      if (!step) return;
+      if (prop === 'num') step.num = val;
+      else {
+        if (!step[prop]) step[prop] = {};
+        step[prop][currentLang] = val;
+      }
+      saveData();
+      renderPresentationCard('master-presentation-card', currentServiceId);
+    }
+
+    function syncInlineEdit(field, val, isGlobal = false, isPlainGlobal = false) {
+      if (isPlainGlobal) {
+        globalSettings[field] = val.trim();
+        const input = document.getElementById(`input-${field}`);
+        if (input) input.value = val.trim();
+      } else {
+        updateCurrentField(field, val.trim());
+        const input = document.getElementById(`input-${field}`);
+        if (input) input.value = val.trim();
+      }
+      saveData();
+    }
+
+    function syncSectionTitle(secKey, val) {
+      updateSectionTitle(secKey, val.trim());
+      const input = document.getElementById(`input-sectitle-${secKey}`);
+      if (input) input.value = val.trim();
+    }
+
+    // ========================================================
+    // УПРАВЛЕНИЕ ФОНОМ (НОВОЕ ТРЕБОВАНИЕ ПОЛЬЗОВАТЕЛЯ)
+    // ========================================================
+    function handleBgPresetChange(val) {
+      if (val === 'none') {
+        globalSettings.styles.bgType = 'gradient';
+        globalSettings.styles.bgImage = '';
+      } else if (val === 'custom') {
+        document.getElementById('bg-file-input').click();
+        return;
+      } else {
+        globalSettings.styles.bgType = 'image';
+        globalSettings.styles.bgImage = val;
+      }
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function handleBgFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        globalSettings.styles.bgType = 'image';
+        globalSettings.styles.bgImage = ev.target.result;
+        document.getElementById('select-bg-preset').value = 'custom';
+        saveData();
+        applyGlobalStyles();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearBackgroundImage() {
+      globalSettings.styles.bgType = 'gradient';
+      globalSettings.styles.bgImage = '';
+      document.getElementById('select-bg-preset').value = 'none';
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function updateBgOverlay(val) {
+      globalSettings.styles.bgOverlayOpacity = parseInt(val, 10);
+      document.getElementById('lbl-overlay-val').textContent = val + '%';
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function updateBgBlur(val) {
+      globalSettings.styles.bgBlur = parseInt(val, 10);
+      document.getElementById('lbl-blur-val').textContent = val + 'px';
+      saveData();
+      applyGlobalStyles();
+    }
+
+    // Управление стилями, цветами и шрифтами
+    function updateStyleProperty(prop, val) {
+      globalSettings.styles[prop] = val;
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function updateFontScale(val) {
+      globalSettings.styles.fontSizeScale = parseInt(val, 10);
+      document.getElementById('lbl-font-scale').textContent = val + '%';
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function syncStyleInputsFromData() {
+      const s = globalSettings.styles;
+      if (!s) return;
+
+      document.getElementById('select-heading-font').value = s.headingFont;
+      document.getElementById('select-body-font').value = s.fontFamily;
+      document.getElementById('slider-font-scale').value = s.fontSizeScale || 100;
+      document.getElementById('lbl-font-scale').textContent = (s.fontSizeScale || 100) + '%';
+
+      document.getElementById('picker-accent').value = s.accentColor;
+      document.getElementById('picker-section-title').value = s.sectionTitleColor;
+      document.getElementById('picker-heading').value = s.headingColor;
+      document.getElementById('picker-text').value = s.textColor;
+      document.getElementById('picker-muted').value = s.mutedColor;
+      document.getElementById('picker-bg').value = s.cardBgColor && s.cardBgColor.startsWith('#') ? s.cardBgColor : '#080D1A';
+      document.getElementById('picker-border').value = s.borderColor.startsWith('#') ? s.borderColor : '#1E293B';
+      document.getElementById('picker-box-bg').value = s.boxBgColor.startsWith('#') ? s.boxBgColor : '#0F1A30';
+
+      const overlayPicker = document.getElementById('picker-bg-overlay-color');
+      if (overlayPicker) overlayPicker.value = s.bgOverlayColor && s.bgOverlayColor.startsWith('#') ? s.bgOverlayColor : '#080D1A';
+
+      const patternToggle = document.getElementById('toggle-bg-pattern');
+      if (patternToggle) patternToggle.checked = !!s.bgPattern;
+
+      // Фоновые пресеты
+      if (s.bgImage) {
+        const select = document.getElementById('select-bg-preset');
+        if (select && select.querySelector(`option[value="${s.bgImage}"]`)) {
+          select.value = s.bgImage;
+        } else if (select) {
+          select.value = 'custom';
+        }
+      } else {
+        const select = document.getElementById('select-bg-preset');
+        if (select) select.value = 'none';
+      }
+
+      // Активная плашка пресета
+      document.querySelectorAll('.bg-preset-chip').forEach(btn => btn.classList.remove('active'));
+      if (s.bgPreset) {
+        const activeChip = document.getElementById(`bg-chip-${s.bgPreset}`);
+        if (activeChip) activeChip.classList.add('active');
+      }
+
+      document.getElementById('slider-bg-overlay').value = s.bgOverlayOpacity !== undefined ? s.bgOverlayOpacity : 85;
+      document.getElementById('lbl-overlay-val').textContent = (s.bgOverlayOpacity !== undefined ? s.bgOverlayOpacity : 85) + '%';
+      document.getElementById('slider-bg-blur').value = s.bgBlur || 0;
+      document.getElementById('lbl-blur-val').textContent = (s.bgBlur || 0) + 'px';
+    }
+
+    function applyBgPreset(presetKey) {
+      const s = globalSettings.styles;
+      if (!s) return;
+
+      document.querySelectorAll('.bg-preset-chip').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`bg-chip-${presetKey}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (presetKey === 'midnight') {
+        s.bgType = 'solid';
+        s.cardBgColor = '#080D1A';
+        s.bgImage = '';
+        s.bgOverlayColor = '#080D1A';
+        s.bgOverlayOpacity = 85;
+        s.bgBlur = 0;
+        s.bgPreset = 'midnight';
+      } else if (presetKey === 'carbon') {
+        s.bgType = 'gradient';
+        s.cardBgColor = 'linear-gradient(145deg, #0F172A 0%, #060B16 100%)';
+        s.bgImage = '';
+        s.bgOverlayColor = '#0F172A';
+        s.bgOverlayOpacity = 85;
+        s.bgBlur = 0;
+        s.bgPreset = 'carbon';
+      } else if (presetKey === 'ocean') {
+        s.bgType = 'gradient';
+        s.cardBgColor = 'linear-gradient(145deg, #07162C 0%, #030B18 100%)';
+        s.bgImage = '';
+        s.bgOverlayColor = '#07162C';
+        s.bgOverlayOpacity = 85;
+        s.bgBlur = 0;
+        s.bgPreset = 'ocean';
+      } else if (presetKey === 'cleanLight') {
+        s.bgType = 'solid';
+        s.cardBgColor = '#FFFFFF';
+        s.borderColor = '#CBD5E1';
+        s.boxBgColor = '#F8FAFC';
+        s.headingColor = '#0F172A';
+        s.textColor = '#334155';
+        s.sectionTitleColor = '#475569';
+        s.mutedColor = '#64748B';
+        s.accentColor = '#D97706';
+        s.bgImage = '';
+        s.bgOverlayColor = '#FFFFFF';
+        s.bgOverlayOpacity = 90;
+        s.bgBlur = 0;
+        s.bgPreset = 'cleanLight';
+      } else if (presetKey === 'paper') {
+        s.bgType = 'solid';
+        s.cardBgColor = '#F8FAFC';
+        s.borderColor = '#E2E8F0';
+        s.boxBgColor = '#FFFFFF';
+        s.headingColor = '#0F172A';
+        s.textColor = '#334155';
+        s.sectionTitleColor = '#64748B';
+        s.mutedColor = '#94A3B8';
+        s.accentColor = '#B45309';
+        s.bgImage = '';
+        s.bgOverlayColor = '#F8FAFC';
+        s.bgOverlayOpacity = 90;
+        s.bgBlur = 0;
+        s.bgPreset = 'paper';
+      } else if (presetKey === 'train') {
+        s.bgType = 'image';
+        s.bgImage = 'background_transport_with_train.jpg';
+        s.cardBgColor = '#080D1A';
+        s.bgOverlayColor = '#080D1A';
+        s.bgOverlayOpacity = 80;
+        s.bgBlur = 0;
+        s.bgPreset = 'train';
+      } else if (presetKey === 'transport') {
+        s.bgType = 'image';
+        s.bgImage = 'background_transport_final.jpg';
+        s.cardBgColor = '#080D1A';
+        s.bgOverlayColor = '#080D1A';
+        s.bgOverlayOpacity = 82;
+        s.bgBlur = 0;
+        s.bgPreset = 'transport';
+      } else if (presetKey === 'silkroad') {
+        s.bgType = 'image';
+        s.bgImage = 'desert_caravan_silkroad.jpg';
+        s.cardBgColor = '#080D1A';
+        s.bgOverlayColor = '#080D1A';
+        s.bgOverlayOpacity = 85;
+        s.bgBlur = 1;
+        s.bgPreset = 'silkroad';
+      }
+
+      saveData();
+      syncStyleInputsFromData();
+      applyGlobalStyles();
+    }
+
+    function toggleBgPattern(checked) {
+      globalSettings.styles.bgPattern = checked;
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function updateBgOverlayColor(color) {
+      globalSettings.styles.bgOverlayColor = color;
+      saveData();
+      applyGlobalStyles();
+    }
+
+    function applyGlobalStyles(targetCard = null) {
+      const s = globalSettings.styles;
+      if (!s) return;
+      const cards = targetCard ? [targetCard] : [
+        document.getElementById('master-presentation-card'),
+        document.getElementById('modal-presentation-card')
+      ].filter(Boolean);
+
+      cards.forEach(card => {
+        const scale = (s.fontSizeScale || 100) / 100;
+        card.style.fontFamily = s.fontFamily;
+        card.style.borderColor = s.borderColor;
+
+        const bgImgLayer = card.querySelector('#card-elem-bg-image, .card-bg-image-layer');
+        const bgPatternLayer = card.querySelector('#card-elem-bg-pattern, .card-bg-pattern-layer');
+        const bgOverlayLayer = card.querySelector('#card-elem-bg-overlay, .card-bg-overlay-layer');
+
+        if (s.bgType === 'image' && s.bgImage) {
+          card.style.background = s.cardBgColor;
+          if (bgImgLayer) {
+            bgImgLayer.style.backgroundImage = `url('${s.bgImage}')`;
+            bgImgLayer.style.opacity = '1';
+            bgImgLayer.style.filter = s.bgBlur ? `blur(${s.bgBlur}px)` : 'none';
+          }
+          if (bgOverlayLayer) {
+            bgOverlayLayer.style.background = s.bgOverlayColor || s.cardBgColor;
+            bgOverlayLayer.style.opacity = (s.bgOverlayOpacity !== undefined ? s.bgOverlayOpacity : 85) / 100;
+          }
+        } else {
+          card.style.background = s.cardBgColor;
+          if (bgImgLayer) bgImgLayer.style.opacity = '0';
+          if (bgOverlayLayer) bgOverlayLayer.style.opacity = '0';
+        }
+
+        if (bgPatternLayer) {
+          bgPatternLayer.style.opacity = s.bgPattern ? '1' : '0';
+        }
+
+        // Заголовки
+        const headings = card.querySelectorAll('.card-main-title, .service-hero-num, .card-section-label, .metric-val');
+        headings.forEach(h => { h.style.fontFamily = s.headingFont; });
+
+        const mainTitle = card.querySelector('#card-elem-title, .card-main-title');
+        if (mainTitle) {
+          mainTitle.style.color = s.headingColor;
+          mainTitle.style.fontSize = (26 * scale) + 'px';
+        }
+
+        // Названия пунктов / разделов (настраиваются отдельно)
+        const secLabels = card.querySelectorAll('.card-section-label');
+        secLabels.forEach(l => {
+          l.style.color = s.sectionTitleColor;
+          l.style.fontSize = (11 * scale) + 'px';
+        });
+
+        // Основной текст
+        const mainDesc = card.querySelector('#card-elem-description, .card-main-desc');
+        if (mainDesc) {
+          mainDesc.style.color = s.textColor;
+          mainDesc.style.fontSize = (14 * scale) + 'px';
+        }
+
+        // Акцентный цвет
+        const accents = card.querySelectorAll('.service-pill-tag, .card-main-sub, .metric-val, .spec-val, .step-num, .adv-icon-badge, .footer-contact-ico, .corridor-banner-ico');
+        accents.forEach(a => { a.style.color = s.accentColor; });
+
+        const pill = card.querySelector('#card-elem-badge, .service-pill-tag');
+        if (pill) pill.style.borderColor = s.accentColor;
+
+        // Плашки преимуществ и метрик
+        const boxes = card.querySelectorAll('.card-metric-box, .card-advantage-item, .spec-chip, .corridor-banner, .step-box');
+        boxes.forEach(b => {
+          b.style.backgroundColor = s.boxBgColor;
+          b.style.borderColor = s.borderColor;
+        });
+
+        // Удаление любых остатков старого логотипа компании или верхнего заголовка
+        const oldHeader = card.querySelector('.card-brand-header, #card-elem-brand');
+        if (oldHeader) oldHeader.remove();
+      });
+    }
+
+    function applyColorPreset(preset) {
+      if (preset === 'midnight') {
+        globalSettings.styles.accentColor = '#F59E0B';
+        globalSettings.styles.sectionTitleColor = '#6C7A89';
+        globalSettings.styles.headingColor = '#FFFFFF';
+        globalSettings.styles.textColor = '#CBD5E1';
+        globalSettings.styles.mutedColor = '#94A3B8';
+        globalSettings.styles.cardBgColor = '#080D1A';
+        globalSettings.styles.borderColor = '#1E293B';
+        globalSettings.styles.boxBgColor = '#0F1A30';
+      } else if (preset === 'ocean') {
+        globalSettings.styles.accentColor = '#0284C7';
+        globalSettings.styles.sectionTitleColor = '#38BDF8';
+        globalSettings.styles.headingColor = '#F0F9FF';
+        globalSettings.styles.textColor = '#BAE6FD';
+        globalSettings.styles.mutedColor = '#7DD3FC';
+        globalSettings.styles.cardBgColor = '#07162C';
+        globalSettings.styles.borderColor = '#0C4A6E';
+        globalSettings.styles.boxBgColor = '#0B2545';
+      } else if (preset === 'cleanLight') {
+        globalSettings.styles.accentColor = '#D97706';
+        globalSettings.styles.sectionTitleColor = '#475569';
+        globalSettings.styles.headingColor = '#0F172A';
+        globalSettings.styles.textColor = '#334155';
+        globalSettings.styles.mutedColor = '#64748B';
+        globalSettings.styles.cardBgColor = '#FFFFFF';
+        globalSettings.styles.borderColor = '#CBD5E1';
+        globalSettings.styles.boxBgColor = '#F8FAFC';
+      } else if (preset === 'steel') {
+        globalSettings.styles.accentColor = '#94A3B8';
+        globalSettings.styles.sectionTitleColor = '#CBD5E1';
+        globalSettings.styles.headingColor = '#F8FAFC';
+        globalSettings.styles.textColor = '#E2E8F0';
+        globalSettings.styles.mutedColor = '#94A3B8';
+        globalSettings.styles.cardBgColor = '#111827';
+        globalSettings.styles.borderColor = '#374151';
+        globalSettings.styles.boxBgColor = '#1F2937';
+      }
+
+      saveData();
+      syncStyleInputsFromData();
+      applyGlobalStyles();
+    }
+
+    // Рендеринг карточки
+    function renderPresentationCard(targetElementId, serviceId) {
+      const card = document.getElementById(targetElementId);
+      if (!card || !servicesData) return;
+      const data = servicesData[serviceId];
+      if (!data) return;
+
+      const secTitles = globalSettings.sectionTitles;
+      const ui = window.CARAVAN_UI_ICONS || {};
+
+      const advLabel = card.querySelector('#card-label-adv');
+      if (advLabel) {
+        advLabel.innerHTML = `<span class="card-sec-ico">${ui.advantages || ''}</span> <span>${secTitles.advantages[currentLang] || secTitles.advantages.ru}</span>`;
+      }
+      const specsLabel = card.querySelector('#card-label-specs');
+      if (specsLabel) {
+        specsLabel.innerHTML = `<span class="card-sec-ico">${ui.specs || ''}</span> <span>${secTitles.specs[currentLang] || secTitles.specs.ru}</span>`;
+      }
+      const corridorsLabel = card.querySelector('#card-label-corridors');
+      if (corridorsLabel) {
+        corridorsLabel.innerHTML = `<span class="card-sec-ico">${ui.corridors || ''}</span> <span>${secTitles.corridors[currentLang] || secTitles.corridors.ru}</span>`;
+      }
+      const stepsLabel = card.querySelector('#card-label-steps');
+      if (stepsLabel) {
+        stepsLabel.innerHTML = `<span class="card-sec-ico">${ui.steps || ''}</span> <span>${secTitles.steps[currentLang] || secTitles.steps.ru}</span>`;
+      }
+
+      const corridorIco = card.querySelector('#card-elem-corridor-ico');
+      if (corridorIco && ui.globe) corridorIco.innerHTML = ui.globe;
+
+      const phoneIco = card.querySelector('#card-elem-phone-ico');
+      if (phoneIco && ui.phone) phoneIco.innerHTML = ui.phone;
+      const emailIco = card.querySelector('#card-elem-email-ico');
+      if (emailIco && ui.mail) emailIco.innerHTML = ui.mail;
+      const webIco = card.querySelector('#card-elem-web-ico');
+      if (webIco && ui.globe) webIco.innerHTML = ui.globe;
+
+      card.querySelector('#card-elem-number').textContent = data.number;
+      card.querySelector('#card-elem-badge').textContent = data.badge[currentLang] || data.badge.ru;
+      card.querySelector('#card-elem-title').textContent = data.title[currentLang] || data.title.ru;
+      card.querySelector('#card-elem-subtitle').textContent = data.subtitle[currentLang] || data.subtitle.ru;
+      card.querySelector('#card-elem-description').textContent = data.description[currentLang] || data.description.ru;
+      card.querySelector('#card-elem-corridors').textContent = data.corridors[currentLang] || data.corridors.ru;
+
+      card.querySelector('#card-elem-phone').textContent = globalSettings.phone;
+      card.querySelector('#card-elem-email').textContent = globalSettings.email;
+      card.querySelector('#card-elem-website').textContent = globalSettings.website;
+
+      const iconElem = card.querySelector('#card-elem-icon');
+      if (iconElem) {
+        iconElem.innerHTML = window.CARAVAN_ICONS[data.iconKey] || window.CARAVAN_ICONS.railway;
+      }
+
+      // Метрики
+      const metricsElem = card.querySelector('#card-elem-metrics');
+      if (metricsElem && data.metrics) {
+        metricsElem.innerHTML = data.metrics.map(m => `
+          <div class="card-metric-box">
+            <div class="metric-val" contenteditable="true">${m.val}</div>
+            <div class="metric-lbl" contenteditable="true">${m.label[currentLang] || m.label.ru}</div>
+          </div>
+        `).join('');
+      }
+
+      // Преимущества: рендерим профессиональные векторные SVG-значки (взамен эмодзи)
+      const advElem = card.querySelector('#card-elem-advantages');
+      if (advElem && data.advantages) {
+        advElem.innerHTML = data.advantages.map(a => {
+          const iconSvg = window.CARAVAN_ADV_ICONS[a.icon] || window.CARAVAN_ADV_ICONS.train;
+          return `
+            <div class="card-advantage-item">
+              <div class="adv-icon-badge">${iconSvg}</div>
+              <div class="adv-content">
+                <h4 contenteditable="true">${a.title[currentLang] || a.title.ru}</h4>
+                <p contenteditable="true">${a.desc[currentLang] || a.desc.ru}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Спецификации
+      const specsElem = card.querySelector('#card-elem-specs');
+      if (specsElem && data.fleetSpecs) {
+        specsElem.innerHTML = data.fleetSpecs.map(s => `
+          <div class="spec-chip">
+            <span class="spec-name" contenteditable="true">${s.name[currentLang] || s.name.ru}</span>
+            <span class="spec-val" contenteditable="true">${s.spec}</span>
+          </div>
+        `).join('');
+      }
+
+      // Этапы
+      const stepsElem = card.querySelector('#card-elem-steps');
+      if (stepsElem && data.steps) {
+        stepsElem.innerHTML = data.steps.map(st => `
+          <div class="step-box">
+            <div class="step-num" contenteditable="true">${st.num}</div>
+            <h5 contenteditable="true">${st.title[currentLang] || st.title.ru}</h5>
+            <p contenteditable="true">${st.desc[currentLang] || st.desc.ru}</p>
+          </div>
+        `).join('');
+      }
+
+      applyGlobalStyles();
+    }
+
+    function openServiceModal(serviceId) {
+      currentServiceId = serviceId;
+      const modal = document.getElementById('service-modal-overlay');
+      const container = document.getElementById('modal-card-container');
+      
+      const masterCard = document.getElementById('master-presentation-card');
+      const clone = masterCard.cloneNode(true);
+      clone.id = 'modal-presentation-card';
+      container.innerHTML = '';
+      container.appendChild(clone);
+
+      renderPresentationCard('modal-presentation-card', serviceId);
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeServiceModal() {
+      document.getElementById('service-modal-overlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnBackdrop(e) {
+      if (e.target.id === 'service-modal-overlay') closeServiceModal();
+    }
+
+    // Экспорт в PNG
+    async function exportCardToImage(targetId = 'master-presentation-card') {
+      const card = document.getElementById(targetId);
+      if (!card) return;
+
+      const service = servicesData[currentServiceId];
+      const fileName = `caravan-service-${service.number}-${currentServiceId}-${currentLang}.png`;
+
+      try {
+        const originalShadow = card.style.boxShadow;
+        card.style.boxShadow = 'none';
+
+        const canvas = await html2canvas(card, {
+          scale: 2.5,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: globalSettings.styles.cardBgColor || '#080D1A',
+          logging: false
+        });
+
+        card.style.boxShadow = originalShadow;
+
+        const link = document.createElement('a');
+        link.download = fileName;
+        link.href = canvas.toDataURL('image/png', 1.0);
+        link.click();
+      } catch (err) {
+        console.error('Ошибка экспорта изображения:', err);
+        alert('Не удалось сгенерировать изображение: ' + err.message);
+      }
+    }
+
+    function exportModalCardToImage() {
+      exportCardToImage('modal-presentation-card');
+    }
+
+    // Экспорт в PDF
+    async function exportCardToPdf(targetId = 'master-presentation-card') {
+      const card = document.getElementById(targetId);
+      if (!card) return;
+
+      const service = servicesData[currentServiceId];
+      const fileName = `caravan-service-${service.number}-${currentServiceId}-${currentLang}.pdf`;
+
+      try {
+        if (typeof html2canvas === 'undefined' || typeof window.jspdf === 'undefined') {
+          window.print();
+          return;
+        }
+
+        const originalShadow = card.style.boxShadow;
+        card.style.boxShadow = 'none';
+
+        const canvas = await html2canvas(card, {
+          scale: 2.5,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: globalSettings.styles.cardBgColor || '#080D1A'
+        });
+
+        card.style.boxShadow = originalShadow;
+
+        const imgData = canvas.toDataURL('image/png', 1.0);
+        const { jsPDF } = window.jspdf;
+        
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        const imgWidth = pdfWidth - 20;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        const yOffset = imgHeight < pdfHeight ? (pdfHeight - imgHeight) / 2 : 10;
+
+        pdf.addImage(imgData, 'PNG', 10, yOffset, imgWidth, imgHeight, '', 'FAST');
+        pdf.save(fileName);
+      } catch (err) {
+        console.error('Ошибка экспорта PDF:', err);
+        window.print();
+      }
+    }
+
+    function exportModalCardToPdf() {
+      exportCardToPdf('modal-presentation-card');
+    }
+
+    async function exportAllCardsBatch() {
+      const keys = Object.keys(servicesData);
+      if (!confirm(`Скачать изображения для всех ${keys.length} услуг на языке [${currentLang.toUpperCase()}]?`)) return;
+
+      for (let i = 0; i < keys.length; i++) {
+        const key = keys[i];
+        loadServiceIntoEditor(key);
+        await new Promise(r => setTimeout(r, 400));
+        await exportCardToImage('master-presentation-card');
+        await new Promise(r => setTimeout(r, 500));
+      }
+      alert('Все 6 карточек успешно сохранены!');
+    }
+
+    function exportDataJson() {
+      const fullBackup = { services: servicesData, settings: globalSettings };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fullBackup, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `caravan_template_studio_backup.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importDataJsonPrompt() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = event => {
+          try {
+            const parsed = JSON.parse(event.target.result);
+            if (parsed.services && parsed.settings) {
+              servicesData = parsed.services;
+              globalSettings = parsed.settings;
+            } else {
+              servicesData = parsed;
+            }
+            saveData();
+            renderShowcaseTiles();
+            renderServiceSelectorChips();
+            loadServiceIntoEditor(currentServiceId);
+            applyGlobalStyles();
+            alert('Данные и оформление успешно импортированы!');
+          } catch (err) {
+            alert('Ошибка чтения файла JSON: ' + err.message);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    }
+  </script>
+</body>
+</html>

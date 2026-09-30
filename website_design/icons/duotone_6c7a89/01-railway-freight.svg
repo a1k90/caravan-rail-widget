@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bodyGrad6c" x1="16" y1="27" x2="48" y2="45" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2D3748"/>
+      <stop offset="100%" stop-color="#1A202C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Рельсы и шпалы -->
+  <g stroke="#6C7A89" stroke-linecap="round">
+    <line x1="18" y1="53" x2="46" y2="53" stroke-width="2" stroke-opacity="0.6" />
+    <line x1="14" y1="57" x2="50" y2="57" stroke-width="2" stroke-opacity="0.6" />
+    <line x1="9" y1="61" x2="55" y2="61" stroke-width="2.5" stroke-opacity="0.6" />
+    <line x1="20" y1="51" x2="8" y2="61" stroke-width="3" />
+    <line x1="44" y1="51" x2="56" y2="61" stroke-width="3" />
+  </g>
+
+  <!-- Путеочиститель (метельник) -->
+  <g stroke="#6C7A89" stroke-width="2" stroke-linecap="round">
+    <path d="M14 45 H50" stroke-width="2.5" />
+    <rect x="29" y="45" width="6" height="5" rx="1" fill="#6C7A89" fill-opacity="0.2" stroke-width="1.5" />
+    <path d="M18 45 L15 51" />
+    <path d="M24 45 L22 51" />
+    <path d="M40 45 L42 51" />
+    <path d="M46 45 L49 51" />
+  </g>
+
+  <!-- Основной корпус локомотива -->
+  <rect x="16" y="27" width="32" height="18" rx="2" fill="url(#bodyGrad6c)" stroke="#6C7A89" stroke-width="2.5" />
+
+  <!-- Кабина машиниста -->
+  <path d="M19 18 L21 27 H43 L45 18 Z" fill="#2D3748" stroke="#6C7A89" stroke-width="2.5" stroke-linejoin="round" />
+  
+  <!-- Стекла кабины -->
+  <path d="M23 21 H30 V26 H23 Z" fill="#6C7A89" fill-opacity="0.35" stroke="#6C7A89" stroke-width="1.8" />
+  <path d="M34 21 H41 V26 H34 Z" fill="#6C7A89" fill-opacity="0.35" stroke="#6C7A89" stroke-width="1.8" />
+
+  <!-- Крыша и верхний прожектор -->
+  <path d="M22 17 C22 12, 42 12, 42 17" stroke="#6C7A89" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M30 10 H34 V13 H30 Z" fill="#6C7A89" stroke="#6C7A89" stroke-width="1.5" />
+  <circle cx="32" cy="15" r="2.5" fill="#E2E8F0" stroke="#6C7A89" stroke-width="1.5" />
+
+  <!-- Фирменный шеврон -->
+  <path d="M25 33 L32 38 L39 33" stroke="#CBD5E1" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Буферные фары -->
+  <circle cx="21" cy="38" r="3" fill="#E2E8F0" stroke="#6C7A89" stroke-width="1.5" />
+  <circle cx="43" cy="38" r="3" fill="#E2E8F0" stroke="#6C7A89" stroke-width="1.5" />
+
+  <!-- Решетка охлаждения -->
+  <line x1="28" y1="41" x2="36" y2="41" stroke="#6C7A89" stroke-width="2" stroke-linecap="round" />
+</svg>

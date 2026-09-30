@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="portalGrad" x1="7" y1="8" x2="57" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="badgeGold247" x1="39" y1="13" x2="55" y2="29" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FBBF24"/>
+      <stop offset="100%" stop-color="#F59E0B"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Окно портала -->
+  <rect x="7" y="8" width="50" height="48" rx="5" fill="url(#portalGrad)" stroke="#CBD5E1" stroke-width="2" />
+  
+  <!-- Верхняя зона: Личный кабинет (Клиент) -->
+  <circle cx="19" cy="20" r="4.5" fill="#38BDF8" fill-opacity="0.25" stroke="#38BDF8" stroke-width="2" />
+  <path d="M 12 31 C 12 27, 15 26, 19 26 C 23 26, 26 27, 26 31" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" />
+  <line x1="29" y1="21" x2="37" y2="21" stroke="#F8FAFC" stroke-width="2" stroke-linecap="round" />
+  <line x1="29" y1="26" x2="34" y2="26" stroke="#64748B" stroke-width="1.8" stroke-linecap="round" />
+
+  <!-- Бейдж круглосуточно 24/7 (Золотой индикатор Caravan) -->
+  <circle cx="47" cy="21" r="8.5" fill="url(#badgeGold247)" />
+  <path d="M 47 15.5 A 5.5 5.5 0 1 1 41.5 21" stroke="#0F172A" stroke-width="1.6" stroke-linecap="round" />
+  <text x="47" y="23.5" font-family="system-ui, -apple-system, BlinkMacSystemFont, sans-serif" font-weight="900" font-size="6.5" fill="#0F172A" text-anchor="middle" letter-spacing="-0.3">24/7</text>
+
+  <!-- Разделитель -->
+  <line x1="7" y1="35" x2="57" y2="35" stroke="#334155" stroke-width="1.5" />
+
+  <!-- Нижняя зона: Бухгалтерия (Счета и баланс) -->
+  <!-- Документ счета / акта -->
+  <rect x="13" y="40" width="10" height="11" rx="1.5" fill="#334155" stroke="#94A3B8" stroke-width="1.5" />
+  <line x1="16" y1="43" x2="20" y2="43" stroke="#F59E0B" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="16" y1="47" x2="19" y2="47" stroke="#38BDF8" stroke-width="1.5" stroke-linecap="round" />
+
+  <!-- График платежей и баланса -->
+  <rect x="29" y="45" width="4" height="6" rx="1" fill="#475569" />
+  <rect x="36" y="41" width="4" height="10" rx="1" fill="#38BDF8" />
+  <rect x="43" y="38" width="4" height="13" rx="1" fill="#F59E0B" />
+  <path d="M 27 45 L 34 40 L 41 38 L 49 35" stroke="#FBBF24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

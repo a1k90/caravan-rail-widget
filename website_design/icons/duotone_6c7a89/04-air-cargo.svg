@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Спутные струи / инверсионные следы двигателей -->
+  <line x1="20.5" y1="39" x2="20.5" y2="60" stroke="#6C7A89" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="2 3" stroke-linecap="round" />
+  <line x1="43.5" y1="39" x2="43.5" y2="60" stroke="#6C7A89" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="2 3" stroke-linecap="round" />
+
+  <!-- Основной силуэт самолета: вид сверху -->
+  <path d="
+    M 32 6
+    C 30.5 7.5, 29 11, 29 18
+    L 29 24
+    L 6 38
+    C 5 38.8, 5 40.2, 6.2 40.5
+    L 9 41
+    L 29 34
+    L 29 48
+    L 17 55
+    C 16 55.6, 16.2 57, 17.5 57
+    L 21 57
+    L 29 53
+    L 30.5 58.5
+    C 31.2 59.5, 32.8 59.5, 33.5 58.5
+    L 35 53
+    L 43 57
+    C 44.3 57, 44.5 55.6, 43.5 55
+    L 35 48
+    L 35 34
+    L 55 41
+    L 57.8 40.5
+    C 59 40.2, 59 38.8, 58 38
+    L 35 24
+    L 35 18
+    C 35 11, 33.5 7.5, 32 6
+    Z
+  " fill="#1E293B" stroke="#6C7A89" stroke-width="2" stroke-linejoin="round" />
+
+  <!-- Законцовки крыльев (винглеты) -->
+  <path d="M 6 38 L 9 41 L 15 39 L 11 36 Z" fill="#6C7A89" />
+  <path d="M 58 38 L 55 41 L 49 39 L 53 36 Z" fill="#6C7A89" />
+
+  <!-- Стреловидные акценты на кромках крыла -->
+  <line x1="13" y1="34" x2="28" y2="25" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" />
+  <line x1="51" y1="34" x2="36" y2="25" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round" />
+
+  <!-- Двигатели -->
+  <rect x="18" y="28" width="5" height="10" rx="2.5" fill="#334155" stroke="#6C7A89" stroke-width="1.5" />
+  <circle cx="20.5" cy="29" r="1.5" fill="#CBD5E1" />
+
+  <rect x="41" y="28" width="5" height="10" rx="2.5" fill="#334155" stroke="#6C7A89" stroke-width="1.5" />
+  <circle cx="43.5" cy="29" r="1.5" fill="#CBD5E1" />
+
+  <!-- Остекление кокпита -->
+  <path d="M 29.5 13.5 C 31 12.2, 33 12.2, 34.5 13.5" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Центральный киль -->
+  <line x1="32" y1="44" x2="32" y2="56" stroke="#6C7A89" stroke-width="2.5" stroke-linecap="round" />
+</svg>

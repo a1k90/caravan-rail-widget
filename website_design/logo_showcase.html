@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caravan Railroad — Concept 2 (Без обводки)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #070B14;
+      --bg-card: #0B1325;
+      --accent-gold: #F59E0B;
+      --text-main: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      padding: 40px 20px 80px 20px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--accent-gold);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 34px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, #FFFFFF 0%, #CBD5E1 50%, #F59E0B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 15px;
+    }
+
+    .theme-controls {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .theme-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .theme-btn.active, .theme-btn:hover {
+      background: var(--accent-gold);
+      color: #070B14;
+      border-color: var(--accent-gold);
+    }
+
+    .grid-concepts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .card-img-wrap {
+      background: #192535;
+      padding: 24px;
+      text-align: center;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+
+    .card-img-wrap img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    .card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      text-align: center;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent-gold);
+      color: #070B14;
+    }
+
+    .btn-primary:hover { background: #EAB308; }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+    .preview-light .card-img-wrap {
+      background: #F1F5F9 !important;
+    }
+
+    .preview-white .card-img-wrap {
+      background: #FFFFFF !important;
+    }
+
+    .files-list {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: var(--bg-card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .files-list th, .files-list td {
+      padding: 14px 20px;
+      font-size: 13.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .files-list th {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .badge-fmt {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60A5FA;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge-tag">Concept 2 • Геометрический скоростной состав</div>
+      <h1>Caravan Railroad — Concept 2 без обводки</h1>
+      <p class="subtitle">
+        Взят именно <strong>Concept 2</strong>. Внешняя толстая огибающая линия (обводка-контур вокруг состава и рельсов) полностью удалена. Логотип стал открытым, динамичным и чистым.
+      </p>
+
+      <div class="theme-controls">
+        <button class="theme-btn active" onclick="setBgMode('default')">Темный фон</button>
+        <button class="theme-btn" onclick="setBgMode('light')">Светло-серый фон</button>
+        <button class="theme-btn" onclick="setBgMode('white')">Белый фон (Бланки)</button>
+      </div>
+    </header>
+
+    <div class="grid-concepts" id="conceptsContainer">
+      
+      <!-- ВАРИАНТ БЕЗ ВНЕШНЕЙ ОБВОДКИ (ОСНОВНОЙ) -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="caravan_logo.png" alt="Concept 2 без внешней обводки" id="img-main">
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Основной вариант • Установлен в проект</div>
+          <h2 class="card-title">Concept 2: Без внешней обводки</h2>
+          <p class="card-desc">
+            Полностью удалена внешняя толстая огибающая линия-дуга, которая замыкала контур слева и сверху. Осталась чистая, легкая динамичная железнодорожная колея, переходящая в скоростной поезд.
+          </p>
+          <div class="card-actions">
+            <a href="caravan_logo.png" target="_blank" class="btn btn-primary">Полноразмерный PNG</a>
+            <a href="caravan_logo_transparent.png" target="_blank" class="btn btn-secondary">Прозрачный PNG</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ВАРИАНТ С ОТКРЫТЫМ ВЕРХОМ -->
+      <div class="card">
+        <div class="card-img-wrap">
+          <img src="caravan_logo_concept2_open_sky.png" alt="Concept 2 с открытым верхом" id="img-sky">
+        </div>
+        <div class="card-body">
+          <div class="card-tag">Альтернатива • Открытый верх</div>
+          <h2 class="card-title">Concept 2: Без верхних линий</h2>
+          <p class="card-desc">
+            Удалены все дуги над крышей локомотива. Поезд полностью открыт сверху и стремительно мчится по нижним рельсам.
+          </p>
+          <div class="card-actions">
+            <a href="caravan_logo_concept2_open_sky.png" target="_blank" class="btn btn-primary">Полноразмерный PNG</a>
+            <a href="caravan_logo_concept2_open_sky_transparent.png" target="_blank" class="btn btn-secondary">Прозрачный PNG</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ТАБЛИЦА ГОТОВЫХ ФАЙЛОВ -->
+    <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 14px;">Обновленные файлы Concept 2 в рабочей директории</h2>
+    <table class="files-list">
+      <thead>
+        <tr>
+          <th>Файл</th>
+          <th>Формат</th>
+          <th>Назначение</th>
+          <th>Ссылка</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>caravan_logo.png</strong></td>
+          <td><span class="badge-fmt">PNG 1376×768</span></td>
+          <td>Главный полноразмерный логотип проекта (Concept 2 без обводки)</td>
+          <td><a href="caravan_logo.png" target="_blank" style="color: var(--accent-gold);">Открыть</a></td>
+        </tr>
+        <tr>
+          <td><strong>caravan_logo_transparent.png</strong></td>
+          <td><span class="badge-fmt">PNG Прозрачный</span></td>
+          <td>Без фона — для сайта, презентаций и наложения на документы</td>
+          <td><a href="caravan_logo_transparent.png" target="_blank" style="color: var(--accent-gold);">Открыть</a></td>
+        </tr>
+        <tr>
+          <td><strong>caravan_logo_cropped.png</strong></td>
+          <td><span class="badge-fmt">PNG Кадрированный</span></td>
+          <td>Кадрированный вокруг состава и текста</td>
+          <td><a href="caravan_logo_cropped.png" target="_blank" style="color: var(--accent-gold);">Открыть</a></td>
+        </tr>
+        <tr>
+          <td><strong>caravan_logo_icon_512.png</strong></td>
+          <td><span class="badge-fmt">PNG 512×512</span></td>
+          <td>Квадратная иконка для аватарок, соцсетей и Telegram-ботов</td>
+          <td><a href="caravan_logo_icon_512.png" target="_blank" style="color: var(--accent-gold);">Открыть</a></td>
+        </tr>
+        <tr>
+          <td><strong>caravan_logo_favicon.png</strong></td>
+          <td><span class="badge-fmt">PNG 64×64</span></td>
+          <td>Фавикон для вкладки браузера</td>
+          <td><a href="caravan_logo_favicon.png" target="_blank" style="color: var(--accent-gold);">Открыть</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    function setBgMode(mode) {
+      document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      const container = document.getElementById('conceptsContainer');
+      container.className = 'grid-concepts';
+      if (mode === 'light') container.classList.add('preview-light');
+      if (mode === 'white') container.classList.add('preview-white');
+
+      const imgMain = document.getElementById('img-main');
+      const imgSky = document.getElementById('img-sky');
+
+      if (mode === 'white' || mode === 'light') {
+        imgMain.src = 'caravan_logo_transparent.png';
+        imgSky.src = 'caravan_logo_concept2_open_sky_transparent.png';
+      } else {
+        imgMain.src = 'caravan_logo.png';
+        imgSky.src = 'caravan_logo_concept2_open_sky.png';
+      }
+    }
+  </script>
+</body>
+</html>
