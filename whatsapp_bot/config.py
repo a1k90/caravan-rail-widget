@@ -17,9 +17,9 @@ for candidate in [BASE_DIR / '.env', PROJECT_DIR / '.env']:
         load_dotenv(dotenv_path=candidate, override=False)
 load_dotenv()
 
-# WhatsApp Gateway Provider: 'green_api', 'cloud_api' (Meta), 'auto', 'simulation'
-WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "green_api").strip().lower()
-WHATSAPP_BOT_PAUSED = os.getenv("WHATSAPP_BOT_PAUSED", "false").lower() in ("true", "1", "yes")
+# WhatsApp Gateway Provider: 'simulation' (Bot Paused / In Archive), 'green_api', 'cloud_api'
+WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "simulation").strip().lower()
+WHATSAPP_BOT_PAUSED = os.getenv("WHATSAPP_BOT_PAUSED", "true").lower() in ("true", "1", "yes")
 WHATSAPP_BOT_PHONE = os.getenv("WHATSAPP_BOT_PHONE", "998910341055").strip()
 
 # 1. Meta WhatsApp Cloud API (Official free tier 1,000 conversations/month)
