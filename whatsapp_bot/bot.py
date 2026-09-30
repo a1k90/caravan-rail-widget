@@ -250,10 +250,10 @@ def process_incoming_whatsapp_message(from_phone: str, text: str, message_id: st
     if not clean_p:
         return False
 
-    # Safety: paused by default so Director's personal chats are never intercepted
-    from .config import WHATSAPP_BOT_PAUSED
-    if WHATSAPP_BOT_PAUSED:
-        logger.info(f"WhatsApp Bot is PAUSED. Ignoring incoming message from +{clean_p}")
+    # Safety: paused for QR gateway on personal numbers; always active for Cloud API
+    from .config import WHATSAPP_BOT_PAUSED, WHATSAPP_PROVIDER
+    if WHATSAPP_BOT_PAUSED and WHATSAPP_PROVIDER != "cloud_api":
+        logger.info(f"WhatsApp Bot is PAUSED for QR gateway. Ignoring incoming message from +{clean_p}")
         return False
         
     text_raw = (text or "").strip()
