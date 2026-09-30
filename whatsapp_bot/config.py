@@ -19,6 +19,7 @@ load_dotenv()
 
 # WhatsApp Gateway Provider: 'auto', 'cloud_api' (Meta), 'green_api', 'twilio', 'simulation'
 WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "green_api").strip().lower()
+WHATSAPP_BOT_PAUSED = os.getenv("WHATSAPP_BOT_PAUSED", "true").lower() in ("true", "1", "yes")
 
 # 1. Meta WhatsApp Cloud API (Official free tier 1,000 conversations/month)
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "").strip()

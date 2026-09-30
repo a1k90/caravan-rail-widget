@@ -249,6 +249,12 @@ def process_incoming_whatsapp_message(from_phone: str, text: str, message_id: st
     clean_p = clean_phone_number(from_phone)
     if not clean_p:
         return False
+
+    # Safety: paused by default so Director's personal chats are never intercepted
+    from .config import WHATSAPP_BOT_PAUSED
+    if WHATSAPP_BOT_PAUSED:
+        logger.info(f"WhatsApp Bot is PAUSED. Ignoring incoming message from +{clean_p}")
+        return False
         
     text_raw = (text or "").strip()
     text_lower = text_raw.lower()
