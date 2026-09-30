@@ -18,3 +18,6 @@ atlas_unpacked/
 rt_unpacked_nsi/
 *.db
 *.log
+.env
+.env.*
+!.env.example

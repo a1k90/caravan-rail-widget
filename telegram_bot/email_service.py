@@ -404,12 +404,27 @@ def send_via_smtp(subject: str, html_content: str, plain_text: str) -> tuple:
         return False, err
 
 
+def send_via_google_sheets(lead_data: dict, user_data: dict, html_content: str) -> tuple:
+    """Send lead and trigger Gmail dispatch via Google Apps Script Web App."""
+    try:
+        from .google_sheets import sync_lead_to_sheets, is_sheets_configured
+        if not is_sheets_configured():
+            return False, "GOOGLE_SHEETS_URL not configured"
+        ok = sync_lead_to_sheets(lead_data, user_data, html_content)
+        if ok:
+            return True, None
+        return False, "Google Sheets sync returned failure"
+    except Exception as e:
+        return False, str(e)
+
+
 def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> bool:
     """
     Multi-channel email dispatcher:
-    1. Resend API (HTTPS port 443 — guaranteed delivery from Render Free)
-    2. Webhook forwarder (HTTPS port 443)
-    3. Direct SMTP (ports 465/587)
+    1. Google Sheets & Gmail Web App (cloud persistence + Gmail from Yaabduyaminova@gmail.com to info@caravanrailroad.com)
+    2. Resend API (HTTPS port 443 — guaranteed delivery from Render Free)
+    3. Webhook forwarder (HTTPS port 443)
+    4. Direct SMTP (ports 465/587)
     Always logs lead to local SQLite and logs/emails.log as resilient fallback.
     """
     lead_num = lead_data.get('lead_number', 'CR-LEAD')
@@ -427,7 +442,16 @@ def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> boo
     LAST_DISPATCH_STATUS["lead_number"] = lead_num
     LAST_DISPATCH_STATUS["timestamp"] = datetime.now().isoformat()
 
-    # 2. Try Resend HTTPS API (if key is set)
+    # 2. Try Google Sheets & Gmail Web App (highest priority if configured)
+    ok_gs, gs_err = send_via_google_sheets(lead_data, user_data, html_content)
+    if ok_gs:
+        LAST_DISPATCH_STATUS["method"] = "google_sheets_gmail"
+        LAST_DISPATCH_STATUS["success"] = True
+        LAST_DISPATCH_STATUS["error"] = None
+        logger.info(f"Lead {lead_num} dispatched via Google Sheets Web App (Sheet + Gmail)")
+        return True
+
+    # 3. Try Resend HTTPS API (if key is set)
     ok, resend_err = send_via_resend(subject, html_content, plain_text)
     if ok:
         LAST_DISPATCH_STATUS["method"] = "resend_api"
@@ -435,7 +459,7 @@ def send_lead_email(lead_data: Dict[str, Any], user_data: Dict[str, Any]) -> boo
         LAST_DISPATCH_STATUS["error"] = None
         return True
 
-    # 3. Try Webhook forwarder (if webhook is set)
+    # 4. Try Webhook forwarder (if webhook is set)
     ok, wh_err = send_via_webhook(lead_data, user_data, subject, html_content, plain_text)
     if ok:
         LAST_DISPATCH_STATUS["method"] = "webhook"

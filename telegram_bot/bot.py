@@ -28,6 +28,12 @@ from .database import (
     get_user_leads,
     get_lead_by_number
 )
+from .google_sheets import (
+    sync_user_to_sheets,
+    get_user_from_sheets,
+    get_leads_from_sheets,
+    is_sheets_configured
+)
 from .locales import t, format_lead_summary
 from .keyboards import (
     get_language_keyboard,
@@ -104,6 +110,22 @@ def init_bot(token: str) -> telebot.TeleBot:
         tg_id = message.from_user.id
         user = get_user(tg_id)
         
+        # Check cloud persistence (Google Sheets) if local DB has no registration (e.g. after container restart)
+        if not user or not user.get('is_registered'):
+            cloud_user = get_user_from_sheets(tg_id)
+            if cloud_user:
+                logger.info(f"Restoring user {tg_id} from Google Sheets cloud backup...")
+                register_user(
+                    telegram_id=tg_id,
+                    username=message.from_user.username or '',
+                    full_name=cloud_user.get('full_name', ''),
+                    company_name=cloud_user.get('company_name', ''),
+                    phone=cloud_user.get('phone', ''),
+                    email=cloud_user.get('email', ''),
+                    language=cloud_user.get('language', DEFAULT_LANGUAGE)
+                )
+                user = get_user(tg_id)
+
         # If user is already registered, greet and show main menu
         if user and user.get('is_registered'):
             lang = user.get('language', DEFAULT_LANGUAGE)
@@ -518,6 +540,26 @@ def init_bot(token: str) -> telebot.TeleBot:
             process_fsm_step(bot, message, state, state_info, lang, is_skip)
             return
 
+        # Restore from Google Sheets cloud if container restarted
+        user = get_user(tg_id)
+        if not user or not user.get('is_registered'):
+            cloud_user = get_user_from_sheets(tg_id)
+            if cloud_user:
+                logger.info(f"Restoring user {tg_id} from Google Sheets cloud backup...")
+                register_user(
+                    telegram_id=tg_id,
+                    username=message.from_user.username or '',
+                    full_name=cloud_user.get('full_name', ''),
+                    company_name=cloud_user.get('company_name', ''),
+                    phone=cloud_user.get('phone', ''),
+                    email=cloud_user.get('email', ''),
+                    language=cloud_user.get('language', DEFAULT_LANGUAGE)
+                )
+                user = get_user(tg_id)
+                lang = user.get('language', DEFAULT_LANGUAGE)
+                if tg_id not in USER_STATES:
+                    USER_STATES[tg_id] = {'lang': lang}
+
         # Main Menu button handlers (check against all languages)
         if is_button_match(text, 'btn_my_leads'):
             show_my_leads(bot, tg_id)
@@ -593,6 +635,20 @@ def process_fsm_step(bot: telebot.TeleBot, message: types.Message, state: str, s
             email=data.get('email', ''),
             language=lang
         )
+        
+        # Save to Google Sheets permanently (survives Render restarts)
+        try:
+            sync_user_to_sheets(
+                telegram_id=tg_id,
+                full_name=data.get('full_name', ''),
+                company_name=data.get('company_name', ''),
+                phone=data.get('phone', ''),
+                email=data.get('email', ''),
+                language=lang
+            )
+        except Exception as e:
+            logger.warning(f"Failed to sync user to Google Sheets: {e}")
+
         clear_state(tg_id)
         USER_STATES[tg_id] = {'lang': lang}
         
@@ -948,6 +1004,20 @@ def show_profile(bot: telebot.TeleBot, tg_id: int):
     lang = get_user_lang(tg_id)
     user = get_user(tg_id)
     if not user or not user.get('is_registered'):
+        cloud_user = get_user_from_sheets(tg_id)
+        if cloud_user:
+            logger.info(f"Restoring user {tg_id} profile from Google Sheets...")
+            register_user(
+                telegram_id=tg_id,
+                full_name=cloud_user.get('full_name', ''),
+                company_name=cloud_user.get('company_name', ''),
+                phone=cloud_user.get('phone', ''),
+                email=cloud_user.get('email', ''),
+                language=cloud_user.get('language', DEFAULT_LANGUAGE)
+            )
+            user = get_user(tg_id)
+
+    if not user or not user.get('is_registered'):
         bot.send_message(
             tg_id,
             "Вы еще не зарегистрированы. Пожалуйста, запустите команду /start для регистрации.",
@@ -976,6 +1046,15 @@ def show_my_leads(bot: telebot.TeleBot, tg_id: int):
     lang = get_user_lang(tg_id)
     leads = get_user_leads(tg_id, limit=5)
     
+    # If container restarted and SQLite is empty, check Google Sheets cloud!
+    if not leads:
+        try:
+            cloud_leads = get_leads_from_sheets(tg_id)
+            if cloud_leads:
+                leads = cloud_leads
+        except Exception as e:
+            logger.warning(f"Error fetching leads from Google Sheets: {e}")
+            
     if not leads:
         bot.send_message(
             tg_id,
@@ -988,7 +1067,7 @@ def show_my_leads(bot: telebot.TeleBot, tg_id: int):
     for idx, l in enumerate(leads, 1):
         num = l.get('lead_number', 'N/A')
         s_name = l.get('service_name', 'Inquiry')
-        dt = l.get('created_at', '')[:16]
+        dt = str(l.get('created_at', ''))[:16]
         status = l.get('status', 'new').upper()
         msg += f"**{idx}. {num}** — {s_name}\n"
         msg += f"   📅 {dt} | Статус: `{status}`\n\n"
