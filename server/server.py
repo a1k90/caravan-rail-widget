@@ -35,8 +35,8 @@ DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", DB_NAME
 if not os.path.exists(DB_PATH):
     if os.path.exists(DB_NAME):
         DB_PATH = DB_NAME
-    elif os.path.exists("caravan_rail.db"):
-        DB_PATH = "caravan_rail.db"
+# Global in-memory log of incoming WhatsApp webhook events
+WA_WEBHOOK_LOGS = []
 
 def get_db():
     conn = sqlite3.connect(DB_PATH)
@@ -825,6 +825,15 @@ class RailEngineHandler(BaseHTTPRequestHandler):
             hub_token = query.get("hub.verify_token", [""])[0]
             hub_challenge = query.get("hub.challenge", [""])[0]
 
+            WA_WEBHOOK_LOGS.append({
+                "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "method": "GET",
+                "hub_mode": hub_mode,
+                "token_match": (hub_token == WHATSAPP_VERIFY_TOKEN)
+            })
+            if len(WA_WEBHOOK_LOGS) > 30:
+                WA_WEBHOOK_LOGS.pop(0)
+
             if hub_mode == "subscribe" and hub_token == WHATSAPP_VERIFY_TOKEN:
                 self.send_response(200)
                 self.send_header("Content-Type", "text/plain")
@@ -860,6 +869,7 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                     "webhook_url": wh_url,
                     "meta_verify_token": WHATSAPP_VERIFY_TOKEN,
                     "last_dispatch": LAST_WA_DISPATCH,
+                    "recent_webhooks": WA_WEBHOOK_LOGS[-10:],
                     "supported_providers": ["cloud_api (Meta Official)", "green_api (QR-code)", "twilio", "simulation"]
                 })
             except Exception as e:
@@ -1141,8 +1151,16 @@ class RailEngineHandler(BaseHTTPRequestHandler):
 
         elif parsed.path == "/api/whatsapp/webhook":
             try:
-                from whatsapp_bot.bot import process_incoming_whatsapp_message
                 update_json = data or {}
+                WA_WEBHOOK_LOGS.append({
+                    "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "method": "POST",
+                    "data": update_json
+                })
+                if len(WA_WEBHOOK_LOGS) > 30:
+                    WA_WEBHOOK_LOGS.pop(0)
+
+                from whatsapp_bot.bot import process_incoming_whatsapp_message
                 processed_any = False
                 
                 # 1. Meta WhatsApp Cloud API format
