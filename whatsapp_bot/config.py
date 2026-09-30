@@ -18,13 +18,13 @@ for candidate in [BASE_DIR / '.env', PROJECT_DIR / '.env']:
 load_dotenv()
 
 # WhatsApp Gateway Provider: 'auto', 'cloud_api' (Meta), 'green_api', 'twilio', 'simulation'
-WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "green_api").strip().lower()
-WHATSAPP_BOT_PAUSED = os.getenv("WHATSAPP_BOT_PAUSED", "true").lower() in ("true", "1", "yes")
+WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "cloud_api").strip().lower()
+WHATSAPP_BOT_PAUSED = os.getenv("WHATSAPP_BOT_PAUSED", "false").lower() in ("true", "1", "yes")
 
 # 1. Meta WhatsApp Cloud API (Official free tier 1,000 conversations/month)
-WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "").strip()
-WHATSAPP_PHONE_NUMBER_ID = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "").strip()
-WHATSAPP_BUSINESS_ACCOUNT_ID = os.getenv("WHATSAPP_BUSINESS_ACCOUNT_ID", "").strip()
+WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "EAAUc36j0dqgBSltz024qKg0ZCd1cR41T3TyH1paTdtbjTuCxJSlZC5iTKirjMTdgfoTAg2WJV88uDmFhMrDqROXphxUTo7Iw7bE8NBNoxwOjHzwePpUzZCoZAOquLTHk3qAj7qJjJUQ5ddn76uCGXK1a2ZB5mnBbRtM4UxDm4HN4S15nRGTIJOEZAnYkZCoZA1LPlmZCAQqX2IhlZAkJPhGqNvx2jouXdg5KF3OHNepHcqRmJSeG8HQIZC64b4wJVBmSzW5dipgWfX6bgIrXEp56gTfpQjS").strip()
+WHATSAPP_PHONE_NUMBER_ID = os.getenv("WHATSAPP_PHONE_NUMBER_ID", "1351217934744996").strip()
+WHATSAPP_BUSINESS_ACCOUNT_ID = os.getenv("WHATSAPP_BUSINESS_ACCOUNT_ID", "1402694564736465").strip()
 WHATSAPP_VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "caravan_wa_verify_2026").strip()
 WHATSAPP_API_VERSION = os.getenv("WHATSAPP_API_VERSION", "v19.0").strip()
 
