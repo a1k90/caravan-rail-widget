@@ -870,11 +870,128 @@ class RailEngineHandler(BaseHTTPRequestHandler):
                     "meta_verify_token": WHATSAPP_VERIFY_TOKEN,
                     "last_dispatch": LAST_WA_DISPATCH,
                     "recent_webhooks": WA_WEBHOOK_LOGS[-10:],
-                    "supported_providers": ["cloud_api (Meta Official)", "green_api (QR-code)", "twilio", "simulation"]
+                    "supported_providers": ["green_api (QR-code)", "cloud_api (Meta Official)", "twilio", "simulation"]
                 })
             except Exception as e:
                 self._send_json({"status": "error", "error": str(e)}, status=500)
             return
+
+        elif path == "/whatsapp" or path == "/api/whatsapp/qr":
+            try:
+                from whatsapp_bot.config import GREEN_API_INSTANCE_ID, GREEN_API_TOKEN, GREEN_API_HOST, WHATSAPP_BOT_PHONE
+                ctx = ssl._create_unverified_context()
+                
+                # Check status
+                state_url = f"{GREEN_API_HOST}/waInstance{GREEN_API_INSTANCE_ID}/getStateInstance/{GREEN_API_TOKEN}"
+                state_req = urllib.request.Request(state_url, headers={"User-Agent": "curl/8.4.0"})
+                is_authorized = False
+                state_val = "unknown"
+                try:
+                    with urllib.request.urlopen(state_req, context=ctx, timeout=8) as r:
+                        s_data = json.loads(r.read().decode())
+                        state_val = s_data.get("stateInstance", "")
+                        is_authorized = (state_val == "authorized")
+                except Exception as ex:
+                    state_val = str(ex)
+
+                qr_b64 = None
+                if not is_authorized:
+                    qr_url = f"{GREEN_API_HOST}/waInstance{GREEN_API_INSTANCE_ID}/qr/{GREEN_API_TOKEN}"
+                    qr_req = urllib.request.Request(qr_url, headers={"User-Agent": "curl/8.4.0"})
+                    try:
+                        with urllib.request.urlopen(qr_req, context=ctx, timeout=8) as r:
+                            q_data = json.loads(r.read().decode())
+                            if q_data.get("type") == "qrCode":
+                                qr_b64 = q_data.get("message")
+                    except Exception:
+                        pass
+
+                qr_img_html = f"<img src='data:image/png;base64,{qr_b64}' alt='QR-код WhatsApp'>" if qr_b64 else "<p style='color:#0b1329;padding:40px;font-weight:600;'>Генерация QR-кода...<br><small style='color:#64748b;'>Нажмите обновить через 5 секунд</small></p>"
+
+                if is_authorized:
+                    content_html = """
+                    <div style='padding: 30px 10px;'>
+                        <div style='font-size: 60px; margin-bottom: 16px;'>🟢</div>
+                        <h2 style='color:#25d366;font-size:22px;margin-bottom:10px;font-weight:800;'>WhatsApp Бот активен!</h2>
+                        <p style='color:#94a3b8;font-size:14px;line-height:1.6;margin-bottom:20px;'>
+                            Устройство подключено к номеру <strong>+998 91 034 10 55</strong>.<br>
+                            Бот готов рассчитывать ж/д тарифы и принимать заявки клиентов.
+                        </p>
+                        <div style='background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.3);border-radius:12px;padding:14px;font-size:13px;color:#25d366;text-align:left;'>
+                            🛡️ <strong>Безопасность:</strong> Личный номер директора (+998 90 971 56 70) полностью изолирован. Все заявки автоматически уходят в Telegram-группу CaravanRailRoad_chat.
+                        </div>
+                    </div>
+                    """
+                else:
+                    content_html = f"""
+                    <div class="qr-box">
+                        {qr_img_html}
+                    </div>
+
+                    <div class="steps">
+                        <ol>
+                            <li>Откройте <strong>WhatsApp Business</strong> на телефоне.</li>
+                            <li>Нажмите <strong>⋮ (три точки) ➔ Связанные устройства</strong>.</li>
+                            <li>Нажмите <strong>«Привязка устройства»</strong> и наведите камеру на QR-код.</li>
+                        </ol>
+                    </div>
+
+                    <button class="btn" onclick="location.reload()">🔄 Обновить QR-код</button>
+                    """
+
+                html = f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caravan Railroad — Подключение WhatsApp Бота</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+body {{ font-family: 'Inter', sans-serif; background: #0b1329; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }}
+.card {{ background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 36px; max-width: 460px; width: 100%; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); backdrop-filter: blur(16px); }}
+.badge {{ display: inline-block; padding: 6px 14px; background: rgba(37,211,102,0.15); border: 1px solid #25d366; color: #25d366; border-radius: 30px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }}
+h1 {{ font-size: 22px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }}
+p.sub {{ color: #94a3b8; font-size: 14px; margin-bottom: 24px; line-height: 1.5; }}
+.qr-box {{ background: #fff; border-radius: 16px; padding: 14px; display: inline-block; margin-bottom: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }}
+.qr-box img {{ display: block; width: 250px; height: 250px; border-radius: 8px; }}
+.steps {{ text-align: left; background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; font-size: 13px; color: #cbd5e1; line-height: 1.6; border-left: 3px solid #25d366; }}
+.steps ol {{ padding-left: 18px; }}
+.steps li {{ margin-bottom: 6px; }}
+.btn {{ display: inline-block; width: 100%; padding: 14px; background: #25d366; color: #0b1329; border: none; border-radius: 12px; font-weight: 700; font-size: 15px; cursor: pointer; text-decoration: none; transition: 0.2s; }}
+.btn:hover {{ background: #1ebd5a; }}
+</style>
+</head>
+<body>
+<div class="card">
+    <div class="badge">WhatsApp Business Gateway</div>
+    <h1>Caravan Railroad Bot</h1>
+    <p class="sub">Рабочий номер бота: <strong>+998 91 034 10 55</strong></p>
+
+    {content_html}
+
+    <script>
+    setInterval(function() {{
+        fetch('https://api.green-api.com/waInstance710722751875/getStateInstance/2d1d0e8c51114947ab3d083e43abfc30996d565b5f0b4526a4')
+            .then(r => r.json())
+            .then(d => {{
+                if (d.stateInstance === 'authorized') {{
+                    location.reload();
+                }}
+            }}).catch(() => {{}});
+    }}, 3000);
+    </script>
+</div>
+</body>
+</html>"""
+                self.send_response(200)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.end_headers()
+                self.wfile.write(html.encode("utf-8"))
+                return
+            except Exception as e:
+                self._send_json({"error": str(e)}, status=500)
+                return
 
         elif path == "/api/bot/setup_webhook":
             try:

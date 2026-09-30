@@ -194,18 +194,8 @@ def send_whatsapp_message(to_phone: str, text: str) -> Tuple[bool, Optional[str]
     LAST_WA_DISPATCH["to"] = clean_to
     LAST_WA_DISPATCH["timestamp"] = now_str
 
-    # 1. Check explicit provider or Meta Cloud API
-    if WHATSAPP_PROVIDER == "cloud_api" or (WHATSAPP_TOKEN and WHATSAPP_PHONE_NUMBER_ID):
-        ok, err, res = send_meta_cloud_api(clean_to, text)
-        if ok:
-            LAST_WA_DISPATCH["provider"] = "meta_cloud_api"
-            LAST_WA_DISPATCH["success"] = True
-            LAST_WA_DISPATCH["error"] = None
-            return True, None
-        logger.warning(f"Meta Cloud API failed: {err}")
-
-    # 2. Check Green-API
-    if WHATSAPP_PROVIDER == "green_api" or (GREEN_API_INSTANCE_ID and GREEN_API_TOKEN):
+    # 1. Check explicit provider: Green-API
+    if WHATSAPP_PROVIDER == "green_api" or (not (WHATSAPP_TOKEN and WHATSAPP_PHONE_NUMBER_ID) and GREEN_API_INSTANCE_ID):
         ok, err, res = send_green_api(clean_to, text)
         if ok:
             LAST_WA_DISPATCH["provider"] = "green_api"
@@ -213,6 +203,16 @@ def send_whatsapp_message(to_phone: str, text: str) -> Tuple[bool, Optional[str]
             LAST_WA_DISPATCH["error"] = None
             return True, None
         logger.warning(f"Green-API failed: {err}")
+
+    # 2. Check explicit provider: Meta Cloud API
+    elif WHATSAPP_PROVIDER == "cloud_api" or (WHATSAPP_TOKEN and WHATSAPP_PHONE_NUMBER_ID):
+        ok, err, res = send_meta_cloud_api(clean_to, text)
+        if ok:
+            LAST_WA_DISPATCH["provider"] = "meta_cloud_api"
+            LAST_WA_DISPATCH["success"] = True
+            LAST_WA_DISPATCH["error"] = None
+            return True, None
+        logger.warning(f"Meta Cloud API failed: {err}")
 
     # 3. Check Twilio
     if WHATSAPP_PROVIDER == "twilio" or (TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN):

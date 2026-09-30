@@ -17,9 +17,10 @@ for candidate in [BASE_DIR / '.env', PROJECT_DIR / '.env']:
         load_dotenv(dotenv_path=candidate, override=False)
 load_dotenv()
 
-# WhatsApp Gateway Provider: 'auto', 'cloud_api' (Meta), 'green_api', 'twilio', 'simulation'
-WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "cloud_api").strip().lower()
+# WhatsApp Gateway Provider: 'green_api', 'cloud_api' (Meta), 'auto', 'simulation'
+WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "green_api").strip().lower()
 WHATSAPP_BOT_PAUSED = os.getenv("WHATSAPP_BOT_PAUSED", "false").lower() in ("true", "1", "yes")
+WHATSAPP_BOT_PHONE = os.getenv("WHATSAPP_BOT_PHONE", "998910341055").strip()
 
 # 1. Meta WhatsApp Cloud API (Official free tier 1,000 conversations/month)
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "EAAUc36j0dqgBSltz024qKg0ZCd1cR41T3TyH1paTdtbjTuCxJSlZC5iTKirjMTdgfoTAg2WJV88uDmFhMrDqROXphxUTo7Iw7bE8NBNoxwOjHzwePpUzZCoZAOquLTHk3qAj7qJjJUQ5ddn76uCGXK1a2ZB5mnBbRtM4UxDm4HN4S15nRGTIJOEZAnYkZCoZA1LPlmZCAQqX2IhlZAkJPhGqNvx2jouXdg5KF3OHNepHcqRmJSeG8HQIZC64b4wJVBmSzW5dipgWfX6bgIrXEp56gTfpQjS").strip()
