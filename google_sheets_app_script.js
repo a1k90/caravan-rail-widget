@@ -195,7 +195,9 @@ function createLead(ss, p) {
     }
   }
   
-  var contactSource = u.username ? "@" + u.username : String(p.telegram_id || u.telegram_id || p.wa_phone || "");
+  var tgIdStr = String(p.telegram_id || u.telegram_id || p.wa_phone || "").trim();
+  var uNameStr = u.username ? "@" + String(u.username).replace(/^@/, '') : "";
+  var contactSource = (tgIdStr && uNameStr) ? (tgIdStr + " (" + uNameStr + ")") : (tgIdStr || uNameStr || "—");
   
   sheet.appendRow([
     l.lead_number || p.lead_number || "CR-LEAD",
@@ -250,12 +252,15 @@ function createLead(ss, p) {
 function getLeads(ss, tgId) {
   var sheet = ss.getSheetByName("Заявки");
   var data = sheet.getDataRange().getValues();
-  var strTgId = String(tgId).trim();
+  var strTgId = String(tgId || "").trim();
   var leads = [];
+  
+  if (!strTgId) return { ok: true, leads: [] };
   
   for (var i = data.length - 1; i >= 1; i--) {
     var rowContact = String(data[i][6]).trim();
-    if (rowContact.indexOf(strTgId) !== -1 || (strTgId.length > 5 && rowContact === strTgId)) {
+    var rowPhone = String(data[i][4]).trim();
+    if (rowContact.indexOf(strTgId) !== -1 || (strTgId.length > 5 && rowPhone.indexOf(strTgId) !== -1)) {
       leads.push({
         lead_number: data[i][0],
         created_at: String(data[i][1]),
@@ -270,3 +275,4 @@ function getLeads(ss, tgId) {
   }
   return { ok: true, leads: leads };
 }
+

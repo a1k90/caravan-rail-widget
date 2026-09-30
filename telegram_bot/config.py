@@ -44,7 +44,7 @@ if not RESEND_API_KEY:
     RESEND_API_KEY = "".join(["re_", "5zLyJzuF_", "5s8fWPjxRSutosS25keRejJV"])
 RESEND_FALLBACK_EMAIL = os.getenv("RESEND_FALLBACK_EMAIL", "kingsonyuk@gmail.com").strip()
 EMAIL_WEBHOOK_URL = os.getenv("EMAIL_WEBHOOK_URL", "").strip()
-GOOGLE_SHEETS_URL = os.getenv("GOOGLE_SHEETS_URL", "").strip()
+GOOGLE_SHEETS_URL = os.getenv("GOOGLE_SHEETS_URL", "https://script.google.com/macros/s/AKfycbzJFYmj5RsRvlH7vKwsq8UfD4hhqu-DkBcRhSUk5UGm4UAmcJmX-dkEx8r-2ghakcY3iA/exec").strip()
 
 # Язык по умолчанию
 DEFAULT_LANGUAGE = os.getenv("DEFAULT_LANGUAGE", "ru").strip()
