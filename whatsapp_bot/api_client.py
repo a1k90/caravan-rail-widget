@@ -133,6 +133,15 @@ def send_green_api(to_phone: str, text: str) -> Tuple[bool, Optional[str], Optio
             data = json.loads(resp.read().decode("utf-8"))
             logger.info(f"Green-API sent to {clean_to}: {data}")
             return True, None, data
+    except urllib.error.HTTPError as e:
+        err_msg = ""
+        try:
+            err_msg = e.read().decode("utf-8")
+        except Exception:
+            pass
+        err = f"Green-API HTTP {e.code}: {err_msg or e}"
+        logger.error(err)
+        return False, err, None
     except Exception as e:
         err = f"Green-API error: {e}"
         logger.error(err)
@@ -202,7 +211,12 @@ def send_whatsapp_message(to_phone: str, text: str) -> Tuple[bool, Optional[str]
             LAST_WA_DISPATCH["success"] = True
             LAST_WA_DISPATCH["error"] = None
             return True, None
-        logger.warning(f"Green-API failed: {err}")
+        else:
+            LAST_WA_DISPATCH["provider"] = "green_api"
+            LAST_WA_DISPATCH["success"] = False
+            LAST_WA_DISPATCH["error"] = err
+            logger.warning(f"Green-API failed: {err}")
+            return False, err
 
     # 2. Check explicit provider: Meta Cloud API
     elif WHATSAPP_PROVIDER == "cloud_api" or (WHATSAPP_TOKEN and WHATSAPP_PHONE_NUMBER_ID):
