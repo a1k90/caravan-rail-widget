@@ -155,6 +155,35 @@ def notify_telegram_managers_from_whatsapp(lead: dict, user: dict, phone: str):
         logger.error(f"Error in notify_telegram_managers_from_whatsapp: {e}")
 
 
+def notify_whatsapp_manager(lead: dict, user: dict, from_phone: str):
+    """Send immediate notification to chief manager WhatsApp phone."""
+    try:
+        from .config import WHATSAPP_MANAGER_PHONE
+        mgr = clean_phone_number(WHATSAPP_MANAGER_PHONE)
+        clean_client = clean_phone_number(from_phone)
+        if not mgr or mgr == clean_client:
+            return
+            
+        lead_num = lead.get('lead_number', 'CR-LEAD')
+        s_name = lead.get('service_name', 'Заявка на перевозку')
+        comp = user.get('company_name', 'Организация')
+        c_name = user.get('full_name', 'Клиент')
+        phone_str = f"+{clean_client}"
+        
+        msg = (
+            f"🚨 *Новая заявка из WhatsApp: {lead_num}*\n\n"
+            f"🏢 *Организация:* {comp}\n"
+            f"👤 *Контактное лицо:* {c_name}\n"
+            f"📱 *Телефон:* {phone_str}\n"
+            f"📦 *Услуга:* {s_name}\n\n"
+            f"💬 Написать клиенту: https://wa.me/{clean_client}"
+        )
+        send_reply(mgr, msg)
+        logger.info(f"Manager {mgr} notified in WhatsApp for lead {lead_num}")
+    except Exception as e:
+        logger.error(f"Failed to notify WhatsApp manager: {e}")
+
+
 def finalize_whatsapp_lead(phone: str, lang: str, data: dict):
     """Save lead to database, dispatch corporate email, notify Telegram managers, and confirm to client."""
     clean_p = clean_phone_number(phone)
@@ -174,7 +203,7 @@ def finalize_whatsapp_lead(phone: str, lang: str, data: dict):
         details=details
     )
     
-    # User data payload for email
+    # User data payload for email & Google Sheets
     email_user = {
         'company_name': user.get('company_name', 'Организация'),
         'full_name': user.get('full_name', 'Клиент'),
@@ -184,13 +213,16 @@ def finalize_whatsapp_lead(phone: str, lang: str, data: dict):
         'telegram_id': f"wa:{clean_p}"
     }
     
-    # 2. Dispatch Corporate Email via Resend HTTPS API
+    # 2. Dispatch Corporate Email via Google Sheets / Resend HTTPS API
     send_lead_email(lead, email_user)
     
     # 3. Notify managers in Telegram group in real time
     notify_telegram_managers_from_whatsapp(lead, user, clean_p)
     
-    # 4. Confirm to client in WhatsApp
+    # 4. Notify chief manager in WhatsApp (if lead is from an external client)
+    notify_whatsapp_manager(lead, user, clean_p)
+    
+    # 5. Confirm to client in WhatsApp
     confirmation_text = format_whatsapp_lead_summary(
         lead_number=lead['lead_number'],
         data=data,
@@ -235,6 +267,43 @@ def process_incoming_whatsapp_message(from_phone: str, text: str, message_id: st
         clear_state(clean_p)
         send_reply(clean_p, "❌ Действие отменено.")
         send_main_menu(clean_p, lang)
+        return True
+
+    # Manager admin commands
+    from .config import WHATSAPP_MANAGER_PHONE
+    mgr_phone = clean_phone_number(WHATSAPP_MANAGER_PHONE)
+    is_manager = bool(mgr_phone and clean_p == mgr_phone)
+
+    if is_manager and text_lower in ('статус', 'status', '/status', 'инфо', 'info'):
+        send_reply(
+            clean_p,
+            "🟢 *Caravan Railroad — Панель управления WhatsApp*\n\n"
+            "✅ *Шлюз:* Green-API (Активен)\n"
+            "📱 *Подключенный номер:* +998 90 971 56 70\n"
+            "☁️ *Google Таблица:* Синхронизируется (kingsonyuk@gmail.com)\n"
+            "✉️ *Email:* info@caravanrailroad.com\n"
+            "👥 *Группа Telegram:* CaravanRailRoad_chat (-5521386609)\n\n"
+            "📋 *Доступные команды:*\n"
+            "• *Заявки* — последние 5 заявок\n"
+            "• *Старт* — проверка клиентского меню"
+        )
+        return True
+
+    if is_manager and text_lower in ('заявки', 'leads', '/leads'):
+        from telegram_bot.database import get_recent_leads
+        leads = get_recent_leads(limit=5)
+        if not leads:
+            send_reply(clean_p, "📭 Заявок в системе пока нет.")
+        else:
+            rep = "📦 *Последние заявки клиентов (CRM):*\n\n"
+            for idx, l in enumerate(leads, 1):
+                num = l.get('lead_number', 'N/A')
+                dt = str(l.get('created_at', ''))[:16]
+                srv = l.get('service_name', 'Логистика')
+                c_name = l.get('company_name') or l.get('full_name') or 'Клиент'
+                c_phone = l.get('wa_phone') or l.get('phone') or '—'
+                rep += f"{idx}. *{num}* — {srv}\n   🏢 {c_name} (тел: {c_phone})\n   📅 {dt}\n\n"
+            send_reply(clean_p, rep)
         return True
 
     if text_lower in ('старт', 'start', '/start', 'меню', 'menu', 'привет', 'hi', 'hello'):
@@ -303,6 +372,19 @@ def process_incoming_whatsapp_message(from_phone: str, text: str, message_id: st
             email=data['email'],
             language=lang
         )
+        try:
+            from telegram_bot.google_sheets import sync_user_to_sheets
+            sync_user_to_sheets(
+                telegram_id=f"wa:{clean_p}",
+                full_name=data['full_name'],
+                company_name=data['company_name'],
+                phone=f"+{clean_p}",
+                email=data['email'],
+                language=lang
+            )
+        except Exception as e:
+            logger.warning(f"Failed to sync WA user to Google Sheets: {e}")
+
         send_reply(clean_p, "🎉 *Регистрация успешно завершена!*\nВаша организация сохранена в системе Caravan Railroad.")
         time.sleep(0.5)
         send_main_menu(clean_p, lang)

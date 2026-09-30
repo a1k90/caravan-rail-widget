@@ -18,7 +18,7 @@ for candidate in [BASE_DIR / '.env', PROJECT_DIR / '.env']:
 load_dotenv()
 
 # WhatsApp Gateway Provider: 'auto', 'cloud_api' (Meta), 'green_api', 'twilio', 'simulation'
-WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "auto").strip().lower()
+WHATSAPP_PROVIDER = os.getenv("WHATSAPP_PROVIDER", "green_api").strip().lower()
 
 # 1. Meta WhatsApp Cloud API (Official free tier 1,000 conversations/month)
 WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN", "").strip()
@@ -28,8 +28,8 @@ WHATSAPP_VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "caravan_wa_verify_20
 WHATSAPP_API_VERSION = os.getenv("WHATSAPP_API_VERSION", "v19.0").strip()
 
 # 2. Green-API (QR-code based gateway for standard WhatsApp numbers without Meta verification)
-GREEN_API_INSTANCE_ID = os.getenv("GREEN_API_INSTANCE_ID", "").strip()
-GREEN_API_TOKEN = os.getenv("GREEN_API_TOKEN", "").strip()
+GREEN_API_INSTANCE_ID = os.getenv("GREEN_API_INSTANCE_ID", "710722751875").strip()
+GREEN_API_TOKEN = os.getenv("GREEN_API_TOKEN", "2d1d0e8c51114947ab3d083e43abfc30996d565b5f0b4526a4").strip()
 GREEN_API_HOST = os.getenv("GREEN_API_HOST", "https://api.green-api.com").strip().rstrip("/")
 
 # 3. Twilio for WhatsApp
@@ -38,7 +38,7 @@ TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "").strip()
 TWILIO_WHATSAPP_NUMBER = os.getenv("TWILIO_WHATSAPP_NUMBER", "").strip()
 
 # Notifications
-WHATSAPP_MANAGER_PHONE = os.getenv("WHATSAPP_MANAGER_PHONE", "").strip()
+WHATSAPP_MANAGER_PHONE = os.getenv("WHATSAPP_MANAGER_PHONE", "998909715670").strip()
 
 # Company Contact Info
 COMPANY_PHONE = "+99895 157 8888"
